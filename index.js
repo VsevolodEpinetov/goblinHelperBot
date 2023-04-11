@@ -55,7 +55,45 @@ function getLotMessage({ author = 'Автор не указан', name = 'Без
   })
 
   let newCostPerPerson = participants.length > 0 ? price / participants.length : price;
+  newCostPerPerson = +newCostPerPerson.toFixed(2);
   let costPerPersonFuture = participants.length > 0 ? price / (participants.length + 1) : price;
+  costPerPersonFuture = +costPerPersonFuture.toFixed(2);
+
+  return `<b>${author}</b>
+<i>${name}</i>
+
+🔗 <b>Ссылка:</b> <a href='${link}'>тык</a>
+💰 <b>Цена:</b> $${price} (${getPriceInUSD(price)}₽)
+
+<b>Организатор:</b> ${organizator}
+<b>Статус:</b> ${status ? '✅ ОТКРЫТ НАБОР' : '❌ СБОР ЗАВЕРШЁН'}
+
+<b>Участники:</b>
+${participantsText}${participants.length > 0 ? `
+💶 <b>Каждый платит по:</b> $${newCostPerPerson} (${Math.ceil(newCostPerPerson * 85 * 1.1)}₽)` : ''}${status ? `
+
+Если ты присоединишься, то цена участия будет $${costPerPersonFuture} (${getPriceInUSD(costPerPersonFuture)}₽)` : ''}
+
+${status ? '#opened_lot' : '#closed_lot'}`
+}
+
+function getLotMessageShort({ author = 'Автор не указан', name = 'Безымянный набор', link = "", price, organizator = 'Организатора нет', status = false, participants = [] }) {
+
+  let participantsText = '';
+  participants.forEach((part, id) => {
+    let participantFullName = ``;
+    if (part.username) {
+      participantFullName += `@${part.username}`
+    } else {
+      participantFullName += part?.first_name
+    }
+    participantsText += `${participantFullName}; `
+  })
+
+  let newCostPerPerson = participants.length > 0 ? price / participants.length : price;
+  newCostPerPerson = +newCostPerPerson.toFixed(2);
+  let costPerPersonFuture = participants.length > 0 ? price / (participants.length + 1) : price;
+  costPerPersonFuture = +costPerPersonFuture.toFixed(2);
 
   return `<b>${author}</b>
 <i>${name}</i>
@@ -479,18 +517,30 @@ bot.action(/^action-join-lot-[0-9]+$/g, ctx => {
       let organizator = lotData.whoCreated?.first_name + ' ' + lotData.whoCreated?.last_name;
       if (lotData.whoCreated.username) organizator += ` (@${lotData.whoCreated.username})`
 
+      let caption = getLotMessage({
+        author: lotData.author,
+        name: lotData.name,
+        link: lotData.link,
+        price: lotData.price,
+        organizator: organizator,
+        status: true,
+        participants: lotData.participants
+      })
+
+      if (caption.length > 1023) {
+        caption = getLotMessageShort({
+          author: lotData.author,
+          name: lotData.name,
+          link: lotData.link,
+          price: lotData.price,
+          organizator: organizator,
+          status: true,
+          participants: lotData.participants
+        })
+      }
+
       ctx.replyWithPhoto(lotData.photo, {
-        caption: getLotMessage(
-          {
-            author: lotData.author,
-            name: lotData.name,
-            link: lotData.link,
-            price: lotData.price,
-            organizator: organizator,
-            status: true,
-            participants: lotData.participants
-          }
-        ),
+        caption: caption,
         parse_mode: 'HTML',
         ...Markup.inlineKeyboard([
           Markup.button.callback(SETTINGS.BUTTONS.LOT.JOIN, `action-join-lot-${lotID}`),
@@ -548,6 +598,57 @@ bot.action(/^action-close-lot-[0-9]+$/g, ctx => {
   }
 })
 //#endregion
+
+bot.command('revive', (ctx) => {
+  if (ctx.message.from.id != SETTINGS.CHATS.EPINETOV) {
+    return;
+  }
+
+  const lotID = ctx.message.text.split('/revive')[1];
+  const lotData = ctx.globalSession.lots[lotID];
+
+  console.log(lotID);
+  console.log(lotData);
+
+  let organizator = lotData.whoCreated?.first_name + ' ' + lotData.whoCreated?.last_name;
+  if (lotData.whoCreated.username) organizator += ` (@${lotData.whoCreated.username})`
+
+  let caption = getLotMessage({
+    author: lotData.author,
+    name: lotData.name,
+    link: lotData.link,
+    price: lotData.price,
+    organizator: organizator,
+    status: true,
+    participants: lotData.participants
+  })
+
+  if (caption.length > 1023) {
+    caption = getLotMessageShort({
+      author: lotData.author,
+      name: lotData.name,
+      link: lotData.link,
+      price: lotData.price,
+      organizator: organizator,
+      status: true,
+      participants: lotData.participants
+    })
+  }
+
+  ctx.replyWithPhoto(lotData.photo, {
+    caption: caption,
+    parse_mode: 'HTML',
+    ...Markup.inlineKeyboard([
+      Markup.button.callback(SETTINGS.BUTTONS.LOT.JOIN, `action-join-lot-${lotID}`),
+      Markup.button.callback(SETTINGS.BUTTONS.LOT.CLOSE, `action-close-lot-${lotID}`),
+    ]),
+    message_thread_id: ctx.callbackQuery.message.message_thread_id ? ctx.callbackQuery.message.message_thread_id : null,
+    disable_notification: true
+  }).catch((error) => {
+    console.log(error)
+  })
+
+})
 
 
 function randomIntFromInterval(min, max) { // min and max included 
