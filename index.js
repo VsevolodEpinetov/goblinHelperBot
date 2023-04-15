@@ -650,6 +650,13 @@ bot.command('revive', (ctx) => {
 
 })
 
+bot.command('test', (ctx) => {
+  if (ctx.message.from.id !== SETTINGS.CHATS.EPINETOV) {
+    return;
+  }
+  console.log("it's working!")
+})
+
 
 function randomIntFromInterval(min, max) { // min and max included 
   return Math.floor(Math.random() * (max - min + 1) + min)
