@@ -655,7 +655,7 @@ bot.command('test', (ctx) => {
     return;
   }
   console.log("it's working!")
-  ctx.reply("it's working!")
+  ctx.reply("it's working! 2")
 })
 
 
