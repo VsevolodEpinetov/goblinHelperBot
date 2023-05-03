@@ -1,5 +1,6 @@
 //#region imports
 const { Telegraf, Markup, Telegram, Scenes, session } = require('telegraf');
+require('dotenv').config();
 const bot = new Telegraf(process.env.TOKEN)
 const telegram = new Telegram(process.env.TOKEN)
 const SETTINGS = require('./settings.json')
@@ -70,7 +71,7 @@ function getLotMessage({ author = 'Автор не указан', name = 'Без
 
 <b>Участники:</b>
 ${participantsText}${participants.length > 0 ? `
-💶 <b>Каждый платит по:</b> $${newCostPerPerson} (${Math.ceil(newCostPerPerson * 85 * 1.1)}₽)` : ''}${status ? `
+💶 <b>Каждый платит по:</b> $${newCostPerPerson} (${Math.ceil(newCostPerPerson * SETTINGS.EXCHANGE_RATE * SETTINGS.SPECIAL_RATE)}₽)` : ''}${status ? `
 
 Если ты присоединишься, то цена участия будет $${costPerPersonFuture} (${getPriceInUSD(costPerPersonFuture)}₽)` : ''}
 
@@ -106,7 +107,7 @@ function getLotMessageShort({ author = 'Автор не указан', name = '�
 
 <b>Участники:</b>
 ${participantsText}${participants.length > 0 ? `
-💶 <b>Каждый платит по:</b> $${newCostPerPerson} (${Math.ceil(newCostPerPerson * 85 * 1.1)}₽)` : ''}${status ? `
+💶 <b>Каждый платит по:</b> $${newCostPerPerson} (${Math.ceil(newCostPerPerson * SETTINGS.EXCHANGE_RATE * SETTINGS.SPECIAL_RATE)}₽)` : ''}${status ? `
 
 Если ты присоединишься, то цена участия будет $${costPerPersonFuture} (${getPriceInUSD(costPerPersonFuture)}₽)` : ''}
 
@@ -164,7 +165,13 @@ lotScenePhotoStage.on('document', (ctx) => {
 })
 
 lotScenePhotoStage.on('message', (ctx) => {
-  replyToTheMessage(ctx, SETTINGS.MESSAGES.CREATE_LOT.ERRORS.WAITING_FOR_A_PHOTO, ctx.message.message_id)
+  ctx.replyWithHTML(SETTINGS.MESSAGES.CREATE_LOT.ERRORS.WAITING_FOR_A_PHOTO, {
+    parse_mode: 'HTML',
+    reply_to_message_id: ctx.message.message_id,
+    ...Markup.inlineKeyboard([
+      Markup.button.callback(SETTINGS.BUTTONS.CREATE_LOT.CANCEL, 'actionStopLot')
+    ])
+  })
 })
 
 lotScenePhotoStage.action('actionStopLot', (ctx) => {
@@ -604,7 +611,7 @@ bot.command('revive', (ctx) => {
     return;
   }
 
-  const lotID = ctx.message.text.split('/revive')[1];
+  const lotID = parseInt(ctx.message.text.split('/revive ')[1]);
   const lotData = ctx.globalSession.lots[lotID];
 
   console.log(lotID);
@@ -642,20 +649,12 @@ bot.command('revive', (ctx) => {
       Markup.button.callback(SETTINGS.BUTTONS.LOT.JOIN, `action-join-lot-${lotID}`),
       Markup.button.callback(SETTINGS.BUTTONS.LOT.CLOSE, `action-close-lot-${lotID}`),
     ]),
-    message_thread_id: ctx.callbackQuery.message.message_thread_id ? ctx.callbackQuery.message.message_thread_id : null,
+    message_thread_id: ctx.message.message_thread_id ? ctx.message.message_thread_id : null,
     disable_notification: true
   }).catch((error) => {
     console.log(error)
   })
 
-})
-
-bot.command('test', (ctx) => {
-  if (ctx.message.from.id !== SETTINGS.CHATS.EPINETOV) {
-    return;
-  }
-  console.log("it's working!")
-  ctx.reply("it's working! 3")
 })
 
 

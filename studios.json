@@ -18,9 +18,27 @@
     "bought": false
   },
   {
+    "name": "3DHexes",
+    "price": "8",
+    "mainLink": "https://www.patreon.com/3dhexes",
+    "bought": false
+  },
+  {
     "name": "Across the Realms",
     "price": "6.5",
     "mainLink": "https://www.myminifactory.com/users/Across%20the%20Realms?show=tribe",
+    "bought": false
+  },
+  {
+    "name": "Arcane Minis",
+    "price": "15",
+    "mainLink": "https://www.myminifactory.com/users/ArcaneMinis?show=tribe",
+    "bought": true
+  },
+  {
+    "name": "Arcanum Workshop",
+    "price": "8",
+    "mainLink": "https://www.myminifactory.com/users/Arcanum%20Workshop?show=tribe",
     "bought": false
   },
   {
@@ -36,6 +54,12 @@
     "bought": false
   },
   {
+    "name": "Battle Yak Miniatures",
+    "price": "10",
+    "mainLink": "https://www.patreon.com/BattleYakMiniatures",
+    "bought": false
+  },
+  {
     "name": "Bella Nacht",
     "price": "8",
     "mainLink": "https://www.myminifactory.com/users/BellaNacht_3D?show=tribe",
@@ -48,22 +72,34 @@
     "bought": false
   },
   {
-    "name": "BlackBlossomGames",
-    "price": "10",
-    "mainLink": "https://www.patreon.com/BlackBlossomGames",
-    "bought": false
-  },
-  {
     "name": "Bite the Bullet",
     "price": "10",
     "mainLink": "https://www.myminifactory.com/users/BiteTheBullet",
     "bought": true
   },
   {
+    "name": "BlackBlossomGames",
+    "price": "10",
+    "mainLink": "https://www.patreon.com/BlackBlossomGames",
+    "bought": false
+  },
+  {
+    "name": "BruteFun Minatures",
+    "price": "12",
+    "mainLink": "https://www.myminifactory.com/users/BruteFun%20Miniatures?show=tribe",
+    "bought": false
+  },
+  {
+    "name": "claudiocasiniart",
+    "price": "3",
+    "mainLink": "https://www.myminifactory.com/users/claudiocasiniart?show=tribe",
+    "bought": false
+  },
+  {
     "name": "Clay Cyanide Miniatures",
     "price": "10",
     "mainLink": "https://www.myminifactory.com/users/ClayCyanide?show=tribe",
-    "bought": true
+    "bought": false
   },
   {
     "name": "ClayBeastCreation",
@@ -75,7 +111,7 @@
     "name": "Claymore Miniatures",
     "price": "13.5",
     "mainLink": "https://www.myminifactory.com/users/Claymore-Miniatures?show=tribe",
-    "bought": false
+    "bought": true
   },
   {
     "name": "CobraMode",
@@ -93,12 +129,18 @@
     "name": "Crippled God Foundry",
     "price": "10",
     "mainLink": "https://www.myminifactory.com/users/crippledgodfoundry?show=tribe",
-    "bought": true
+    "bought": false
   },
   {
     "name": "DakkaDakkaStore",
     "price": "12",
     "mainLink": "https://www.myminifactory.com/users/DakkaDakkaStore?show=tribe",
+    "bought": false
+  },
+  {
+    "name": "Dark Lord Miniatures",
+    "price": "14",
+    "mainLink": "https://www.myminifactory.com/users/DarkLordMiniatures?show=tribe",
     "bought": false
   },
   {
@@ -111,7 +153,7 @@
     "name": "DaybreakMiniatures",
     "price": "10",
     "mainLink": "https://www.myminifactory.com/users/DaybreakMiniatures?show=tribe",
-    "bought": true
+    "bought": false
   },
   {
     "name": "DICE Heads",
@@ -129,6 +171,12 @@
     "name": "Double Edge Miniatures",
     "price": "7",
     "mainLink": "https://www.myminifactory.com/users/Double%20Edge%20Miniatures?show=tribe",
+    "bought": false
+  },
+  {
+    "name": "Dungeon Dog",
+    "price": "5",
+    "mainLink": "https://www.myminifactory.com/users/dungeondog?show=tribe",
     "bought": false
   },
   {
@@ -198,9 +246,21 @@
     "bought": false
   },
   {
+    "name": "Imagine Minis",
+    "price": "8",
+    "mainLink": "https://www.myminifactory.com/users/Imagine%20Minis?show=tribe",
+    "bought": false
+  },
+  {
     "name": "Immaterium God Miniatures",
     "price": "10",
-    "mainLink": "https://www.myminifactory.com/users/immateriumgod",
+    "mainLink": "https://www.myminifactory.com/users/immateriumgod?show=tribe",
+    "bought": false
+  },
+  {
+    "name": "Imp3dsion",
+    "price": "8",
+    "mainLink": "https://www.myminifactory.com/users/Imp3dsion?show=tribe",
     "bought": false
   },
   {
@@ -216,15 +276,45 @@
     "bought": false
   },
   {
+    "name": "Kaijumon",
+    "price": "10",
+    "mainLink": "https://www.myminifactory.com/users/Kaijumon?show=tribe",
+    "bought": false
+  },
+  {
+    "name": "LabyrinthModels",
+    "price": "10",
+    "mainLink": "https://www.myminifactory.com/users/LabyrinthModels?show=tribe",
+    "bought": false
+  },
+  {
     "name": "Last Sword Miniatures",
     "price": "12",
     "mainLink": "https://www.patreon.com/lastswordminiatures",
     "bought": false
   },
   {
+    "name": "Lion Heart Forge",
+    "price": "10",
+    "mainLink": "https://www.myminifactory.com/users/Lion%20heart%20forge?show=tribe",
+    "bought": false
+  },
+  {
+    "name": "Lord of the Print",
+    "price": "10",
+    "mainLink": "https://www.myminifactory.com/fr/users/LordofthePrint?show=tribe",
+    "bought": false
+  },
+  {
     "name": "Lord of War Miniatures",
     "price": "5",
     "mainLink": "https://www.myminifactory.com/users/LordofWarMiniatures?show=tribe",
+    "bought": false
+  },
+  {
+    "name": "Losthobbyist",
+    "price": "4",
+    "mainLink": "https://www.myminifactory.com/users/Losthobbyist",
     "bought": false
   },
   {
@@ -258,9 +348,39 @@
     "bought": false
   },
   {
+    "name": "MenagerieMiniature",
+    "price": "5",
+    "mainLink": "https://www.patreon.com/MenagerieMiniature",
+    "bought": false
+  },
+  {
+    "name": "Mini Monster Mayhem",
+    "price": "10",
+    "mainLink": "https://www.myminifactory.com/users/Mini%20Monster%20Mayhem?show=tribe",
+    "bought": false
+  },
+  {
+    "name": "Necropunks Miniatures",
+    "price": "9",
+    "mainLink": "https://www.myminifactory.com/users/Necropunksminiatures?show=tribe",
+    "bought": false
+  },
+  {
     "name": "Nerikson",
     "price": "8",
     "mainLink": "https://www.myminifactory.com/users/nerikson?show=tribe",
+    "bought": false
+  },
+  {
+    "name": "Parasite Collectibles",
+    "price": "10",
+    "mainLink": "https://www.myminifactory.com/users/Parasite-Collectibles?show=tribe",
+    "bought": false
+  },
+  {
+    "name": "primalcollectibles",
+    "price": "10",
+    "mainLink": "https://www.myminifactory.com/users/primalcollectibles?show=tribe",
     "bought": false
   },
   {
@@ -288,10 +408,16 @@
     "bought": false
   },
   {
+    "name": "RMPrintable",
+    "price": "10",
+    "mainLink": "https://www.myminifactory.com/users/RMPrintable?show=tribe",
+    "bought": false
+  },
+  {
     "name": "RN Estudio",
     "price": "10",
     "mainLink": "https://www.patreon.com/rnestudio",
-    "bought": true
+    "bought": false
   },
   {
     "name": "Signum Workshop",
@@ -309,7 +435,7 @@
     "name": "STL Miniatures",
     "price": "11",
     "mainLink": "https://www.myminifactory.com/users/STLMiniatures?show=tribe",
-    "bought": true
+    "bought": false
   },
   {
     "name": "The Beholder Miniatures",
@@ -330,10 +456,22 @@
     "bought": false
   },
   {
+    "name": "Titan Forge",
+    "price": "20",
+    "mainLink": "https://www.myminifactory.com/users/TitanForgeMiniatures?show=tribe",
+    "bought": true
+  },
+  {
     "name": "Twin Goddess",
     "price": "9",
     "mainLink": "https://www.myminifactory.com/users/TwinGoddessMini?show=tribe",
-    "bought": true
+    "bought": false
+  },
+  {
+    "name": "Vermilion Miniatures",
+    "price": "10",
+    "mainLink": "https://www.myminifactory.com/users/Vermilion_miniatures?show=tribe",
+    "bought": false
   },
   {
     "name": "vinciminiatures",
@@ -357,7 +495,7 @@
     "name": "White Werewolf Tavern",
     "price": "10",
     "mainLink": "https://www.myminifactory.com/users/WWTavern?show=tribe",
-    "bought": true
+    "bought": false
   },
   {
     "name": "WildMesh",
