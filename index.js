@@ -753,6 +753,14 @@ bot.command('studios', (ctx) => {
   }
 })
 
+bot.command('id', (ctx) => {
+  util.log(ctx);
+  if (ctx.message.chat.from < 0) return;
+  else {
+    ctx.reply(`Твой telegramID: ${ctx.message.from.id}`);
+  }
+})
+
 bot.command('poll', async (ctx) => {
   util.log(ctx)
   if (
