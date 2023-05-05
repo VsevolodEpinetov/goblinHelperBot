@@ -764,12 +764,10 @@ bot.command('id', (ctx) => {
 bot.command('poll', async (ctx) => {
   util.log(ctx)
   if (
-    ctx.message.chat.id != SETTINGS.CHATS.EPINETOV &&
+    (ctx.message.chat.id != SETTINGS.CHATS.EPINETOV || ctx.message.chat.id != SETTINGS.CHATS.ALEKS) &&
     ctx.message.chat.id != SETTINGS.CHATS.TEST &&
     ctx.message.chat.id != SETTINGS.CHATS.GOBLIN
   ) { return; }
-
-  if (ctx.message.from.id != SETTINGS.CHATS.EPINETOV) { return; }
 
   let options = [];
   let currentPollNumber = 0;
@@ -789,7 +787,7 @@ bot.command('poll', async (ctx) => {
   if (options[options.length - 1][options[options.length - 1].length - 1] !== 'Пустой вариант') options[options.length - 1].push('Пустой вариант')
 
   for (let i = 0; i < options.length; i++) {
-    ctx.replyWithPoll(`Апрель. Часть ${i + 1}`, options[i], {
+    ctx.replyWithPoll(`Май. Часть ${i + 1}`, options[i], {
       is_anonymous: false,
       allows_multiple_answers: true
     });
