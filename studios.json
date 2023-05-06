@@ -327,7 +327,7 @@
     "name": "Lord of the Print",
     "price": "10",
     "mainLink": "https://www.myminifactory.com/fr/users/LordofthePrint?show=tribe",
-    "bought": false
+    "bought": true
   },
   {
     "name": "Lord of War Miniatures",
@@ -345,7 +345,7 @@
     "name": "LostKingdomMiniatures",
     "price": "9",
     "mainLink": "https://www.patreon.com/LostKingdomMiniatures?utm_campaign=creatorshare_fan",
-    "bought": false
+    "bought": true
   },
   {
     "name": "Makers Anvil",
@@ -489,7 +489,7 @@
     "name": "STL Miniatures",
     "price": "11",
     "mainLink": "https://www.myminifactory.com/users/STLMiniatures?show=tribe",
-    "bought": false
+    "bought": true
   },
   {
     "name": "The Beholder Miniatures",
@@ -561,6 +561,6 @@
     "name": "WitchsongMiniatures",
     "price": "1",
     "mainLink": "https://www.myminifactory.com/users/WitchsongMiniatures?show=tribe",
-    "bought": false
+    "bought": true
   }
 ]
