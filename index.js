@@ -713,12 +713,12 @@ bot.hears(/^[гГ]облин[,]? хочу создать лот[.!]?$/g, (ctx) =
 bot.command('studios', (ctx) => {
   util.log(ctx)
   if (
-    ctx.message.chat.id != SETTINGS.CHATS.EPINETOV &&
+    ctx.message.chat.id != SETTINGS.CHATS.EPINETOV && 
     ctx.message.chat.id != SETTINGS.CHATS.TEST &&
     ctx.message.chat.id != SETTINGS.CHATS.GOBLIN
   ) { return; }
 
-  if (ctx.message.from.id != SETTINGS.CHATS.EPINETOV) { return; }
+  if (ctx.message.from.id != SETTINGS.CHATS.EPINETOV && ctx.message.from.id != SETTINGS.CHATS.ALEKS) { return; }
   let message = `Список студий, которые будут участвовать в голосовании:`
   let messageBoughtPart = `А эти студии у нас уже есть, поэтому их не выкупаем:`
   let counterMain = 1;
@@ -764,10 +764,12 @@ bot.command('id', (ctx) => {
 bot.command('poll', async (ctx) => {
   util.log(ctx)
   if (
-    (ctx.message.chat.id != SETTINGS.CHATS.EPINETOV || ctx.message.chat.id != SETTINGS.CHATS.ALEKS) &&
+    ctx.message.chat.id != SETTINGS.CHATS.EPINETOV && 
     ctx.message.chat.id != SETTINGS.CHATS.TEST &&
     ctx.message.chat.id != SETTINGS.CHATS.GOBLIN
   ) { return; }
+
+  if (ctx.message.from.id != SETTINGS.CHATS.EPINETOV && ctx.message.from.id != SETTINGS.CHATS.ALEKS) { return; }
 
   let options = [];
   let currentPollNumber = 0;
