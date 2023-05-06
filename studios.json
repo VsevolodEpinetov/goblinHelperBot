@@ -90,6 +90,12 @@
     "bought": false
   },
   {
+    "name": "Chibiatures",
+    "price": "10",
+    "mainLink": "https://www.patreon.com/Chibiatures/posts",
+    "bought": false
+  },
+  {
     "name": "claudiocasiniart",
     "price": "3",
     "mainLink": "https://www.myminifactory.com/users/claudiocasiniart?show=tribe",
@@ -129,7 +135,7 @@
     "name": "Crippled God Foundry",
     "price": "10",
     "mainLink": "https://www.myminifactory.com/users/crippledgodfoundry?show=tribe",
-    "bought": false
+    "bought": true
   },
   {
     "name": "DakkaDakkaStore",
@@ -171,6 +177,18 @@
     "name": "Double Edge Miniatures",
     "price": "7",
     "mainLink": "https://www.myminifactory.com/users/Double%20Edge%20Miniatures?show=tribe",
+    "bought": false
+  },
+  {
+    "name": "dragonslakeminiaturas",
+    "price": "9.5",
+    "mainLink": "https://www.myminifactory.com/users/dragonslakeminiaturas?show=tribe",
+    "bought": false
+  },
+  {
+    "name": "Draco Studios (Lair)",
+    "price": "4",
+    "mainLink": "https://www.myminifactory.com/users/Lair?show=tribe",
     "bought": false
   },
   {
@@ -222,6 +240,12 @@
     "bought": false
   },
   {
+    "name": "GoonMasterGames",
+    "price": "10",
+    "mainLink": "https://www.myminifactory.com/users/GoonMasterGames?show=tribe",
+    "bought": false
+  },
+  {
     "name": "Great Grimoire",
     "price": "10",
     "mainLink": "https://www.myminifactory.com/users/GreatGrimoire?show=tribe",
@@ -237,7 +261,7 @@
     "name": "Heroes Infinite",
     "price": "10",
     "mainLink": "https://www.patreon.com/HeroesInfinite",
-    "bought": false
+    "bought": true
   },
   {
     "name": "Highlands Miniatures",
@@ -318,6 +342,12 @@
     "bought": false
   },
   {
+    "name": "LostKingdomMiniatures",
+    "price": "9",
+    "mainLink": "https://www.patreon.com/LostKingdomMiniatures?utm_campaign=creatorshare_fan",
+    "bought": false
+  },
+  {
     "name": "Makers Anvil",
     "price": "8",
     "mainLink": "https://www.patreon.com/makersanvilstudio",
@@ -354,9 +384,27 @@
     "bought": false
   },
   {
+    "name": "mierceminiatures",
+    "price": "12",
+    "mainLink": "https://www.myminifactory.com/users/mierceminiatures?show=tribe",
+    "bought": false
+  },
+  {
     "name": "Mini Monster Mayhem",
     "price": "10",
     "mainLink": "https://www.myminifactory.com/users/Mini%20Monster%20Mayhem?show=tribe",
+    "bought": false
+  },
+  {
+    "name": "miniaturesblueprint",
+    "price": "4",
+    "mainLink": "https://www.myminifactory.com/users/miniaturesblueprint?show=tribe",
+    "bought": false
+  },
+  {
+    "name": "MoonlightMinis",
+    "price": "10",
+    "mainLink": "https://www.myminifactory.com/users/MoonlightMinis?show=tribe",
     "bought": false
   },
   {
@@ -375,6 +423,12 @@
     "name": "Parasite Collectibles",
     "price": "10",
     "mainLink": "https://www.myminifactory.com/users/Parasite-Collectibles?show=tribe",
+    "bought": true
+  },
+  {
+    "name": "Pes Lukas",
+    "price": "7",
+    "mainLink": "https://www.myminifactory.com/users/Pes%20Lukas?show=tribe",
     "bought": false
   },
   {
@@ -393,7 +447,7 @@
     "name": "Printed Obsession",
     "price": "9",
     "mainLink": "https://www.myminifactory.com/users/printedobsession?show=tribe",
-    "bought": false
+    "bought": true
   },
   {
     "name": "realsteone miniatures",
