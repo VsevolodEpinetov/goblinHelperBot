@@ -62,7 +62,7 @@
   {
     "name": "Bella Nacht",
     "price": "8",
-    "mainLink": "https://www.myminifactory.com/users/BellaNacht_3D?show=tribe",
+    "mainLink": "https://www.myminifactory.com/users/BellaNachtMiniatures?show=tribe",
     "bought": false
   },
   {
@@ -477,6 +477,12 @@
     "name": "Signum Workshop",
     "price": "10",
     "mainLink": "https://www.myminifactory.com/users/Legends%20of%20Signum?show=tribe",
+    "bought": false
+  },
+  {
+    "name": "Sir Nicholas Miniatures",
+    "price": "8.5",
+    "mainLink": "https://www.patreon.com/user?u=80309896",
     "bought": false
   },
   {
