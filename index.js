@@ -600,7 +600,9 @@ bot.action(/^action-close-lot-[0-9]+$/g, ctx => {
       //ctx.deleteMessage(ctx.callbackQuery.message.chat.id, ctx.callbackQuery.message.message_id)
       //ctx.deleteMessage()
       telegram.deleteMessage(ctx.callbackQuery.message.chat.id, ctx.callbackQuery.message.message_id).catch((error) => {
-        telegram.editMessageCaption(ctx.callbackQuery.message.chat.id, ctx.callbackQuery.message.message_id, 'удалено')
+        telegram.editMessageCaption(ctx.callbackQuery.message.chat.id, ctx.callbackQuery.message.message_id, undefined, 'удалено', {
+          parse_mode: 'HTML'
+        })
         console.log(error)
       });
       //console.log(ctx.callbackQuery.message)
