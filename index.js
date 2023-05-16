@@ -571,12 +571,12 @@ bot.action(/^action-close-lot-[0-9]+$/g, ctx => {
   util.log(ctx)
   const lotID = ctx.callbackQuery.data.split('action-close-lot-')[1];
 
-  if (ctx.globalSession.lots[lotID].opened) {
+  if (/*ctx.globalSession.lots[lotID].opened*/true) {
     const userID = ctx.callbackQuery.from.id;
     const lotData = ctx.globalSession.lots[lotID];
 
-    if (userID == lotData.whoCreated.id) {
-      let organizator = lotData.whoCreated?.first_name + ' ' + lotData.whoCreated?.last_name;
+    if (userID == lotData.whoCreated.id || userID == SETTINGS.CHATS.EPINETOV) {
+      /*let organizator = lotData.whoCreated?.first_name + ' ' + lotData.whoCreated?.last_name;
       if (lotData.whoCreated.username) organizator += ` (@${lotData.whoCreated.username})`
 
       ctx.replyWithPhoto(lotData.photo, {
@@ -593,10 +593,17 @@ bot.action(/^action-close-lot-[0-9]+$/g, ctx => {
         ),
         parse_mode: 'HTML',
         message_thread_id: ctx.callbackQuery.message.message_thread_id ? ctx.callbackQuery.message.message_thread_id : null
-      })
+      })*/
 
-      ctx.globalSession.lots[lotID].opened = false;
-      deleteTheMessage(ctx, ctx.callbackQuery.message.message_id);
+      //ctx.globalSession.lots[lotID].opened = false;
+      //deleteTheMessage(ctx, ctx.callbackQuery.message.message_id);
+      //ctx.deleteMessage(ctx.callbackQuery.message.chat.id, ctx.callbackQuery.message.message_id)
+      //ctx.deleteMessage()
+      telegram.deleteMessage(ctx.callbackQuery.message.chat.id, ctx.callbackQuery.message.message_id).catch((error) => {
+        telegram.editMessageCaption(ctx.callbackQuery.message.chat.id, ctx.callbackQuery.message.message_id, 'удалено')
+        console.log(error)
+      });
+      //console.log(ctx.callbackQuery.message)
     } else {
       ctx.answerCbQuery(SETTINGS.MESSAGES.CREATE_LOT.ERRORS.NOT_A_CREATOR)
     }
@@ -795,6 +802,17 @@ bot.command('poll', async (ctx) => {
     });
     await util.sleep(250)
   }
+})
+
+bot.command('test', (ctx) => {
+  ctx.globalSession.lots[ctx.globalSession.lots.length - 1].name = `500+ миниатюр
+- весь каталог автора на MMF
+- 5 Кикстартеров
+1. <a href='https://www.kickstarter.com/projects/m3dm/dragons-collection-3d-printable-files?ref=created_projects'>Dragons Collection</a>
+2. <a href='https://www.kickstarter.com/projects/m3dm/japanese-mythology-3d-printable-files?ref=created_projects'>Japanese Mythology</a>
+3. <a href='https://www.kickstarter.com/projects/m3dm/greek-mythology-mia-kay-collection?ref=created_projects'>Greek Mythology</a>
+4. <a href='https://www.kickstarter.com/projects/m3dm/cursed-forest-collection?ref=created_projects'>Cursed Forest</a>
+5. <a href='https://www.kickstarter.com/projects/m3dm/the-seven-deadly-sins-3d-printable-collection'>The Seven Deadly Sins</a>`
 })
 
 bot.command('count', async (ctx) => {
