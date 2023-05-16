@@ -113,6 +113,58 @@ ${participantsText}${participants.length > 0 ? `
 
 ${status ? '#opened_lot' : '#closed_lot'}`
 }
+
+function getLotMessageEvenShorter({ author = 'Автор не указан', name = 'Безымянный набор', link = "", price, organizator = 'Организатора нет', status = false, participants = [] }) {
+
+  let participantsText = '';
+  participants.forEach((part, id) => {
+    let participantFullName = ``;
+    if (part.username) {
+      participantFullName += `@${part.username}`
+    } else {
+      participantFullName += part?.first_name
+    }
+    participantsText += `${participantFullName}; `
+  })
+
+  let newCostPerPerson = participants.length > 0 ? price / participants.length : price;
+  newCostPerPerson = +newCostPerPerson.toFixed(2);
+  let costPerPersonFuture = participants.length > 0 ? price / (participants.length + 1) : price;
+  costPerPersonFuture = +costPerPersonFuture.toFixed(2);
+
+  return `<b>${author.slice(0, 20)}...</b>
+<i>${name.slice(0, 20)}...</i>
+
+<b>Организатор:</b> ${organizator}
+
+<b>Участники:</b>
+${participantsText}${participants.length > 0 ? `
+💶 <b>Каждый платит по:</b> $${newCostPerPerson} (${Math.ceil(newCostPerPerson * SETTINGS.EXCHANGE_RATE * SETTINGS.SPECIAL_RATE)}₽)` : ''}`
+}
+
+function getLotMessageLastResort({ author = 'Автор не указан', name = 'Безымянный набор', link = "", price, organizator = 'Организатора нет', status = false, participants = [] }) {
+
+  let participantsText = '';
+  participants.forEach((part, id) => {
+    let participantFullName = ``;
+    if (part.username) {
+      participantFullName += `@${part.username}`
+    } else {
+      participantFullName += part?.first_name
+    }
+    participantsText += `${participantFullName}; `
+  })
+
+  let newCostPerPerson = participants.length > 0 ? price / participants.length : price;
+  newCostPerPerson = +newCostPerPerson.toFixed(2);
+  let costPerPersonFuture = participants.length > 0 ? price / (participants.length + 1) : price;
+  costPerPersonFuture = +costPerPersonFuture.toFixed(2);
+
+  return `${organizator}
+
+${participantsText}${participants.length > 0 ? `
+<b>Стоимость:</b> $${newCostPerPerson} (${Math.ceil(newCostPerPerson * SETTINGS.EXCHANGE_RATE * SETTINGS.SPECIAL_RATE)}₽)` : ''}`
+}
 //#endregion
 
 //#region Lots scenes: photo
@@ -544,6 +596,28 @@ bot.action(/^action-join-lot-[0-9]+$/g, ctx => {
           status: true,
           participants: lotData.participants
         })
+        if (caption.length > 1023) {
+          caption = getLotMessageEvenShorter({
+            author: lotData.author,
+            name: lotData.name,
+            link: lotData.link,
+            price: lotData.price,
+            organizator: organizator,
+            status: true,
+            participants: lotData.participants
+          })
+          if (caption.length > 1023) {
+            caption = getLotMessageLastResort({
+              author: lotData.author,
+              name: lotData.name,
+              link: lotData.link,
+              price: lotData.price,
+              organizator: organizator,
+              status: true,
+              participants: lotData.participants
+            })
+          }
+        }
       }
 
       ctx.replyWithPhoto(lotData.photo, {
@@ -558,7 +632,12 @@ bot.action(/^action-join-lot-[0-9]+$/g, ctx => {
         disable_notification: true
       })
 
-      deleteTheMessage(ctx, ctx.callbackQuery.message.message_id);
+      telegram.deleteMessage(ctx.callbackQuery.message.chat.id, ctx.callbackQuery.message.message_id).catch((error) => {
+        telegram.editMessageCaption(ctx.callbackQuery.message.chat.id, ctx.callbackQuery.message.message_id, undefined, 'удалено', {
+          parse_mode: 'HTML'
+        })
+        console.log(error)
+      });
     } else {
       ctx.answerCbQuery(SETTINGS.MESSAGES.CREATE_LOT.ERRORS.ALREADY_IN)
     }
@@ -571,12 +650,12 @@ bot.action(/^action-close-lot-[0-9]+$/g, ctx => {
   util.log(ctx)
   const lotID = ctx.callbackQuery.data.split('action-close-lot-')[1];
 
-  if (/*ctx.globalSession.lots[lotID].opened*/true) {
+  if (ctx.globalSession.lots[lotID].opened) {
     const userID = ctx.callbackQuery.from.id;
     const lotData = ctx.globalSession.lots[lotID];
 
     if (userID == lotData.whoCreated.id || userID == SETTINGS.CHATS.EPINETOV) {
-      /*let organizator = lotData.whoCreated?.first_name + ' ' + lotData.whoCreated?.last_name;
+      let organizator = lotData.whoCreated?.first_name + ' ' + lotData.whoCreated?.last_name;
       if (lotData.whoCreated.username) organizator += ` (@${lotData.whoCreated.username})`
 
       ctx.replyWithPhoto(lotData.photo, {
@@ -593,19 +672,15 @@ bot.action(/^action-close-lot-[0-9]+$/g, ctx => {
         ),
         parse_mode: 'HTML',
         message_thread_id: ctx.callbackQuery.message.message_thread_id ? ctx.callbackQuery.message.message_thread_id : null
-      })*/
+      })
 
-      //ctx.globalSession.lots[lotID].opened = false;
-      //deleteTheMessage(ctx, ctx.callbackQuery.message.message_id);
-      //ctx.deleteMessage(ctx.callbackQuery.message.chat.id, ctx.callbackQuery.message.message_id)
-      //ctx.deleteMessage()
+      ctx.globalSession.lots[lotID].opened = false;
       telegram.deleteMessage(ctx.callbackQuery.message.chat.id, ctx.callbackQuery.message.message_id).catch((error) => {
         telegram.editMessageCaption(ctx.callbackQuery.message.chat.id, ctx.callbackQuery.message.message_id, undefined, 'удалено', {
           parse_mode: 'HTML'
         })
         console.log(error)
       });
-      //console.log(ctx.callbackQuery.message)
     } else {
       ctx.answerCbQuery(SETTINGS.MESSAGES.CREATE_LOT.ERRORS.NOT_A_CREATOR)
     }
