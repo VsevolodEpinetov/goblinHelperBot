@@ -129,7 +129,7 @@
     "name": "Creature Caster",
     "price": "12",
     "mainLink": "https://www.myminifactory.com/users/Creature%20Caster?show=tribe",
-    "bought": false
+    "bought": true
   },
   {
     "name": "Crippled God Foundry",
@@ -159,7 +159,7 @@
     "name": "DaybreakMiniatures",
     "price": "10",
     "mainLink": "https://www.myminifactory.com/users/DaybreakMiniatures?show=tribe",
-    "bought": false
+    "bought": true
   },
   {
     "name": "DICE Heads",
@@ -213,7 +213,7 @@
     "name": "Fleshcraft Studio",
     "price": "9",
     "mainLink": "https://www.patreon.com/Fleshcraftstudio",
-    "bought": false
+    "bought": true
   },
   {
     "name": "ForgedPathMiniatures",
@@ -231,7 +231,7 @@
     "name": "GAZ Minis",
     "price": "4.5",
     "mainLink": "https://www.myminifactory.com/users/Gaz_Minis?show=tribe",
-    "bought": false
+    "bought": true
   },
   {
     "name": "Ghamak",
@@ -267,7 +267,7 @@
     "name": "Highlands Miniatures",
     "price": "10",
     "mainLink": "https://www.patreon.com/m/highlands_miniatures",
-    "bought": false
+    "bought": true
   },
   {
     "name": "Imagine Minis",
@@ -309,7 +309,7 @@
     "name": "LabyrinthModels",
     "price": "10",
     "mainLink": "https://www.myminifactory.com/users/LabyrinthModels?show=tribe",
-    "bought": false
+    "bought": true
   },
   {
     "name": "Last Sword Miniatures",
@@ -321,7 +321,7 @@
     "name": "Lion Heart Forge",
     "price": "10",
     "mainLink": "https://www.myminifactory.com/users/Lion%20heart%20forge?show=tribe",
-    "bought": false
+    "bought": true
   },
   {
     "name": "Lord of the Print",
@@ -393,7 +393,7 @@
     "name": "miniaturesblueprint",
     "price": "4",
     "mainLink": "https://www.myminifactory.com/users/miniaturesblueprint?show=tribe",
-    "bought": false
+    "bought": true
   },
   {
     "name": "MoonlightMinis",
@@ -471,7 +471,7 @@
     "name": "Signum Workshop",
     "price": "10",
     "mainLink": "https://www.myminifactory.com/users/Legends%20of%20Signum?show=tribe",
-    "bought": false
+    "bought": true
   },
   {
     "name": "Sir Nicholas Miniatures",
@@ -519,7 +519,7 @@
     "name": "Twin Goddess",
     "price": "9",
     "mainLink": "https://www.myminifactory.com/users/TwinGoddessMini?show=tribe",
-    "bought": false
+    "bought": true
   },
   {
     "name": "Vermilion Miniatures",
@@ -549,7 +549,7 @@
     "name": "White Werewolf Tavern",
     "price": "10",
     "mainLink": "https://www.myminifactory.com/users/WWTavern?show=tribe",
-    "bought": false
+    "bought": true
   },
   {
     "name": "WildMesh",
