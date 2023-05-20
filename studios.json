@@ -198,6 +198,12 @@
     "bought": false
   },
   {
+    "name": "EldritchTabletop",
+    "price": "2",
+    "mainLink": "https://www.myminifactory.com/users/EldritchTabletop?show=tribe",
+    "bought": false
+  },
+  {
     "name": "EpicsNStuff",
     "price": "7",
     "mainLink": "https://www.myminifactory.com/users/EpicsNStuffs?show=tribe",
@@ -218,7 +224,7 @@
   {
     "name": "ForgedPathMiniatures",
     "price": "9",
-    "mainLink": "https://www.patreon.com/ForgedPathMiniatures",
+    "mainLink": "https://www.myminifactory.com/users/ForgedPathMiniatures?show=tribe",
     "bought": false
   },
   {
@@ -306,6 +312,12 @@
     "bought": false
   },
   {
+    "name": "kyoushuneko",
+    "price": "15",
+    "mainLink": "https://www.myminifactory.com/users/kyoushuneko?show=tribe",
+    "bought": false
+  },
+  {
     "name": "LabyrinthModels",
     "price": "10",
     "mainLink": "https://www.myminifactory.com/users/LabyrinthModels?show=tribe",
@@ -360,6 +372,12 @@
     "bought": true
   },
   {
+    "name": "maxsmagnificentminis",
+    "price": "3",
+    "mainLink": "https://www.myminifactory.com/users/maxsmagnificentminis?show=tribe",
+    "bought": true
+  },
+  {
     "name": "Medbury Miniatures",
     "price": "12.5",
     "mainLink": "https://www.myminifactory.com/users/Medbury%20Miniatures?show=tribe",
@@ -375,6 +393,12 @@
     "name": "MenagerieMiniature",
     "price": "5",
     "mainLink": "https://www.patreon.com/MenagerieMiniature",
+    "bought": false
+  },
+  {
+    "name": "MidasForge",
+    "price": "1",
+    "mainLink": "https://www.myminifactory.com/users/MidasForge?show=tribe",
     "bought": false
   },
   {
@@ -414,6 +438,12 @@
     "bought": false
   },
   {
+    "name": "NovaMinis",
+    "price": "10",
+    "mainLink": "https://www.myminifactory.com/users/NovaMinis?show=tribe",
+    "bought": false
+  },
+  {
     "name": "Parasite Collectibles",
     "price": "10",
     "mainLink": "https://www.myminifactory.com/users/Parasite-Collectibles?show=tribe",
@@ -429,6 +459,12 @@
     "name": "primalcollectibles",
     "price": "10",
     "mainLink": "https://www.myminifactory.com/users/primalcollectibles?show=tribe",
+    "bought": false
+  },
+  {
+    "name": "PrintedLegends",
+    "price": "10",
+    "mainLink": "https://www.myminifactory.com/users/PrintedLegends?show=tribe",
     "bought": false
   },
   {

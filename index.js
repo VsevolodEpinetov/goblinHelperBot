@@ -918,14 +918,7 @@ bot.command('poll', async (ctx) => {
 })
 
 bot.command('test', (ctx) => {
-  ctx.globalSession.lots[ctx.globalSession.lots.length - 1].name = `500+ миниатюр
-- весь каталог автора на MMF
-- 5 Кикстартеров
-1. <a href='https://www.kickstarter.com/projects/m3dm/dragons-collection-3d-printable-files?ref=created_projects'>Dragons Collection</a>
-2. <a href='https://www.kickstarter.com/projects/m3dm/japanese-mythology-3d-printable-files?ref=created_projects'>Japanese Mythology</a>
-3. <a href='https://www.kickstarter.com/projects/m3dm/greek-mythology-mia-kay-collection?ref=created_projects'>Greek Mythology</a>
-4. <a href='https://www.kickstarter.com/projects/m3dm/cursed-forest-collection?ref=created_projects'>Cursed Forest</a>
-5. <a href='https://www.kickstarter.com/projects/m3dm/the-seven-deadly-sins-3d-printable-collection'>The Seven Deadly Sins</a>`
+  console.log(ctx.globalSession.lots[34])
 })
 
 bot.command('count', async (ctx) => {
