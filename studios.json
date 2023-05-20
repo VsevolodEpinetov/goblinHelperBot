@@ -87,7 +87,7 @@
     "name": "BruteFun Minatures",
     "price": "12",
     "mainLink": "https://www.myminifactory.com/users/BruteFun%20Miniatures?show=tribe",
-    "bought": false
+    "bought": true
   },
   {
     "name": "Chibiatures",
@@ -118,6 +118,12 @@
     "price": "13.5",
     "mainLink": "https://www.myminifactory.com/users/Claymore-Miniatures?show=tribe",
     "bought": true
+  },
+  {
+    "name": "Clynche",
+    "price": "9",
+    "mainLink": "https://www.patreon.com/clynche",
+    "bought": false
   },
   {
     "name": "CobraMode",
@@ -252,6 +258,12 @@
     "bought": false
   },
   {
+    "name": "Gothic Things",
+    "price": "10",
+    "mainLink": "https://www.myminifactory.com/users/Aleda?show=tribe",
+    "bought": false
+  },
+  {
     "name": "Great Grimoire",
     "price": "10",
     "mainLink": "https://www.myminifactory.com/users/GreatGrimoire?show=tribe",
@@ -276,9 +288,21 @@
     "bought": true
   },
   {
+    "name": "Imagin3Designs",
+    "price": "10",
+    "mainLink": "https://www.myminifactory.com/users/Imagin3Designs?show=tribe",
+    "bought": false
+  },
+  {
     "name": "Imagine Minis",
     "price": "8",
     "mainLink": "https://www.myminifactory.com/users/Imagine%20Minis?show=tribe",
+    "bought": false
+  },
+  {
+    "name": "Imitation of Life",
+    "price": "4",
+    "mainLink": "https://www.patreon.com/imitationoflife",
     "bought": false
   },
   {
@@ -357,6 +381,12 @@
     "name": "Makers Anvil",
     "price": "8",
     "mainLink": "https://www.patreon.com/makersanvilstudio",
+    "bought": false
+  },
+  {
+    "name": "Making Tlon",
+    "price": "10",
+    "mainLink": "https://www.myminifactory.com/users/Making%20Tlon?show=tribe",
     "bought": false
   },
   {
@@ -462,6 +492,12 @@
     "bought": false
   },
   {
+    "name": "Print Minis",
+    "price": "10",
+    "mainLink": "https://www.myminifactory.com/users/PrintMinis?show=tribe",
+    "bought": false
+  },
+  {
     "name": "PrintedLegends",
     "price": "10",
     "mainLink": "https://www.myminifactory.com/users/PrintedLegends?show=tribe",
@@ -504,6 +540,12 @@
     "bought": false
   },
   {
+    "name": "Ronin Arts Workshop",
+    "price": "9",
+    "mainLink": "https://www.patreon.com/RoninArts",
+    "bought": false
+  },
+  {
     "name": "Signum Workshop",
     "price": "10",
     "mainLink": "https://www.myminifactory.com/users/Legends%20of%20Signum?show=tribe",
@@ -520,6 +562,12 @@
     "price": "1",
     "mainLink": "https://www.myminifactory.com/users/Spirit%20of%20Resin",
     "bought": true
+  },
+  {
+    "name": "Solwyte Studio",
+    "price": "13.5",
+    "mainLink": "https://www.patreon.com/solwyte",
+    "bought": false
   },
   {
     "name": "STL Miniatures",
@@ -552,10 +600,22 @@
     "bought": true
   },
   {
+    "name": "TPK Lab",
+    "price": "12",
+    "mainLink": "https://www.myminifactory.com/users/TPKLAB?show=tribe",
+    "bought": false
+  },
+  {
     "name": "Twin Goddess",
     "price": "9",
     "mainLink": "https://www.myminifactory.com/users/TwinGoddessMini?show=tribe",
     "bought": true
+  },
+  {
+    "name": "Txarli Factory",
+    "price": "8",
+    "mainLink": "https://www.patreon.com/TxarliFactory",
+    "bought": false
   },
   {
     "name": "Vermilion Miniatures",
@@ -598,5 +658,11 @@
     "price": "1",
     "mainLink": "https://www.myminifactory.com/users/WitchsongMiniatures?show=tribe",
     "bought": true
+  },
+  {
+    "name": "World Forge Miniatures",
+    "price": "7",
+    "mainLink": "https://www.myminifactory.com/users/WorldForgeMinis?show=tribe",
+    "bought": false
   }
 ]
