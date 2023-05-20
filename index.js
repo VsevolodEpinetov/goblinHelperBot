@@ -658,9 +658,30 @@ bot.action(/^action-close-lot-[0-9]+$/g, ctx => {
       let organizator = lotData.whoCreated?.first_name + ' ' + lotData.whoCreated?.last_name;
       if (lotData.whoCreated.username) organizator += ` (@${lotData.whoCreated.username})`
 
-      ctx.replyWithPhoto(lotData.photo, {
-        caption: getLotMessage(
-          {
+      let caption = getLotMessage(
+        {
+          author: lotData.author,
+          name: lotData.name,
+          link: lotData.link,
+          price: lotData.price,
+          organizator: organizator,
+          status: false,
+          participants: lotData.participants
+        }
+      )
+
+      if (caption.length > 1023) {
+        caption = getLotMessageShort({
+          author: lotData.author,
+          name: lotData.name,
+          link: lotData.link,
+          price: lotData.price,
+          organizator: organizator,
+          status: false,
+          participants: lotData.participants
+        })
+        if (caption.length > 1023) {
+          caption = getLotMessageEvenShorter({
             author: lotData.author,
             name: lotData.name,
             link: lotData.link,
@@ -668,8 +689,23 @@ bot.action(/^action-close-lot-[0-9]+$/g, ctx => {
             organizator: organizator,
             status: false,
             participants: lotData.participants
+          })
+          if (caption.length > 1023) {
+            caption = getLotMessageLastResort({
+              author: lotData.author,
+              name: lotData.name,
+              link: lotData.link,
+              price: lotData.price,
+              organizator: organizator,
+              status: false,
+              participants: lotData.participants
+            })
           }
-        ),
+        }
+      }
+
+      ctx.replyWithPhoto(lotData.photo, {
+        caption: caption,
         parse_mode: 'HTML',
         message_thread_id: ctx.callbackQuery.message.message_thread_id ? ctx.callbackQuery.message.message_thread_id : null
       })
