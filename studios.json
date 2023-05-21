@@ -543,7 +543,7 @@
     "name": "Ronin Arts Workshop",
     "price": "9",
     "mainLink": "https://www.patreon.com/RoninArts",
-    "bought": false
+    "bought": true
   },
   {
     "name": "Signum Workshop",
