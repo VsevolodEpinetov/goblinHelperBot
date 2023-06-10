@@ -23,6 +23,8 @@ bot.use(
 )
 //#endregion
 
+bot.use(require('./modules/lots'));
+
 //#region additional functions
 const deleteTheMessage = (ctx, messageId) => {
   ctx.deleteMessage(messageId).catch((error) => {
@@ -176,76 +178,6 @@ ${participantsText}${participants.length > 0 ? `
  * 
  * ***********************************/
 
-const lotScenePhotoStage = new Scenes.BaseScene('LOT_SCENE_PHOTO_STAGE');
-
-lotScenePhotoStage.enter((ctx) => {
-  if (!ctx.globalSession.lots) ctx.globalSession.lots = [];
-  ctx.session.lot = SETTINGS.EMPTY_LOT;
-  ctx.replyWithHTML(SETTINGS.MESSAGES.CREATE_LOT.GREETING, {
-    parse_mode: 'HTML',
-    ...Markup.inlineKeyboard([
-      Markup.button.callback(SETTINGS.BUTTONS.CREATE_LOT.CANCEL, 'actionStopLot')
-    ])
-  }).then(nctx => {
-    ctx.session.lot.lastMessage.bot = nctx.message_id;
-  })
-});
-
-lotScenePhotoStage.on('photo', (ctx) => {
-  ctx.session.lot = {
-    ...ctx.session.lot,
-    photo: ctx.message.photo[0].file_id,
-    user: ctx.message.message_id,
-    whoCreated: ctx.message.from
-  }
-  try {
-    if (ctx.session.lot.lastMessage.bot) deleteTheMessage(ctx, ctx.session.lot.lastMessage.bot);
-  }
-  catch (e) {
-    console.log(e)
-  }
-  return ctx.scene.enter('LOT_SCENE_PRICE_STAGE');
-})
-
-lotScenePhotoStage.on('document', (ctx) => {
-  ctx.replyWithHTML(SETTINGS.MESSAGES.CREATE_LOT.ERRORS.NOT_A_PHOTO, {
-    reply_to_message_id: ctx.message.message_id
-  }).catch((error) => {
-    console.log("Error! Couldn't reply to a message, just sending a message")
-    ctx.replyWithHTML(SETTINGS.MESSAGES.CREATE_LOT.ERRORS.NOT_A_PHOTO)
-  })
-})
-
-lotScenePhotoStage.on('message', (ctx) => {
-  ctx.replyWithHTML(SETTINGS.MESSAGES.CREATE_LOT.ERRORS.WAITING_FOR_A_PHOTO, {
-    parse_mode: 'HTML',
-    reply_to_message_id: ctx.message.message_id,
-    ...Markup.inlineKeyboard([
-      Markup.button.callback(SETTINGS.BUTTONS.CREATE_LOT.CANCEL, 'actionStopLot')
-    ])
-  })
-})
-
-lotScenePhotoStage.action('actionStopLot', (ctx) => {
-  util.log(ctx)
-  if (ctx.session.lot) {
-    ctx.replyWithHTML(`👌`);
-    try {
-      if (ctx.session.lot.lastMessage.bot) deleteTheMessage(ctx, ctx.session.lot.lastMessage.bot);
-    }
-    catch (e) {
-      console.log(e)
-    }
-    ctx.session.lot = null;
-    return ctx.scene.leave();
-  } else {
-    ctx.answerCbQuery(SETTINGS.MESSAGES.CREATE_LOT.ERRORS.NOT_CREATING_A_LOT)
-  }
-})
-
-lotScenePhotoStage.leave(async (ctx) => {
-});
-
 //#endregion
 
 //#region Lots scenes: Price
@@ -295,7 +227,7 @@ lotScenePriceStage.on('text', (ctx) => {
   return ctx.scene.enter('LOT_SCENE_LINK_STAGE');
 });
 
-lotScenePhotoStage.action('actionStopLot', (ctx) => {
+lotScenePriceStage.action('actionStopLot', (ctx) => {
   util.log(ctx)
   if (ctx.session.lot) {
     ctx.replyWithHTML(`👌`);
@@ -363,7 +295,7 @@ lotSceneLinkStage.on('text', (ctx) => {
   return ctx.scene.enter('LOT_SCENE_AUTHOR_STAGE');
 });
 
-lotScenePhotoStage.action('actionStopLot', (ctx) => {
+lotSceneLinkStage.action('actionStopLot', (ctx) => {
   util.log(ctx)
   if (ctx.session.lot) {
     ctx.replyWithHTML(`👌`);
@@ -431,7 +363,7 @@ lotSceneAuthorStage.on('text', (ctx) => {
   return ctx.scene.enter('LOT_SCENE_NAME_STAGE');
 });
 
-lotScenePhotoStage.action('actionStopLot', (ctx) => {
+lotSceneAuthorStage.action('actionStopLot', (ctx) => {
   util.log(ctx)
   if (ctx.session.lot) {
     ctx.replyWithHTML(`👌`);
@@ -524,7 +456,7 @@ lotSceneNameStage.on('text', (ctx) => {
   return ctx.scene.leave();
 });
 
-lotScenePhotoStage.action('actionStopLot', (ctx) => {
+lotSceneNameStage.action('actionStopLot', (ctx) => {
   util.log(ctx)
   if (ctx.session.lot) {
     ctx.replyWithHTML(`👌`);
@@ -550,10 +482,14 @@ lotSceneNameStage.leave(async (ctx) => {
 //#endregion
 
 //#region Register Scenes, Init Stage
-const stage = new Scenes.Stage([lotScenePhotoStage, lotScenePriceStage, lotSceneLinkStage, lotSceneAuthorStage, lotSceneNameStage]);
+const stage = new Scenes.Stage([require('./modules/lots/scenes/photoScene'), lotScenePriceStage, lotSceneLinkStage, lotSceneAuthorStage, lotSceneNameStage]);
 bot.use(session());
 bot.use(stage.middleware());
 //#endregion
+
+bot.command('tf', (ctx) => {
+  ctx.scene.enter('LOT_SCENE_PHOTO_STAGE')
+})
 
 //#region Lot actions
 bot.action(/^action-join-lot-[0-9]+$/g, ctx => {
@@ -813,20 +749,6 @@ bot.hears(/^[гГ]облин[,]? сколько \$?([0-9]*[.])?[0-9]+ (долл�
     replyToTheMessage(ctx, `Тэкс, ну, получается, $${amount} это ${newValue} ${word}!`, ctx.message.message_id)
   } else {
     replyToTheMessage(ctx, `Чего? Какие ${newCurrency}? Яж необразованный, я не знаю такой валюты!`, ctx.message.message_id)
-  }
-})
-
-bot.hears(/^[гГ]облин[,]? хочу создать лот[.!]?$/g, (ctx) => {
-  if (
-    ctx.message.chat.id != SETTINGS.CHATS.GOBLIN &&
-    ctx.message.chat.id != SETTINGS.CHATS.EPINETOV &&
-    ctx.message.chat.id != SETTINGS.CHATS.TEST
-  ) { return; }
-  //ctx.scene.enter('LOT_SCENE_PHOTO_STAGE');
-  if (ctx.message.message_thread_id != SETTINGS.TOPICS.GOBLIN.LOTS) {
-    ctx.reply('Милорд, сожалею, но мне было указано создавать лоты только в специальном канале! Попробуйте там')
-  } else {
-    ctx.scene.enter('LOT_SCENE_PHOTO_STAGE');
   }
 })
 
