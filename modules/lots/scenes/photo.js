@@ -7,14 +7,16 @@ const lotScenePhotoStage = new Scenes.BaseScene('LOT_SCENE_PHOTO_STAGE');
 lotScenePhotoStage.enter((ctx) => {
   if (!ctx.globalSession.lots) ctx.globalSession.lots = [];
   ctx.session.lot = SETTINGS.EMPTY_LOT;
-  ctx.replyWithHTML(SETTINGS.MESSAGES.CREATE_LOT.GREETING, {
+  ctx.reply('hihi')
+  ctx.scene.leave();
+  /*ctx.replyWithHTML(SETTINGS.MESSAGES.CREATE_LOT.GREETING, {
     parse_mode: 'HTML',
     ...Markup.inlineKeyboard([
       Markup.button.callback(SETTINGS.BUTTONS.CREATE_LOT.CANCEL, 'actionStopLot')
     ])
   }).then(nctx => {
     ctx.session.lot.lastMessage.bot = nctx.message_id;
-  })
+  })*/
 });
 
 lotScenePhotoStage.on('photo', (ctx) => {
@@ -25,7 +27,7 @@ lotScenePhotoStage.on('photo', (ctx) => {
     whoCreated: ctx.message.from
   }
   try {
-    if (ctx.session.lot.lastMessage.bot) deleteTheMessage(ctx, ctx.session.lot.lastMessage.bot);
+    if (ctx.session.lot.lastMessage.bot) ctx.deleteMessage(ctx.session.lot.lastMessage.bot);
   }
   catch (e) {
     console.log(e)
@@ -52,12 +54,16 @@ lotScenePhotoStage.on('message', (ctx) => {
   })
 })
 
+lotScenePhotoStage.command('exit', (ctx) => {
+  ctx.scene.leave();
+})
+
 lotScenePhotoStage.action('actionStopLot', (ctx) => {
   util.log(ctx)
   if (ctx.session.lot) {
     ctx.replyWithHTML(`👌`);
     try {
-      if (ctx.session.lot.lastMessage.bot) deleteTheMessage(ctx, ctx.session.lot.lastMessage.bot);
+      if (ctx.session.lot.lastMessage.bot) ctx.deleteMessage(ctx.session.lot.lastMessage.bot);
     }
     catch (e) {
       console.log(e)

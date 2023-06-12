@@ -1,5 +1,8 @@
 const { Composer } = require('telegraf')
+
 module.exports = Composer.compose([
-  require('./enter'),
-  require('./scenes/photoScene')
+  require('./commands/enter'),
+  require('./commands/revive'),
+  require('./actions/join'),
+  require('./actions/close')
 ])
