@@ -7,16 +7,14 @@ const lotScenePhotoStage = new Scenes.BaseScene('LOT_SCENE_PHOTO_STAGE');
 lotScenePhotoStage.enter((ctx) => {
   if (!ctx.globalSession.lots) ctx.globalSession.lots = [];
   ctx.session.lot = SETTINGS.EMPTY_LOT;
-  ctx.reply('hihi')
-  ctx.scene.leave();
-  /*ctx.replyWithHTML(SETTINGS.MESSAGES.CREATE_LOT.GREETING, {
+  ctx.replyWithHTML(SETTINGS.MESSAGES.CREATE_LOT.GREETING, {
     parse_mode: 'HTML',
     ...Markup.inlineKeyboard([
       Markup.button.callback(SETTINGS.BUTTONS.CREATE_LOT.CANCEL, 'actionStopLot')
     ])
   }).then(nctx => {
     ctx.session.lot.lastMessage.bot = nctx.message_id;
-  })*/
+  })
 });
 
 lotScenePhotoStage.on('photo', (ctx) => {
