@@ -5,13 +5,18 @@ const util = require('../util')
 
 module.exports = Composer.command('studios', (ctx) => {
   util.log(ctx)
-  if (
-    ctx.message.chat.id != SETTINGS.CHATS.EPINETOV &&
-    ctx.message.chat.id != SETTINGS.CHATS.TEST &&
-    ctx.message.chat.id != SETTINGS.CHATS.GOBLIN
-  ) { return; }
+  
+  const isAnAdmin = ctx.message.from.id == SETTINGS.CHATS.EPINETOV || ctx.message.from.id == SETTINGS.CHATS.ALEKS;
 
-  if (ctx.message.from.id != SETTINGS.CHATS.EPINETOV && ctx.message.from.id != SETTINGS.CHATS.ALEKS) { return; }
+  console.log(`${ctx.message.from.id} == ${SETTINGS.CHATS.ALEKS}? : ${ctx.message.from.id == SETTINGS.CHATS.ALEKS}`)
+  console.log(`${ctx.message.from.id} == ${SETTINGS.CHATS.EPINETOV}? : ${ctx.message.from.id == SETTINGS.CHATS.EPINETOV}`)
+  console.log(isAnAdmin);
+  
+
+  if (!isAnAdmin) { 
+    return; 
+  }
+
   let params = ctx.message.text.split('/studios ');
   let message = `Список студий, которые будут участвовать в голосовании:`
   let messageBoughtPart = `А эти студии у нас уже есть, поэтому их не выкупаем:`
