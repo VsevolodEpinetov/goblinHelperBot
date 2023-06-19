@@ -1,4 +1,4 @@
-const { Composer } = require('telegraf');
+const { Composer, Markup } = require('telegraf');
 const lotsUtils = require('../utils')
 const SETTINGS = require('../../../settings.json');
 

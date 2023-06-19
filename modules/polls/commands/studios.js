@@ -1,17 +1,12 @@
 const { Composer } = require("telegraf");
-const SETTINGS = require('../../settings.json')
-const STUDIOS = require('../../studios.json')
-const util = require('../util')
+const SETTINGS = require('../../../settings.json')
+const STUDIOS = require('../../../studios.json')
+const util = require('../../util')
 
 module.exports = Composer.command('studios', (ctx) => {
   util.log(ctx)
   
   const isAnAdmin = ctx.message.from.id == SETTINGS.CHATS.EPINETOV || ctx.message.from.id == SETTINGS.CHATS.ALEKS;
-
-  console.log(`${ctx.message.from.id} == ${SETTINGS.CHATS.ALEKS}? : ${ctx.message.from.id == SETTINGS.CHATS.ALEKS}`)
-  console.log(`${ctx.message.from.id} == ${SETTINGS.CHATS.EPINETOV}? : ${ctx.message.from.id == SETTINGS.CHATS.EPINETOV}`)
-  console.log(isAnAdmin);
-  
 
   if (!isAnAdmin) { 
     return; 

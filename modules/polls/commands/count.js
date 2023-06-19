@@ -1,6 +1,6 @@
 const { Composer } = require("telegraf");
-const SETTINGS = require('../../settings.json')
-const util = require('../util')
+const SETTINGS = require('../../../settings.json')
+const util = require('../../util')
 
 module.exports = Composer.command('count', async (ctx) => {
   util.log(ctx)
