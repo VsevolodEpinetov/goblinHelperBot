@@ -6,6 +6,9 @@ const telegram = new Telegram(process.env.TOKEN)
 const SETTINGS = require('./settings.json')
 const STUDIOS = require('./studios.json')
 
+const { createCanvas, loadImage } = require('canvas')
+const fs = require('fs');
+
 const util = require('./modules/util.js');
 //#endregion
 
@@ -16,6 +19,7 @@ const util = require('./modules/util.js');
 const RedisSession = require('telegraf-session-redis-upd')
 const sessionInstance = new RedisSession();
 const SESSIONS = require('./modules/sessions.js');
+const { default: axios } = require('axios');
 bot.use(
   SESSIONS.GLOBAL_SESSION,
   SESSIONS.USER_SESSION,
@@ -49,6 +53,7 @@ const stage = new Scenes.Stage([
   require('./modules/emporium/scenes/releaseName'),
   require('./modules/emporium/scenes/sex'),
   require('./modules/emporium/scenes/studioName'),
+  require('./modules/emporium/scenes/photo'),
 ]);
 bot.use(session());
 bot.use(stage.middleware());
@@ -92,6 +97,7 @@ bot.hears(/^[гГ]облин[,]? сколько \$?([0-9]*[.])?[0-9]+ (долл�
     replyToTheMessage(ctx, `Чего? Какие ${newCurrency}? Яж необразованный, я не знаю такой валюты!`, ctx.message.message_id)
   }
 })
+
 
 
 bot.catch((error) => {

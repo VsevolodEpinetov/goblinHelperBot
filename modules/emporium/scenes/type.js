@@ -72,6 +72,12 @@ emporiumTypeStage.command('exit', (ctx) => {
 
 emporiumTypeStage.action('actionEmporiumDone', (ctx) => {
   util.log(ctx);
+  try {
+    ctx.deleteMessage(ctx.session.emporium.botData.lastMessage.bot);
+  }
+  catch (err) {
+    console.log(err);
+  }
   return ctx.scene.enter('EMPORIUM_STUDIO_NAME_STAGE');
 })
 
