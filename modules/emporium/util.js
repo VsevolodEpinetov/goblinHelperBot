@@ -117,7 +117,8 @@ module.exports = {
       return racesOrClasses.some((smthg) => fileName.includes(smthg));
     });
     if (filteredFiles.length === 0) {
-      throw new Error('No matching images found.');
+      console.log('no matching bg found')
+      filteredFiles = files
     }
 
     const randomIndex = Math.floor(Math.random() * filteredFiles.length);
