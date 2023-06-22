@@ -90,7 +90,7 @@ module.exports = {
   getRandomBaseImageRacesAndClasses: function (races, classes) {
     const folderPath = './images'; // Replace with the actual path to your folder
     const files = fs.readdirSync(folderPath);
-    const filteredFiles = files.filter((file) => {
+    let filteredFiles = files.filter((file) => {
       const fileName = path.parse(file).name.toLowerCase();
       const classMatches = classes.some((className) => fileName.includes(className));
       const raceMatches = races.some((raceName) => fileName.includes(raceName));
@@ -98,7 +98,8 @@ module.exports = {
     });
 
     if (filteredFiles.length === 0) {
-      throw new Error('No matching images found.');
+      console.log('no matching bg found')
+      filteredFiles = files
     }
 
     const randomIndex = Math.floor(Math.random() * filteredFiles.length);
