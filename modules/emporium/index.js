@@ -5,9 +5,10 @@ module.exports = Composer.compose([
   require('./commands/se'),
   require('./commands/rs'),
   require('./commands/nq'),
+  require('./commands/fix'),
   require('./actions/publish'),
   require('./actions/changeBGAny'),
   require('./actions/changeBGRaces'),
   require('./actions/changeBGClasses'),
-  require('./actions/sendToConfirmation')
+  require('./actions/sendToConfirmation'),
 ])
