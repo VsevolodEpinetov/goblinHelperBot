@@ -41,6 +41,7 @@ module.exports = Composer.action(/^action-emporium-publish-[0-9]+$/g, async ctx 
       };
       try {
         const result = await emporiumUtils.createACreature(crData);
+        ctx.globalSession.emporium.queue[crID].data.preview = undefined;
         ctx.reply('Минька успешно загружена')
       } catch (error) {
         console.log('Error!');
