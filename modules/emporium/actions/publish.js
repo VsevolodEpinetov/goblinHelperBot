@@ -6,7 +6,7 @@ const emporiumUtils = require('../util.js')
 module.exports = Composer.action(/^action-emporium-publish-[0-9]+$/g, async ctx => {
   util.log(ctx)
 
-  if (ctx.callbackQuery.from.id != SETTINGS.CHATS.EPINETOV && ctx.callbackQuery.from.id != SETTINGS.CHATS.ANN) {
+  if (ctx.callbackQuery.from.id != SETTINGS.CHATS.EPINETOV && ctx.callbackQuery.from.id != SETTINGS.CHATS.ANN && ctx.callbackQuery.from.id != SETTINGS.CHATS.YURI) {
     return;
   }
 
