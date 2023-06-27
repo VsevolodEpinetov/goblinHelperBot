@@ -1,70 +1,24 @@
 const { Scenes, Markup } = require("telegraf");
 const SETTINGS = require('../../../settings.json');
-const util = require('../../util.js')
+const util = require('../../util.js');
+const { default: axios } = require("axios");
 
 const emporiumClassesStage = new Scenes.BaseScene('EMPORIUM_CLASSES_STAGE');
-
-const classesHeroes = [
-  'alchemist',
-  'bard',
-  'barbarian',
-  'battle-master-fighter',
-  'beast-ranger',
-  'blood-hunter',
-  'cleric',
-  'cleric-death',
-  'cleric-life',
-  'conjuration-wizard',
-  'corsair',
-  'druid',
-  'drunken-monk',
-  'evocation-wizard',
-  'fighter',
-  'gladiator',
-  'gloom-ranger',
-  'monk',
-  'necromancy-wizard',
-  'ninja',
-  'oathbreaker-paladin',
-  'paladin',
-  'rogue',
-  'ranger',
-  'shaman',
-  'smith-artificer',
-  'sorcerer',
-  'spellsword',
-  'storm-sorcery',
-  'trickster-rogue',
-  'warlock',
-  'wild-sorcerer',
-  'wizard'
-];
-
-const classesMonsters = [
-  'aberration',
-  'beast',
-  'celestial',
-  'construct',
-  'dragon',
-  'elemental',
-  'fae',
-  'fiend',
-  'humanoid',
-  'monster',
-  'plant',
-  'slime',
-  'undead',
-  'velican'
-];
 
 emporiumClassesStage.command('exit', (ctx) => {
   util.log(ctx)
   ctx.scene.leave();
 })
 
-emporiumClassesStage.enter((ctx) => {
+emporiumClassesStage.enter(async (ctx) => {
+  const data = await axios.get('https://api.stl-emporium.ru/api/classes?fields[0]=value&fields[1]=label&pagination[pageSize]=100');
+  let classesHeroes = data.data.data.map(r => r.attributes.value).sort();
+  ctx.session.classesHeroes = classesHeroes;
+  const dataMonster = await axios.get('https://api.stl-emporium.ru/api/monster-types?fields[0]=value&fields[1]=label&pagination[pageSize]=100');
+  const classesMonsters = dataMonster.data.data.map(r => r.attributes.value).sort();
+  ctx.session.classesMonsters = classesMonsters;
   const creatureData = ctx.session.emporium.creatureData;
-  ctx.replyWithHTML(`Записал указанные тобой расы:${creatureData.races.map(r => `${r} `).join('')}\nНапиши классы существа.\n\nДоступные для твоего типа (${creatureData.isHero ? 'Герой ' : ''}${creatureData.isMonster ? 'Монстр' : ''}):${creatureData.isHero ? classesHeroes.map(cl => `\n<code>${cl},</code>`).join('') : ''}${creatureData.isMonster ? classesMonsters.map(cl => `\n<code>${cl},</code>`).join('') : ''}`, {
+  ctx.replyWithHTML(`Записал указанные тобой расы:${creatureData.races.map(r => `${r} `).join('')}\nНапиши классы существа.\n\nДоступные для твоего типа (${creatureData.isHero ? 'Герой ' : ''}${creatureData.isMonster ? 'Монстр' : ''}):${creatureData.isHero ? classesHeroes.map(cl => `\n<code>${cl},</code>`).join('') + `${creatureData.isMonster ? '\n\n' : ''}` : ''}${creatureData.isMonster ? classesMonsters.map(cl => `\n<code>${cl},</code>`).join('') : ''}`, {
     parse_mode: 'HTML'
   }).then(nctx => {
     ctx.session.emporium.botData.lastMessage.bot = nctx.message_id;
@@ -78,13 +32,14 @@ emporiumClassesStage.on('message', (ctx) => {
 
   if (ctx.session.emporium.creatureData.isHero) {
     classesArray.forEach((classItem) => {
-      if (classesHeroes.includes(classItem)) {
+      if (ctx.session.classesHeroes.includes(classItem)) {
         validClasses.push(classItem);
       }
     });
-  } else if (ctx.session.emporium.creatureData.isMonster) {
+  } 
+  if (ctx.session.emporium.creatureData.isMonster) {
     classesArray.forEach((classItem) => {
-      if (classesMonsters.includes(classItem)) {
+      if (ctx.session.classesMonsters.includes(classItem)) {
         validClasses.push(classItem);
       }
     });

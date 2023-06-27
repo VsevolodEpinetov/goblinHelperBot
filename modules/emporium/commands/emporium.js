@@ -4,7 +4,7 @@ const util = require('../../util');
 
 module.exports = Composer.command('emporium', (ctx) => {
   util.log(ctx);
-  if (ctx.message.chat.id != SETTINGS.CHATS.EMPORIUM) {
+  if (ctx.message.chat.id != SETTINGS.CHATS.EMPORIUM && ctx.message.from.id != SETTINGS.CHATS.EPINETOV) {
     return;
   }
 
