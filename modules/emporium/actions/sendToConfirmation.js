@@ -19,7 +19,7 @@ module.exports = Composer.action(/^action-emporium-confirm-[0-9]+$/g, async ctx 
       const resultImageBuffer = Buffer.from(creatureData.preview.buffer.data, 'binary');
       ctx.deleteMessage(queueData.lastBotMessageId);
       ctx.replyWithDocument({ source: resultImageBuffer, filename: `${creatureData.code}.png` }, {
-        caption: `Данные\n\nРасы: ${creatureData.races.join(', ')}\nКлассы: ${creatureData.classes.join(', ')}\n\nСтудия: ${creatureData.studioName}\nРелиз: ${creatureData.releaseName}\nКод:${creatureData.code}\n\nПол: ${creatureData.sex}`,
+        caption: `Данные\n\nРасы: ${creatureData.races.join(', ')}\nКлассы: ${creatureData.classes.join(', ')}\nОружие: ${creatureData.weapons.join(', ')}\n\nСтудия: ${creatureData.studioName}\nРелиз: ${creatureData.releaseName}\nКод:${creatureData.code}\n\nПол: ${creatureData.sex}`,
         parse_mode: 'HTML',
         ...Markup.inlineKeyboard([
           Markup.button.callback('✅ Всё отлично', `action-emporium-publish-${crID}`),

@@ -24,7 +24,7 @@ module.exports = Composer.action(/^action-change-bg-any-[0-9]+$/g, async ctx => 
       }
       ctx.deleteMessage(queueData.lastBotMessageId);
       ctx.replyWithDocument({ source: resultImageBuffer, filename: `${creatureData.code}.png` }, {
-        caption: `Данные\n\nРасы: ${creatureData.races.join(', ')}\nКлассы: ${creatureData.classes.join(', ')}\n\nСтудия: ${creatureData.studioName}\nРелиз: ${creatureData.releaseName}\nКод:${creatureData.code}\n\nПол: ${creatureData.sex}`,
+        caption: `Данные\n\nРасы: ${creatureData.races.join(', ')}\nКлассы: ${creatureData.classes.join(', ')}\nОружие: ${creatureData.weapons.join(', ')}\n\nСтудия: ${creatureData.studioName}\nРелиз: ${creatureData.releaseName}\nКод:${creatureData.code}\n\nПол: ${creatureData.sex}`,
         parse_mode: 'HTML',
         ...Markup.inlineKeyboard([
           [

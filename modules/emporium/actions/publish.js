@@ -36,7 +36,8 @@ module.exports = Composer.action(/^action-emporium-publish-[0-9]+$/g, async ctx 
           //name: 'hi, I am a test!',
           onlyPhysical: false,
           isMonster: creatureData.isMonster,
-          isHero: creatureData.isHero
+          isHero: creatureData.isHero,
+          weapons: creatureData.weapons
         }
       };
       try {

@@ -112,7 +112,7 @@ module.exports = {
   getRandomBaseImageSingleFilter: function (racesOrClasses) {
     const folderPath = './images'; // Replace with the actual path to your folder
     const files = fs.readdirSync(folderPath);
-    const filteredFiles = files.filter((file) => {
+    let filteredFiles = files.filter((file) => {
       const fileName = path.parse(file).name.toLowerCase();
       return racesOrClasses.some((smthg) => fileName.includes(smthg));
     });

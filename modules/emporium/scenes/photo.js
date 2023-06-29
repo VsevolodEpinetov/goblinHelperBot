@@ -7,7 +7,7 @@ const emporiumPhotoStage = new Scenes.BaseScene('EMPORIUM_CLASSES_PHOTO');
 
 emporiumPhotoStage.enter((ctx) => {
   const creatureData = ctx.session.emporium.creatureData;
-  ctx.replyWithHTML(`Записал указанные тобой классы:${creatureData.classes.map(r => `${r} `)} Пришли документом превью миниатюрки`, {
+  ctx.replyWithHTML(`Записал указанное тобой оружие: ${creatureData.weapons.map(w => `${w}`).join(' ')} Пришли документом превью миниатюрки`, {
     parse_mode: 'HTML'
   }).then(nctx => {
     ctx.session.emporium.botData.lastMessage.bot = nctx.message_id;
@@ -35,7 +35,7 @@ emporiumPhotoStage.on('document', async (ctx) => {
     console.log(err);
   }
   ctx.replyWithDocument({ source: resultImageBuffer, filename: `${creatureData.code}.png` }, {
-    caption: `Данные\n\nРасы: ${creatureData.races.join(', ')}\nКлассы: ${creatureData.classes.join(', ')}\n\nСтудия: ${creatureData.studioName}\nРелиз: ${creatureData.releaseName}\nКод:${creatureData.code}\n\nПол: ${creatureData.sex}`,
+    caption: `Данные\n\nРасы: ${creatureData.races.join(', ')}\nКлассы: ${creatureData.classes.join(', ')}\nОружие: ${creatureData.weapons.join(', ')}\n\nСтудия: ${creatureData.studioName}\nРелиз: ${creatureData.releaseName}\nКод:${creatureData.code}\n\nПол: ${creatureData.sex}`,
     parse_mode: 'HTML',
     ...Markup.inlineKeyboard([
       [

@@ -53,6 +53,7 @@ const stage = new Scenes.Stage([
   require('./modules/emporium/scenes/releaseName'),
   require('./modules/emporium/scenes/sex'),
   require('./modules/emporium/scenes/studioName'),
+  require('./modules/emporium/scenes/weapons'),
   require('./modules/emporium/scenes/photo'),
 ]);
 bot.use(session());
