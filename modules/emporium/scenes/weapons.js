@@ -11,7 +11,13 @@ emporiumWeaponsStage.command('exit', (ctx) => {
 })
 
 emporiumWeaponsStage.enter(async (ctx) => {
-  const data = await axios.get('https://api.stl-emporium.ru/api/weapons?fields[0]=value&fields[1]=label&pagination[pageSize]=100');
+  const api = axios.create({
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${process.env.TOKEN_GET_FILTERS}`
+    },
+  });
+  const data = await api.get('https://api.stl-emporium.ru/api/weapons?fields[0]=value&fields[1]=label&pagination[pageSize]=100');
   const weapons = data.data.data.map(r => r.attributes.value).sort();
   ctx.session.weapons = weapons;
   const creatureData = ctx.session.emporium.creatureData;
