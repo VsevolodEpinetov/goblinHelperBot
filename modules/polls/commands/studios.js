@@ -57,7 +57,7 @@ module.exports = Composer.command('studios', (ctx) => {
       parse_mode: 'HTML',
       disable_web_page_preview: true
     })
-    util.sleep(50);
+    util.sleep(100);
     if (secondMessageMain.length > 1) {
       ctx.reply(secondMessageMain, {
         parse_mode: 'HTML',
