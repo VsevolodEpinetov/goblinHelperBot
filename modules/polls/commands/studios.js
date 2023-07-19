@@ -3,7 +3,7 @@ const SETTINGS = require('../../../settings.json')
 const STUDIOS = require('../../../studios.json')
 const util = require('../../util')
 
-module.exports = Composer.command('studios', (ctx) => {
+module.exports = Composer.command('studios', async (ctx) => {
   util.log(ctx)
   
   const isAnAdmin = ctx.message.from.id == SETTINGS.CHATS.EPINETOV || ctx.message.from.id == SETTINGS.CHATS.ALEKS;
@@ -57,13 +57,13 @@ module.exports = Composer.command('studios', (ctx) => {
       parse_mode: 'HTML',
       disable_web_page_preview: true
     })
-    util.sleep(100);
+    await util.sleep(100);
     if (secondMessageMain.length > 1) {
       ctx.reply(secondMessageMain, {
         parse_mode: 'HTML',
         disable_web_page_preview: true
       })
-      util.sleep(50);
+      await util.sleep(100);
     }
     ctx.reply(messageBoughtPart, {
       parse_mode: 'HTML',
