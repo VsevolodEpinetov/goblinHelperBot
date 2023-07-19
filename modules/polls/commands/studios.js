@@ -14,6 +14,7 @@ module.exports = Composer.command('studios', (ctx) => {
 
   let params = ctx.message.text.split('/studios ');
   let message = `Список студий, которые будут участвовать в голосовании:`
+  let secondMessageMain = ``;
   let messageBoughtPart = `А эти студии у нас уже есть, поэтому их не выкупаем:`
   let counterMain = 1;
   let counterBought = 1;
@@ -22,12 +23,9 @@ module.exports = Composer.command('studios', (ctx) => {
 
   if (ctx.globalSession.studios) {
     listOfStudios = ctx.globalSession.studios;
-    console.log('using session data');
-    console.log(listOfStudios[1]);
   }
   else {
     listOfStudios = STUDIOS;
-    console.log('using file data');    
   }
 
   function getStudioString (link, name, price, params) {
@@ -41,7 +39,11 @@ module.exports = Composer.command('studios', (ctx) => {
   for (let i = 0; i < listOfStudios.length; i++) {
     const str = getStudioString(listOfStudios[i].mainLink, listOfStudios[i].name, listOfStudios[i].price, params);
     if (!listOfStudios[i].bought) {
-      message += `\n${counterMain}. ${str}`;
+      if (counterMain < 100) {
+        message += `\n${counterMain}. ${str}`;
+      } else {
+        secondMessageMain += `\n${counterMain}. ${str}`;
+      }
       counterMain++;
     } else {
       messageBoughtPart += `\n${counterBought}. ${str}`
@@ -56,6 +58,13 @@ module.exports = Composer.command('studios', (ctx) => {
       disable_web_page_preview: true
     })
     util.sleep(50);
+    if (secondMessageMain.length > 1) {
+      ctx.reply(secondMessageMain, {
+        parse_mode: 'HTML',
+        disable_web_page_preview: true
+      })
+      util.sleep(50);
+    }
     ctx.reply(messageBoughtPart, {
       parse_mode: 'HTML',
       disable_web_page_preview: true
