@@ -71,8 +71,6 @@ module.exports = Composer.command('studios', async (ctx) => {
     })
   }
   catch (e) {
-    console.log('Failed to reply')
-    console.log(e)
     ctx.reply(message, {
       parse_mode: 'HTML',
       disable_web_page_preview: true

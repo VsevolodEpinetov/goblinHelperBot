@@ -10,6 +10,8 @@ module.exports = Composer.compose([
   require('./actions/publish'),
   require('./actions/changeBGAny'),
   require('./actions/changeBGRaces'),
+  require('./actions/changeBGExact'),
+  require('./actions/changeBGRandom'),
   require('./actions/changeBGClasses'),
   require('./actions/sendToConfirmation'),
 ])

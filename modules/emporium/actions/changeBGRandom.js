@@ -3,9 +3,9 @@ const SETTINGS = require('../../../settings.json')
 const util = require('../../util')
 const emporiumUtils = require('../util.js')
 
-module.exports = Composer.action(/^action-change-bg-races-[0-9]+$/g, async ctx => {
+module.exports = Composer.action(/^action-change-bg-random-[0-9]+$/g, async ctx => {
   util.log(ctx)
-  const crID = ctx.callbackQuery.data.split('action-change-bg-races-')[1];
+  const crID = ctx.callbackQuery.data.split('action-change-bg-random-')[1];
   if (ctx.globalSession.emporium.queue[crID]) {
 
     const queueData = ctx.globalSession.emporium.queue[crID];
@@ -20,7 +20,7 @@ module.exports = Composer.action(/^action-change-bg-races-[0-9]+$/g, async ctx =
     ctx.reply('Меняю фон...')
     try {
       const creatureData = queueData.data;
-      const pathToBaseImage = await emporiumUtils.getRandomBaseImageSingleFilter(creatureData.races)
+      const pathToBaseImage = await emporiumUtils.getRandomBaseImageSingleFilter([])
       const resultImageBuffer = await emporiumUtils.placePngAndGetPic(ctx, queueData.transparentFileId, pathToBaseImage)
       ctx.globalSession.emporium.queue[crID].data.preview = {
         buffer: resultImageBuffer

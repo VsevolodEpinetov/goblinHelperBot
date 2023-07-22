@@ -6,6 +6,15 @@ const path = require('path');
 
 const uploadsToken = process.env.TOKEN_UPLOADS;
 const newCreatureToken = process.env.TOKEN_CREATE_CREATURE;
+const diskToken = process.env.TOKEN_YA_DISK;
+
+async function getBase64(url) {
+  return axios
+    .get(url, {
+      responseType: 'arraybuffer'
+    })
+    .then(response => Buffer.from(response.data, 'binary').toString('base64'))
+}
 
 module.exports = {
   uploadImage: async function (ctx, imageBuffer, fileName) {
@@ -42,6 +51,7 @@ module.exports = {
 
     // Load the base image
     const baseImage = await loadImage(pathToBaseImage);
+
     const overlayOffset = 50;
 
     // Create a canvas with the same dimensions as the base image
@@ -71,8 +81,6 @@ module.exports = {
         newWidth = maxHeight * aspectRatio;
       }
 
-      //canvasContext.drawImage(image, xOffset, yOffset, newWidth, newHeight);
-      //canvasCtx.drawImage(overlayImage, 0, 0);
       // Draw the resized overlay image at the calculated position
       const centerX = Math.floor((baseImage.width - newWidth) / 2);
       const centerY = Math.floor((baseImage.height - newHeight) / 2);
@@ -87,13 +95,21 @@ module.exports = {
     }
   },
 
-  getRandomBaseImageRacesAndClasses: function (races, classes) {
-    const folderPath = './images'; // Replace with the actual path to your folder
-    const files = fs.readdirSync(folderPath);
+  getRandomBaseImageRacesAndClasses: async function (races, classes) {
+    const result = await axios.get('https://cloud-api.yandex.net/v1/disk/resources?path=/backgrounds&limit=1000', {
+      headers: { "Authorization": `OAuth ${diskToken}` }
+    });
+
+    const files = result.data['_embedded'].items.map(img => {
+      return {
+        name: img.name,
+        link: img.file
+      }
+    })
+
     let filteredFiles = files.filter((file) => {
-      const fileName = path.parse(file).name.toLowerCase();
-      const classMatches = classes.some((className) => fileName.includes(className));
-      const raceMatches = races.some((raceName) => fileName.includes(raceName));
+      const classMatches = classes.some((className) => file.name.includes(className));
+      const raceMatches = races.some((raceName) => file.name.includes(raceName));
       return classMatches || raceMatches;
     });
 
@@ -104,17 +120,24 @@ module.exports = {
 
     const randomIndex = Math.floor(Math.random() * filteredFiles.length);
     const randomFile = filteredFiles[randomIndex];
-    const imagePath = path.join(folderPath, randomFile);
 
-    return imagePath;
+    return randomFile.link;
   },
 
-  getRandomBaseImageSingleFilter: function (racesOrClasses) {
-    const folderPath = './images'; // Replace with the actual path to your folder
-    const files = fs.readdirSync(folderPath);
+  getRandomBaseImageSingleFilter: async function (racesOrClasses) {
+    const result = await axios.get('https://cloud-api.yandex.net/v1/disk/resources?path=/backgrounds&limit=1000', {
+      headers: { "Authorization": `OAuth ${diskToken}` }
+    });
+
+    const files = result.data['_embedded'].items.map(img => {
+      return {
+        name: img.name,
+        link: img.file
+      }
+    })
+
     let filteredFiles = files.filter((file) => {
-      const fileName = path.parse(file).name.toLowerCase();
-      return racesOrClasses.some((smthg) => fileName.includes(smthg));
+      return racesOrClasses.some((smthg) => file.name.includes(smthg));
     });
     if (filteredFiles.length === 0) {
       console.log('no matching bg found')
@@ -123,8 +146,33 @@ module.exports = {
 
     const randomIndex = Math.floor(Math.random() * filteredFiles.length);
     const randomFile = filteredFiles[randomIndex];
-    const imagePath = path.join(folderPath, randomFile);
 
-    return imagePath;
+    return randomFile.link;
+  },
+
+  getExactImage: async function (imageName) {
+    const result = await axios.get('https://cloud-api.yandex.net/v1/disk/resources?path=/backgrounds&limit=1000', {
+      headers: { "Authorization": `OAuth ${diskToken}` }
+    });
+
+    const files = result.data['_embedded'].items.map(img => {
+      return {
+        name: img.name,
+        link: img.file
+      }
+    })
+
+    let filteredFiles = files.filter((file) => {
+      return file.name == `${imageName}.png`;
+    });
+    if (filteredFiles.length === 0) {
+      console.log('no matching bg found')
+      filteredFiles = files
+    }
+
+    const randomIndex = Math.floor(Math.random() * filteredFiles.length);
+    const randomFile = filteredFiles[randomIndex];
+
+    return randomFile.link;
   }
 }

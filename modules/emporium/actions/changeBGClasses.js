@@ -14,28 +14,34 @@ module.exports = Composer.action(/^action-change-bg-classes-[0-9]+$/g, async ctx
       return;
     }
 
+    ctx.deleteMessage(queueData.lastBotMessageId).catch(e => {
+      console.log(e)
+    })
     ctx.reply('Меняю фон...')
     try {
       const creatureData = queueData.data;
-      const pathToBaseImage = emporiumUtils.getRandomBaseImageSingleFilter(creatureData.classes)
+      const pathToBaseImage = await emporiumUtils.getRandomBaseImageSingleFilter(creatureData.classes)
       const resultImageBuffer = await emporiumUtils.placePngAndGetPic(ctx, queueData.transparentFileId, pathToBaseImage)
       ctx.globalSession.emporium.queue[crID].data.preview = {
         buffer: resultImageBuffer
       }
-      ctx.deleteMessage(queueData.lastBotMessageId);
       ctx.replyWithDocument({ source: resultImageBuffer, filename: `${creatureData.code}.png` }, {
         caption: `Данные\n\nРасы: ${creatureData.races.join(', ')}\nКлассы: ${creatureData.classes.join(', ')}\nОружие: ${creatureData.weapons.join(', ')}\n\nСтудия: ${creatureData.studioName}\nРелиз: ${creatureData.releaseName}\nКод:${creatureData.code}\n\nПол: ${creatureData.sex}`,
         parse_mode: 'HTML',
         ...Markup.inlineKeyboard([
           [
-            Markup.button.callback('♻️ Фон класс', `action-change-bg-classes-${crID}`),
-            Markup.button.callback('♻️ Фон раса', `action-change-bg-races-${crID}`),
+            Markup.button.callback('⚔️ Фон класс', `action-change-bg-classes-${crID}`),
+            Markup.button.callback('🧝‍♀️ Фон раса', `action-change-bg-races-${crID}`),
+          ],
+          [ 
+            Markup.button.callback('⚔️🧝‍♀️ Фон К+Р', `action-change-bg-any-${crID}`)
           ],
           [
-            Markup.button.callback('♻️ Фон', `action-change-bg-any-${crID}`)
+            Markup.button.callback('♻️ Фон рандом', `action-change-bg-random-${crID}`),
+            Markup.button.callback('📍 Фон конкретный', `action-change-bg-exact-${crID}`),
           ],
           [
-            Markup.button.callback('✅ На подтверждение', `action-emporium-confirm-${crID}`),
+            Markup.button.callback('✅ На подтверждение', `action-emporium-confirm-${crID}`)
           ]
         ])
       }).then(nctx => {

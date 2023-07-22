@@ -16,7 +16,7 @@ emporiumPhotoStage.enter((ctx) => {
 
 emporiumPhotoStage.on('document', async (ctx) => {
   const creatureData = ctx.session.emporium.creatureData;
-  const pathToBaseImage = emporiumUtils.getRandomBaseImageRacesAndClasses(creatureData.races, creatureData.classes)
+  const pathToBaseImage = await emporiumUtils.getRandomBaseImageRacesAndClasses(creatureData.races, creatureData.classes)
   const resultImageBuffer = await emporiumUtils.placePngAndGetPic(ctx, ctx.message.document.file_id, pathToBaseImage)
   ctx.session.emporium.creatureData.preview = {
     buffer: resultImageBuffer
@@ -39,11 +39,15 @@ emporiumPhotoStage.on('document', async (ctx) => {
     parse_mode: 'HTML',
     ...Markup.inlineKeyboard([
       [
-        Markup.button.callback('♻️ Фон класс', `action-change-bg-classes-${id}`),
-        Markup.button.callback('♻️ Фон раса', `action-change-bg-races-${id}`),
+        Markup.button.callback('⚔️ Фон класс', `action-change-bg-classes-${id}`),
+        Markup.button.callback('🧝‍♀️ Фон раса', `action-change-bg-races-${id}`),
       ],
       [ 
-        Markup.button.callback('♻️ Фон', `action-change-bg-any-${id}`)
+        Markup.button.callback('⚔️🧝‍♀️ Фон К+Р', `action-change-bg-any-${id}`)
+      ],
+      [
+        Markup.button.callback('♻️ Фон рандом', `action-change-bg-random-${id}`),
+        Markup.button.callback('📍 Фон конкретный', `action-change-bg-exact-${id}`),
       ],
       [
         Markup.button.callback('✅ На подтверждение', `action-emporium-confirm-${id}`)
