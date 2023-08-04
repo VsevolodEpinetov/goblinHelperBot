@@ -7,7 +7,10 @@ const emporiumPhotoStage = new Scenes.BaseScene('EMPORIUM_CLASSES_PHOTO');
 
 emporiumPhotoStage.enter((ctx) => {
   const creatureData = ctx.session.emporium.creatureData;
-  ctx.replyWithHTML(`Записал указанное тобой оружие: ${creatureData.weapons.map(w => `${w}`).join(' ')} Пришли документом превью миниатюрки`, {
+  let message = ``;
+  if (!creatureData.isWH) message = `Записал указанное тобой оружие: ${creatureData.weapons.map(w => `${w}`).join(' ')}`
+  else message = `Записал указанные тобой типы: ${creatureData.whTypes.map(w => `${w}`).join(' ')}`
+  ctx.replyWithHTML(`Записал указанное тобой оружие: ${creatureData.whTypes.map(w => `${w}`).join(' ')} Пришли документом превью миниатюрки`, {
     parse_mode: 'HTML'
   }).then(nctx => {
     ctx.session.emporium.botData.lastMessage.bot = nctx.message_id;
@@ -16,7 +19,9 @@ emporiumPhotoStage.enter((ctx) => {
 
 emporiumPhotoStage.on('document', async (ctx) => {
   const creatureData = ctx.session.emporium.creatureData;
-  const pathToBaseImage = await emporiumUtils.getRandomBaseImageRacesAndClasses(creatureData.races, creatureData.classes)
+  let pathToBaseImage; 
+  if (!creatureData.isWH) pathToBaseImage = await emporiumUtils.getRandomBaseImageRacesAndClasses(creatureData.races, creatureData.classes)
+  else pathToBaseImage = await emporiumUtils.getRandomBaseImageSingleFilter(creatureData.factions)
   const resultImageBuffer = await emporiumUtils.placePngAndGetPic(ctx, ctx.message.document.file_id, pathToBaseImage)
   ctx.session.emporium.creatureData.preview = {
     buffer: resultImageBuffer
@@ -34,8 +39,11 @@ emporiumPhotoStage.on('document', async (ctx) => {
   catch (err) {
     console.log(err);
   }
+  let caption;
+  if (!creatureData.isWH) caption = `Данные\n\nРасы: ${creatureData.races.join(', ')}\nКлассы: ${creatureData.classes.join(', ')}\nОружие: ${creatureData.weapons.join(', ')}\n\nСтудия: ${creatureData.studioName}\nРелиз: ${creatureData.releaseName}\nКод:${creatureData.code}\n\nПол: ${creatureData.sex}`
+  else caption = `Данные\n\nФракции: ${creatureData.factions.join(', ')}\nТипы: ${creatureData.whTypes.join(', ')}\n\nСтудия: ${creatureData.studioName}\nРелиз: ${creatureData.releaseName}\nКод:${creatureData.code}`
   ctx.replyWithDocument({ source: resultImageBuffer, filename: `${creatureData.code}.png` }, {
-    caption: `Данные\n\nРасы: ${creatureData.races.join(', ')}\nКлассы: ${creatureData.classes.join(', ')}\nОружие: ${creatureData.weapons.join(', ')}\n\nСтудия: ${creatureData.studioName}\nРелиз: ${creatureData.releaseName}\nКод:${creatureData.code}\n\nПол: ${creatureData.sex}`,
+    caption: caption,
     parse_mode: 'HTML',
     ...Markup.inlineKeyboard([
       [

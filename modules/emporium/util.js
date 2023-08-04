@@ -32,9 +32,10 @@ module.exports = {
       throw error; // Propagate the error
     }
   },
-  createACreature: async function (creatureData) {
+  createACreature: async function (creatureData, isWH) {
     try {
-      await axios.post(`https://api.stl-emporium.ru/api/creatures`, creatureData, {
+      const endPoint = isWH ? 'wh-creatures' : 'creatures';
+      await axios.post(`https://api.stl-emporium.ru/api/${endPoint}`, creatureData, {
         headers: { 'Content-Type': 'application/json', "Authorization": `Bearer ${newCreatureToken}` },
       })
       console.log(`Created a creature in the emporium`);

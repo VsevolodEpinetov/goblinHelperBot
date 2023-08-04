@@ -56,6 +56,8 @@ const stage = new Scenes.Stage([
   require('./modules/emporium/scenes/weapons'),
   require('./modules/emporium/scenes/photo'),
   require('./modules/emporium/scenes/photoExact'),
+  require('./modules/emporium/scenes/whFactions'),
+  require('./modules/emporium/scenes/whType'),
 ]);
 bot.use(session());
 bot.use(stage.middleware());

@@ -27,6 +27,7 @@ function generateRandomString(json) {
 
 emporiumStudioNameStage.command('exit', (ctx) => {
   util.log(ctx)
+  ctx.reply('Вышел')
   ctx.scene.leave();
 })
 

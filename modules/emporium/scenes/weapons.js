@@ -5,11 +5,6 @@ const { default: axios } = require("axios");
 
 const emporiumWeaponsStage = new Scenes.BaseScene('EMPORIUM_CLASSES_WEAPONS');
 
-emporiumWeaponsStage.command('exit', (ctx) => {
-  util.log(ctx)
-  ctx.scene.leave();
-})
-
 emporiumWeaponsStage.enter(async (ctx) => {
   const api = axios.create({
     headers: {
@@ -27,6 +22,12 @@ emporiumWeaponsStage.enter(async (ctx) => {
     ctx.session.emporium.botData.lastMessage.bot = nctx.message_id;
   })
 });
+
+emporiumWeaponsStage.command('exit', (ctx) => {
+  util.log(ctx)
+  ctx.reply('Вышел')
+  ctx.scene.leave();
+})
 
 emporiumWeaponsStage.on('message', (ctx) => {
   const data = ctx.message.text.replace(/\s/g, '');

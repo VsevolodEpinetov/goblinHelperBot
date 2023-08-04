@@ -16,7 +16,7 @@ function createStringWithKeys(json) {
 
 function generateReleaseCode(json) {
   const keys = Object.keys(json);
-  
+
   const newString = formatIntegerToThreeDigits(keys.length + 1);
   return newString;
 }
@@ -80,7 +80,7 @@ emporiumReleaseNameStage.on('message', (ctx) => {
     ctx.session.emporium.creatureData.code = `${studioCode}${newCode}001`;
     ctx.globalSession.emporium.studios[studioName].releases[releaseName] = {
       code: newCode,
-      stls: [ "001" ]
+      stls: ["001"]
     };
   }
   try {
@@ -89,7 +89,11 @@ emporiumReleaseNameStage.on('message', (ctx) => {
   catch (err) {
     console.log(err);
   }
-  ctx.scene.enter('EMPORIUM_SEX_STAGE')
+  if (!ctx.session.emporium.creatureData.isWH) {
+    ctx.scene.enter('EMPORIUM_SEX_STAGE')
+  } else {
+    ctx.scene.enter('EMPORIUM_WH_FACTIONS_STAGE')
+  }
 })
 
 emporiumReleaseNameStage.leave(async (ctx) => {

@@ -19,6 +19,7 @@ emporiumSexStage.enter((ctx) => {
 
 emporiumSexStage.command('exit', (ctx) => {
   util.log(ctx)
+  ctx.reply('Вышел')
   ctx.scene.leave();
 })
 

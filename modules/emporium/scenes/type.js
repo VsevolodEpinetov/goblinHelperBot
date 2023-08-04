@@ -22,12 +22,19 @@ emporiumTypeStage.enter((ctx) => {
     ...Markup.inlineKeyboard([
       Markup.button.callback('✅ Герой', 'actionEmporiumHero'),
       Markup.button.callback('❌ Монстр', 'actionEmporiumMonster'),
+      Markup.button.callback('💀 WH', 'actionEmporiumWH'),
       Markup.button.callback('Готово', 'actionEmporiumDone')
     ])
   }).then(nctx => {
     ctx.session.emporium.botData.lastMessage.bot = nctx.message_id;
   })
 });
+
+emporiumTypeStage.command('exit', (ctx) => {
+  util.log(ctx)
+  ctx.reply('Вышел')
+  ctx.scene.leave();
+})
 
 emporiumTypeStage.action('actionEmporiumHero', (ctx) => {
   let oldValue = ctx.session.emporium.creatureData.isHero;
@@ -37,6 +44,7 @@ emporiumTypeStage.action('actionEmporiumHero', (ctx) => {
     ...Markup.inlineKeyboard([
       Markup.button.callback(`${!oldValue ? '✅' : '❌'} Герой`, 'actionEmporiumHero'),
       Markup.button.callback(`${ctx.session.emporium.creatureData.isMonster ? '✅' : '❌'} Монстр`, 'actionEmporiumMonster'),
+      Markup.button.callback('💀 WH', 'actionEmporiumWH'),
       Markup.button.callback('Готово', 'actionEmporiumDone')
     ])
   }).then(nctx => {
@@ -53,6 +61,7 @@ emporiumTypeStage.action('actionEmporiumMonster', (ctx) => {
     ...Markup.inlineKeyboard([
       Markup.button.callback(`${ctx.session.emporium.creatureData.isHero ? '✅' : '❌'} Герой`, 'actionEmporiumHero'),
       Markup.button.callback(`${!oldValue ? '✅' : '❌'} Монстр`, 'actionEmporiumMonster'),
+      Markup.button.callback('💀 WH', 'actionEmporiumWH'),
       Markup.button.callback('Готово', 'actionEmporiumDone')
     ])
   }).then(nctx => {
@@ -72,6 +81,23 @@ emporiumTypeStage.command('exit', (ctx) => {
 
 emporiumTypeStage.action('actionEmporiumDone', (ctx) => {
   util.log(ctx);
+  try {
+    ctx.deleteMessage(ctx.session.emporium.botData.lastMessage.bot);
+  }
+  catch (err) {
+    console.log(err);
+  }
+  return ctx.scene.enter('EMPORIUM_STUDIO_NAME_STAGE');
+})
+
+emporiumTypeStage.action('actionEmporiumWH', (ctx) => {
+  util.log(ctx);
+  
+  if (ctx.callbackQuery.from.id != SETTINGS.CHATS.EPINETOV && ctx.callbackQuery.from.id != SETTINGS.CHATS.ANN && ctx.callbackQuery.from.id != SETTINGS.CHATS.YURI) {
+    return;
+  }
+
+  ctx.session.emporium.creatureData.isWH = true;
   try {
     ctx.deleteMessage(ctx.session.emporium.botData.lastMessage.bot);
   }

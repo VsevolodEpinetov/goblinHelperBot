@@ -22,6 +22,12 @@ emporiumRacesStage.enter(async (ctx) => {
   })
 });
 
+emporiumRacesStage.command('exit', (ctx) => {
+  util.log(ctx)
+  ctx.reply('Вышел')
+  ctx.scene.leave();
+})
+
 emporiumRacesStage.on('message', (ctx) => {
   const data = ctx.message.text.replace(/\s/g, '');
   const racesArray = data.split(',').filter((item) => item !== '');
@@ -41,11 +47,6 @@ emporiumRacesStage.on('message', (ctx) => {
     ctx.session.emporium.creatureData.races = validRaces;
     ctx.scene.enter('EMPORIUM_CLASSES_STAGE');
   }
-})
-
-emporiumRacesStage.command('exit', (ctx) => {
-  util.log(ctx)
-  ctx.scene.leave();
 })
 
 emporiumRacesStage.leave(async (ctx) => {

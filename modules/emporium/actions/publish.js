@@ -21,29 +21,48 @@ module.exports = Composer.action(/^action-emporium-publish-[0-9]+$/g, async ctx 
     if (isWaiting) {
       const fileName = `${creatureData.code}.png`;
       const imageID = await emporiumUtils.uploadImage(ctx, creatureData.preview.buffer, fileName);
-      const crData = {
-        data: {
-          sex: creatureData.sex,
-          classes: creatureData.classes,
-          races: creatureData.races,
-          mainPicture: imageID,
-          priceSTL: 106,
-          pricePhysical: 318,
-          priceCyprus: 4,
-          studioName: creatureData.studioName,
-          releaseName: creatureData.releaseName,
-          code: creatureData.code,
-          //name: 'hi, I am a test!',
-          onlyPhysical: false,
-          isMonster: creatureData.isMonster,
-          isHero: creatureData.isHero,
-          weapons: creatureData.weapons
-        }
-      };
+      let crData;
+      if (!creatureData.isWH) {
+        crData = {
+          data: {
+            sex: creatureData.sex,
+            classes: creatureData.classes,
+            races: creatureData.races,
+            mainPicture: imageID,
+            priceSTL: 106,
+            pricePhysical: 318,
+            priceCyprus: 4,
+            studioName: creatureData.studioName,
+            releaseName: creatureData.releaseName,
+            code: creatureData.code,
+            //name: 'hi, I am a test!',
+            onlyPhysical: false,
+            isMonster: creatureData.isMonster,
+            isHero: creatureData.isHero,
+            weapons: creatureData.weapons
+          }
+        };
+      } else {
+        crData = {
+          data: {
+            mainPicture: imageID,
+            priceSTL: 106,
+            pricePhysical: 312,
+            priceCyprus: 4,
+            studioName: creatureData.studioName,
+            releaseName: creatureData.releaseName,
+            code: creatureData.code,
+            onlyPhysical: false,
+            factions: creatureData.factions,
+            type: creatureData.whTypes
+          }
+        };
+      }
       try {
-        const result = await emporiumUtils.createACreature(crData);
+        const result = await emporiumUtils.createACreature(crData, creatureData.isWH);
+        const code = ctx.globalSession.emporium.queue[crID].data.code;
         ctx.globalSession.emporium.queue[crID].data.preview = undefined;
-        ctx.reply('Минька успешно загружена')
+        ctx.reply(`Минька с кодом ${code} успешно загружена`)
       } catch (error) {
         console.log('Error!');
       }
