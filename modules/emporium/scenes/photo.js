@@ -10,7 +10,7 @@ emporiumPhotoStage.enter((ctx) => {
   let message = ``;
   if (!creatureData.isWH) message = `Записал указанное тобой оружие: ${creatureData.weapons.map(w => `${w}`).join(' ')}`
   else message = `Записал указанные тобой типы: ${creatureData.whTypes.map(w => `${w}`).join(' ')}`
-  ctx.replyWithHTML(`Записал указанное тобой оружие: ${creatureData.whTypes.map(w => `${w}`).join(' ')} Пришли документом превью миниатюрки`, {
+  ctx.replyWithHTML(`${message} Пришли документом превью миниатюрки`, {
     parse_mode: 'HTML'
   }).then(nctx => {
     ctx.session.emporium.botData.lastMessage.bot = nctx.message_id;
