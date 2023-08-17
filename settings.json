@@ -7,14 +7,15 @@
     "ALEKS": "628694430",
     "ANN": "101922344",
     "EMPORIUM": "-1001966814533",
-    "YURI": "176988041"
+    "YURI": "176988041",
+    "MIMO": "1519577898"
   },
   "TOPICS": {
     "GOBLIN": {
       "LOTS": "14995"
     }
   },
-  "EXCHANGE_RATE": 100,
+  "EXCHANGE_RATE": 110,
   "SPECIAL_RATE": 1.1,
   "EMPTY_LOT": {
     "photo": "",
