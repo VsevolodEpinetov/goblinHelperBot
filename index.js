@@ -168,7 +168,7 @@ bot.on('channel_post', async (ctx) => {
           ctx.replyWithHTML('Нет ни одного записанного индексатора! \n\nПришли любое сообщение, которое будет содержать хотя бы 1 эмодзи "🔸" - я запомню его как Индексатор. \n\n<i>Рекомендую прислать минимум <b>2</b> таких сообщения</i>');
         } else {
           let studioName = '';
-          let monthName = messageText.split('\n')[0]?.split(' (')[1]?.split(' ')[0] || '11';
+          let monthName = messageText.split('\n')[0]?.split(' (')[1]?.split(' ')[0] || 'пыпы';
           let year = messageText.split('\n')[0]?.split(' (')[1]?.split(' ')[1]?.split(')')[0] || '2222';
           const months = {
             'январь': '01',
@@ -183,11 +183,16 @@ bot.on('channel_post', async (ctx) => {
             'октябрь': '10',
             'ноябрь': '11',
             'декабрь': '12',
+            'пыпы': '88'
           }
           let releaseName = '';
           if (messageText.indexOf('\n') > 0) {
             studioName = messageText.split('\n')[0].split(' (')[0];
-            releaseName = `${year}${months[monthName]} - ${messageText.split('\n')[1]}`;
+            if (year == '2222' || months[monthName] == '88') {
+              releaseName = `${messageText.split('\n')[1]}`;
+            } else {
+              releaseName = `${year}${months[monthName]} - ${messageText.split('\n')[1]}`;
+            }
           } else {
             studioName = messageText.split(' (')[0];
             releaseName = `${year}${months[monthName]}`;
