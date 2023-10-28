@@ -138,7 +138,8 @@ bot.on('channel_post', async (ctx) => {
         localChannels.channels[channelID] = {
           indexers: [],
           studios: [],
-          locked: false
+          locked: false,
+          type: 'archive'
         };
         ctx.replyWithHTML('Бип буп, записал канал. Присылай индексаторы \n\nПришли любое сообщение, которое будет содержать хотя бы 1 эмодзи "🔸" - я запомню его как Индексатор. \n\n<i>Рекомендую прислать минимум <b>2</b> таких сообщения</i>')
       }
@@ -151,18 +152,45 @@ bot.on('channel_post', async (ctx) => {
       ctx.replyWithHTML('🤖 Индексаторы в автоматическом режиме')
       localChannels.channels[channelID].locked = false;
       sessionInstance.saveSession('channelsSession', localChannels);
+    } else if (messageText === 'switch') {
+      if (localChannels.channels[channelID].type === 'collection') {
+        localChannels.channels[channelID].type = 'archive';
+        ctx.replyWithHTML('Режим - архив БГ')
+      } else if (localChannels.channels[channelID].type === 'archive') {
+        localChannels.channels[channelID].type = 'collection';
+        ctx.replyWithHTML('Режим - коллекция')
+      }
+      sessionInstance.saveSession('channelsSession', localChannels);
     } else if (!localChannels.channels[channelID].locked) {
+      if (!localChannels.channels[channelID].type) localChannels.channels[channelID].type = 'archive';
       if (messageText.indexOf('🔸') < 0) {
         if (localChannels.channels[channelID].indexers.length === 0) {
           ctx.replyWithHTML('Нет ни одного записанного индексатора! \n\nПришли любое сообщение, которое будет содержать хотя бы 1 эмодзи "🔸" - я запомню его как Индексатор. \n\n<i>Рекомендую прислать минимум <b>2</b> таких сообщения</i>');
         } else {
           let studioName = '';
+          let monthName = messageText.split('\n')[0]?.split(' (')[1]?.split(' ')[0] || '11';
+          let year = messageText.split('\n')[0]?.split(' (')[1]?.split(' ')[1]?.split(')')[0] || '2222';
+          const months = {
+            'январь': '01',
+            'февраль': '02',
+            'март': '03',
+            'апрель': '04',
+            'май': '05',
+            'июнь': '06',
+            'июль': '07',
+            'август': '08',
+            'сентябрь': '09',
+            'октябрь': '10',
+            'ноябрь': '11',
+            'декабрь': '12',
+          }
           let releaseName = '';
           if (messageText.indexOf('\n') > 0) {
             studioName = messageText.split('\n')[0].split(' (')[0];
-            releaseName = messageText.split('\n')[1];
+            releaseName = `${year}${months[monthName]} - ${messageText.split('\n')[1]}`;
           } else {
             studioName = messageText.split(' (')[0];
+            releaseName = `${year}${months[monthName]}`;
           }
 
           let copy = localChannels.channels[channelID].studios;
@@ -178,7 +206,8 @@ bot.on('channel_post', async (ctx) => {
           if (copy.length < 100) {
             newText = `🔸 <b>Индексатор 1</b>🔸\n\n`
             copy.forEach(st => {
-              newText += `<a href="https://t.me/c/${channelID.toString().split('-100')[1]}/${st.messageID}">${st.name}</a>\n`
+              if (localChannels.channels[channelID].type === 'archive') newText += `<a href="https://t.me/c/${channelID.toString().split('-100')[1]}/${st.messageID}">${st.name}</a>\n`
+              if (localChannels.channels[channelID].type === 'collection') newText += `<a href="https://t.me/c/${channelID.toString().split('-100')[1]}/${st.messageID}">${st.release}</a>\n`
             });
           }
 
