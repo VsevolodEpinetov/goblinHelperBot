@@ -1,7 +1,10 @@
 //#region imports
 const { Telegraf, Markup, Telegram, Scenes, session } = require('telegraf');
+const { telegrafThrottler } = require('telegraf-throttler');
 require('dotenv').config();
 const bot = new Telegraf(process.env.TOKEN)
+const throttler = telegrafThrottler();
+bot.use(throttler);
 const telegram = new Telegram(process.env.TOKEN)
 const SETTINGS = require('./settings.json')
 const STUDIOS = require('./studios.json')
@@ -22,6 +25,7 @@ const SESSIONS = require('./modules/sessions.js');
 const { default: axios } = require('axios');
 bot.use(
   SESSIONS.GLOBAL_SESSION,
+  SESSIONS.CHANNELS_SESSION,
   SESSIONS.USER_SESSION,
   SESSIONS.CHAT_SESSION
 )
@@ -102,7 +106,107 @@ bot.hears(/^[гГ]облин[,]? сколько \$?([0-9]*[.])?[0-9]+ (долл�
   }
 })
 
+bot.command('rch', ctx => {
+  ctx.channelsSession = {};
+  ctx.channelsSession.channels = {};
+  ctx.reply('done');
+})
 
+bot.command('shch', async ctx => {
+  console.log(JSON.stringify(ctx.channelsSession))
+})
+
+bot.on('channel_post', async (ctx) => {
+  if (!ctx.channelPost.document && (typeof ctx.channelPost.text !== undefined || typeof ctx.channelPost.caption !== undefined)) {
+    let localChannels;
+    await sessionInstance.getSession('channelsSession').then(session => {
+      localChannels = session;
+    });
+    if (!localChannels) {
+      localChannels = {};
+    }
+    if (!localChannels.channels) {
+      console.log('defining channels')
+      localChannels.channels = {};
+    }
+
+    const channelID = ctx.channelPost.chat.id;
+    const messageText = ctx.channelPost.text || ctx.channelPost.caption;
+
+    if (!localChannels.channels[channelID]) {
+      if (messageText === 'start') {
+        localChannels.channels[channelID] = {
+          indexers: [],
+          studios: [],
+          locked: false
+        };
+        ctx.replyWithHTML('Бип буп, записал канал. Присылай индексаторы \n\nПришли любое сообщение, которое будет содержать хотя бы 1 эмодзи "🔸" - я запомню его как Индексатор. \n\n<i>Рекомендую прислать минимум <b>2</b> таких сообщения</i>')
+      }
+      sessionInstance.saveSession('channelsSession', localChannels);
+    } else if (messageText === 'stop') {
+      ctx.replyWithHTML('🖐 Индексаторы в ручном режиме')
+      localChannels.channels[channelID].locked = true;
+      sessionInstance.saveSession('channelsSession', localChannels);
+    } else if (messageText === 'start') {
+      ctx.replyWithHTML('🤖 Индексаторы в автоматическом режиме')
+      localChannels.channels[channelID].locked = false;
+      sessionInstance.saveSession('channelsSession', localChannels);
+    } else if (!localChannels.channels[channelID].locked) {
+      if (messageText.indexOf('🔸') < 0) {
+        if (localChannels.channels[channelID].indexers.length === 0) {
+          ctx.replyWithHTML('Нет ни одного записанного индексатора! \n\nПришли любое сообщение, которое будет содержать хотя бы 1 эмодзи "🔸" - я запомню его как Индексатор. \n\n<i>Рекомендую прислать минимум <b>2</b> таких сообщения</i>');
+        } else {
+          let studioName = '';
+          let releaseName = '';
+          if (messageText.indexOf('\n') > 0) {
+            studioName = messageText.split('\n')[0].split(' (')[0];
+            releaseName = messageText.split('\n')[1];
+          } else {
+            studioName = messageText.split(' (')[0];
+          }
+
+          let copy = localChannels.channels[channelID].studios;
+          const newPostInfo = {
+            name: studioName,
+            release: releaseName,
+            messageID: ctx.channelPost.message_id
+          }
+          copy.push(newPostInfo)
+          copy.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
+
+          let newText = ``;
+          if (copy.length < 100) {
+            newText = `🔸 <b>Индексатор 1</b>🔸\n\n`
+            copy.forEach(st => {
+              newText += `<a href="https://t.me/c/${channelID.toString().split('-100')[1]}/${st.messageID}">${st.name}</a>\n`
+            });
+          }
+
+          try {
+            telegram.editMessageText(channelID, localChannels.channels[channelID].indexers[0].messageID, undefined, newText, {
+              parse_mode: "HTML"
+            })
+          } catch (e) {
+            console.log(e)
+          }
+
+        }
+      } else {
+        const numberOfIndexer = localChannels.channels[channelID].indexers.length + 1;
+        const defaultText = `🔸 <b>Индексатор ${numberOfIndexer}</b>🔸\n\n<i>Скоро тут будут ссылки на релизы!</i>`;
+        localChannels.channels[channelID].indexers.push({
+          messageID: ctx.channelPost.message_id
+        })
+        await telegram.editMessageText(channelID, ctx.channelPost.message_id, undefined, defaultText, {
+          parse_mode: "HTML"
+        })
+        await telegram.pinChatMessage(channelID, ctx.channelPost.message_id);
+      }
+
+      sessionInstance.saveSession('channelsSession', localChannels);
+    }
+  }
+})
 
 bot.catch((error) => {
   console.log(error);

@@ -30,15 +30,27 @@
     "bought": false
   },
   {
+    "name": "Clay Cyanide Miniatures",
+    "price": "10",
+    "mainLink": "https://www.myminifactory.com/users/ClayCyanide?show=tribe",
+    "bought": false
+  },
+  {
     "name": "DakkaDakkaStore",
     "price": "12",
     "mainLink": "https://www.myminifactory.com/users/DakkaDakkaStore?show=tribe",
     "bought": false
   },
   {
-    "name": "Dark Lord Miniatures",
-    "price": "14",
-    "mainLink": "https://www.myminifactory.com/users/DarkLordMiniatures?show=tribe",
+    "name": "Black Knight",
+    "price": "15",
+    "mainLink": "https://www.patreon.com/blackknightminiatures",
+    "bought": false
+  },
+  {
+    "name": "Double Edge Miniatures",
+    "price": "8",
+    "mainLink": "https://www.myminifactory.com/users/Double%20Edge%20Miniatures?show=tribe",
     "bought": false
   },
   {
@@ -51,6 +63,12 @@
     "name": "Dragonslakeminiaturas",
     "price": "9.5",
     "mainLink": "https://www.myminifactory.com/users/dragonslakeminiaturas?show=tribe",
+    "bought": false
+  },
+  {
+    "name": "GAZ Minis",
+    "price": "10",
+    "mainLink": "https://www.patreon.com/GazMinis",
     "bought": false
   },
   {
@@ -144,15 +162,15 @@
     "bought": false
   },
   {
-    "name": "Spirit of Resin",
-    "price": "1",
-    "mainLink": "https://www.myminifactory.com/users/Spirit%20of%20Resin",
-    "bought": false
-  },
-  {
     "name": "Stormborn Collectibles",
     "price": "4",
     "mainLink": "https://www.myminifactory.com/users/Stormborn%20Collectibles?show=tribe",
+    "bought": false
+  },
+  {
+    "name": "The Printing Goes Ever On",
+    "price": "10",
+    "mainLink": "https://www.myminifactory.com/users/the-printing-goes-ever-on?show=tribe",
     "bought": false
   },
   {

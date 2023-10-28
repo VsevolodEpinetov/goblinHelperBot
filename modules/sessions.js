@@ -5,6 +5,11 @@ const globalSession = new RedisSession({
   getSessionKey: () => { return "global" }
 })
 
+const channelsSession = new RedisSession({
+  property: 'channelsSession',
+  getSessionKey: () => { return "channels" }
+})
+
 const userSession = new RedisSession({
   property: 'userSession',
   getSessionKey: (ctx) => { if (ctx.from) return `${ctx.from.id}-user` }
@@ -26,7 +31,8 @@ const chatSession = new RedisSession({
 
 module.exports = {
   GLOBAL_SESSION: globalSession,
+  CHANNELS_SESSION: channelsSession,
   USER_SESSION: userSession,
-  CHAT_SESSION: chatSession,
+  CHAT_SESSION: chatSession
   //UNIQUE_SESSION: session
 };

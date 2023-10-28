@@ -18,11 +18,9 @@ module.exports = Composer.command('poll', async (ctx) => {
   let listOfStudios;
   if (ctx.globalSession.studios) {
     listOfStudios = ctx.globalSession.studios;
-    console.log('using session data');
   }
   else {
     listOfStudios = STUDIOS;
-    console.log('using file data');    
   }
 
   for (let i = 0; i < listOfStudios.length; i++) {
@@ -40,7 +38,7 @@ module.exports = Composer.command('poll', async (ctx) => {
   if (options[options.length - 1][options[options.length - 1].length - 1] !== 'Пустой вариант') options[options.length - 1].push('Пустой вариант')
 
   for (let i = 0; i < options.length; i++) {
-    ctx.replyWithPoll(`Июнь. Часть ${i + 1}`, options[i], {
+    ctx.replyWithPoll(`Голосование. Часть ${i + 1}`, options[i], {
       is_anonymous: false,
       allows_multiple_answers: true
     });
