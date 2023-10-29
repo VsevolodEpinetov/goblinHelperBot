@@ -211,7 +211,7 @@ bot.on('channel_post', async (ctx) => {
           if (copy.length < 100) {
             newText = `🔸 <b>Индексатор 1</b>🔸\n\n`
             copy.forEach(st => {
-              if (localChannels.channels[channelID].type === 'archive') newText += `<a href="https://t.me/c/${channelID.toString().split('-100')[1]}/${st.messageID}">${st.name}</a>\n`
+              if (localChannels.channels[channelID].type === 'archive') newText += `<a href="https://t.me/c/${channelID.toString().split('-100')[1]}/${st.messageID}">${st.name} - ${st.release}</a>\n`
               if (localChannels.channels[channelID].type === 'collection') newText += `<a href="https://t.me/c/${channelID.toString().split('-100')[1]}/${st.messageID}">${st.release}</a>\n`
             });
           }
