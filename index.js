@@ -219,6 +219,8 @@ bot.on('channel_post', async (ctx) => {
           try {
             telegram.editMessageText(channelID, localChannels.channels[channelID].indexers[0].messageID, undefined, newText, {
               parse_mode: "HTML"
+            }).catch(e => {
+              console.log(e)
             })
           } catch (e) {
             console.log(e)
@@ -231,9 +233,15 @@ bot.on('channel_post', async (ctx) => {
         localChannels.channels[channelID].indexers.push({
           messageID: ctx.channelPost.message_id
         })
-        await telegram.editMessageText(channelID, ctx.channelPost.message_id, undefined, defaultText, {
-          parse_mode: "HTML"
-        })
+        try {
+          telegram.editMessageText(channelID, ctx.channelPost.message_id, undefined, defaultText, {
+            parse_mode: "HTML"
+          }).catch(e => {
+            console.log(e)
+          })
+        } catch (e) {
+          console.log(e)
+        }
         await telegram.pinChatMessage(channelID, ctx.channelPost.message_id);
       }
 
