@@ -78,7 +78,7 @@ module.exports = Composer.on('channel_post', async (ctx) => {
       
       if (!localChannels.channels[channelID].locked) {
         if (!localChannels.channels[channelID].type) localChannels.channels[channelID].type = 'archive';
-        console.log(ctx.channelPost)
+        //console.log(ctx.channelPost)
         if (messageText.indexOf('🔸') < 0) {
           if (localChannels.channels[channelID].indexers.length === 0) {
             ctx.replyWithHTML('Нет ни одного записанного индексатора! \n\nПришли любое сообщение, которое будет содержать хотя бы 1 эмодзи "🔸" - я запомню его как Индексатор. \n\n<i>Рекомендую прислать минимум <b>2</b> таких сообщения</i>');
@@ -127,8 +127,10 @@ module.exports = Composer.on('channel_post', async (ctx) => {
             if (copy.length < 100) {
               newText = `🔸 <b>Индексатор 1</b>🔸\n\n`
               copy.forEach(st => {
-                if (localChannels.channels[channelID].type === 'archive') newText += `<a href="https://t.me/c/${channelID.toString().split('-100')[1]}/${st.messageID}">${st.name} - ${st.release}</a>\n`
-                if (localChannels.channels[channelID].type === 'collection') newText += `<a href="https://t.me/c/${channelID.toString().split('-100')[1]}/${st.messageID}">${st.release}</a>\n`
+                if (localChannels.channels[channelID].type === 'archive') 
+                  newText += `<a href="https://t.me/c/${channelID.toString().split('-100')[1]}/${st.messageID}">${st.name} - ${st.release.split(' - ')[1] || st.release}</a>\n`
+                if (localChannels.channels[channelID].type === 'collection') 
+                  newText += `<a href="https://t.me/c/${channelID.toString().split('-100')[1]}/${st.messageID}">${st.release}</a>\n`
               });
             }
 
@@ -144,6 +146,7 @@ module.exports = Composer.on('channel_post', async (ctx) => {
 
           }
         } else {
+
           const numberOfIndexer = localChannels.channels[channelID].indexers.length + 1;
           const defaultText = `🔸 <b>Индексатор ${numberOfIndexer}</b>🔸\n\n<i>Скоро тут будут ссылки на релизы!</i>`;
           localChannels.channels[channelID].indexers.push({
