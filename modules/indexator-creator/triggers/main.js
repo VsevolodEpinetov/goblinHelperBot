@@ -145,12 +145,14 @@ module.exports = Composer.on('channel_post', async (ctx) => {
                             newTextFirst += `<a href="https://t.me/c/${channelID.toString().split('-100')[1]}/${st.messageID}">${st.name} - ${st.release.split(' - ')[1] || st.release}</a>\n`
                           }
                         }
-                        if (localChannels.channels[channelID].type === 'collection')
+                        if (localChannels.channels[channelID].type === 'collection') {
                           if (counter > 79) {
                             newTextSecond += `<a href="https://t.me/c/${channelID.toString().split('-100')[1]}/${st.messageID}">${st.release}</a>\n`
                           } else {
                             newTextFirst += `<a href="https://t.me/c/${channelID.toString().split('-100')[1]}/${st.messageID}">${st.release}</a>\n`
                           }
+                        }
+                        counter++;
                       });
                     }
 
