@@ -23,6 +23,10 @@ bot.use(
 )
 //#endregion
 
+bot.command('nl', ctx => {
+  ctx.globalSession.lots = [];
+})
+
 bot.catch((error) => {
   console.log(error);
 })

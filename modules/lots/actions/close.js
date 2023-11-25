@@ -33,7 +33,7 @@ module.exports = Composer.action(/^action-close-lot-[0-9]+$/g, ctx => {
         message_thread_id: ctx.callbackQuery.message.message_thread_id ? ctx.callbackQuery.message.message_thread_id : null
       })
 
-      ctx.globalSession.lots[lotID].opened = false;
+      ctx.globalSession.lots[lotID] = null;
       ctx.deleteMessage(ctx.callbackQuery.message.message_id).catch((error) => {
         ctx.editMessageCaption(ctx.callbackQuery.message.message_id, undefined, 'удалено', {
           parse_mode: 'HTML'
