@@ -3,6 +3,10 @@ const { Composer } = require("telegraf");
 const RedisSession = require('telegraf-session-redis-upd')
 const sessionInstance = new RedisSession();
 
+function getKeyByValue(object, value) {
+  return Object.keys(object).find(key => object[key] === value);
+}
+
 module.exports = Composer.on('channel_post', async (ctx) => {
 
   if (!ctx.channelPost.document && (typeof ctx.channelPost.text !== undefined || typeof ctx.channelPost.caption !== undefined)) {
@@ -80,12 +84,17 @@ module.exports = Composer.on('channel_post', async (ctx) => {
                 if (!localChannels.channels[channelID].type) localChannels.channels[channelID].type = 'archive';
                 //console.log(ctx.channelPost)
                 if (messageText.indexOf('🔸') < 0) {
+                  let needToChangeCaption = false;
+                  let newCaption = '';
+
                   if (localChannels.channels[channelID].indexers.length === 0) {
                     ctx.replyWithHTML('Нет ни одного записанного индексатора! \n\nПришли любое сообщение, которое будет содержать хотя бы 1 эмодзи "🔸" - я запомню его как Индексатор. \n\n<i>Рекомендую прислать минимум <b>2</b> таких сообщения</i>');
                   } else {
                     let studioName = '';
-                    let monthName = messageText.split('\n')[0]?.split(' (')[1]?.split(' ')[0] || 'пыпы';
-                    let year = messageText.split('\n')[0]?.split(' (')[1]?.split(' ')[1]?.split(')')[0] || '2222';
+                    let monthName = '';
+                    let year = '';
+                    let releaseName = '';
+
                     const months = {
                       'январь': '01',
                       'февраль': '02',
@@ -101,18 +110,43 @@ module.exports = Composer.on('channel_post', async (ctx) => {
                       'декабрь': '12',
                       'пыпы': '88'
                     }
-                    let releaseName = '';
-                    if (messageText.indexOf('\n') > 0) {
-                      studioName = messageText.split('\n')[0].split(' (')[0];
-                      if (year == '2222' || months[monthName] == '88') {
-                        releaseName = `${messageText.split('\n')[1]}`;
-                      } else {
-                        releaseName = `${year}${months[monthName]} - ${messageText.split('\n')[1]}`;
+
+                    if ((messageText.match(/^[a-zA-Z ]+- (20){0,1}2[3-5]\-{0,1}[01][0-9]/g) || []).length) {
+                      needToChangeCaption = true;
+
+                      studioName = messageText.match(/^[a-zA-Z ]+/g)[0].trim() || 'failedStudioName';
+
+                      year = messageText.match(/ - (20){0,1}2[3-5]/g)[0].split(' - ')[1] || '9999';
+                      if (year.length === 2) year = `20${year}`
+
+                      let month = messageText.match(/([01][0-9]$)|([01][0-9] - )/g)[0].split(' - ')[0] || '88';
+
+                      releaseName = messageText.match(/(?! )[a-zA-Z ]+$/g)[0] || `${year}${month}`;
+
+                      newCaption = `<b>${studioName}</b> (${getKeyByValue(months, month)} ${year})`
+                      if (releaseName.match(/^(20)2[3-5][01][0-9]$/g) == null) {
+                        newCaption = newCaption + `\n<i>${releaseName}</i>`
                       }
+
                     } else {
-                      studioName = messageText.split(' (')[0];
-                      releaseName = `${year}${months[monthName]}`;
+                      monthName = messageText.split('\n')[0]?.split(' (')[1]?.split(' ')[0] || 'пыпы';
+                      year = messageText.split('\n')[0]?.split(' (')[1]?.split(' ')[1]?.split(')')[0] || '2222';
+
+                      if (messageText.indexOf('\n') > 0) {
+                        studioName = messageText.split('\n')[0].split(' (')[0];
+                        if (year == '2222' || months[monthName] == '88') {
+                          releaseName = `${messageText.split('\n')[1]}`;
+                        } else {
+                          releaseName = `${year}${months[monthName]} - ${messageText.split('\n')[1]}`;
+                        }
+                      } else {
+                        studioName = messageText.split(' (')[0];
+                        releaseName = `${year}${months[monthName]}`;
+                      }
                     }
+
+
+
 
                     let copy = localChannels.channels[channelID].studios;
                     const newPostInfo = {
@@ -155,6 +189,19 @@ module.exports = Composer.on('channel_post', async (ctx) => {
                         counter++;
                       });
                     }
+
+                    if (needToChangeCaption) {
+                      try {
+                        ctx.telegram.editMessageCaption(channelID, ctx.channelPost.message_id, undefined, newCaption, {
+                          parse_mode: "HTML"
+                        }).catch(e => {
+                          console.log(e)
+                        })
+                      } catch (e) {
+                        console.log(e)
+                      }
+                    }
+
 
                     try {
                       ctx.telegram.editMessageText(channelID, localChannels.channels[channelID].indexers[0].messageID, undefined, newTextFirst, {
