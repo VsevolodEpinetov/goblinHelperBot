@@ -111,12 +111,12 @@ module.exports = Composer.on('channel_post', async (ctx) => {
                       'пыпы': '88'
                     }
 
-                    if ((messageText.match(/^[a-zA-Z ]+- (20){0,1}2[3-5]\-{0,1}[01][0-9]/g) || []).length) {
+                    if ((messageText.match(/^[a-zA-Z ]+- (20){0,1}2[0-9]\-{0,1}[01][0-9]/g) || []).length) {
                       needToChangeCaption = true;
 
                       studioName = messageText.match(/^[a-zA-Z ]+/g)[0].trim() || 'failedStudioName';
 
-                      year = messageText.match(/ - (20){0,1}2[3-5]/g)[0].split(' - ')[1] || '9999';
+                      year = messageText.match(/ - (20){0,1}2[0-9]/g)[0].split(' - ')[1] || '9999';
                       if (year.length === 2) year = `20${year}`
 
                       let month = messageText.match(/([01][0-9]$)|([01][0-9] - )/g)[0].split(' - ')[0] || '88';
@@ -124,7 +124,7 @@ module.exports = Composer.on('channel_post', async (ctx) => {
                       releaseName = messageText.match(/(?! )[a-zA-Z ]+$/g)[0] || `${year}${month}`;
 
                       newCaption = `<b>${studioName}</b> (${getKeyByValue(months, month)} ${year})`
-                      if (releaseName.match(/^(20)2[3-5][01][0-9]$/g) == null) {
+                      if (releaseName.match(/^(20)2[0-9][01][0-9]$/g) == null) {
                         newCaption = newCaption + `\n<i>${releaseName}</i>`
                       }
 
