@@ -50,18 +50,6 @@ const stage = new Scenes.Stage([
   require('./modules/lots/scenes/link'),
   require('./modules/lots/scenes/author'),
   require('./modules/lots/scenes/name'),
-  //
-  require('./modules/emporium/scenes/type'),
-  require('./modules/emporium/scenes/classes'),
-  require('./modules/emporium/scenes/races'),
-  require('./modules/emporium/scenes/releaseName'),
-  require('./modules/emporium/scenes/sex'),
-  require('./modules/emporium/scenes/studioName'),
-  require('./modules/emporium/scenes/weapons'),
-  require('./modules/emporium/scenes/photo'),
-  require('./modules/emporium/scenes/photoExact'),
-  require('./modules/emporium/scenes/whFactions'),
-  require('./modules/emporium/scenes/whType'),
 ]);
 bot.use(session());
 bot.use(stage.middleware());
@@ -69,7 +57,6 @@ bot.use(stage.middleware());
 bot.use(require('./modules/lots'))
 bot.use(require('./modules/polls'))
 bot.use(require('./modules/commands'))
-bot.use(require('./modules/emporium'))
 bot.use(require('./modules/indexator-creator'))
 //#endregion
 
