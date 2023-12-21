@@ -93,6 +93,7 @@ module.exports = Composer.on('channel_post', async (ctx) => {
                     let studioName = '';
                     let monthName = '';
                     let year = '';
+                    let month = '';
                     let releaseName = '';
 
                     const months = {
@@ -119,7 +120,7 @@ module.exports = Composer.on('channel_post', async (ctx) => {
                       year = messageText.match(/ - (20)[123][0-9]/g)[0].split(' - ')[1] || '9999';
                       if (year.length === 2) year = `20${year}`
 
-                      let month = messageText.match(/([01][0-9]$)|([01][0-9] - )/g)[0].split(' - ')[0] || '88';
+                      month = messageText.match(/([01][0-9]$)|([01][0-9] - )/g)[0].split(' - ')[0] || '88';
 
                       releaseName = messageText.match(/(?! )[a-zA-Z ]+$/g)[0] || `${year}${month}`;
 
@@ -130,14 +131,15 @@ module.exports = Composer.on('channel_post', async (ctx) => {
 
                     } else {
                       monthName = messageText.split('\n')[0]?.split(' (')[1]?.split(' ')[0] || 'пыпы';
+                      month = months[monthName];
                       year = messageText.split('\n')[0]?.split(' (')[1]?.split(' ')[1]?.split(')')[0] || '2222';
 
                       if (messageText.indexOf('\n') > 0) {
                         studioName = messageText.split('\n')[0].split(' (')[0];
-                        if (year == '2222' || months[monthName] == '88') {
+                        if (year == '2222' || month == '88') {
                           releaseName = `${messageText.split('\n')[1]}`;
                         } else {
-                          releaseName = `${year}${months[monthName]} - ${messageText.split('\n')[1]}`;
+                          releaseName = `${messageText.split('\n')[1]}`;
                         }
                       } else {
                         studioName = messageText.split(' (')[0];
@@ -152,7 +154,9 @@ module.exports = Composer.on('channel_post', async (ctx) => {
                     const newPostInfo = {
                       name: studioName,
                       release: releaseName,
-                      messageID: ctx.channelPost.message_id
+                      messageID: ctx.channelPost.message_id,
+                      year: year,
+                      month: month
                     }
                     copy.push(newPostInfo)
                     copy.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
@@ -165,7 +169,7 @@ module.exports = Composer.on('channel_post', async (ctx) => {
                         if (localChannels.channels[channelID].type === 'archive')
                           newTextFirst += `<a href="https://t.me/c/${channelID.toString().split('-100')[1]}/${st.messageID}">${st.name} - ${st.release.split(' - ')[1] || st.release}</a>\n`
                         if (localChannels.channels[channelID].type === 'collection')
-                          newTextFirst += `<a href="https://t.me/c/${channelID.toString().split('-100')[1]}/${st.messageID}">${st.release}</a>\n`
+                          newTextFirst += `<a href="https://t.me/c/${channelID.toString().split('-100')[1]}/${st.messageID}">${st.year}${st.month} - ${st.release}</a>\n`
                       });
                     } else {
                       newTextFirst = `🔸 <b>Индексатор 1</b>🔸\n\n`
