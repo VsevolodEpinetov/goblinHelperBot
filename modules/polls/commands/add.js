@@ -4,7 +4,7 @@ const util = require('../../util')
 
 module.exports = Composer.command('add', async (ctx) => {
   util.log(ctx)
-  const isAnAdmin = ctx.message.from.id == SETTINGS.CHATS.EPINETOV || ctx.message.from.id == SETTINGS.CHATS.ALEKS;
+  const isAnAdmin = ctx.message.from.id == SETTINGS.CHATS.EPINETOV || ctx.message.from.id == SETTINGS.CHATS.ALEKS || ctx.message.from.id == SETTINGS.CHATS.ARTYOM;
 
   if (!isAnAdmin) { 
     return; 

@@ -10,7 +10,7 @@ module.exports = Composer.command('count', async (ctx) => {
     ctx.message.chat.id != SETTINGS.CHATS.GOBLIN
   ) { return; }
 
-  if (ctx.message.from.id != SETTINGS.CHATS.EPINETOV) { return; }
+  if (ctx.message.from.id != SETTINGS.CHATS.EPINETOV || ctx.message.from.id == SETTINGS.CHATS.ARTYOM) { return; }
 
   if (!ctx.message.reply_to_message) {
     ctx.reply('Ты промахнулся')

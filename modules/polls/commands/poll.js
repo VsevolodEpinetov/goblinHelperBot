@@ -11,7 +11,7 @@ module.exports = Composer.command('poll', async (ctx) => {
     ctx.message.chat.id != SETTINGS.CHATS.GOBLIN
   ) { return; }
 
-  if (ctx.message.from.id != SETTINGS.CHATS.EPINETOV && ctx.message.from.id != SETTINGS.CHATS.ALEKS) { return; }
+  if (ctx.message.from.id != SETTINGS.CHATS.EPINETOV && ctx.message.from.id != SETTINGS.CHATS.ALEKS && ctx.message.from.id != SETTINGS.CHATS.ARTYOM) { return; }
 
   let options = [];
   let currentPollNumber = 0;
