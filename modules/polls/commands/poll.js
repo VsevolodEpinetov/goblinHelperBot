@@ -5,13 +5,12 @@ const util = require('../../util')
 
 module.exports = Composer.command('poll', async (ctx) => {
   util.log(ctx)
-  if (
-    ctx.message.chat.id != SETTINGS.CHATS.EPINETOV && 
-    ctx.message.chat.id != SETTINGS.CHATS.TEST &&
-    ctx.message.chat.id != SETTINGS.CHATS.GOBLIN
-  ) { return; }
 
-  if (ctx.message.from.id != SETTINGS.CHATS.EPINETOV && ctx.message.from.id != SETTINGS.CHATS.ALEKS && ctx.message.from.id != SETTINGS.CHATS.ARTYOM) { return; }
+  const isAnAdmin = ctx.message.from.id == SETTINGS.CHATS.EPINETOV || ctx.message.from.id == SETTINGS.CHATS.ALEKS || ctx.message.from.id == SETTINGS.CHATS.ARTYOM;
+
+  if (!isAnAdmin) { 
+    return; 
+  }
 
   let options = [];
   let currentPollNumber = 0;
