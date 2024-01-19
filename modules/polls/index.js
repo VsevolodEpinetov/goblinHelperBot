@@ -7,4 +7,5 @@ module.exports = Composer.compose([
   require('./commands/sync'),
   require('./commands/switch'),
   require('./commands/add'),
+  require('./commands/addByPlus'),
 ])

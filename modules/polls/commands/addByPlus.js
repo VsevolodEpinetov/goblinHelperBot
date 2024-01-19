@@ -2,15 +2,21 @@ const { Composer } = require("telegraf");
 const SETTINGS = require('../../../settings.json')
 const util = require('../../util')
 
-module.exports = Composer.command('add', async (ctx) => {
+module.exports = Composer.hears('+', async (ctx) => {
   util.log(ctx)
   const isAnAdmin = ctx.message.from.id == SETTINGS.CHATS.EPINETOV || ctx.message.from.id == SETTINGS.CHATS.ALEKS || ctx.message.from.id == SETTINGS.CHATS.ARTYOM;
 
   if (!isAnAdmin) { 
+    console.log('not an admin')
     return; 
   }
 
-  const messageText = ctx.message.text;
+  if (!ctx.message.reply_to_message) {
+    console.log('not replying')
+    return;
+  }
+
+  const messageText = ctx.message.reply_to_message.text || ctx.message.reply_to_message.caption;
 
   const data = JSON.stringify(messageText).replaceAll('"', '').split('\\n');
   let studio = {
