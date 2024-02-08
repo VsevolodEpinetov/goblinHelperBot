@@ -10,9 +10,6 @@ module.exports = Composer.command('revive', (ctx) => {
   const lotID = parseInt(ctx.message.text.split('/revive ')[1]);
   const lotData = ctx.globalSession.lots[lotID];
 
-  console.log(lotID);
-  console.log(lotData);
-
   let organizator = lotData.whoCreated?.first_name + ' ' + lotData.whoCreated?.last_name;
   if (lotData.whoCreated.username) organizator += ` (@${lotData.whoCreated.username})`
 
@@ -45,7 +42,6 @@ module.exports = Composer.command('revive', (ctx) => {
       Markup.button.callback(SETTINGS.BUTTONS.LOT.JOIN, `action-join-lot-${lotID}`),
       Markup.button.callback(SETTINGS.BUTTONS.LOT.CLOSE, `action-close-lot-${lotID}`),
     ]),
-    message_thread_id: ctx.message.message_thread_id ? ctx.message.message_thread_id : null,
     disable_notification: true
   }).catch((error) => {
     console.log(error)
