@@ -11,7 +11,8 @@ lotSceneAuthorStage.enter(async (ctx) => {
       parse_mode: 'HTML',
       ...Markup.inlineKeyboard([
         Markup.button.callback(SETTINGS.BUTTONS.CREATE_LOT.CANCEL, 'actionStopLot')
-      ])
+      ]),
+      message_thread_id: SETTINGS.TOPICS.GOBLIN.LOTS
     }).then(nctx => {
       ctx.session.lot.lastMessage.bot = nctx.message_id;
     })
@@ -22,7 +23,8 @@ lotSceneAuthorStage.enter(async (ctx) => {
       parse_mode: 'HTML',
       ...Markup.inlineKeyboard([
         Markup.button.callback(SETTINGS.BUTTONS.CREATE_LOT.CANCEL, 'actionStopLot')
-      ])
+      ]),
+      message_thread_id: SETTINGS.TOPICS.GOBLIN.LOTS
     }).then(nctx => {
       ctx.session.lot.lastMessage.bot = nctx.message_id;
     })
@@ -44,7 +46,9 @@ lotSceneAuthorStage.on('text', async (ctx) => {
 lotSceneAuthorStage.action('actionStopLot', async (ctx) => {
   util.log(ctx)
   if (ctx.session.lot) {
-    await ctx.replyWithHTML(`👌`);
+    await ctx.replyWithHTML(`👌`, {
+      message_thread_id: SETTINGS.TOPICS.GOBLIN.LOTS
+    });
     try {
       if (ctx.session.lot.lastMessage.bot) await ctx.deleteMessage(ctx.session.lot.lastMessage.bot);
     }

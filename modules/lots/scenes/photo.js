@@ -13,7 +13,8 @@ lotScenePhotoStage.enter(async (ctx) => {
       parse_mode: 'HTML',
       ...Markup.inlineKeyboard([
         Markup.button.callback(SETTINGS.BUTTONS.CREATE_LOT.CANCEL, 'actionStopLot')
-      ])
+      ]),
+      message_thread_id: SETTINGS.TOPICS.GOBLIN.LOTS
     }).then(nctx => {
       ctx.session.lot.lastMessage.bot = nctx.message_id;
     })
@@ -37,7 +38,8 @@ lotScenePhotoStage.on('photo', async (ctx) => {
       ...Markup.inlineKeyboard([
         Markup.button.callback(SETTINGS.BUTTONS.CREATE_LOT.CANCEL, 'actionStopLot'),
         Markup.button.callback(`👍 Этих хватит (${ctx.session.lot.photos.length})`, 'finishPhotoUpload')
-      ])
+      ]),
+      message_thread_id: SETTINGS.TOPICS.GOBLIN.LOTS
     }).then(nctx => {
       ctx.session.lot.lastMessage.bot = nctx.message_id;
     });
@@ -49,7 +51,8 @@ lotScenePhotoStage.on('photo', async (ctx) => {
 lotScenePhotoStage.on('document', async (ctx) => {
   try {
     await ctx.replyWithHTML(SETTINGS.MESSAGES.CREATE_LOT.ERRORS.NOT_A_PHOTO, {
-      reply_to_message_id: ctx.message.message_id
+      reply_to_message_id: ctx.message.message_id,
+      message_thread_id: SETTINGS.TOPICS.GOBLIN.LOTS
     })
   } catch (e) {
     console.error('Failed to handle document message:', e);
@@ -63,13 +66,14 @@ lotScenePhotoStage.on('message', async (ctx) => {
       reply_to_message_id: ctx.message.message_id,
       ...Markup.inlineKeyboard([
         Markup.button.callback(SETTINGS.BUTTONS.CREATE_LOT.CANCEL, 'actionStopLot')
-      ])
+      ]),
+      message_thread_id: SETTINGS.TOPICS.GOBLIN.LOTS
     })
   } catch (e) {
     console.error('Failed to handle non-photo message:', e);
   }
 })
- 
+
 lotScenePhotoStage.action('finishPhotoUpload', async (ctx) => {
   try {
     ctx.session.lot = {
@@ -99,7 +103,9 @@ lotScenePhotoStage.action('actionStopLot', async (ctx) => {
   try {
     util.log(ctx)
     if (ctx.session.lot) {
-      await ctx.replyWithHTML(`👌`);
+      await ctx.replyWithHTML(`👌`, {
+        message_thread_id: SETTINGS.TOPICS.GOBLIN.LOTS
+      });
       try {
         if (ctx.session.lot.lastMessage.bot) await ctx.deleteMessage(ctx.session.lot.lastMessage.bot);
       } catch (e) {

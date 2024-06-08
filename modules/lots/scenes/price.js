@@ -17,7 +17,8 @@ lotScenePriceStage.enter(async (ctx) => {
         [
           Markup.button.callback(SETTINGS.BUTTONS.CREATE_LOT.CANCEL, 'actionStopLot')
         ]
-      ])
+      ]),
+      message_thread_id: SETTINGS.TOPICS.GOBLIN.LOTS
     }).then(nctx => {
       ctx.session.lot.lastMessage.bot = nctx.message_id;
     })
@@ -67,7 +68,8 @@ lotScenePriceStage.action(/^actionChangeCurrency-(USD|EUR|RUB)/g, async ctx => {
         [
           Markup.button.callback(SETTINGS.BUTTONS.CREATE_LOT.CANCEL, 'actionStopLot')
         ]
-      ])
+      ]),
+      message_thread_id: SETTINGS.TOPICS.GOBLIN.LOTS
     }).then(nctx => {
       ctx.session.lot.lastMessage.bot = nctx.message_id;
     })
@@ -81,7 +83,9 @@ lotScenePriceStage.action('actionStopLot', async (ctx) => {
   try {
     util.log(ctx)
     if (ctx.session.lot) {
-      ctx.replyWithHTML(`👌`);
+      await ctx.replyWithHTML(`👌`, {
+        message_thread_id: SETTINGS.TOPICS.GOBLIN.LOTS
+      });
       try {
         if (ctx.session.lot.lastMessage.bot) await ctx.deleteMessage(ctx.session.lot.lastMessage.bot);
       } catch (e) {
