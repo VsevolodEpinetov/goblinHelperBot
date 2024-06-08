@@ -4,9 +4,9 @@ const util = require('../../util.js')
 
 const lotSceneLinkStage = new Scenes.BaseScene('LOT_SCENE_LINK_STAGE');
 
-lotSceneLinkStage.enter((ctx) => {
+lotSceneLinkStage.enter(async (ctx) => {
   try {
-    ctx.replyWithHTML(`Ого, целых $${ctx.session.lot.price}! А отправьте мне ссылку на эти модельки. Может, кто-то ещё захочет посмотреть на весь набор`, {
+    await ctx.replyWithHTML(`Стоимость лота записал, спасибо! Пришли описание лота, чтобы было понимание, что это такое. Можно ссылку, если оно понятно будет\n\n<b>Этап:</b> ✍️ описание\n\nℹ️ <i><b>Для информации:</b> краткость - сестра таланта! Если описание слишком большое, то всё может взорваться</i>`, {
       reply_to_message_id: ctx.session.lot.lastMessage.user,
       parse_mode: 'HTML',
       ...Markup.inlineKeyboard([
@@ -19,7 +19,7 @@ lotSceneLinkStage.enter((ctx) => {
   catch (e) {
     console.log('Failed to reply to the message')
     console.log(e)
-    ctx.replyWithHTML(`Ого, целых $${ctx.session.lot.price}! А отправьте мне ссылку на эти модельки. Может, кто-то ещё захочет посмотреть на весь набор`, {
+    await ctx.replyWithHTML(`Стоимость лота записал, спасибо! Пришли описание лота, чтобы было понимание, что это такое. Можно ссылку, если оно понятно будет\n\n<b>Этап:</b> ✍️ описание`, {
       parse_mode: 'HTML',
       ...Markup.inlineKeyboard([
         Markup.button.callback(SETTINGS.BUTTONS.CREATE_LOT.CANCEL, 'actionStopLot')
@@ -30,11 +30,11 @@ lotSceneLinkStage.enter((ctx) => {
   }
 });
 
-lotSceneLinkStage.on('text', (ctx) => {
+lotSceneLinkStage.on('text', async (ctx) => {
   ctx.session.lot.link = ctx.message.text;
   ctx.session.lot.lastMessage.user = ctx.message.message_id;
   try {
-    if (ctx.session.lot.lastMessage.bot) ctx.deleteMessage(ctx.session.lot.lastMessage.bot);
+    if (ctx.session.lot.lastMessage.bot) await ctx.deleteMessage(ctx.session.lot.lastMessage.bot);
   }
   catch (e) {
     console.log(e)
@@ -42,12 +42,12 @@ lotSceneLinkStage.on('text', (ctx) => {
   return ctx.scene.enter('LOT_SCENE_AUTHOR_STAGE');
 });
 
-lotSceneLinkStage.action('actionStopLot', (ctx) => {
+lotSceneLinkStage.action('actionStopLot', async (ctx) => {
   util.log(ctx)
   if (ctx.session.lot) {
-    ctx.replyWithHTML(`👌`);
+    await ctx.replyWithHTML(`👌`);
     try {
-      if (ctx.session.lot.lastMessage.bot) ctx.deleteMessage(ctx.session.lot.lastMessage.bot);
+      if (ctx.session.lot.lastMessage.bot) await ctx.deleteMessage(ctx.session.lot.lastMessage.bot);
     }
     catch (e) {
       console.log(e)

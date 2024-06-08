@@ -18,6 +18,7 @@ module.exports = Composer.command('revive', (ctx) => {
     name: lotData.name,
     link: lotData.link,
     price: lotData.price,
+    currency: lotData.currency,
     organizator: organizator,
     status: true,
     participants: lotData.participants
@@ -29,6 +30,7 @@ module.exports = Composer.command('revive', (ctx) => {
       name: lotData.name,
       link: lotData.link,
       price: lotData.price,
+      currency: lotData.currency,
       organizator: organizator,
       status: true,
       participants: lotData.participants

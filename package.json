@@ -5,7 +5,7 @@
     "dayjs": "^1.11.7",
     "dotenv": "^16.0.3",
     "form-data": "^4.0.0",
-    "telegraf": "^4.15.3",
+    "telegraf": "^4.16.3",
     "telegraf-session-redis-upd": "^5.1.4",
     "telegraf-throttler": "^0.6.0",
     "yandex-disk": "^0.0.8"

@@ -4,9 +4,9 @@ const util = require('../../util.js')
 
 const lotSceneAuthorStage = new Scenes.BaseScene('LOT_SCENE_AUTHOR_STAGE');
 
-lotSceneAuthorStage.enter((ctx) => {
+lotSceneAuthorStage.enter(async (ctx) => {
   try {
-    ctx.replyWithHTML(`Понял, всех буду отправлять <a href='${ctx.session.lot.link}'>сюда</a>. А если вкратце - кто автор моделек?`, {
+    await ctx.replyWithHTML(`Описание записал. А теперь - автор моделек, миниатюрок или в принципе того, что выкупаем\n\n<b>Этап:</b> 👨‍🎨 автор`, {
       reply_to_message_id: ctx.session.lot.lastMessage.user,
       parse_mode: 'HTML',
       ...Markup.inlineKeyboard([
@@ -18,7 +18,7 @@ lotSceneAuthorStage.enter((ctx) => {
   } catch (e) {
     console.log('Failed to reply to the message')
     console.log(e)
-    ctx.replyWithHTML(`Понял, всех буду отправлять <a href='${ctx.session.lot.link}'>сюда</a>. А если вкратце - кто автор моделек?`, {
+    await ctx.replyWithHTML(`Описание записал. А теперь - автор моделек, миниатюрок или в принципе того, что выкупаем\n\n<b>Этап:</b> 👨‍🎨 автор`, {
       parse_mode: 'HTML',
       ...Markup.inlineKeyboard([
         Markup.button.callback(SETTINGS.BUTTONS.CREATE_LOT.CANCEL, 'actionStopLot')
@@ -29,11 +29,11 @@ lotSceneAuthorStage.enter((ctx) => {
   }
 });
 
-lotSceneAuthorStage.on('text', (ctx) => {
+lotSceneAuthorStage.on('text', async (ctx) => {
   ctx.session.lot.author = ctx.message.text;
   ctx.session.lot.lastMessage.user = ctx.message.message_id;
   try {
-    if (ctx.session.lot.lastMessage.bot) ctx.deleteMessage(ctx.session.lot.lastMessage.bot);
+    if (ctx.session.lot.lastMessage.bot) await ctx.deleteMessage(ctx.session.lot.lastMessage.bot);
   }
   catch (e) {
     console.log(e)
@@ -41,12 +41,12 @@ lotSceneAuthorStage.on('text', (ctx) => {
   return ctx.scene.enter('LOT_SCENE_NAME_STAGE');
 });
 
-lotSceneAuthorStage.action('actionStopLot', (ctx) => {
+lotSceneAuthorStage.action('actionStopLot', async (ctx) => {
   util.log(ctx)
   if (ctx.session.lot) {
-    ctx.replyWithHTML(`👌`);
+    await ctx.replyWithHTML(`👌`);
     try {
-      if (ctx.session.lot.lastMessage.bot) ctx.deleteMessage(ctx.session.lot.lastMessage.bot);
+      if (ctx.session.lot.lastMessage.bot) await ctx.deleteMessage(ctx.session.lot.lastMessage.bot);
     }
     catch (e) {
       console.log(e)
@@ -54,7 +54,7 @@ lotSceneAuthorStage.action('actionStopLot', (ctx) => {
     ctx.session.lot = null;
     return ctx.scene.leave();
   } else {
-    ctx.answerCbQuery(SETTINGS.MESSAGES.CREATE_LOT.ERRORS.NOT_CREATING_A_LOT)
+    await ctx.answerCbQuery(SETTINGS.MESSAGES.CREATE_LOT.ERRORS.NOT_CREATING_A_LOT)
   }
 })
 

@@ -3,7 +3,7 @@ const SETTINGS = require('../../../settings.json')
 const lotsUtils = require('../utils')
 const util = require('../../util')
 
-module.exports = Composer.action(/^action-close-lot-[0-9]+$/g, ctx => {
+module.exports = Composer.action(/^action-close-lot-[0-9]+$/g, async ctx => {
   util.log(ctx)
   const lotID = ctx.callbackQuery.data.split('action-close-lot-')[1];
 
@@ -21,29 +21,30 @@ module.exports = Composer.action(/^action-close-lot-[0-9]+$/g, ctx => {
           name: lotData.name,
           link: lotData.link,
           price: lotData.price,
+          currency: lotData.currency,
           organizator: organizator,
           status: false,
           participants: lotData.participants
         }
       )
 
-      ctx.replyWithPhoto(lotData.photo, {
+      await ctx.replyWithPhoto(lotData.photo, {
         caption: caption,
         parse_mode: 'HTML',
         message_thread_id: ctx.callbackQuery.message.message_thread_id ? ctx.callbackQuery.message.message_thread_id : null
       })
 
       ctx.globalSession.lots[lotID] = null;
-      ctx.deleteMessage(ctx.callbackQuery.message.message_id).catch((error) => {
+      await ctx.deleteMessage(ctx.callbackQuery.message.message_id).catch((error) => {
         ctx.editMessageCaption(ctx.callbackQuery.message.message_id, undefined, 'удалено', {
           parse_mode: 'HTML'
         })
         console.log(error)
       });
     } else {
-      ctx.answerCbQuery(SETTINGS.MESSAGES.CREATE_LOT.ERRORS.NOT_A_CREATOR)
+      await ctx.answerCbQuery(SETTINGS.MESSAGES.CREATE_LOT.ERRORS.NOT_A_CREATOR)
     }
   } else {
-    ctx.answerCbQuery(SETTINGS.MESSAGES.CREATE_LOT.ERRORS.ALREADY_CLOSED)
+    await ctx.answerCbQuery(SETTINGS.MESSAGES.CREATE_LOT.ERRORS.ALREADY_CLOSED)
   }
 })

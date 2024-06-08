@@ -5,9 +5,9 @@ const lotsUtils = require('../utils')
 
 const lotSceneNameStage = new Scenes.BaseScene('LOT_SCENE_NAME_STAGE');
 
-lotSceneNameStage.enter((ctx) => {
+lotSceneNameStage.enter(async (ctx) => {
   try {
-    ctx.replyWithHTML(`<b>${ctx.session.lot.author}</b>... Кажется, я это раньше где-то слышал 🤔 А набор как называется?`, {
+    await ctx.replyWithHTML(`Отлично, автора тоже запомнил! Теперь последний этап - название лота. Обычно это может быть название набора/проекта, ну либо что-то другое\n\n<b>Этап:</b> 🗒 название`, {
       reply_to_message_id: ctx.session.lot.lastMessage.user,
       parse_mode: 'HTML',
       ...Markup.inlineKeyboard([
@@ -19,7 +19,7 @@ lotSceneNameStage.enter((ctx) => {
   } catch (e) {
     console.log('Failed to reply to the message')
     console.log(e)
-    ctx.replyWithHTML(`<b>${ctx.session.lot.author}</b>... Кажется, я это раньше где-то слышал 🤔 А набор как называется?`, {
+    await ctx.replyWithHTML(`Отлично, автора тоже запомнил! Теперь последний этап - название лота. Обычно это может быть название набора/проекта, ну либо что-то другое\n\n<b>Этап:</b> 🗒 название`, {
       reply_to_message_id: ctx.session.lot.lastMessage.user,
       parse_mode: 'HTML',
       ...Markup.inlineKeyboard([
@@ -31,10 +31,10 @@ lotSceneNameStage.enter((ctx) => {
   }
 });
 
-lotSceneNameStage.on('text', (ctx) => {
+lotSceneNameStage.on('text', async (ctx) => {
   ctx.session.lot.name = ctx.message.text;
   try {
-    if (ctx.session.lot.lastMessage.bot) ctx.deleteMessage(ctx.session.lot.lastMessage.bot);
+    if (ctx.session.lot.lastMessage.bot) await ctx.deleteMessage(ctx.session.lot.lastMessage.bot);
   }
   catch (e) {
     console.log(e)
@@ -45,33 +45,71 @@ lotSceneNameStage.on('text', (ctx) => {
 
   let lotInfo = ctx.session.lot;
 
-  ctx.replyWithPhoto(ctx.session.lot.photo, {
-    caption: lotsUtils.getLotCaption(
-      {
-        author: lotInfo.author,
-        name: lotInfo.name,
-        link: lotInfo.link,
-        price: lotInfo.price,
-        organizator: organizator,
-        status: true
+  if (ctx.session.lot.photos.length < 2) {
+    await ctx.replyWithPhoto(ctx.session.lot.photos[0], {
+      caption: lotsUtils.getLotCaption(
+        {
+          author: lotInfo.author,
+          name: lotInfo.name,
+          link: lotInfo.link,
+          price: lotInfo.price,
+          currency: lotInfo.currency,
+          organizator: organizator,
+          status: true
+        }
+      ),
+      parse_mode: 'HTML',
+      ...Markup.inlineKeyboard([
+        Markup.button.callback(SETTINGS.BUTTONS.LOT.JOIN, `action-join-lot-${ctx.globalSession.lots.length}`),
+        Markup.button.callback(SETTINGS.BUTTONS.LOT.CLOSE, `action-close-lot-${ctx.globalSession.lots.length}`),
+      ])
+    })
+  } else {
+    await ctx.replyWithMediaGroup(ctx.session.lot.photos.map((p, id) => {
+      if (id == 0) {
+        return {
+          type: 'photo',
+          media: p,
+          caption: lotsUtils.getLotCaption(
+            {
+              author: lotInfo.author,
+              name: lotInfo.name,
+              link: lotInfo.link,
+              price: lotInfo.price,
+              currency: lotInfo.currency,
+              organizator: organizator,
+              status: true
+            }
+          ),
+          parse_mode: "HTML"
+        }
+      } else {
+        return { type: 'photo', media: p }
       }
-    ),
-    parse_mode: 'HTML',
-    ...Markup.inlineKeyboard([
-      Markup.button.callback(SETTINGS.BUTTONS.LOT.JOIN, `action-join-lot-${ctx.globalSession.lots.length}`),
-      Markup.button.callback(SETTINGS.BUTTONS.LOT.CLOSE, `action-close-lot-${ctx.globalSession.lots.length}`),
-    ])
-  })
+    })).then(nctx => {
+      ctx.session.lot.lastMessage.bot = nctx.message_id;
+    })
+
+
+    await ctx.reply('Присоединиться к лоту выше 👆', {
+      parse_mode: 'HTML',
+      ...Markup.inlineKeyboard([
+        Markup.button.callback(SETTINGS.BUTTONS.LOT.JOIN, `action-join-lot-${ctx.globalSession.lots.length}`),
+        Markup.button.callback(SETTINGS.BUTTONS.LOT.CLOSE, `action-close-lot-${ctx.globalSession.lots.length}`),
+      ])
+    })
+  }
+
 
   return ctx.scene.leave();
 });
 
-lotSceneNameStage.action('actionStopLot', (ctx) => {
+lotSceneNameStage.action('actionStopLot', async (ctx) => {
   util.log(ctx)
   if (ctx.session.lot) {
-    ctx.replyWithHTML(`👌`);
+    await ctx.replyWithHTML(`👌`);
     try {
-      if (ctx.session.lot.lastMessage.bot) ctx.deleteMessage(ctx.session.lot.lastMessage.bot);
+      if (ctx.session.lot.lastMessage.bot) await ctx.deleteMessage(ctx.session.lot.lastMessage.bot);
     }
     catch (e) {
       console.log(e)
@@ -79,7 +117,7 @@ lotSceneNameStage.action('actionStopLot', (ctx) => {
     ctx.session.lot = null;
     return ctx.scene.leave();
   } else {
-    ctx.answerCbQuery(SETTINGS.MESSAGES.CREATE_LOT.ERRORS.NOT_CREATING_A_LOT)
+    await ctx.answerCbQuery(SETTINGS.MESSAGES.CREATE_LOT.ERRORS.NOT_CREATING_A_LOT)
   }
 })
 
