@@ -60,17 +60,20 @@ module.exports = Composer.action(/^action-join-lot-[0-9]+$/g, async ctx => {
         } else {
           return { type: 'photo', media: p }
         }
-      })).then(nctx => {
+      }), {
+        message_thread_id: SETTINGS.TOPICS.GOBLIN.LOTS
+      }).then(nctx => {
         ctx.globalSession.lots[lotID].lastMessage.bot = nctx.message_id;
       })
-  
-  
+
+
       await ctx.reply('Присоединиться к лоту выше 👆', {
         parse_mode: 'HTML',
         ...Markup.inlineKeyboard([
           Markup.button.callback(SETTINGS.BUTTONS.LOT.JOIN, `action-join-lot-${lotID}`),
           Markup.button.callback(SETTINGS.BUTTONS.LOT.CLOSE, `action-close-lot-${lotID}`),
-        ])
+        ]),
+        message_thread_id: SETTINGS.TOPICS.GOBLIN.LOTS
       })
     } else {
       await ctx.replyWithPhoto(lotData.photos[0], {

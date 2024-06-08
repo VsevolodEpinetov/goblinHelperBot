@@ -31,7 +31,7 @@ module.exports = Composer.action(/^action-close-lot-[0-9]+$/g, async ctx => {
       await ctx.replyWithPhoto(lotData.photo, {
         caption: caption,
         parse_mode: 'HTML',
-        message_thread_id: ctx.callbackQuery.message.message_thread_id ? ctx.callbackQuery.message.message_thread_id : null
+        message_thread_id: SETTINGS.TOPICS.GOBLIN.LOTS
       })
 
       ctx.globalSession.lots[lotID] = null;
