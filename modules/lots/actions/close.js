@@ -51,7 +51,7 @@ module.exports = Composer.action(/^action-close-lot-[0-9]+$/g, async ctx => {
           message_thread_id: SETTINGS.TOPICS.GOBLIN.LOTS
         })
       } else {
-        await ctx.replyWithPhoto(lotData.photo, {
+        await ctx.replyWithPhoto(lotData.photos[0], {
           caption: caption,
           parse_mode: 'HTML',
           message_thread_id: SETTINGS.TOPICS.GOBLIN.LOTS
