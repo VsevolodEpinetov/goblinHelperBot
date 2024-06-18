@@ -28,13 +28,38 @@ module.exports = Composer.action(/^action-close-lot-[0-9]+$/g, async ctx => {
         }
       )
 
-      await ctx.replyWithPhoto(lotData.photo, {
-        caption: caption,
-        parse_mode: 'HTML',
-        message_thread_id: SETTINGS.TOPICS.GOBLIN.LOTS
-      })
+      if (ctx.globalSession.lots[lotID].photos.length > 1) {
+        try {
+          if (lotData.lastMessage.bot) await ctx.deleteMessage(lotData.lastMessage.bot);
+        }
+        catch (e) {
+          console.log(e)
+        }
+  
+        await ctx.replyWithMediaGroup(lotData.photos.map((p, id) => {
+          if (id == 0) {
+            return {
+              type: 'photo',
+              media: p,
+              caption: caption,
+              parse_mode: "HTML"
+            }
+          } else {
+            return { type: 'photo', media: p }
+          }
+        }), {
+          message_thread_id: SETTINGS.TOPICS.GOBLIN.LOTS
+        })
+      } else {
+        await ctx.replyWithPhoto(lotData.photo, {
+          caption: caption,
+          parse_mode: 'HTML',
+          message_thread_id: SETTINGS.TOPICS.GOBLIN.LOTS
+        })
+      }
 
       ctx.globalSession.lots[lotID] = null;
+      
       await ctx.deleteMessage(ctx.callbackQuery.message.message_id).catch((error) => {
         ctx.editMessageCaption(ctx.callbackQuery.message.message_id, undefined, 'удалено', {
           parse_mode: 'HTML'

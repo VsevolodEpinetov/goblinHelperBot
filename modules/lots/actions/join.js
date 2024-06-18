@@ -41,15 +41,15 @@ module.exports = Composer.action(/^action-join-lot-[0-9]+$/g, async ctx => {
       photos: lotData.photos
     });
 
-    if (ctx.globalSession.lots[lotID].photos.length > 1) {
+    if (lotData.photos.length > 1) {
       try {
-        if (ctx.globalSession.lots[lotID].lastMessage.bot) await ctx.deleteMessage(ctx.globalSession.lots[lotID].lastMessage.bot);
+        if (lotData.lastMessage.bot) await ctx.deleteMessage(lotData.lastMessage.bot);
       }
       catch (e) {
         console.log(e)
       }
 
-      await ctx.replyWithMediaGroup(ctx.globalSession.lots[lotID].photos.map((p, id) => {
+      await ctx.replyWithMediaGroup(lotData.photos.map((p, id) => {
         if (id == 0) {
           return {
             type: 'photo',
