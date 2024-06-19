@@ -4,11 +4,8 @@ const util = require('../../util')
 
 module.exports = Composer.command('add', async (ctx) => {
   util.log(ctx)
-  const isAnAdmin = ctx.message.from.id == SETTINGS.CHATS.EPINETOV || 
-                    ctx.message.from.id == SETTINGS.CHATS.ALEKS || 
-                    ctx.message.from.id == SETTINGS.CHATS.ARTYOM;
 
-  if (!isAnAdmin) { 
+  if (!util.isAdmin(ctx.message.from.id)) { 
     return; 
   }
 
@@ -22,25 +19,26 @@ module.exports = Composer.command('add', async (ctx) => {
     bought: false
   }
 
-  data.forEach((el, id) => {
+  data.forEach((el) => {
     let type = 'name';
-    let value = el;
-    if (el.indexOf('http') == 0) {
-      type = 'mainLink'
-    } else if (el.indexOf('$') == 0 || el.indexOf('€') == 0) {
-      type = 'price'
-      value = el.replaceAll('$', '');
-      value = value.replaceAll('€', '')
+    let value = el.trim(); // Удаляем лишние пробелы
+    if (el.indexOf('http') === 0) {
+      type = 'mainLink';
+    } else if (el.indexOf('$') === 0 || el.indexOf('€') === 0) {
+      type = 'price';
+      value = el.replaceAll('$', '').replaceAll('€', '');
       value = parseInt(value);
     }
     studio[type] = value;
-  })
+  });
   
-  //ctx.globalSession.studios.push(studio);
   let copy = ctx.globalSession.studios.slice();
   copy.push(studio);
-  copy.sort((a, b) => a.name.localeCompare(b.name))
+  copy.sort((a, b) => a.name.localeCompare(b.name));
   ctx.globalSession.studios = copy;
 
-  ctx.reply('added and sorted')
+  const addedMessage = await ctx.reply(`Added ${studio.name} and sorted`);
+  setTimeout(async () => {
+    await ctx.deleteMessage(addedMessage.message_id);
+  }, 5000);
 })

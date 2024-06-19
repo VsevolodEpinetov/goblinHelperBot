@@ -1,9 +1,9 @@
 const { Composer } = require("telegraf");
-const SETTINGS = require('../../../settings.json')
-const util = require('../../util')
+const SETTINGS = require('../../../settings.json');
+const util = require('../../util');
 
 module.exports = Composer.command('rem', async (ctx) => {
-  util.log(ctx)
+  util.log(ctx);
 
   if (!util.isAdmin(ctx.message.from.id)) { 
     return; 
@@ -11,19 +11,35 @@ module.exports = Composer.command('rem', async (ctx) => {
 
   const studioName = ctx.message.text.split('/rem')[1].trim();
   if (!studioName) {
-    ctx.reply('No studio name provided');
+    const noStudioMessage = await ctx.reply('No studio name provided');
+    setTimeout(() => {
+      ctx.deleteMessage(noStudioMessage.message_id);
+    }, 5000);
     return;
   }
 
   let copy = ctx.globalSession.studios.slice();
 
-  copy = copy.filter(function( obj ) {
+  // Проверка наличия студии
+  const studioExists = copy.find(obj => obj.name === studioName);
+  if (!studioExists) {
+    const notFoundMessage = await ctx.reply(`Studio ${studioName} not found`);
+    setTimeout(async () => {
+      await ctx.deleteMessage(notFoundMessage.message_id);
+    }, 5000);
+    return;
+  }
+
+  copy = copy.filter(function(obj) {
     return obj.name !== studioName;
   });
 
-  copy.sort((a, b) => a.name.localeCompare(b.name))
+  copy.sort((a, b) => a.name.localeCompare(b.name));
 
   ctx.globalSession.studios = copy;
 
-  ctx.reply('removed and sorted')
-})
+  const removedMessage = await ctx.reply(`Removed ${studioName} and sorted`);
+  setTimeout(async () => {
+    await ctx.deleteMessage(removedMessage.message_id);
+  }, 5000);
+});
