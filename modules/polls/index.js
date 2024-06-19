@@ -8,5 +8,6 @@ module.exports = Composer.compose([
   require('./commands/switch'),
   require('./commands/add'),
   require('./commands/addByPlus'),
+  require('./commands/remove'),
   //require('./reactions/add')
 ])

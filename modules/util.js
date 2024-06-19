@@ -85,6 +85,14 @@ module.exports = {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   },
 
+  isAdmin: function (telegramUserID) {
+    const isAnAdmin = telegramUserID == SETTINGS.CHATS.EPINETOV || 
+                      telegramUserID == SETTINGS.CHATS.ALEKS || 
+                      telegramUserID == SETTINGS.CHATS.ARTYOM;
+
+    return isAnAdmin;
+  },
+
 
   /*splitMessageAndReply: async function (ctx, message, menu) {
     if (message.length < settings.TelegramCharactersLimit) {
