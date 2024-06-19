@@ -28,7 +28,7 @@ module.exports = Composer.hears('+', async (ctx) => {
 
   data.forEach((el, id) => {
     let type = 'name';
-    let value = el;
+    let value = el.trim();
     if (el.indexOf('http') == 0) {
       type = 'mainLink'
     } else if (el.indexOf('$') == 0 || el.indexOf('€') == 0) {
@@ -40,11 +40,13 @@ module.exports = Composer.hears('+', async (ctx) => {
     studio[type] = value;
   })
   
-  //ctx.globalSession.studios.push(studio);
   let copy = ctx.globalSession.studios.slice();
   copy.push(studio);
   copy.sort((a, b) => a.name.localeCompare(b.name))
   ctx.globalSession.studios = copy;
 
-  ctx.reply('added and sorted')
+  const addedMessage = await ctx.reply(`Added ${studio.name} and sorted`);
+  setTimeout(async () => {
+    await ctx.deleteMessage(addedMessage.message_id);
+  }, 5000);
 })
