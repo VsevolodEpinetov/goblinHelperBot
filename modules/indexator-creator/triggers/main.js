@@ -7,8 +7,7 @@ function getKeyByValue(object, value) {
   return Object.keys(object).find(key => object[key] === value);
 }
 
-module.exports = Composer.on('channel_post', async (ctx) => {
-
+module.exports = Composer.on('channel_post', async (ctx, next) => {
   if (!ctx.channelPost.document && (typeof ctx.channelPost.text !== undefined || typeof ctx.channelPost.caption !== undefined)) {
     let localChannels;
     await sessionInstance.getSession('channelsSession').then(session => { localChannels = session; });
@@ -251,4 +250,5 @@ module.exports = Composer.on('channel_post', async (ctx) => {
                 sessionInstance.saveSession('channelsSession', localChannels);
               }
   }
+  return next(); 
 })

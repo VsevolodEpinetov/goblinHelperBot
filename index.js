@@ -50,6 +50,10 @@ const stage = new Scenes.Stage([
   require('./modules/lots/scenes/link'),
   require('./modules/lots/scenes/author'),
   require('./modules/lots/scenes/name'),
+  require('./modules/payments/scenes/proof'),
+  require('./modules/payments/scenes/month_name'),
+  require('./modules/payments/scenes/month_invitation'),
+  require('./modules/payments/scenes/month_invitation_plus'),
 ]);
 bot.use(session());
 bot.use(stage.middleware());
@@ -58,7 +62,49 @@ bot.use(require('./modules/lots'))
 bot.use(require('./modules/polls'))
 bot.use(require('./modules/commands'))
 bot.use(require('./modules/indexator-creator'))
+bot.use(require('./modules/payments'))
 //#endregion
+
+bot.on('chat_join_request', async ctx => {
+  let monthName = '';
+  let isPlus = false;
+
+  for (const monthNameInObj in ctx.globalSession.months) {
+    if (!ctx.globalSession.months[monthNameInObj].chats) {
+      await ctx.telegram.sendMessage(ctx.from.id, 'Придётся подождать чуть-чуть, небольшие организационные неполадки. Админу уже сообщил, он объявит, когда всё починят')
+      await ctx.telegram.sendMessage(SETTINGS.CHATS.EPINETOV, `Ты не объявил чаты для ${monthNameInObj}, йопта`)
+      return;
+    }
+
+    if (ctx.globalSession.months[monthNameInObj].chats.base == ctx.chat.id) {
+      monthName = monthNameInObj;
+    }
+    if (ctx.globalSession.months[monthNameInObj].chats.plus == ctx.chat.id) {
+      monthName = monthNameInObj;
+      isPlus = true;
+    }
+  }
+
+  if (ctx.globalSession.months[monthName].members[ctx.from.id]) {
+    if (isPlus) {
+      if (ctx.globalSession.months[monthName].members[ctx.from.id].plus) {
+        await ctx.approveChatJoinRequest(ctx.from.id);
+        await ctx.telegram.sendMessage(SETTINGS.CHATS.EPINETOV, `Добавил ${ctx.from.id} в плюсовый ${monthName}`)
+      } else {
+        await ctx.telegram.sendMessage(SETTINGS.CHATS.EPINETOV, `${ctx.from.id} хотел в плюсовый ${monthName}, но у него не подтверждена оплата`)
+      }
+    } else {
+      if (ctx.globalSession.months[monthName].members[ctx.from.id].paid) {
+        await ctx.approveChatJoinRequest(ctx.from.id);
+        await ctx.telegram.sendMessage(SETTINGS.CHATS.EPINETOV, `Добавил ${ctx.from.id} в базовый ${monthName}`)
+      } else {
+        await ctx.telegram.sendMessage(SETTINGS.CHATS.EPINETOV, `${ctx.from.id} хотел в базовый ${monthName}, но у него не подтверждена оплата`)
+      }
+    }
+  } else {
+    console.log("Not found the member")
+  }
+})
 
 bot.hears(/(^[гГ]облин[!.]?$)/g, (ctx) => {
   replyToTheMessage(ctx, `Слушаю, господин${ctx.message.from.first_name && ' ' + ctx.message.from.first_name}! Если Вы забыли, что я умею - напиши "Гоблин, что ты умеешь?"`, ctx.message.message_id)
