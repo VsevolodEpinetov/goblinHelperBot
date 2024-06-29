@@ -6,7 +6,8 @@ module.exports = Composer.compose([
   require('./commands/thisis'),
   require('./commands/thisis-channel'),
   require('./commands/resetm'),
+  require('./commands/paymentadmin'),
   require('./actions/addMonth'),
   require('./actions/actionBaseGroup'),
-  require('./actions/actionAdditional'),
+  require('./actions/actionAdditional')
 ])

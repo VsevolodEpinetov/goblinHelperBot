@@ -7,6 +7,10 @@ const paymentSceneProofStage = new Scenes.BaseScene('PAYMENT_SCENE_PROOF_STAGE')
 paymentSceneProofStage.enter(async (ctx) => {
 });
 
+paymentSceneProofStage.on('text', async ctx => {
+  ctx.reply('Мне нужна картинка или документ, текстовые пруфы не подойдут.')
+})
+
 paymentSceneProofStage.on('photo', async (ctx) => {
   try {
     await ctx.reply('Ага, получил от тебя изображение. Все данные отправил, ожидай аппрува :)');
@@ -42,27 +46,6 @@ paymentSceneProofStage.on('document', async (ctx) => {
     console.error('Failed to handle document message:', e);
   }
 })
-
-paymentSceneProofStage.action('finishPhotoUpload', async (ctx) => {
-  try {
-    ctx.session.lot = {
-      ...ctx.session.lot,
-      whoCreated: ctx.callbackQuery.from
-    }
-    if (ctx.session.lot.photos.length > 0) {
-      try {
-        if (ctx.session.lot.lastMessage.bot) await ctx.deleteMessage(ctx.session.lot.lastMessage.bot);
-      } catch (e) {
-        console.error('Failed to delete message:', e);
-      }
-      await ctx.scene.enter('LOT_SCENE_PRICE_STAGE');
-    } else {
-      await ctx.replyWithHTML(SETTINGS.MESSAGES.CREATE_LOT.ERRORS.NO_PHOTOS_UPLOADED);
-    }
-  } catch (e) {
-    console.error('Failed to finish photo upload:', e);
-  }
-});
 
 paymentSceneProofStage.command('exit', (ctx) => {
   ctx.scene.leave();
