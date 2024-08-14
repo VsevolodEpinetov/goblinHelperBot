@@ -2,9 +2,9 @@ const { Composer, Markup } = require("telegraf");
 const SETTINGS = require('../../../settings.json')
 const util = require('../../util')
 
-module.exports = Composer.command('paymentadmin', async (ctx) => {
+module.exports = Composer.command('pa', async (ctx) => {
   if (ctx.message.from.id != SETTINGS.CHATS.EPINETOV) { return; }
-  const telegramID = ctx.message.text.split('/paymentadmin ')[1];
+  const telegramID = ctx.message.text.split('/pa ')[1];
 
   ctx.globalSession.months[ctx.globalSession.currentMonth].members[telegramID] = {
     paid: true,
