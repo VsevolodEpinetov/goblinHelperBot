@@ -10,7 +10,5 @@ module.exports = Composer.command('nf', async (ctx) => {
   const lotID = ctx.message.text.split(' ')[1];
   const lotData = ctx.globalSession.lots[lotID];
 
-  console.log(lotData);
-
   await lotsUtils.updateLotMessageCaption(ctx, lotID, lotData);
 })
