@@ -26,6 +26,8 @@ function getLotCaption({ author, name, link, price, currency, organizator, statu
     `${participants.length > 0 ? `💶 <b>Каждый платит по:</b> ${formatCurrency(currency, price, participants.length)}\n\n` : ''}` +
     (status ? `<i>Если ты присоединишься, то цена участия будет ${formatCurrency(currency, price, participants.length + 1)}</i>\n\n#opened_lot` : '#closed_lot');
   }
+
+  return message;
 }
 
 function formatCurrency(currency, totalPrice, amountOfParticipants) {

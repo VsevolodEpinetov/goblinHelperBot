@@ -21,7 +21,7 @@ module.exports = Composer.command('info', (ctx) => {
     }
   })
 
-  lotID > 0 ? console.log('found') : console.log('not found')
+  lotID > 0 ? console.log(`found, ID: ${lotID}`) : console.log('not found')
 
   console.log(lotData);
 })
