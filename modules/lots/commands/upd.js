@@ -18,11 +18,14 @@ module.exports = Composer.command('upd', (ctx) => {
   if (ctx.message.text.indexOf('a') > 0) {
     additionalMessageID = parseInt(ctx.message.text.split(' ')[6]);
     chatID = parseInt(ctx.message.text.split(' ')[8]);
+    console.log(additionalMessageID)
+    console.log(chatID)
     ctx.globalSession.lots[lotID].messageID = messageID;
     ctx.globalSession.lots[lotID].additionalMessageID = additionalMessageID;
     ctx.globalSession.lots[lotID].chatID = chatID;
   } else {
     chatID = parseInt(ctx.message.text.split(' ')[6]);
+    console.log(chatID)
     ctx.globalSession.lots[lotID].messageID = messageID;
     ctx.globalSession.lots[lotID].chatID = chatID;
   }
