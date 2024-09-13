@@ -16,14 +16,15 @@ module.exports = Composer.command('upd', (ctx) => {
   let chatID;
   
   if (ctx.message.text.indexOf('a') > 0) {
-    additionalMessageID = ctx.message.text.split(' ')[6];
-    chatID = ctx.message.text.split(' ')[8];
-    ctx.globalSession.lots[lotID].messageID = parseInt(messageID);
-    ctx.globalSession.lots[lotID].additionalMessageID = parseInt(additionalMessageID);
-    ctx.globalSession.lots[lotID].chatID = parseInt(chatID);
+    additionalMessageID = parseInt(ctx.message.text.split(' ')[6]);
+    chatID = parseInt(ctx.message.text.split(' ')[8]);
+    ctx.globalSession.lots[lotID].messageID = messageID;
+    ctx.globalSession.lots[lotID].additionalMessageID = additionalMessageID;
+    ctx.globalSession.lots[lotID].chatID = chatID;
   } else {
-    chatID = ctx.message.text.split(' ')[6];
-    ctx.globalSession.lots[lotID].messageID = parseInt(messageID);
+    chatID = parseInt(ctx.message.text.split(' ')[6]);
+    ctx.globalSession.lots[lotID].messageID = messageID;
+    ctx.globalSession.lots[lotID].chatID = chatID;
   }
 
   console.log(`Update lot #${lotID}`);
