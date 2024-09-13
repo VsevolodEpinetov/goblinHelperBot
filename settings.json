@@ -47,6 +47,8 @@
       "user": "",
       "bot": ""
     },
+    "messageID": "",
+    "chatID": "",
     "opened": true
   },
   "MESSAGES": {

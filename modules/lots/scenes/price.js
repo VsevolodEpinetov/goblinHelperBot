@@ -1,78 +1,76 @@
 const { Scenes, Markup } = require("telegraf");
 const SETTINGS = require('../../../settings.json');
 const util = require('../../util.js')
+const lotsUtils = require('../utils.js')
 
 const lotScenePriceStage = new Scenes.BaseScene('LOT_SCENE_PRICE_STAGE');
 
+const currencyButtons = [
+  Markup.button.callback('$ ✅', 'setCurrency-USD'),
+  Markup.button.callback('€', 'setCurrency-EUR'),
+  Markup.button.callback('₽', 'setCurrency-RUB'),
+];
+
 lotScenePriceStage.enter(async (ctx) => {
-  try {
-    await ctx.replyWithHTML(`Картинки запомнил! Теперь мне нужна стоимость лота. Можешь выбрать любую валюту 😌\n\n<b>Этап:</b> 💰 стоимость\n<b>Валюта:</b> USD\n\nℹ️ <i><b>Для информации:</b> вообще взорваться всё от долевых значений (через точку) не должно, но на всякий случай лучше использовать целые числа</i>`, {
-      parse_mode: 'HTML',
-      ...Markup.inlineKeyboard([
-        [
-          Markup.button.callback('$ ✅', 'actionChangeCurrency-USD'),
-          Markup.button.callback('€', 'actionChangeCurrency-EUR'),
-          Markup.button.callback('₽', 'actionChangeCurrency-RUB')
-        ],
-        [
-          Markup.button.callback(SETTINGS.BUTTONS.CREATE_LOT.CANCEL, 'actionStopLot')
-        ]
-      ]),
-      message_thread_id: SETTINGS.TOPICS.GOBLIN.LOTS
-    }).then(nctx => {
-      ctx.session.lot.lastMessage.bot = nctx.message_id;
-    })
-  }
-  catch (e) {
-    console.error('Failed to reply to the message from the user:', e);
-  }
+  ctx.session.lot.currency = 'USD'
+  await lotsUtils.updateLotCreationMessage(ctx,
+    `Картинки запомнил! Теперь мне нужна стоимость лота. Можешь выбрать любую валюту 😌\n\n<b>Этап:</b> 💰 стоимость\n<b>Валюта:</b> USD\n\nℹ️ <i><b>Для информации:</b> вообще взорваться всё от долевых значений (через точку) не должно, но на всякий случай лучше использовать целые числа</i>`,
+    [
+      currencyButtons,
+      [
+        Markup.button.callback(SETTINGS.BUTTONS.CREATE_LOT.CANCEL, 'actionStopLot')
+      ]
+    ]
+  )
 });
 
 lotScenePriceStage.on('text', async (ctx) => {
   try {
-    ctx.session.lot.price = parseFloat(ctx.message.text);
-    ctx.session.lot.lastMessage.user = ctx.message.message_id;
-    if (ctx.session.lot.lastMessage.bot) await ctx.deleteMessage(ctx.session.lot.lastMessage.bot);
+    const price = parseFloat(ctx.message.text);
+    await ctx.deleteMessage(ctx.message.message_id);
+    if (isNaN(price) || price <= 0) {
+      return await lotsUtils.updateLotCreationMessage (ctx, 
+        `⚠️ <b>Ожидаю от тебя число! Не могу распознать, что ты прислал</b> ⚠️\n\n<blockquote>Можешь прислать как целое число, например - 12, так и дробное, например, 12.5</blockquote>\n\n<b>Этап:</b> 💰 стоимость\n<b>Валюта:</b> USD\n\nℹ️ <i><b>Для информации:</b> вообще взорваться всё от долевых значений (через точку) не должно, но на всякий случай лучше использовать целые числа</i>`,
+        [
+          currencyButtons,
+          [
+            Markup.button.callback(SETTINGS.BUTTONS.CREATE_LOT.CANCEL, 'actionStopLot')
+          ]
+        ]
+      );
+    }
+
+    ctx.session.lot.price = price.toFixed(2); // Store as a number with 2 decimal points
     ctx.scene.enter('LOT_SCENE_LINK_STAGE');
   } catch (e) {
     console.error('Failed to handle text message:', e);
   }
 });
 
-lotScenePriceStage.action(/^actionChangeCurrency-(USD|EUR|RUB)/g, async ctx => {
+lotScenePriceStage.action(/^setCurrency-(USD|EUR|RUB)/g, async ctx => {
   util.log(ctx)
-  const currency = ctx.callbackQuery.data.split('actionChangeCurrency-')[1];
+  const currency = ctx.callbackQuery.data.split('setCurrency-')[1];
   ctx.session.lot.currency = currency;
 
   let menu = [];
   for (const [key, value] of Object.entries(SETTINGS.CURRENCIES)) {
     if (key == currency) {
-      menu.push(Markup.button.callback(`${SETTINGS.CURRENCIES[key].SYMBOL} ✅`, `actionChangeCurrency-${key}`))
+      menu.push(Markup.button.callback(`${SETTINGS.CURRENCIES[key].SYMBOL} ✅`, `setCurrency-${key}`))
     } else {
-      menu.push(Markup.button.callback(`${SETTINGS.CURRENCIES[key].SYMBOL}`, `actionChangeCurrency-${key}`))
+      menu.push(Markup.button.callback(`${SETTINGS.CURRENCIES[key].SYMBOL}`, `setCurrency-${key}`))
     }
   }
 
   try {
-    if (ctx.session.lot.lastMessage.bot) await ctx.deleteMessage(ctx.session.lot.lastMessage.bot);
-  }
-  catch (e) {
-    console.log(e)
-  }
-
-  try {
-    await ctx.replyWithHTML(`Сменил валюту на ${SETTINGS.CURRENCIES[currency].NAME}! Ожидаю стоимость лота...\n\n<b>Этап:</b> 💰 стоимость\n<b>Валюта:</b> ${currency}\n\n<b>Картинок:</b> ${ctx.session.lot.photos.length}/10`, {
-      parse_mode: 'HTML',
-      ...Markup.inlineKeyboard([
+    await lotsUtils.updateLotCreationMessage(ctx,
+      `Сменил валюту на ${SETTINGS.CURRENCIES[currency].NAME}! Ожидаю стоимость лота...\n\n<b>Этап:</b> 💰 стоимость\n<b>Валюта:</b> ${currency}\n\nℹ️ <i><b>Для информации:</b> вообще взорваться всё от долевых значений (через точку) не должно, но на всякий случай лучше использовать целые числа</i>`,
+      [
         menu,
         [
           Markup.button.callback(SETTINGS.BUTTONS.CREATE_LOT.CANCEL, 'actionStopLot')
         ]
-      ]),
-      message_thread_id: SETTINGS.TOPICS.GOBLIN.LOTS
-    }).then(nctx => {
-      ctx.session.lot.lastMessage.bot = nctx.message_id;
-    })
+      ]
+    )
   }
   catch (e) {
     console.error('Failed to change currency:', e);
@@ -83,14 +81,6 @@ lotScenePriceStage.action('actionStopLot', async (ctx) => {
   try {
     util.log(ctx)
     if (ctx.session.lot) {
-      await ctx.replyWithHTML(`👌`, {
-        message_thread_id: SETTINGS.TOPICS.GOBLIN.LOTS
-      });
-      try {
-        if (ctx.session.lot.lastMessage.bot) await ctx.deleteMessage(ctx.session.lot.lastMessage.bot);
-      } catch (e) {
-        console.error('Failed to delete message:', e);
-      }
       ctx.session.lot = null;
       ctx.scene.leave();
     } else {

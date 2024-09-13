@@ -1,26 +1,20 @@
 [
   {
-    "name": "3dPrintingRealms",
-    "price": "5",
-    "mainLink": "https://www.myminifactory.com/users/3dPrintingRealms?show=tribe",
-    "bought": false
-  },
-  {
-    "name": "3dartdigital",
-    "price": "9",
-    "mainLink": "https://www.patreon.com/3dartdigital",
-    "bought": false
-  },
-  {
-    "name": "Bella Nacht",
-    "price": "8",
-    "mainLink": "https://www.myminifactory.com/users/BellaNachtMiniatures?show=tribe",
-    "bought": false
-  },
-  {
-    "name": "Chibiatures",
+    "name": "ArtificersMini",
     "price": "10",
-    "mainLink": "https://www.patreon.com/Chibiatures/posts",
+    "mainLink": "https://www.myminifactory.com/users/ArtificersMini#/",
+    "bought": false
+  },
+  {
+    "name": "Belksasar",
+    "price": "16",
+    "mainLink": "https://www.myminifactory.com/users/belksasar3dprint#/",
+    "bought": false
+  },
+  {
+    "name": "BigBadEvilGuy",
+    "price": "7",
+    "mainLink": "https://www.myminifactory.com/users/BigBadEvilGuy",
     "bought": false
   },
   {
@@ -42,105 +36,69 @@
     "bought": false
   },
   {
-    "name": "Black Knight",
-    "price": "15",
-    "mainLink": "https://www.patreon.com/blackknightminiatures",
-    "bought": false
-  },
-  {
-    "name": "Double Edge Miniatures",
-    "price": "8",
-    "mainLink": "https://www.myminifactory.com/users/Double%20Edge%20Miniatures?show=tribe",
-    "bought": false
-  },
-  {
-    "name": "Dragun Studio",
-    "price": "3",
-    "mainLink": "https://www.myminifactory.com/users/dragunstudios?show=tribe",
-    "bought": false
-  },
-  {
-    "name": "Dragonslakeminiaturas",
-    "price": "9.5",
-    "mainLink": "https://www.myminifactory.com/users/dragonslakeminiaturas?show=tribe",
+    "name": "Epic Miniatures",
+    "price": "12",
+    "mainLink": "https://www.myminifactory.com/users/Epic-Miniatures",
     "bought": false
   },
   {
     "name": "GAZ Minis",
-    "price": "10",
+    "price": "4.5",
     "mainLink": "https://www.patreon.com/GazMinis",
     "bought": false
   },
   {
-    "name": "GoonMasterGames",
+    "name": "Mierce Miniatures",
+    "price": "13",
+    "mainLink": "https://www.myminifactory.com/users/mierceminiatures",
+    "bought": false
+  },
+  {
+    "name": "Miniature Land",
     "price": "10",
-    "mainLink": "https://www.myminifactory.com/users/GoonMasterGames?show=tribe",
+    "mainLink": "https://www.myminifactory.com/users/MiniatureLand",
     "bought": false
   },
   {
-    "name": "Imagine Minis",
-    "price": "8",
-    "mainLink": "https://www.myminifactory.com/users/Imagine%20Minis?show=tribe",
+    "name": "Miniatures Blueprint",
+    "price": "4",
+    "mainLink": "https://www.myminifactory.com/users/miniaturesblueprint",
     "bought": false
   },
   {
-    "name": "Infinite Dimensions Games",
+    "name": "Monolith Arts",
     "price": "10",
-    "mainLink": "https://www.myminifactory.com/users/Infinitedimensionsgames?show=tribe",
-    "bought": false
-  },  
-  {
-    "name": "Kaijumon",
-    "price": "10",
-    "mainLink": "https://www.myminifactory.com/users/Kaijumon?show=tribe",
-    "bought": false
-  },
-  {
-    "name": "LostKingdomMiniatures",
-    "price": "9",
-    "mainLink": "https://www.patreon.com/LostKingdomMiniatures?utm_campaign=creatorshare_fan",
-    "bought": false
-  },
-  {
-    "name": "Magori Minaitures",
-    "price": "10",
-    "mainLink": "https://www.myminifactory.com/users/MagoriMiniatures?show=tribe",
-    "bought": false
-  },
-  {
-    "name": "Medbury Miniatures",
-    "price": "12.5",
-    "mainLink": "https://www.myminifactory.com/users/Medbury%20Miniatures?show=tribe",
-    "bought": false
-  },
-  {
-    "name": "Mekka Miniatures",
-    "price": "7",
-    "mainLink": "https://www.patreon.com/mekkaminiatures",
-    "bought": false
-  },
-  {
-    "name": "Miniatures of Madness",
-    "price": "9",
-    "mainLink": "https://www.myminifactory.com/users/Miniatures%20Of%20Madness?show=tribe",
+    "mainLink": "https://www.myminifactory.com/users/MonolithArts",
     "bought": false
   },
   {
     "name": "MoonlightMinis",
-    "price": "10",
+    "price": "8",
     "mainLink": "https://www.myminifactory.com/users/MoonlightMinis?show=tribe",
     "bought": false
   },
   {
-    "name": "PSMiniatures",
-    "price": "10",
-    "mainLink": "https://www.myminifactory.com/users/PSMiniatures?show=tribe",
+    "name": "Nerikson",
+    "price": "13",
+    "mainLink": "https://www.myminifactory.com/users/nerikson",
+    "bought": false
+  },
+  {
+    "name": "Parasite Collectibles",
+    "price": "5",
+    "mainLink": "https://www.myminifactory.com/users/Parasite-Collectibles",
     "bought": false
   },
   {
     "name": "Print Minis",
-    "price": "10",
+    "price": "13",
     "mainLink": "https://www.myminifactory.com/users/PrintMinis?show=tribe",
+    "bought": false
+  },
+  {
+    "name": "PS Miniatures",
+    "price": "10",
+    "mainLink": "https://www.myminifactory.com/users/PSMiniatures",
     "bought": false
   },
   {
@@ -150,21 +108,15 @@
     "bought": false
   },
   {
-    "name": "Ronin Arts Workshop",
-    "price": "9",
-    "mainLink": "https://www.patreon.com/RoninArts",
-    "bought": false
-  },
-  {
-    "name": "Signum Workshop",
-    "price": "10",
-    "mainLink": "https://www.myminifactory.com/users/Legends%20of%20Signum?show=tribe",
-    "bought": false
-  },
-  {
     "name": "Stormborn Collectibles",
     "price": "4",
     "mainLink": "https://www.myminifactory.com/users/Stormborn%20Collectibles?show=tribe",
+    "bought": false
+  },
+  {
+    "name": "Taiga Miniatures",
+    "price": "1",
+    "mainLink": "https://www.myminifactory.com/users/Taiga_Miniatures",
     "bought": false
   },
   {
@@ -177,12 +129,6 @@
     "name": "Velrock",
     "price": "10",
     "mainLink": "https://www.myminifactory.com/users/Velrock?show=tribe",
-    "bought": false
-  },
-  {
-    "name": "VoidRealm Minis",
-    "price": "8",
-    "mainLink": "https://www.patreon.com/voidrealmminis",
     "bought": false
   }
 ]

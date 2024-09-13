@@ -1,131 +1,102 @@
 const { Scenes, Markup } = require("telegraf");
 const SETTINGS = require('../../../settings.json');
-const util = require('../../util.js')
-const lotsUtils = require('../utils')
+const lotsUtils = require('../utils');
+const util = require('../../util.js');
 
 const lotSceneNameStage = new Scenes.BaseScene('LOT_SCENE_NAME_STAGE');
 
 lotSceneNameStage.enter(async (ctx) => {
-  try {
-    await ctx.replyWithHTML(`Отлично, автора тоже запомнил! Теперь последний этап - название лота. Обычно это может быть название набора/проекта, ну либо что-то другое\n\n<b>Этап:</b> 🗒 название`, {
-      reply_to_message_id: ctx.session.lot.lastMessage.user,
-      parse_mode: 'HTML',
-      ...Markup.inlineKeyboard([
-        Markup.button.callback(SETTINGS.BUTTONS.CREATE_LOT.CANCEL, 'actionStopLot')
-      ]),
-      message_thread_id: SETTINGS.TOPICS.GOBLIN.LOTS
-    }).then(nctx => {
-      ctx.session.lot.lastMessage.bot = nctx.message_id;
-    })
-  } catch (e) {
-    console.log('Failed to reply to the message')
-    console.log(e)
-    await ctx.replyWithHTML(`Отлично, автора тоже запомнил! Теперь последний этап - название лота. Обычно это может быть название набора/проекта, ну либо что-то другое\n\n<b>Этап:</b> 🗒 название`, {
-      reply_to_message_id: ctx.session.lot.lastMessage.user,
-      parse_mode: 'HTML',
-      ...Markup.inlineKeyboard([
-        Markup.button.callback(SETTINGS.BUTTONS.CREATE_LOT.CANCEL, 'actionStopLot')
-      ]),
-      message_thread_id: SETTINGS.TOPICS.GOBLIN.LOTS
-    }).then(nctx => {
-      ctx.session.lot.lastMessage.bot = nctx.message_id;
-    })
-  }
+  await lotsUtils.updateLotCreationMessage(ctx, `Отлично, автора тоже запомнил! Теперь последний этап - название лота. Обычно это может быть название набора/проекта, ну либо что-то другое\n\n<b>Этап:</b> 🗒 название`);
 });
 
 lotSceneNameStage.on('text', async (ctx) => {
   ctx.session.lot.name = ctx.message.text;
-  try {
-    if (ctx.session.lot.lastMessage.bot) await ctx.deleteMessage(ctx.session.lot.lastMessage.bot);
-  }
-  catch (e) {
-    console.log(e)
-  }
+
+  // Delete the old message and user message
+  await ctx.deleteMessage(ctx.session.lot.messageID);
+  await ctx.deleteMessage(ctx.message.message_id);
 
   let organizator = ctx.session.lot.whoCreated?.first_name + ' ' + ctx.session.lot.whoCreated?.last_name;
-  if (ctx.session.lot.whoCreated.username) organizator += ` (@${ctx.session.lot.whoCreated.username})`
+  if (ctx.session.lot.whoCreated.username) {
+    organizator += ` (@${ctx.session.lot.whoCreated.username})`;
+  }
 
-  let lotInfo = ctx.session.lot;
+
+  let lotID = ctx.globalSession.lots.length;
+
+  const buttons = [
+    [
+      Markup.button.callback('✅ Присоединиться', `action-join-lot-${lotID}`),
+      Markup.button.callback('🏃 Выйти', `action-leave-lot-${lotID}`)
+    ],
+    [
+      Markup.button.callback('❌ Закрыть', `action-close-lot-${lotID}`),
+      Markup.button.callback('🗑 Удалить', `action-close-lot-${lotID}`),
+      //Markup.button.callback('✍️ Редактировать', `action-close-lot-${lotID}`)
+    ]
+  ];
 
   if (ctx.session.lot.photos.length < 2) {
-    await ctx.replyWithPhoto(ctx.session.lot.photos[0], {
-      caption: lotsUtils.getLotCaption(
-        {
-          author: lotInfo.author,
-          name: lotInfo.name,
-          link: lotInfo.link,
-          price: lotInfo.price,
-          currency: lotInfo.currency,
-          organizator: organizator,
-          status: true
-        }
-      ),
+
+    const nctx = await ctx.replyWithPhoto(ctx.session.lot.photos[0], {
+      caption: lotsUtils.getLotCaption({
+        author: ctx.session.lot.author,
+        name: ctx.session.lot.name,
+        link: ctx.session.lot.link,
+        price: ctx.session.lot.price,
+        currency: ctx.session.lot.currency,
+        organizator: organizator,
+        status: true,
+        participants: ctx.session.lot.participants,
+      }),
       parse_mode: 'HTML',
-      ...Markup.inlineKeyboard([
-        Markup.button.callback(SETTINGS.BUTTONS.LOT.JOIN, `action-join-lot-${ctx.globalSession.lots.length}`),
-        Markup.button.callback(SETTINGS.BUTTONS.LOT.CLOSE, `action-close-lot-${ctx.globalSession.lots.length}`),
-      ]),
-      message_thread_id: SETTINGS.TOPICS.GOBLIN.LOTS
-    })
+      ...Markup.inlineKeyboard(buttons)
+    });
+
+    ctx.session.lot = {
+      ...ctx.session.lot,
+      messageID: nctx.message_id,
+    };
+
   } else {
-    await ctx.replyWithMediaGroup(ctx.session.lot.photos.map((p, id) => {
-      if (id == 0) {
+    
+    const nctx = await ctx.replyWithMediaGroup(
+      ctx.session.lot.photos.map((p, id) => {
         return {
           type: 'photo',
           media: p,
-          caption: lotsUtils.getLotCaption(
-            {
-              author: lotInfo.author,
-              name: lotInfo.name,
-              link: lotInfo.link,
-              price: lotInfo.price,
-              currency: lotInfo.currency,
+          caption: id === 0
+            ? lotsUtils.getLotCaption({
+              author: ctx.session.lot.author,
+              name: ctx.session.lot.name,
+              link: ctx.session.lot.link,
+              price: ctx.session.lot.price,
+              currency: ctx.session.lot.currency,
               organizator: organizator,
-              status: true
-            }
-          ),
-          parse_mode: "HTML"
-        }
-      } else {
-        return { type: 'photo', media: p }
-      }
-    })).then(nctx => {
-      ctx.session.lot.lastMessage.bot = nctx.message_id;
-    })
+              status: true,
+              participants: ctx.session.lot.participants,
+            })
+            : null,
+          parse_mode: 'HTML'
+        };
+      })
+    );
 
-
-    await ctx.reply('Присоединиться к лоту выше 👆', {
+    const newctx = await ctx.reply('Действия к лоту выше 👆', {
       parse_mode: 'HTML',
-      ...Markup.inlineKeyboard([
-        Markup.button.callback(SETTINGS.BUTTONS.LOT.JOIN, `action-join-lot-${ctx.globalSession.lots.length}`),
-        Markup.button.callback(SETTINGS.BUTTONS.LOT.CLOSE, `action-close-lot-${ctx.globalSession.lots.length}`),
-      ]),
-      message_thread_id: SETTINGS.TOPICS.GOBLIN.LOTS
-    })
-  }
+      ...Markup.inlineKeyboard(buttons),
+    });
 
+    ctx.session.lot = {
+      ...ctx.session.lot,
+      messageID: nctx[0].message_id,
+      additionalMessageID: newctx.message_id,
+    };
+
+  }
 
   return ctx.scene.leave();
 });
-
-lotSceneNameStage.action('actionStopLot', async (ctx) => {
-  util.log(ctx)
-  if (ctx.session.lot) {
-    await ctx.replyWithHTML(`👌`, {
-      message_thread_id: SETTINGS.TOPICS.GOBLIN.LOTS
-    });
-    try {
-      if (ctx.session.lot.lastMessage.bot) await ctx.deleteMessage(ctx.session.lot.lastMessage.bot);
-    }
-    catch (e) {
-      console.log(e)
-    }
-    ctx.session.lot = null;
-    return ctx.scene.leave();
-  } else {
-    await ctx.answerCbQuery(SETTINGS.MESSAGES.CREATE_LOT.ERRORS.NOT_CREATING_A_LOT)
-  }
-})
 
 lotSceneNameStage.leave(async (ctx) => {
   if (!ctx.globalSession.lots) ctx.globalSession.lots = [];

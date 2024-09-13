@@ -7,7 +7,12 @@ module.exports = Composer.compose([
   require('./commands/thisis-channel'),
   require('./commands/resetm'),
   require('./commands/paymentadmin'),
+  require('./commands/pi'),
+  require('./commands/participants'),
   require('./actions/addMonth'),
   require('./actions/actionBaseGroup'),
-  require('./actions/actionAdditional')
+  require('./actions/actionAdditional'),
+  require('./actions/checkMonths'),
+  require('./actions/checkMonth'),
+  require('./actions/showNonPayers')
 ])

@@ -22,7 +22,6 @@ const util = require('./modules/util.js');
 const RedisSession = require('telegraf-session-redis-upd')
 const sessionInstance = new RedisSession();
 const SESSIONS = require('./modules/sessions.js');
-const { default: axios } = require('axios');
 bot.use(
   SESSIONS.GLOBAL_SESSION,
   SESSIONS.CHANNELS_SESSION,
@@ -140,14 +139,8 @@ bot.hears(/^[гГ]облин[,]? сколько \$?([0-9]*[.])?[0-9]+ (долл�
   }
 })
 
-bot.command('rch', ctx => {
-  ctx.channelsSession = {};
-  ctx.channelsSession.channels = {};
-  ctx.reply('done');
-})
-
-bot.command('shch', async ctx => {
-  console.log(JSON.stringify(ctx.channelsSession))
+bot.command('ex', ctx => {
+  eval(ctx.message.text.split('/ex ')[1]);
 })
 
 bot.catch((error) => {

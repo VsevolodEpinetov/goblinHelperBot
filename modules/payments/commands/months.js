@@ -7,13 +7,12 @@ module.exports = Composer.command('months', async (ctx) => {
 
   if (!ctx.globalSession.months) ctx.globalSession.months = {};
   if (!ctx.globalSession.currentMonth) ctx.globalSession.currentMonth = '';
-
-  console.log(ctx.globalSession.months)
   
   let message = `<b><i>Созданные месяцы</i></b>\n\n`;
   let counter = 1;
   for (const monthName in ctx.globalSession.months) {
     message += `${counter}. ${monthName}${ctx.globalSession.currentMonth === monthName ? ' ✅' : ''}`
+    counter++;
   }
 
   ctx.replyWithHTML(message, {
