@@ -25,7 +25,7 @@ module.exports = Composer.command('poll', async (ctx) => {
   for (let i = 0; i < listOfStudios.length; i++) {
     if (!listOfStudios[i].bought) {
       if (!options[currentPollNumber]) options[currentPollNumber] = [];
-      options[currentPollNumber].push(`${listOfStudios[i].name} - $${listOfStudios[i].price}`);
+      options[currentPollNumber].push(`${listOfStudios[i].name}`);
 
       if (options[currentPollNumber].length == SETTINGS.AMOUNT_OF_ALLOWED_ANSWERS_IN_A_POLL) {
         options[currentPollNumber].push('Пустой вариант')

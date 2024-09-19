@@ -3,13 +3,12 @@ const { Telegraf, Markup, Telegram, Scenes, session } = require('telegraf');
 const { telegrafThrottler } = require('telegraf-throttler');
 require('dotenv').config();
 const bot = new Telegraf(process.env.TOKEN)
-const throttler = telegrafThrottler();
-bot.use(throttler);
+// const throttler = telegrafThrottler();
+// bot.use(throttler);
 const telegram = new Telegram(process.env.TOKEN)
 const SETTINGS = require('./settings.json')
 const STUDIOS = require('./studios.json')
 
-const { createCanvas, loadImage } = require('canvas')
 const fs = require('fs');
 
 const util = require('./modules/util.js');
@@ -26,7 +25,11 @@ bot.use(
   SESSIONS.GLOBAL_SESSION,
   SESSIONS.CHANNELS_SESSION,
   SESSIONS.USER_SESSION,
-  SESSIONS.CHAT_SESSION
+  SESSIONS.CHAT_SESSION,
+  SESSIONS.LOTS_SESSION,
+  SESSIONS.MEMBERS_SESSION,
+  SESSIONS.MONTHS_SESSION,
+  SESSIONS.KICKSTARTERS_SESSION
 )
 //#endregion
 
@@ -53,6 +56,20 @@ const stage = new Scenes.Stage([
   require('./modules/payments/scenes/month_name'),
   require('./modules/payments/scenes/month_invitation'),
   require('./modules/payments/scenes/month_invitation_plus'),
+  require('./modules/admin/scenes/addYear.js'),
+  require('./modules/admin/scenes/addMonth.js'),
+  require('./modules/admin/scenes/addLink.js'),
+  require('./modules/admin/scenes/addLinkPlus.js'),
+  require('./modules/admin/scenes/kickstarters/cost.js'),
+  require('./modules/admin/scenes/kickstarters/creator.js'),
+  require('./modules/admin/scenes/kickstarters/files.js'),
+  require('./modules/admin/scenes/kickstarters/link.js'),
+  require('./modules/admin/scenes/kickstarters/name.js'),
+  require('./modules/admin/scenes/kickstarters/photos.js'),
+  require('./modules/admin/scenes/kickstarters/pledgeCost.js'),
+  require('./modules/admin/scenes/kickstarters/pledgeName.js'),
+  require('./modules/admin/scenes/kickstarters/tags.js'),
+  require('./modules/admin/scenes/kickstarters/searchString.js'),
 ]);
 bot.use(session());
 bot.use(stage.middleware());
@@ -62,6 +79,8 @@ bot.use(require('./modules/polls'))
 bot.use(require('./modules/commands'))
 bot.use(require('./modules/indexator-creator'))
 bot.use(require('./modules/payments'))
+bot.use(require('./modules/admin'))
+bot.use(require('./modules/users'))
 //#endregion
 
 bot.on('chat_join_request', async ctx => {

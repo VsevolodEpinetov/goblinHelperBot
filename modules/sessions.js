@@ -5,6 +5,26 @@ const globalSession = new RedisSession({
   getSessionKey: () => { return "global" }
 })
 
+const lots = new RedisSession({
+  property: 'lots',
+  getSessionKey: () => { return "lots" }
+})
+
+const months = new RedisSession({
+  property: 'months',
+  getSessionKey: () => { return "months" }
+})
+
+const members = new RedisSession({
+  property: 'members',
+  getSessionKey: () => { return "members" }
+})
+
+const kickstarters = new RedisSession({
+  property: 'kickstarters',
+  getSessionKey: () => { return "kickstarters" }
+})
+
 const channelsSession = new RedisSession({
   property: 'channelsSession',
   getSessionKey: () => { return "channels" }
@@ -33,6 +53,10 @@ module.exports = {
   GLOBAL_SESSION: globalSession,
   CHANNELS_SESSION: channelsSession,
   USER_SESSION: userSession,
-  CHAT_SESSION: chatSession
+  CHAT_SESSION: chatSession,
+  MEMBERS_SESSION: members,
+  LOTS_SESSION: lots,
+  MONTHS_SESSION: months,
+  KICKSTARTERS_SESSION: kickstarters
   //UNIQUE_SESSION: session
 };
