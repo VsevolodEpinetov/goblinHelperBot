@@ -6,12 +6,12 @@ const SETTINGS = require('../../../settings.json');
 module.exports = Composer.command('start', async (ctx) => {
   util.log(ctx);
 
-  if (ctx.message.from.id != SETTINGS.CHATS.EPINETOV) {
-    return;
+  if (ctx.message.chat.id < 0) {
+    await ctx.replyWithHTML('Работаю только в личке, пупсик')
   }
 
   if (!ctx.members) ctx.members = {};
-  if (!ctx.members.list) ctx.members.list = {};
+  if (!ctx.users.list) ctx.users.list = {};
 
   const userId = ctx.message.from.id;
   ctx.deleteMessage(ctx.message.message_id)
@@ -35,7 +35,7 @@ module.exports = Composer.command('start', async (ctx) => {
     return;
   }
 
-  if (!ctx.members.list[userId]) {
+  if (!ctx.users.list[userId]) {
     await ctx.replyWithHTML(
       `Привет! Ты ещё не зарегистрирован. Нажми на кнопку, чтобы подать запрос на добавление.`, {
       ...Markup.inlineKeyboard([
@@ -44,22 +44,26 @@ module.exports = Composer.command('start', async (ctx) => {
     }
     );
   } else {
-    // Если пользователь есть, показываем меню
-    await ctx.replyWithHTML(
-      `Привет, ${ctx.message.from.first_name}! Выбери один из пунктов меню:`, {
-      ...Markup.inlineKeyboard([
-        [
-          Markup.button.callback('Подписка', `showMonths`),
-          Markup.button.callback('Подписка+', `showMonthsPlus`)
-        ],
-        [
-          Markup.button.callback('Кикстартеры', `requestKickstarter`),
-          Markup.button.callback('Релизы', `requestRelease`)
-        ],
-        [
-          Markup.button.callback('Коллекции', `showCollections`)
-        ]
-      ])
-    });
+    const userData = ctx.users.list[userId];
+    const roles = userData.roles;
+
+    if (roles.length == 0) {
+      await ctx.replyWithHTML('Твоё участие ещё не было подтверждено. Ожидай')
+    }
+
+    if (roles.indexOf('rejected') > -1) {
+      await ctx.replyWithHTML('К сожалению, тебе было отказано в вступлении.')
+      return;
+    }
+    
+    if (roles.indexOf('goblin') > -1) {
+      const message = util.getUserMessage(ctx, userData)
+      const menu = util.getUserButtons(ctx, userData);
+
+      await ctx.replyWithHTML(message, {
+        ...Markup.inlineKeyboard(menu)
+      });
+      return;
+    }
   }
 });

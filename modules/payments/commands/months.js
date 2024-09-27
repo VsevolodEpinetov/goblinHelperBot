@@ -5,12 +5,12 @@ const util = require('../../util')
 module.exports = Composer.command('months', async (ctx) => {
   if (ctx.message.from.id != SETTINGS.CHATS.EPINETOV) { return; }
 
-  if (!ctx.globalSession.months) ctx.globalSession.months = {};
+  if (!ctx.months.list) ctx.months.list = {};
   if (!ctx.globalSession.currentMonth) ctx.globalSession.currentMonth = '';
   
   let message = `<b><i>Созданные месяцы</i></b>\n\n`;
   let counter = 1;
-  for (const monthName in ctx.globalSession.months) {
+  for (const monthName in ctx.months.list) {
     message += `${counter}. ${monthName}${ctx.globalSession.currentMonth === monthName ? ' ✅' : ''}`
     counter++;
   }

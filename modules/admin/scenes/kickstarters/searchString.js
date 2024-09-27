@@ -1,10 +1,11 @@
 const { Scenes, Markup } = require("telegraf");
-const SETTINGS = require('../../../../settings.json')
+const SETTINGS = require('../../../../settings.json');
+const { splitMenu } = require("../../../util");
 
 const searchKickstarterString = new Scenes.BaseScene('SCENE_SEARCH_STRING');
 
 searchKickstarterString.enter(async (ctx) => {
-  await ctx.replyWithHTML(`Пришли <b>строку</b>`).then(nctx => {
+  await ctx.replyWithHTML(`Пришли <b>строку</b> не менее 4 символов, по которой будет идти поиск проекта.\n\n<i>Поиск идёт по полям:\n— Название\n— Автор\n— Теги (мои)\n— Ссылка на проект</i>`).then(nctx => {
     ctx.session.toRemove = nctx.message_id;
     ctx.session.chatID = nctx.chat.id;
   });
@@ -64,9 +65,11 @@ searchKickstarterString.on('text', async (ctx) => {
 
   let bottomButtonAction = ctx.message.chat.id == SETTINGS.CHATS.EPINETOV ? 'adminKickstarters' : 'userKickstarters';
 
+  menu = splitMenu(menu, 6);
+
   ctx.replyWithHTML(message, {
     ...Markup.inlineKeyboard([
-      menu,
+      ...menu,
       [
         Markup.button.callback('←', bottomButtonAction),
         Markup.button.callback('🔍', 'searchKickstarter')

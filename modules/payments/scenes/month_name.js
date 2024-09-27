@@ -9,7 +9,7 @@ monthNameStage.enter(async (ctx) => {
 
 monthNameStage.on('text', async (ctx) => {
   try {
-    ctx.globalSession.months[ctx.message.text] = {
+    ctx.months.list[ctx.message.text] = {
       members: {},
       mainInvitationLink: '',
       plusInvitationLink: ''

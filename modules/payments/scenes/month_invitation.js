@@ -10,7 +10,7 @@ monthInvitationStage.enter(async (ctx) => {
 monthInvitationStage.on('text', async (ctx) => {
   try {
     console.log(ctx.session.monthName);
-    ctx.globalSession.months[ctx.session.monthName].mainInvitationLink = ctx.message.text;
+    ctx.months.list[ctx.session.monthName].mainInvitationLink = ctx.message.text;
     await ctx.reply(`Записал приглашение в основной канал - ${ctx.message.text}. Жду от тебя ссылку-приглашение на ПЛЮСОВОЙ архив`)
 
     await ctx.scene.enter('PAYMENT_SCENE_ADD_MONTH_PLUS_INVITATION_STAGE');

@@ -1,5 +1,6 @@
 const { Scenes, Markup } = require("telegraf");
-const SETTINGS = require('../../../settings.json')
+const SETTINGS = require('../../../settings.json');
+const util = require("../../util");
 
 const adminSceneAddMonth = new Scenes.BaseScene('ADMIN_SCENE_ADD_MONTH');
 
@@ -22,12 +23,18 @@ adminSceneAddMonth.on('text', async (ctx) => {
       regular: {
         link: '',
         id: '',
-        counter: 0
+        counter: {
+          paid: 0,
+          joined: 0
+        }
       },
       plus: {
         link: '',
         id: '',
-        counter: 0              
+        counter: {
+          paid: 0,
+          joined: 0
+        }   
       }
     };
 
@@ -37,12 +44,16 @@ adminSceneAddMonth.on('text', async (ctx) => {
       menu.push(Markup.button.callback(month, `adminMonths_show_${year}_${month}`))
     }
 
+    menu = util.splitMenu(menu);
+
     ctx.replyWithHTML(`✅ Добавил месяц <b>${month}</b> в год <b>${year}</b>. Доступные месяцы в ${year}`, {
       parse_mode: 'HTML',
       ...Markup.inlineKeyboard([
-        menu,
+        ...menu,
         [
+          Markup.button.callback('←', `adminMonths`),
           Markup.button.callback('+', `monthsAdd_${year}`),
+          Markup.button.callback('-', `monthsRemove_${year}`),
         ]
       ])
     })
@@ -60,6 +71,7 @@ adminSceneAddMonth.on('text', async (ctx) => {
         [
           Markup.button.callback('←', `adminMonths`),
           Markup.button.callback('+', `monthsAdd_${year}`),
+          Markup.button.callback('-', `monthsRemove_${year}`),
         ]
       ])
     })

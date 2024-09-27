@@ -14,7 +14,7 @@ module.exports = Composer.action(/actionShowNonPayers-.+/, async ctx => {
   let counter = 1;
 
   for (const telegramID in ctx.globalSession.participants) {
-    if (!ctx.globalSession.months[monthName].members[telegramID]) {
+    if (!ctx.months.list[monthName].members[telegramID]) {
       message += `\n${counter}. ${telegramID}`
       counter++;
     }

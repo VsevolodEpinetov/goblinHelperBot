@@ -31,6 +31,7 @@ adminSceneAddYear.on('text', async (ctx) => {
         [
           Markup.button.callback('←', `adminMenu`),
           Markup.button.callback('+', `monthsAddYear`),
+          Markup.button.callback('-', `monthsRemoveYear`),
         ]
       ])
     })
@@ -42,6 +43,7 @@ adminSceneAddYear.on('text', async (ctx) => {
         [
           Markup.button.callback('←', `adminMenu`),
           Markup.button.callback('+', `monthsAddYear`),
+          Markup.button.callback('-', `monthsRemoveYear`),
         ]
       ])
     })

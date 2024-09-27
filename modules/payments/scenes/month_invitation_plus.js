@@ -9,7 +9,7 @@ monthInvitationPlusStage.enter(async (ctx) => {
 
 monthInvitationPlusStage.on('text', async (ctx) => {
   try {
-    ctx.globalSession.months[ctx.session.monthName].plusInvitationLink = ctx.message.text;
+    ctx.months.list[ctx.session.monthName].plusInvitationLink = ctx.message.text;
     await ctx.reply(`Записал приглашение в плюсовой канал - ${ctx.message.text}.`)
     await ctx.scene.enter('PAYMENT_SCENE_ADD_MONTH_PLUS_INVITATION_STAGE');
     ctx.scene.leave();

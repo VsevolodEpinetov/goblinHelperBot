@@ -15,9 +15,9 @@ const months = new RedisSession({
   getSessionKey: () => { return "months" }
 })
 
-const members = new RedisSession({
-  property: 'members',
-  getSessionKey: () => { return "members" }
+const users = new RedisSession({
+  property: 'users',
+  getSessionKey: () => { return "users" }
 })
 
 const kickstarters = new RedisSession({
@@ -54,7 +54,7 @@ module.exports = {
   CHANNELS_SESSION: channelsSession,
   USER_SESSION: userSession,
   CHAT_SESSION: chatSession,
-  MEMBERS_SESSION: members,
+  USERS_SESSION: users,
   LOTS_SESSION: lots,
   MONTHS_SESSION: months,
   KICKSTARTERS_SESSION: kickstarters

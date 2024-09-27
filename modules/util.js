@@ -1,4 +1,9 @@
-const Telegraf = require('telegraf')
+const Telegraf = require('telegraf');
+const { Composer, Markup } = require("telegraf");
+
+const fs = require('fs');
+const path = require('path');
+
 
 const date = require('./date');
 const colors = require('./colors.js')
@@ -10,91 +15,165 @@ function sleep(ms) {
   })
 }
 
-module.exports = {
+function splitMenu (menu, rowSize = 5) {
+  const result = [];
 
-
-  hideMenu: function (ctx) {
-    try {
-      ctx.editMessageReplyMarkup({
-        reply_markup: {}
-      });
+  if (menu.length > rowSize) {
+    for (let i = 0; i < menu.length; i += rowSize) {
+      // Берем кусочек массива от i до i + chunkSize
+      result.push(menu.slice(i, i + rowSize));
     }
-    catch (err) {}
-  },
+  } else {
+    result.push(menu);
+  }
 
+  return result;
+}
 
-  sleep: function (ms) {
-    return new Promise(resolve => {
-      setTimeout(resolve, ms)
-    })
-  },
+function getUserMessage (ctx, userData) {
+  const tickets = Math.floor(userData.purchases.groups.plus.length / 3) * 2 - userData.purchases.ticketsSpent;
+  let purchasedCurrent = userData.purchases.groups.regular.indexOf(`${ctx.globalSession.current.year}_${ctx.globalSession.current.month}`) > -1;
+  let notPurchasedPart = '';
+  if (!purchasedCurrent) {
+    notPurchasedPart = `⚠️ НЕ ОПЛАЧЕН ⚠️\n\n`
+  } else {
+    const plusIsPurchased = userData.purchases.groups.plus.indexOf(`${ctx.globalSession.current.year}_${ctx.globalSession.current.month}`) > -1;
+    notPurchasedPart = `✅ Оплачено${plusIsPurchased ? '' : ' (без ➕)\n\n'}`
+  }
 
-  log: function (ctx) {
-    let message = `\x1b[34m[INFO]${colors.reset} \x1b[36m${date.getTimeForLogging()}${colors.reset} `
-    if (typeof ctx.update.callback_query === 'undefined') {
-      if (typeof ctx.message.text !== 'undefined') {
-        if (ctx.message.text[0] === '/') {
-          message += `@${ctx.message.from.username} (${ctx.message.from.id ? ctx.message.from.id : ''}) has issued command ${colors.green}'/${ctx.message.text.split('/')[1]}'${colors.reset} `
-          if (ctx.message.chat.type == 'private') {
-            message += `in private chat`
-          } else {
-            message += `in chat named '${ctx.message.chat.title}' ${colors.white}(id ${ctx.message.chat.id})${colors.reset}`
-          }
+  return  `Привет, ${userData.first_name}!\n\n` + 
+          `🗓 <b>Текущий месяц: </b>${ctx.globalSession.current.year}-${ctx.globalSession.current.month}\n`+
+          notPurchasedPart +
+          `💰 <b>Баланс: </b>${userData.purchases.balance}₽\n` +
+          `🎟 <b>Билетики: </b>${tickets}\n\n`+
+          `<i>Выбери один из пунктов меню</i>`;
+}
+
+function getUserButtons (ctx, userData) {
+  let purchasedCurrent = userData.purchases.groups.regular.indexOf(`${ctx.globalSession.current.year}_${ctx.globalSession.current.month}`) > -1;
+  let notPurchasedPart = [];
+  if (!purchasedCurrent) {
+    notPurchasedPart = [
+      Markup.button.callback('👉 Оплатить текущий месяц 👈', `sendPayment_currentMonth`)
+    ]
+  }
+
+  return [
+    [
+      Markup.button.callback('Подписка', `userMonths`),
+      Markup.button.callback('Релизы', `requestRelease`)
+    ],
+    [
+      Markup.button.callback('Кикстартеры', `userKickstarters`),
+      Markup.button.callback('Коллекция', `userCollections`)
+    ],
+    [
+      Markup.button.callback('Индивидуальный выкуп', `requestBuyout`)
+    ],
+    notPurchasedPart
+  ]
+}
+
+function getAllFilesFromFolder (dir) {
+  const files = fs.readdirSync(dir);
+  let allFiles = [];
+
+  files.forEach(file => {
+    const fullPath = path.join(dir, file);
+    if (fs.statSync(fullPath).isDirectory()) {
+      allFiles = allFiles.concat(getAllFilesFromFolder(fullPath));  // Рекурсивно проходим по подпапкам
+    } else {
+      allFiles.push(fullPath);  // Добавляем путь к файлу
+    }
+  });
+
+  return allFiles;
+}
+
+function hideMenu (ctx) {
+  try {
+    ctx.editMessageReplyMarkup({
+      reply_markup: {}
+    });
+  }
+  catch (err) { }
+}
+
+function log (ctx) {
+  let message = `\x1b[34m[INFO]${colors.reset} \x1b[36m${date.getTimeForLogging()}${colors.reset} `
+  if (typeof ctx.update.callback_query === 'undefined') {
+    if (typeof ctx.message.text !== 'undefined') {
+      if (ctx.message.text[0] === '/') {
+        message += `@${ctx.message.from.username} (${ctx.message.from.id ? ctx.message.from.id : ''}) has issued command ${colors.green}'/${ctx.message.text.split('/')[1]}'${colors.reset} `
+        if (ctx.message.chat.type == 'private') {
+          message += `in private chat`
+        } else {
+          message += `in chat named '${ctx.message.chat.title}' ${colors.white}(id ${ctx.message.chat.id})${colors.reset}`
         }
       }
-    } else {
-      message += `@${ctx.update.callback_query.from.username} has called an action ${colors.green}'${ctx.callbackQuery.data}'${colors.reset} `
-      if (ctx.update.callback_query.message.chat.type == 'private') {
-        message += `in private chat`
-      } else {
-        message += `in chat named '${ctx.update.callback_query.message.chat.title}' ${colors.white}(id ${ctx.update.callback_query.message.chat.id})${colors.reset}`
-      }
     }
-    console.log(message);
-  },
+  } else {
+    message += `@${ctx.update.callback_query.from.username} has called an action ${colors.green}'${ctx.callbackQuery.data}'${colors.reset} `
+    if (ctx.update.callback_query.message.chat.type == 'private') {
+      message += `in private chat`
+    } else {
+      message += `in chat named '${ctx.update.callback_query.message.chat.title}' ${colors.white}(id ${ctx.update.callback_query.message.chat.id})${colors.reset}`
+    }
+  }
+  console.log(message);
+}
 
-  logError: function (ctx, error) {
-    let message = `\x1b[31m================${colors.reset}\n\x1b[31m[ERROR]${colors.reset} \x1b[36m${date.getTimeForLogging()}${colors.reset} `
-    if (!ctx.update.callback_query) {
-      if (ctx.message.text) {
-        if (ctx.message.text[0] === '/') {
-          message += `@${ctx.message.from.username} \x1b[31mhas issued command${colors.reset} ${colors.green}'/${ctx.message.text.split('/')[1]}'${colors.reset} `
-          if (ctx.message.chat.type == 'private') {
-            message += `\x1b[31min private chat${colors.reset}`
-          } else {
-            message += `\x1b[31min chat named${colors.reset} '${ctx.message.chat.title}' ${colors.white}(id ${ctx.message.chat.id})${colors.reset}`
-          }
+function logError (ctx, error) {
+  let message = `\x1b[31m================${colors.reset}\n\x1b[31m[ERROR]${colors.reset} \x1b[36m${date.getTimeForLogging()}${colors.reset} `
+  if (!ctx.update.callback_query) {
+    if (ctx.message.text) {
+      if (ctx.message.text[0] === '/') {
+        message += `@${ctx.message.from.username} \x1b[31mhas issued command${colors.reset} ${colors.green}'/${ctx.message.text.split('/')[1]}'${colors.reset} `
+        if (ctx.message.chat.type == 'private') {
+          message += `\x1b[31min private chat${colors.reset}`
+        } else {
+          message += `\x1b[31min chat named${colors.reset} '${ctx.message.chat.title}' ${colors.white}(id ${ctx.message.chat.id})${colors.reset}`
         }
       }
-    } else {
-      message += `@${ctx.update.callback_query.from.username} \x1b[31mhas called an action${colors.reset} ${colors.green}'${ctx.callbackQuery.data}'${colors.reset} `
-      if (ctx.update.callback_query.message.chat.type == 'private') {
-        message += `\x1b[31min private chat${colors.reset}`
-      } else {
-        message += `\x1b[31min chat named${colors.reset} '${ctx.update.callback_query.message.chat.title}' ${colors.white}(id ${ctx.update.callback_query.message.chat.id})${colors.reset}`
-      }
     }
-    message += ` \x1b[31mand got the error:${colors.reset}\n\x1b[31m${error}${colors.reset}\n\x1b[31m================${colors.reset}`
-    console.log(message);
-  },
+  } else {
+    message += `@${ctx.update.callback_query.from.username} \x1b[31mhas called an action${colors.reset} ${colors.green}'${ctx.callbackQuery.data}'${colors.reset} `
+    if (ctx.update.callback_query.message.chat.type == 'private') {
+      message += `\x1b[31min private chat${colors.reset}`
+    } else {
+      message += `\x1b[31min chat named${colors.reset} '${ctx.update.callback_query.message.chat.title}' ${colors.white}(id ${ctx.update.callback_query.message.chat.id})${colors.reset}`
+    }
+  }
+  message += ` \x1b[31mand got the error:${colors.reset}\n\x1b[31m${error}${colors.reset}\n\x1b[31m================${colors.reset}`
+  console.log(message);
+}
 
 
-  getRandomInt: function (min, max) {
-    min = Math.ceil(min);
-    max = Math.floor(max);
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-  },
+function getRandomInt (min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
 
-  isAdmin: function (telegramUserID) {
-    const isAnAdmin = telegramUserID == SETTINGS.CHATS.EPINETOV || 
-                      telegramUserID == SETTINGS.CHATS.ALEKS || 
-                      telegramUserID == SETTINGS.CHATS.ARTYOM;
+function isAdmin (telegramUserID) {
+  const isAnAdmin = telegramUserID == SETTINGS.CHATS.EPINETOV ||
+    telegramUserID == SETTINGS.CHATS.ALEKS ||
+    telegramUserID == SETTINGS.CHATS.ARTYOM;
 
-    return isAnAdmin;
-  },
+  return isAnAdmin;
+}
 
 
-  /*splitMessageAndReply: async function (ctx, message, menu) {
+function getCommandParameter (ctx) {
+  return option = ctx.message.text.split(/ +/)[1];
+}
+
+
+
+
+
+
+  /*async function splitMessageAndReply (ctx, message, menu) {
     if (message.length < settings.TelegramCharactersLimit) {
       ctx.replyWithHTML(message);
     } else {
@@ -117,110 +196,21 @@ module.exports = {
         }
       }
     }
-  },*/
-
-
-  getCommandParameter: function (ctx) {
-    return option = ctx.message.text.split(/ +/)[1];
-  },
-
-
-  checkAlivenessAndLog: function (ctx, callback) {
-    ctx.utility.botWasAliveAt = date.getCurrent().timestamp;
-    var message = `${colors.blue}[INFO] ${colors.cyan}${date.getCurrent().string.hhmmss}\x1b${colors.reset} `
-
-    if (ctx.message) {
-      if ((ctx.utility.botWasAliveAt - ctx.message.date) > 10) {
-        var message = `${colors.red}[ERROR] ${colors.cyan}${date.getCurrent().string.hhmmss} ${colors.red}Too old `
-        if (ctx.message.text[0] === '/') {
-          message += `command`
-        } else {
-          message += 'message'
-        }
-        message += ` was ignored${colors.reset}`
-        console.log(message);
-        return;
-      } else {
-
-        if (ctx.message.text) {
-
-          if (ctx.message.text[0] === '/') {
-            var command = ctx.message.text.split('/')[1];
-            if (ctx.message.text.indexOf(' ') > 0) {
-              command = command.split(' ')[0];
-            }
-
-            message += `@${ctx.message.from.username} has executed the command ${colors.green}'/${command}'${colors.reset} `;
-
-          } else {
-
-            message += `@${ctx.message.from.username} has triggered the bot with the text ${colors.green}'${ctx.message.text}'${colors.reset} `;
-
-          }
-
-
-          if (ctx.message.chat.type == 'private') {
-            message += `in the private chat`
-          } else {
-            message += `in the chat named '${ctx.message.chat.title}' ${colors.white}(id ${ctx.message.chat.id})${colors.reset}`
-          }
-
-        }
-
-        console.log(message);
-        return callback(ctx);
-      }
-    }
-
-
-    if (ctx.update.callback_query) {
-      message += `@${ctx.update.callback_query.from.username} has called an action ${colors.green}'${ctx.callbackQuery.data}'${colors.reset} `
-      if (ctx.update.callback_query.message.chat.type == 'private') {
-        message += `in the private chat`
-      } else {
-        message += `in the chat named '${ctx.update.callback_query.message.chat.title}' ${colors.white}(id ${ctx.update.callback_query.message.chat.id})${colors.reset}`
-      }
-      console.log(message);
-      return callback(ctx);
-    }
-
-  },
-
-  createMenu: function (data) {
-    var rows = [];
-    var amountOfColumns = 0;
-
-    data.forEach((row, rowID) => {
-      if (row.length > amountOfColumns) amountOfColumns = row.length;
-
-      row.forEach((menuItem, itemID) => {
-        if (!rows[rowID]) rows[rowID] = [];
-        rows[rowID].push(Telegraf.Markup.callbackButton(`${menuItem.name}`, `${menuItem.action}`))
-      });
-    });
-
-    //Telegraf.Markup.callbackButton(`🦸‍♂️ ${parseInt(key) + 1}`, `actionShowMenuTaskDuty_localID${parseInt(key) + 1}_globalID${task.id}`)
-
-    return Telegraf.Extra.HTML().markup((m) => m.inlineKeyboard(rows, { columns: amountOfColumns }));
-  },
-
-
-
-  /*onlyInTestChat: function (ctx, callback) {
-    if (ctx.message) {
-      if (ctx.message.chat.id === settings.chats.test.id) {
-        return callback(ctx);
-      } else {
-        return;
-      }
-    }
-
-    if (ctx.update.callback_query) {
-      if (ctx.update.callback_query.chat.id === settings.chats.test.id) {
-        return callback(ctx);
-      } else {
-        return;
-      }
-    }
   }*/
+
+module.exports = {
+
+  splitMenu,
+  getUserMessage,
+  getUserButtons,
+  getAllFilesFromFolder,
+  hideMenu,
+  sleep,
+  log,
+  logError,
+  getRandomInt,
+  isAdmin,
+  getCommandParameter
+
+
 }

@@ -3,26 +3,36 @@ const SETTINGS = require('../../../settings.json')
 const util = require('../../util')
 
 module.exports = Composer.command('thisis', async (ctx) => {
-  console.log('hi')
   if (ctx.message.from.id != SETTINGS.CHATS.EPINETOV) { return; }
 
-  if (!ctx.globalSession.months) ctx.globalSession.months = {};
-  if (!ctx.globalSession.currentMonth) ctx.globalSession.currentMonth = '';
+  if (!ctx.months.list) ctx.months.list = {};
   
-  let monthName = ctx.message.text.split('thisis ')[1];
-  let isPlus = false;
-  if (monthName.indexOf('plus') > 0) {
-    isPlus = true;
-    monthName = monthName.split(' plus')[0];
+  const data = ctx.message.text.split('thisis ')[1].split('_');
+  const year = data[0], month = data[1], type = data[2];
+
+  if (!ctx.months.list[year]) ctx.months.list[year] = {};
+  if (!ctx.months.list[year][month]) {
+    ctx.months.list[year][month] = {
+      regular: {
+        link: '',
+        id: '',
+        counter: 0
+      },
+      plus: {
+        link: '',
+        id: '',
+        counter: 0
+      }
+    };
   }
 
-  if (!ctx.globalSession.months[monthName].chats) ctx.globalSession.months[monthName].chats = {}
-  if (!isPlus) {
-    ctx.globalSession.months[monthName].chats.base = ctx.message.chat.id
-    ctx.reply(`Записал базовый чат ${ctx.message.chat.id} под именем ${monthName}`)
-  }
-  else {
-    ctx.globalSession.months[monthName].chats.plus = ctx.message.chat.id
-    ctx.reply(`Записал плюсовый чат ${ctx.message.chat.id} под именем ${monthName}`)
-  }
+  ctx.months.list[year][month][type].id = ctx.message.chat.id;
+  const inviteLink = await ctx.createChatInviteLink({
+    chat_id: ctx.message.chat.id,
+    name: 'Bot handled invitation',
+    creates_join_request: true
+  })
+
+  ctx.months.list[year][month][type].link = inviteLink.invite_link;
+  await ctx.telegram.sendMessage(SETTINGS.CHATS.EPINETOV, `Записал чат с ID ${ctx.message.chat.id} как группу ${type} для ${year}-${month}, ссылка для вступления - ${inviteLink.invite_link}`);
 })

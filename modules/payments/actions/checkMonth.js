@@ -14,9 +14,9 @@ module.exports = Composer.action(/actionCheckMonth-.+/, async ctx => {
   let counterPlus = 0;
   let badBoys = 0;
 
-  for (const telegramID in ctx.globalSession.months[monthName].members) {
-    if (ctx.globalSession.months[monthName].members[telegramID].paid) counterBase++;
-    if (ctx.globalSession.months[monthName].members[telegramID].plus) counterPlus++;
+  for (const telegramID in ctx.months.list[monthName].members) {
+    if (ctx.months.list[monthName].members[telegramID].paid) counterBase++;
+    if (ctx.months.list[monthName].members[telegramID].plus) counterPlus++;
 
     badBoys = Object.keys(ctx.globalSession.participants).length - counterBase;
   }
