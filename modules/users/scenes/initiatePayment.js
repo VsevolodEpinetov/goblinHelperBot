@@ -10,9 +10,9 @@ sceneSendPayment.enter(async (ctx) => {
   switch (purchaseInfo.type) {
     case 'group':
       if (purchaseInfo.isOld) {
-        message += `доступа к ${purchaseInfo.year}-${purchaseInfo.month}\n\n<i>Стоимость: 1800₽ / 3000₽ / 4800₽</i>\n\n`
+        message += `доступа к ${purchaseInfo.year}-${purchaseInfo.month}\n\n<i>Стоимость: 1800₽ (без ➕) / 4800₽ (с ➕)</i>\n\n`
       } else {
-        message += `месячной подписки\n\n<i>Стоимость: 600₽ / 1000₽ / 1600₽</i>\n\n`
+        message += `месячной подписки\n\n<i>Стоимость: 600₽ (без ➕) / 1600₽ (с ➕)</i>\n\n`
       }
       break;
     case 'kickstarter':
