@@ -18,7 +18,7 @@ module.exports = Composer.action('searchResultKickstarter', async (ctx) => {
     message += `\nКакой проект вывести?`
   }
 
-  let bottomButtonAction = ctx.callbackQuery.message.from.id == SETTINGS.CHATS.EPINETOV ? 'adminKickstarters' : 'userKickstarters';
+  let bottomButtonAction = util.isSuperUser(ctx.callbackQuery.from.id) ? 'adminKickstarters' : 'userKickstarters';
 
   menu = util.splitMenu(menu, 6)
 

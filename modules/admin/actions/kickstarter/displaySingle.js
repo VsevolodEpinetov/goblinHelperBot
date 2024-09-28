@@ -37,7 +37,7 @@ module.exports = Composer.action(/^showKickstarter_/g, async (ctx) => {
     ]
   }
 
-  if (ctx.callbackQuery.from.id == SETTINGS.CHATS.EPINETOV) {
+  if (util.isSuperUser(ctx.callbackQuery.from.id)) {
     buttons = [
       [
         Markup.button.callback('✍️', `editKickstarter_${projectID}`),

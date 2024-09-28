@@ -1,6 +1,6 @@
 const { Scenes, Markup } = require("telegraf");
 const SETTINGS = require('../../../../settings.json');
-const { splitMenu } = require("../../../util");
+const { splitMenu, isSuperUser } = require("../../../util");
 
 const searchKickstarterString = new Scenes.BaseScene('SCENE_SEARCH_STRING');
 
@@ -63,7 +63,7 @@ searchKickstarterString.on('text', async (ctx) => {
     message += `\nКакой проект вывести?`
   }
 
-  let bottomButtonAction = ctx.message.chat.id == SETTINGS.CHATS.EPINETOV ? 'adminKickstarters' : 'userKickstarters';
+  let bottomButtonAction = isSuperUser(ctx.callbackQuery.from.id) ? 'adminKickstarters' : 'userKickstarters';
 
   menu = splitMenu(menu, 6);
 

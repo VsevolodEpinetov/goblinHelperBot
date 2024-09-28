@@ -16,7 +16,7 @@ module.exports = Composer.command('start', async (ctx) => {
   const userId = ctx.message.from.id;
   ctx.deleteMessage(ctx.message.message_id)
 
-  if (userId == SETTINGS.CHATS.EPINETOV) {
+  if (util.isSuperUser(userId)) {
     await ctx.replyWithHTML(`Выбери нужное действие`, {
       ...Markup.inlineKeyboard([
         [

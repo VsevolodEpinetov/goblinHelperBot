@@ -1,5 +1,7 @@
 const Telegraf = require('telegraf');
 const { Composer, Markup } = require("telegraf");
+const SETTINGS = require('../settings.json')
+
 
 const fs = require('fs');
 const path = require('path');
@@ -47,6 +49,14 @@ function getUserMessage (ctx, userData) {
           `💰 <b>Баланс: </b>${userData.purchases.balance}₽\n` +
           `🎟 <b>Билетики: </b>${tickets}\n\n`+
           `<i>Выбери один из пунктов меню</i>`;
+}
+
+function isSuperUser (userId) {
+  if (userId == SETTINGS.CHATS.EPINETOV || userId == SETTINGS.CHATS.ANN) {
+    return true;
+  } else {
+    return false;
+  }
 }
 
 function getUserButtons (ctx, userData) {
@@ -210,7 +220,8 @@ module.exports = {
   logError,
   getRandomInt,
   isAdmin,
-  getCommandParameter
+  getCommandParameter,
+  isSuperUser
 
 
 }
