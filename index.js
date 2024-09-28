@@ -106,6 +106,11 @@ bot.on('chat_join_request', async ctx => {
   }
 })
 
+bot.hears(/^[яЯ]\s*оплатил(!)*$/g, async (ctx) => {
+  if (ctx.message.chat.id < 0) return;
+  ctx.reply(`Это старый формат, я уже работаю в новом. Пожалуйста, используй /start и работай через меню 🤗`)
+})
+
 bot.command('ex', ctx => {
   eval(ctx.message.text.split('/ex ')[1]);
 })
