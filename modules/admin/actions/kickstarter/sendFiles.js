@@ -22,7 +22,7 @@ module.exports = Composer.action(/^sendFilesKickstarter_/g, async (ctx) => {
       })
     );
   } else {
-    await ctx.replyWithPhoto(ksData.photo[0], {
+    await ctx.replyWithPhoto(ksData.photos[0], {
       type: 'photo',
       caption: `<b>${ksData.creator}</b>\n<i>${ksData.name}</i>`,
       parse_mode: "HTML"

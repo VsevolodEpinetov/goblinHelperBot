@@ -12,7 +12,7 @@ module.exports = Composer.action('searchResultKickstarter', async (ctx) => {
     message = `Найдено ${results.length} проектов\n\n`;
     results.forEach((ksID, id) => {
       message += `${id + 1}. ${ctx.kickstarters.list[ksID].creator} - ${ctx.kickstarters.list[ksID].name}\n`
-      menu.push(Markup.button.callback(id + 1, `showKickstarter_${ksID}`))
+      menu.push(Markup.button.callback(id + 1, `showKickstarter_${id}`))
     })
 
     message += `\nКакой проект вывести?`
