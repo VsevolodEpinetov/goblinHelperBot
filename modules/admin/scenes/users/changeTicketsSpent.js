@@ -11,7 +11,7 @@ changeTicketsSpent.enter(async (ctx) => {
 });
 
 changeTicketsSpent.on('text', async (ctx) => {
-  const isSubstract = ctx.message.text.indexOf('-') > -1 ? false : true;
+  const isSubstract = ctx.message.text.indexOf('-') > -1 ? true : false;
   const userId = ctx.userSession.userId;
   let amount = 0;
 
@@ -23,10 +23,12 @@ changeTicketsSpent.on('text', async (ctx) => {
     ctx.users.list[userId].purchases.ticketsSpent = ctx.users.list[userId].purchases.ticketsSpent + amount;
   }
 
+  const tickets = Math.floor(ctx.users.list[userId].purchases.groups.plus.length / 3) * 2 - ctx.users.list[userId].purchases.ticketsSpent;
+
   await ctx.deleteMessage(ctx.message.message_id);
   await ctx.deleteMessage(ctx.session.toRemove);
-  ctx.replyWithHTML(`Изменил баланс на ${isSubstract ? '-' : ''}${amount}, новый баланс: ${ctx.users.list[userId].purchases.ticketsSpent}`)
-  ctx.telegram.sendMessage(userId, `Твоё количество билетиков было изменено на ${isSubstract ? '-' : ''}${amount}\n\nНовый баланс: ${ctx.users.list[userId].purchases.ticketsSpent}`)
+  ctx.replyWithHTML(`Изменил баланс на ${isSubstract ? '-' : ''}${amount}, новый баланс: ${tickets}`)
+  ctx.telegram.sendMessage(userId, `Твоё количество билетиков было изменено на ${isSubstract ? '-' : ''}${amount}\n\nНовый баланс: ${tickets}`)
   await ctx.telegram.sendMessage(SETTINGS.CHATS.LOGS, `ℹ️ ${ctx.message.from.id} changed ticketsSpent amount for ${userId} by ${isSubstract ? '-' : ''}${amount}`)
   ctx.scene.leave();
 });

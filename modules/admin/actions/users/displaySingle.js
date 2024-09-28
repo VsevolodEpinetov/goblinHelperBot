@@ -17,7 +17,7 @@ module.exports = Composer.action(/^showUser_/g, async (ctx) => {
       ],
       [
         Markup.button.callback(`Баланс`, `changeBalance_${userId}`),
-        Markup.button.callback(`Билетики`, `changeTickets_${userId}`),
+        Markup.button.callback(`Билетики`, `changeTicketsSpent_${userId}`),
       ],
       [
         Markup.button.callback('←', `adminParticipants`),
