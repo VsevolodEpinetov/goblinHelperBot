@@ -42,7 +42,7 @@ sceneAddUserMonth.on('text', async (ctx) => {
 
   ctx.users.list[userId].purchases.groups[type].push(`${year}_${month}`);
   ctx.months.list[year][month][type].counter.paid = ctx.months.list[year][month][type].counter.paid + 1;
-  await ctx.replyWithHTML(`Добавил ${userData.username != 'not_set' ? `@${userData.username}` : `${userData.first_name}`} ${year}_${month}_${type}\n\n<b>Обычные:</b> ${userData.purchases.groups.regular.join(', ')}\<b>Плюсовые:</b> ${userData.purchases.groups.plus.join(', ')}`, {
+  await ctx.replyWithHTML(`Добавил ${userData.username != 'not_set' ? `@${userData.username}` : `${userData.first_name}`} ${year}_${month}_${type}\n\n<b>Обычные:</b> ${userData.purchases.groups.regular.join(', ')}\n<b>Плюсовые:</b> ${userData.purchases.groups.plus.join(', ')}`, {
     parse_mode: "HTML",
     ...Markup.inlineKeyboard([
       [

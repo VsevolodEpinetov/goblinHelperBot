@@ -57,7 +57,7 @@ searchKickstarterString.on('text', async (ctx) => {
     menu = [];
     results.forEach((ksID, id) => {
       message += `${id + 1}. ${ctx.kickstarters.list[ksID].creator} - ${ctx.kickstarters.list[ksID].name}\n`
-      menu.push(Markup.button.callback(id + 1, `showKickstarter_${ksID}`))
+      menu.push(Markup.button.callback(id + 1, `showKickstarter_${id}`))
     })
 
     message += `\nКакой проект вывести?`

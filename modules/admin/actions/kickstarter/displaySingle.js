@@ -54,7 +54,7 @@ module.exports = Composer.action(/^showKickstarter_/g, async (ctx) => {
   if (projectData.photos.length > 0) {
 
     await ctx.replyWithPhoto(projectData.photos[0], {
-      caption: `${projectData.link}\n\nНазвание: ${projectData.name}\nАвтор: ${projectData.creator}\nПледж: ${projectData.pledgeName}\nОригинальная стоимость: $${projectData.pledgeCost}\n\nКоличество файлов: ${projectData.files.length}\n\nСтоимость: ${projectData.cost}₽`,
+      caption: `${projectData.link}\n\n<b>Название:</b> ${projectData.name}\n<b>Автор:</b> ${projectData.creator}\n<b>Пледж:</b> ${projectData.pledgeName}\n<b>Оригинальная стоимость:</b> $${projectData.pledgeCost}\n\n<b>Количество файлов:</b> ${projectData.files.length}\n\n<b>Стоимость:</b> ${projectData.cost}₽`,
       parse_mode: 'HTML',
       ...Markup.inlineKeyboard(buttons)
     });
