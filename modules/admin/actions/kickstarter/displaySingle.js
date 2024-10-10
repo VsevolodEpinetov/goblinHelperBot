@@ -10,7 +10,7 @@ module.exports = Composer.action(/^showKickstarter_/g, async (ctx) => {
   const projectData = ctx.kickstarters.list[projectID];
   const userId = ctx.callbackQuery.from.id;
   const userData = ctx.users.list[userId];
-  const tickets = Math.floor(userData.purchases.groups.plus.length / 3) * 2 - userData.purchases.ticketsSpent;
+  const tickets = (Math.floor(userData.purchases.groups.plus.length / 3) * 2 - userData.purchases.ticketsSpent) || 0;
 
   ctx.userSession.purchasing = {
     type: 'kickstarter',

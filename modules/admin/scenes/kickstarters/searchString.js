@@ -63,7 +63,7 @@ searchKickstarterString.on('text', async (ctx) => {
     message += `\nКакой проект вывести?`
   }
 
-  let bottomButtonAction = isSuperUser(ctx.callbackQuery.from.id) ? 'adminKickstarters' : 'userKickstarters';
+  let bottomButtonAction = isSuperUser(ctx.message.from.id) ? 'adminKickstarters' : 'userKickstarters';
 
   menu = splitMenu(menu, 6);
 

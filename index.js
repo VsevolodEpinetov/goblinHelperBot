@@ -71,7 +71,9 @@ bot.on('chat_join_request', async ctx => {
     return;
   }
 
-  if (ctx.users.list[ctx.from.id].roles.indexOf('rejected') > -1) {
+  const userInfo = ctx.users.list[ctx.from.id];
+
+  if (userInfo.roles.indexOf('rejected') > -1) {
     return;
   }
 
@@ -96,8 +98,9 @@ bot.on('chat_join_request', async ctx => {
   if (!month) {
     ctx.telegram.sendMessage(SETTINGS.CHATS.EPINETOV, `Не смог найти группу`)
   }
+  
 
-  if (ctx.users.list[ctx.from.id].purchases.groups[type].indexOf(`${year}_${month}`) > -1) {
+  if (userInfo.purchases.groups[type].indexOf(`${year}_${month}`) > -1 || userInfo.roles.indexOf('admin') > -1  || userInfo.roles.indexOf('adminPlus') > -1) {
     await ctx.approveChatJoinRequest(ctx.from.id);
     ctx.months.list[year][month][type].counter.joined = ctx.months.list[year][month][type].counter.joined + 1;
     console.log(`Added ${ctx.from.id} to the ${year}_${month}_${type}`)
@@ -112,6 +115,9 @@ bot.hears(/^[яЯ]\s*оплатил(!)*$/g, async (ctx) => {
 })
 
 bot.command('ex', ctx => {
+  if (ctx.message.from.id != SETTINGS.CHATS.EPINETOV) {
+    return;
+  }
   eval(ctx.message.text.split('/ex ')[1]);
 })
 

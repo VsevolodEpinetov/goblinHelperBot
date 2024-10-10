@@ -11,7 +11,7 @@ searchUser.enter(async (ctx) => {
 });
 
 searchUser.on('text', async (ctx) => {
-  const searchString = ctx.message.text;
+  const searchString = ctx.message.text.toLowerCase();
   if (ctx.message.text.length < 4) {
     await ctx.replyWithHTML(`Минимум 4 символа. Пришли новую <b>строку</b>`).then(nctx => {
       ctx.session.toRemove = nctx.message_id;
@@ -27,12 +27,12 @@ searchUser.on('text', async (ctx) => {
 
   for (const userID in ctx.users.list) {
     const userData = ctx.users.list[userID];
-    const name = userData.first_name;
-    const lastName = userData.last_name;
-    const username = userData.username;
+    const name = userData.first_name.toLowerCase();
+    const lastName = userData.last_name.toLowerCase();
+    const username = userData.username.toLowerCase();
     if (userID.indexOf(searchString) > -1 || name.indexOf(searchString) > -1 || lastName.indexOf(searchString) > -1 || username.indexOf(searchString) > -1 ) {
       results.push(userID)
-      break;
+      continue;
     }
   }
 

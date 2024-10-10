@@ -8,6 +8,7 @@ module.exports = Composer.command('start', async (ctx) => {
 
   if (ctx.message.chat.id < 0) {
     await ctx.replyWithHTML('Работаю только в личке, пупсик')
+    return;
   }
 
   if (!ctx.members) ctx.members = {};
@@ -15,25 +16,6 @@ module.exports = Composer.command('start', async (ctx) => {
 
   const userId = ctx.message.from.id;
   ctx.deleteMessage(ctx.message.message_id)
-
-  if (util.isSuperUser(userId)) {
-    await ctx.replyWithHTML(`Выбери нужное действие`, {
-      ...Markup.inlineKeyboard([
-        [
-          Markup.button.callback('Месяцы', 'adminMonths'),
-          Markup.button.callback('Месяцы Плюс', 'adminMonthsPlus')
-        ],
-        [
-          Markup.button.callback('Кикстартеры', 'adminKickstarters'),
-          Markup.button.callback('Релизы', 'adminReleases')
-        ],
-        [
-          Markup.button.callback('Люди', 'adminParticipants')
-        ]
-      ])
-    })
-    return;
-  }
 
   if (!ctx.users.list[userId]) {
     await ctx.replyWithHTML(
@@ -49,10 +31,30 @@ module.exports = Composer.command('start', async (ctx) => {
 
     if (roles.length == 0) {
       await ctx.replyWithHTML('Твоё участие ещё не было подтверждено. Ожидай')
+      return;
     }
 
     if (roles.indexOf('rejected') > -1) {
       await ctx.replyWithHTML('К сожалению, тебе было отказано в вступлении.')
+      return;
+    }
+
+    if (util.isSuperUser(userId)) {
+      await ctx.replyWithHTML(`Выбери нужное действие`, {
+        ...Markup.inlineKeyboard([
+          [
+            Markup.button.callback('Месяцы', 'adminMonths'),
+            Markup.button.callback('Месяцы Плюс', 'adminMonthsPlus')
+          ],
+          [
+            Markup.button.callback('Кикстартеры', 'adminKickstarters'),
+            Markup.button.callback('Релизы', 'adminReleases')
+          ],
+          [
+            Markup.button.callback('Люди', 'adminParticipants')
+          ]
+        ])
+      })
       return;
     }
     

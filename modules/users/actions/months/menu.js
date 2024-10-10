@@ -52,7 +52,12 @@ module.exports = Composer.action(/^userMonths/g, async (ctx) => {
       const year = callbackData.split('_')[2];
       const month = callbackData.split('_')[3];
       const info = ctx.months.list[year][month];
-      const monthIsPurchasable = !(ctx.users.list[userId].purchases.groups.regular.indexOf(`${year}_${month}`) > -1 && ctx.users.list[userId].purchases.groups.plus.indexOf(`${year}_${month}`) > -1)
+      const userInfo = ctx.users.list[userId];
+      const regularPurchased = userInfo.purchases.groups.regular.indexOf(`${year}_${month}`) > -1;
+      const plusPurchased = userInfo.purchases.groups.plus.indexOf(`${year}_${month}`) > -1;
+      const monthIsPurchasable = !(regularPurchased && plusPurchased)
+      const isAdmin = userInfo.roles.indexOf('admin') > -1;
+      const isAdminPlus = userInfo.roles.indexOf('adminPlus') > -1;
 
       let message = `Данные за ${year}-${month}`;
 
@@ -60,7 +65,7 @@ module.exports = Composer.action(/^userMonths/g, async (ctx) => {
 
       const isCurrent = ctx.globalSession.current.year == year && ctx.globalSession.current.month == month;
 
-      if (ctx.users.list[userId].purchases.groups.regular.indexOf(`${year}_${month}`) > -1) {
+      if (regularPurchased || isAdmin || isAdminPlus) {
         if (info.regular.link.length > 0) {
           menu.push([Markup.button.url('Вступить в архив', info.regular.link)])
         } else {
@@ -70,7 +75,7 @@ module.exports = Composer.action(/^userMonths/g, async (ctx) => {
       } else {
         message += `\nСтоимость обычной группы: ${isCurrent ? '600₽' : '1800₽'}`
       }
-      if (ctx.users.list[userId].purchases.groups.plus.indexOf(`${year}_${month}`) > -1) {
+      if (plusPurchased || isAdminPlus) {
         if (info.plus.link.length > 0) {
           menu.push([Markup.button.url('Вступить в архив+', info.plus.link)])
         } else {
