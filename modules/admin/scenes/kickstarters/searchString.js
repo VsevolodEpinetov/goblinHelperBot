@@ -12,7 +12,7 @@ searchKickstarterString.enter(async (ctx) => {
 });
 
 searchKickstarterString.on('text', async (ctx) => {
-  const searchString = ctx.message.text;
+  const searchString = ctx.message.text.toLowerCase();
   if (ctx.message.text.length < 4) {
     await ctx.replyWithHTML(`Минимум 4 символа. Пришли новую <b>строку</b>`).then(nctx => {
       ctx.session.toRemove = nctx.message_id;
@@ -31,12 +31,12 @@ searchKickstarterString.on('text', async (ctx) => {
       if (results.indexOf(id) < 0) {
         if (typeof project[key] == 'object') {
           project[key].forEach(d => {
-            if (d.indexOf(searchString) > -1 && results.indexOf(id) < 0) {
+            if (d.toLowerCase().indexOf(searchString) > -1 && results.indexOf(id) < 0) {
               results.push(id);
             }
           })
         } else {
-          if (project[key].indexOf(searchString) > -1) {
+          if (project[key].toLowerCase().indexOf(searchString) > -1 && results.indexOf(id) < 0) {
             results.push(id);
           }
         }

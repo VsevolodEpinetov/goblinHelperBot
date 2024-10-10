@@ -12,8 +12,8 @@ searchUser.enter(async (ctx) => {
 
 searchUser.on('text', async (ctx) => {
   const searchString = ctx.message.text.toLowerCase();
-  if (ctx.message.text.length < 4) {
-    await ctx.replyWithHTML(`Минимум 4 символа. Пришли новую <b>строку</b>`).then(nctx => {
+  if (ctx.message.text.length < 3) {
+    await ctx.replyWithHTML(`Минимум 3 символа. Пришли новую <b>строку</b>`).then(nctx => {
       ctx.session.toRemove = nctx.message_id;
       ctx.session.chatID = nctx.chat.id;
     });
