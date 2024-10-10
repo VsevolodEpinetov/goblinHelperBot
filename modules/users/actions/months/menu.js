@@ -65,7 +65,7 @@ module.exports = Composer.action(/^userMonths/g, async (ctx) => {
 
       const isCurrent = ctx.globalSession.current.year == year && ctx.globalSession.current.month == month;
 
-      if (regularPurchased || isAdmin || isAdminPlus) {
+      if (regularPurchased || isAdmin) {
         if (info.regular.link.length > 0) {
           menu.push([Markup.button.url('Вступить в архив', info.regular.link)])
         } else {

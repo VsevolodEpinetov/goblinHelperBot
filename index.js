@@ -98,14 +98,40 @@ bot.on('chat_join_request', async ctx => {
   if (!month) {
     ctx.telegram.sendMessage(SETTINGS.CHATS.EPINETOV, `Не смог найти группу`)
   }
-  
 
-  if (userInfo.purchases.groups[type].indexOf(`${year}_${month}`) > -1 || userInfo.roles.indexOf('admin') > -1  || userInfo.roles.indexOf('adminPlus') > -1) {
+  const monthPurchased = userInfo.purchases.groups[type].indexOf(`${year}_${month}`) > -1;
+  const adminRole = type == 'plus' ? 'adminPlus' : 'admin';
+  const isAppropriateAdmin = userInfo.roles.indexOf(adminRole) > -1;
+
+  // TODO: check bot's administrator rights
+
+  if (monthPurchased || isAppropriateAdmin) {
     await ctx.approveChatJoinRequest(ctx.from.id);
     ctx.months.list[year][month][type].counter.joined = ctx.months.list[year][month][type].counter.joined + 1;
-    console.log(`Added ${ctx.from.id} to the ${year}_${month}_${type}`)
+    await ctx.telegram.sendMessage(SETTINGS.CHATS.LOGS, `🟢 Added ${userInfo.username != 'not_set' ? `@${userInfo.username}` : `${userInfo.first_name}`} (${ctx.from.id}) to the ${year}_${month}_${type}`)
+    if (isAppropriateAdmin) {
+      await ctx.telegram.sendMessage(SETTINGS.CHATS.LOGS, `⚠️ Promoted ${userInfo.username != 'not_set' ? `@${userInfo.username}` : `${userInfo.first_name}`} (${ctx.from.id}) in the ${year}_${month}_${type}`)
+      if (type == 'regular') {
+        await ctx.telegram.promoteChatMember(ctx.months.list[year][month][type].id, userInfo.id, {
+          can_delete_messages: true,
+          can_edit_messages: true,
+          can_post_messages: true,
+          can_pin_messages: true
+        })
+      }
+      if (type == 'plus') {
+        await ctx.telegram.promoteChatMember(ctx.months.list[year][month][type].id, userInfo.id, {
+          can_delete_messages: true,
+          can_edit_messages: true,
+          can_post_messages: true,
+          can_pin_messages: true,
+          is_anonymous: true,
+          can_manage_topics: true
+        })
+      }
+    }
   } else {
-    console.log(`${ctx.from.id} applied to the ${year}_${month}_${type} but was rejected`)
+    await ctx.telegram.sendMessage(SETTINGS.CHATS.LOGS, `🆘 ${userInfo.username != 'not_set' ? `@${userInfo.username}` : `${userInfo.first_name}`} (${ctx.from.id}) applied to the ${year}_${month}_${type} but was rejected`)
   }
 })
 
