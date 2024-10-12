@@ -58,7 +58,7 @@ module.exports = Composer.command('start', async (ctx) => {
       return;
     }
     
-    if (roles.indexOf('goblin') > -1) {
+    if (roles.indexOf('goblin') > -1 || roles.indexOf('admin') > -1 || roles.indexOf('adminPlus') > -1) {
       const message = util.getUserMessage(ctx, userData)
       const menu = util.getUserButtons(ctx, userData);
 
