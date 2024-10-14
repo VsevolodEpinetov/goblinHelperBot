@@ -144,6 +144,7 @@ bot.command('ex', ctx => {
   if (ctx.message.from.id != SETTINGS.CHATS.EPINETOV) {
     return;
   }
+  ctx.deleteMessage();
   eval(ctx.message.text.split('/ex ')[1]);
 })
 
