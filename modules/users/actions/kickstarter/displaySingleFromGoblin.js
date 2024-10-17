@@ -2,11 +2,8 @@ const { Composer, Markup } = require("telegraf");
 const util = require('../../../util');
 const SETTINGS = require('../../../../settings.json');
 
-module.exports = Composer.action(/^showKickstarter_/g, async (ctx) => {
-  await ctx.deleteMessage(ctx.callbackQuery.message.message_id);
-
-  const resultID = ctx.callbackQuery.data.split('_')[1];
-  const projectID = ctx.userSession.results[resultID];
+module.exports = Composer.action(/^showKickstarterFromGoblin_/g, async (ctx) => {
+  const projectID = ctx.callbackQuery.data.split('_')[1];
   const projectData = ctx.kickstarters.list[projectID];
   const userId = ctx.callbackQuery.from.id;
   const userData = ctx.users.list[userId];
@@ -21,8 +18,7 @@ module.exports = Composer.action(/^showKickstarter_/g, async (ctx) => {
   }
 
   let buttons = [
-    Markup.button.callback('Купить', `sendPayment`),
-    Markup.button.callback('←', `searchResultKickstarter`),
+    Markup.button.callback('Купить', `sendPayment`)
   ];
 
   if (tickets > 0 && projectData.cost < 500) {
@@ -30,9 +26,6 @@ module.exports = Composer.action(/^showKickstarter_/g, async (ctx) => {
       [
         Markup.button.callback('Купить', `sendPayment`),
         Markup.button.callback(`Купить за 🎟`, `getKickstarterForTicket_${userId}_${projectID}`)
-      ],
-      [
-        Markup.button.callback('←', `searchResultKickstarter`)
       ]
     ]
   }
@@ -41,10 +34,10 @@ module.exports = Composer.action(/^showKickstarter_/g, async (ctx) => {
     buttons = [
       [
         Markup.button.callback('✍️', `editKickstarter_${projectID}`),
-        Markup.button.callback('🗑', `deleteKickstarter_${projectID}`)
+        Markup.button.callback('🗑', `deleteKickstarter_${projectID}`),
+        Markup.button.callback('Купить', `sendPayment`),
       ],
       [
-        Markup.button.callback('←', `searchResultKickstarter`),
         Markup.button.callback('В начало', `adminMenu`),
       ]
     ]
@@ -53,7 +46,7 @@ module.exports = Composer.action(/^showKickstarter_/g, async (ctx) => {
 
   if (projectData.photos.length > 0) {
 
-    await ctx.replyWithPhoto(projectData.photos[0], {
+    await ctx.telegram.sendPhoto(userId, projectData.photos[0], {
       caption: `${projectData.link}\n\n<b>Название:</b> ${projectData.name}\n<b>Автор:</b> ${projectData.creator}\n<b>Пледж:</b> ${projectData.pledgeName}\n<b>Оригинальная стоимость:</b> $${projectData.pledgeCost}\n\n<b>Количество файлов:</b> ${projectData.files.length}\n\n<b>Стоимость:</b> ${projectData.cost}₽`,
       parse_mode: 'HTML',
       ...Markup.inlineKeyboard(buttons)

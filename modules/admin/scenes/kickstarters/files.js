@@ -31,7 +31,20 @@ adminAddKickstarterFiles.leave(async (ctx) => {
   if (!ctx.kickstarters.list) ctx.kickstarters.list = [];
   const kstID = ctx.kickstarters.list.length
   ctx.kickstarters.list.push(ctx.session.kickstarter);
-  ctx.session.kickstarter = null;
+  if (ctx.settings.chats.ks) {
+    const projectData = ctx.session.kickstarter;
+    await ctx.telegram.sendPhoto(ctx.settings.chats.ks.id, projectData.photos[0], {
+      caption: `${projectData.link}\n\n<b>Название:</b> ${projectData.name}\n<b>Автор:</b> ${projectData.creator}\n<b>Пледж:</b> ${projectData.pledgeName}\n<b>Оригинальная стоимость:</b> $${projectData.pledgeCost}\n\n<b>Количество файлов:</b> ${projectData.files.length}\n\n<b>Стоимость:</b> ${projectData.cost}₽`,
+      message_thread_id: ctx.settings.chats.ks.thread_id,
+      parse_mode: 'HTML',
+      ...Markup.inlineKeyboard([
+        Markup.button.callback('Купить', `showKickstarterFromGoblin_${kstID}`),
+      ])
+    });
+  } else {
+    await ctx.telegram.sendMessage(SETTINGS.CHATS.LOGS, `🆘 Chat 'ks' is not defined, you should fix it before adding any more projects!!! @send_dog_pics @WarmDuck`)
+  }
+
   ctx.telegram.editMessageText(ctx.session.chatID, ctx.session.toEdit, undefined, `✅ Кикстартер успешно добавлен с ID ${kstID}.\nВсего проектов внесено: ${ctx.kickstarters.list.length}`, {
     parse_mode: "HTML",
     ...Markup.inlineKeyboard([
@@ -45,6 +58,8 @@ adminAddKickstarterFiles.leave(async (ctx) => {
       ]
     ])
   })
+
+  ctx.session.kickstarter = null;
 });
 
 module.exports = adminAddKickstarterFiles;
