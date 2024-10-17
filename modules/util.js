@@ -71,14 +71,14 @@ function getUserButtons (ctx, userData) {
   return [
     [
       Markup.button.callback('Подписка', `userMonths`),
-      Markup.button.callback('Релизы', `requestRelease`)
+      Markup.button.callback('🚧 Релизы', `requestRelease`)
     ],
     [
       Markup.button.callback('Кикстартеры', `userKickstarters`),
-      Markup.button.callback('Коллекция', `userCollections`)
+      Markup.button.callback('🚧 Коллекция', `userCollections`)
     ],
     [
-      Markup.button.callback('Индивидуальный выкуп', `requestBuyout`)
+      Markup.button.callback('🚧 Индивидуальный выкуп', `requestBuyout`)
     ],
     notPurchasedPart
   ]
