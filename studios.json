@@ -6,18 +6,6 @@
     "bought": false
   },
   {
-    "name": "Belksasar",
-    "price": "16",
-    "mainLink": "https://www.myminifactory.com/users/belksasar3dprint#/",
-    "bought": false
-  },
-  {
-    "name": "BigBadEvilGuy",
-    "price": "7",
-    "mainLink": "https://www.myminifactory.com/users/BigBadEvilGuy",
-    "bought": false
-  },
-  {
     "name": "ClayBeastCreation",
     "price": "11",
     "mainLink": "https://www.patreon.com/ClayBeastCreation",
@@ -30,21 +18,15 @@
     "bought": false
   },
   {
+    "name": "Cyberstash",
+    "price": "12",
+    "mainLink": "https://www.myminifactory.com/users/Cyberstash",
+    "bought": false
+  },
+  {
     "name": "DakkaDakkaStore",
     "price": "12",
     "mainLink": "https://www.myminifactory.com/users/DakkaDakkaStore?show=tribe",
-    "bought": false
-  },
-  {
-    "name": "Epic Miniatures",
-    "price": "12",
-    "mainLink": "https://www.myminifactory.com/users/Epic-Miniatures",
-    "bought": false
-  },
-  {
-    "name": "GAZ Minis",
-    "price": "4.5",
-    "mainLink": "https://www.patreon.com/GazMinis",
     "bought": false
   },
   {
@@ -54,21 +36,9 @@
     "bought": false
   },
   {
-    "name": "Miniature Land",
-    "price": "10",
-    "mainLink": "https://www.myminifactory.com/users/MiniatureLand",
-    "bought": false
-  },
-  {
     "name": "Miniatures Blueprint",
     "price": "4",
     "mainLink": "https://www.myminifactory.com/users/miniaturesblueprint",
-    "bought": false
-  },
-  {
-    "name": "Monolith Arts",
-    "price": "10",
-    "mainLink": "https://www.myminifactory.com/users/MonolithArts",
     "bought": false
   },
   {
@@ -78,21 +48,9 @@
     "bought": false
   },
   {
-    "name": "Nerikson",
+    "name": "Papel3D",
     "price": "13",
-    "mainLink": "https://www.myminifactory.com/users/nerikson",
-    "bought": false
-  },
-  {
-    "name": "Parasite Collectibles",
-    "price": "5",
-    "mainLink": "https://www.myminifactory.com/users/Parasite-Collectibles",
-    "bought": false
-  },
-  {
-    "name": "Print Minis",
-    "price": "13",
-    "mainLink": "https://www.myminifactory.com/users/PrintMinis?show=tribe",
+    "mainLink": "https://www.myminifactory.com/users/Papel3D",
     "bought": false
   },
   {
@@ -108,27 +66,9 @@
     "bought": false
   },
   {
-    "name": "Stormborn Collectibles",
-    "price": "4",
-    "mainLink": "https://www.myminifactory.com/users/Stormborn%20Collectibles?show=tribe",
-    "bought": false
-  },
-  {
-    "name": "Taiga Miniatures",
-    "price": "1",
-    "mainLink": "https://www.myminifactory.com/users/Taiga_Miniatures",
-    "bought": false
-  },
-  {
     "name": "The Printing Goes Ever On",
     "price": "10",
     "mainLink": "https://www.myminifactory.com/users/the-printing-goes-ever-on?show=tribe",
-    "bought": false
-  },
-  {
-    "name": "Velrock",
-    "price": "10",
-    "mainLink": "https://www.myminifactory.com/users/Velrock?show=tribe",
     "bought": false
   }
 ]

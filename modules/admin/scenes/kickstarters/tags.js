@@ -6,7 +6,7 @@ const nextStageName = 'ADMIN_SCENE_ADD_KICKSTARTER_PICTURES'
 const adminAddKickstarterTags = new Scenes.BaseScene(currentStageName);
 
 adminAddKickstarterTags.enter(async (ctx) => {
-  await ctx.telegram.editMessageText(ctx.session.chatID, ctx.session.toEdit, undefined, `Пришли <b>теги</b> проекта`, {
+  await ctx.telegram.editMessageText(ctx.session.chatID, ctx.session.toEdit, undefined, `Пришли <b>теги</b> проекта. Теги НЕ ДОЛЖНЫ содержать "#" и должны быть разделены пробелами.`, {
     parse_mode: "HTML"
   });
 });
