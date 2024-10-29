@@ -19,12 +19,12 @@
   },
   "CURRENCIES": {
     "USD": {
-      "EXCHANGE_RATE": 105,
+      "EXCHANGE_RATE": 110,
       "SYMBOL": "$",
       "NAME": "доллары"
     },
     "EUR": {
-      "EXCHANGE_RATE": 110,
+      "EXCHANGE_RATE": 120,
       "SYMBOL": "€",
       "NAME": "евро"
     },

@@ -17,6 +17,13 @@ adminAddKickstarterLink.on('text', async (ctx) => {
 
   await ctx.deleteMessage(ctx.message.message_id);
 
+  ctx.kickstarters.list.forEach(async (ks, id) => {
+    if (ks.link == link) {
+      await ctx.replyWithHTML(`Этот кикстартер уже есть в списке. ID: ${id}\n\n${ks.creator}\n${ks.name}\n${ks.link}`)
+      return ctx.scene.leave();
+    }
+  });
+
   ctx.session.kickstarter.link = link;
 
   ctx.scene.enter(nextStageName)

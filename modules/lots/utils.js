@@ -5,11 +5,12 @@ const SETTINGS = require('../../settings.json');
 function getLotCaption({ author, name, link, price, currency, organizator, status, participants }) {
   const statusLabel = status ? '✅ ОТКРЫТ НАБОР' : '❌ ЛОТ ЗАКРЫТ';
   const participantsList = participants.map((p, index) => `${index + 1}. @${p.username || p.first_name}`).join('\n') || 'Нет участников';
+  const exchangeRate = ctx.settings[currency] || SETTINGS.CURRENCIES[currency].EXCHANGE_RATE;
 
   let message = `<b>${author || 'без автора'}</b>\n` +
     `<i>${name || 'без названия'}</i>\n\n` +
     `✍️ <b>Описание:</b> ${link || 'без названия'}\n` +
-    `💰 <b>Цена:</b> ${SETTINGS.CURRENCIES[currency].SYMBOL}${price}${(currency && currency !== 'RUB') ? ` (${Math.ceil(price * SETTINGS.CURRENCIES[currency].EXCHANGE_RATE)}₽)` : ''}\n\n` +
+    `💰 <b>Цена:</b> ${SETTINGS.CURRENCIES[currency].SYMBOL}${price}${(currency && currency !== 'RUB') ? ` (${Math.ceil(price * exchangeRate)}₽)` : ''}\n\n` +
     `<b>Организатор:</b> ${organizator}\n` +
     `<b>Статус:</b> ${statusLabel}\n\n` +
     `<b>Участники:</b>\n${participantsList}\n\n` +
@@ -20,7 +21,7 @@ function getLotCaption({ author, name, link, price, currency, organizator, statu
     const shortParticipantsList = participants.map((p, index) => `@${p.username || p.first_name}`).join(' ') || 'Нет участников';
     message += `<b>${author || 'без автора'}</b>\n` +
     `<i>${name || 'без названия'}</i>\n\n` +
-    `💰 <b>Цена:</b> ${SETTINGS.CURRENCIES[currency].SYMBOL}${price}${(currency && currency !== 'RUB') ? ` (${Math.ceil(price * SETTINGS.CURRENCIES[currency].EXCHANGE_RATE)}₽)` : ''}\n\n` +
+    `💰 <b>Цена:</b> ${SETTINGS.CURRENCIES[currency].SYMBOL}${price}${(currency && currency !== 'RUB') ? ` (${Math.ceil(price * exchangeRate)}₽)` : ''}\n\n` +
     `<b>Организатор:</b> ${organizator}\n` +
     `<b>Участники:</b>\n${shortParticipantsList}\n\n` +
     `${participants.length > 0 ? `💶 <b>Каждый платит по:</b> ${formatCurrency(currency, price, participants.length)}\n\n` : ''}` +
@@ -32,7 +33,8 @@ function getLotCaption({ author, name, link, price, currency, organizator, statu
 
 function formatCurrency(currency, totalPrice, amountOfParticipants) {
   const pricePerMember = totalPrice / amountOfParticipants;
-  return `${SETTINGS.CURRENCIES[currency].SYMBOL}${currency == 'RUB' ? parseInt(pricePerMember) : parseFloat(pricePerMember).toFixed(2)}${(currency && currency != "RUB") ? ` (${Math.ceil(pricePerMember * SETTINGS.CURRENCIES[currency].EXCHANGE_RATE)}₽)` : ''}`
+  const exchangeRate = ctx.settings[currency] || SETTINGS.CURRENCIES[currency].EXCHANGE_RATE;
+  return `${SETTINGS.CURRENCIES[currency].SYMBOL}${currency == 'RUB' ? parseInt(pricePerMember) : parseFloat(pricePerMember).toFixed(2)}${(currency && currency != "RUB") ? ` (${Math.ceil(pricePerMember * exchangeRate)}₽)` : ''}`
 }
 
 // Updates the message caption
