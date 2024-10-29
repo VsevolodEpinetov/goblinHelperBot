@@ -39,7 +39,7 @@ lotSceneNameStage.on('text', async (ctx) => {
   if (ctx.session.lot.photos.length < 2) {
 
     const nctx = await ctx.replyWithPhoto(ctx.session.lot.photos[0], {
-      caption: lotsUtils.getLotCaption({
+      caption: lotsUtils.getLotCaption(ctx, {
         author: ctx.session.lot.author,
         name: ctx.session.lot.name,
         link: ctx.session.lot.link,
@@ -66,7 +66,7 @@ lotSceneNameStage.on('text', async (ctx) => {
           type: 'photo',
           media: p,
           caption: id === 0
-            ? lotsUtils.getLotCaption({
+            ? lotsUtils.getLotCaption(ctx, {
               author: ctx.session.lot.author,
               name: ctx.session.lot.name,
               link: ctx.session.lot.link,

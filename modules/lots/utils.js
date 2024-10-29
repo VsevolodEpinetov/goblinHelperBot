@@ -2,7 +2,7 @@ const { Markup } = require("telegraf");
 const SETTINGS = require('../../settings.json');
 
 // Generates the caption for the lot, depending on its status and participants
-function getLotCaption({ author, name, link, price, currency, organizator, status, participants }) {
+function getLotCaption(ctx, { author, name, link, price, currency, organizator, status, participants }) {
   const statusLabel = status ? '✅ ОТКРЫТ НАБОР' : '❌ ЛОТ ЗАКРЫТ';
   const participantsList = participants.map((p, index) => `${index + 1}. @${p.username || p.first_name}`).join('\n') || 'Нет участников';
   const exchangeRate = ctx.settings[currency] || SETTINGS.CURRENCIES[currency].EXCHANGE_RATE;
@@ -14,8 +14,8 @@ function getLotCaption({ author, name, link, price, currency, organizator, statu
     `<b>Организатор:</b> ${organizator}\n` +
     `<b>Статус:</b> ${statusLabel}\n\n` +
     `<b>Участники:</b>\n${participantsList}\n\n` +
-    `${participants.length > 0 ? `💶 <b>Каждый платит по:</b> ${formatCurrency(currency, price, participants.length)}\n\n` : ''}` +
-    (status ? `<i>Если ты присоединишься, то цена участия будет ${formatCurrency(currency, price, participants.length + 1)}</i>\n\n#opened_lot` : '#closed_lot');
+    `${participants.length > 0 ? `💶 <b>Каждый платит по:</b> ${formatCurrency(exchangeRate, currency, price, participants.length)}\n\n` : ''}` +
+    (status ? `<i>Если ты присоединишься, то цена участия будет ${formatCurrency(exchangeRate, currency, price, participants.length + 1)}</i>\n\n#opened_lot` : '#closed_lot');
 
   if (message.length > 1023) {
     const shortParticipantsList = participants.map((p, index) => `@${p.username || p.first_name}`).join(' ') || 'Нет участников';
@@ -24,16 +24,15 @@ function getLotCaption({ author, name, link, price, currency, organizator, statu
     `💰 <b>Цена:</b> ${SETTINGS.CURRENCIES[currency].SYMBOL}${price}${(currency && currency !== 'RUB') ? ` (${Math.ceil(price * exchangeRate)}₽)` : ''}\n\n` +
     `<b>Организатор:</b> ${organizator}\n` +
     `<b>Участники:</b>\n${shortParticipantsList}\n\n` +
-    `${participants.length > 0 ? `💶 <b>Каждый платит по:</b> ${formatCurrency(currency, price, participants.length)}\n\n` : ''}` +
-    (status ? `<i>Если ты присоединишься, то цена участия будет ${formatCurrency(currency, price, participants.length + 1)}</i>\n\n#opened_lot` : '#closed_lot');
+    `${participants.length > 0 ? `💶 <b>Каждый платит по:</b> ${formatCurrency(exchangeRate, currency, price, participants.length)}\n\n` : ''}` +
+    (status ? `<i>Если ты присоединишься, то цена участия будет ${formatCurrency(exchangeRate, currency, price, participants.length + 1)}</i>\n\n#opened_lot` : '#closed_lot');
   }
 
   return message;
 }
 
-function formatCurrency(currency, totalPrice, amountOfParticipants) {
+function formatCurrency(exchangeRate, currency, totalPrice, amountOfParticipants) {
   const pricePerMember = totalPrice / amountOfParticipants;
-  const exchangeRate = ctx.settings[currency] || SETTINGS.CURRENCIES[currency].EXCHANGE_RATE;
   return `${SETTINGS.CURRENCIES[currency].SYMBOL}${currency == 'RUB' ? parseInt(pricePerMember) : parseFloat(pricePerMember).toFixed(2)}${(currency && currency != "RUB") ? ` (${Math.ceil(pricePerMember * exchangeRate)}₽)` : ''}`
 }
 
@@ -41,7 +40,7 @@ function formatCurrency(currency, totalPrice, amountOfParticipants) {
 async function updateLotMessageCaption(ctx, lotID, lotData, isClosed = false) {
   const organizator = `${lotData.whoCreated.first_name} ${lotData.whoCreated.last_name}${lotData.whoCreated.username ? ` (@${lotData.whoCreated.username})` : ''}`;
 
-  const updatedCaption = getLotCaption({
+  const updatedCaption = getLotCaption(ctx, {
     author: lotData.author,
     name: lotData.name,
     link: lotData.link,
