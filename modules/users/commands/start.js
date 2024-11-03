@@ -17,14 +17,20 @@ module.exports = Composer.command('start', async (ctx) => {
   const userId = ctx.message.from.id;
   ctx.deleteMessage(ctx.message.message_id)
 
+  const IS_CLOSED = true; //TODO: move to settings
+
   if (!ctx.users.list[userId]) {
-    await ctx.replyWithHTML(
-      `Привет! Ты ещё не зарегистрирован. Нажми на кнопку, чтобы подать запрос на добавление.`, {
-      ...Markup.inlineKeyboard([
-        Markup.button.callback('Отправить запрос', 'requestAddUser')
-      ])
+    if (!IS_CLOSED) {
+      await ctx.replyWithHTML(
+        `Привет! Ты ещё не зарегистрирован. Нажми на кнопку, чтобы подать запрос на добавление.`, {
+        ...Markup.inlineKeyboard([
+          Markup.button.callback('Отправить запрос', 'requestAddUser')
+        ])
+      }
+      );
+    } else {
+      await ctx.reply('Сори, но регистрация закрыта')
     }
-    );
   } else {
     const userData = ctx.users.list[userId];
     const roles = userData.roles;
@@ -57,7 +63,7 @@ module.exports = Composer.command('start', async (ctx) => {
       })
       return;
     }
-    
+
     if (roles.indexOf('goblin') > -1 || roles.indexOf('admin') > -1 || roles.indexOf('adminPlus') > -1) {
       const message = util.getUserMessage(ctx, userData)
       const menu = util.getUserButtons(ctx, userData);
