@@ -4,6 +4,7 @@ const SETTINGS = require('../../../settings.json');
 
 module.exports = Composer.action(/^userMenu/g, async (ctx) => {
   const userData = ctx.users.list[ctx.callbackQuery.from.id];
+  const roles = userData.roles;
 
   if (userData.roles.indexOf('goblin') > -1) {
     const message = util.getUserMessage(ctx, userData)
@@ -17,7 +18,7 @@ module.exports = Composer.action(/^userMenu/g, async (ctx) => {
         ...menu
       ]
     }
-    
+
     await ctx.editMessageText(message, {
       parse_mode: 'HTML',
       ...Markup.inlineKeyboard(menu)
