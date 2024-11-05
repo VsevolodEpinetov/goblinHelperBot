@@ -84,7 +84,7 @@ lotScenePriceStage.action('actionStopLot', async (ctx) => {
       ctx.session.lot = null;
       ctx.scene.leave();
     } else {
-      await ctx.answerCbQuery(SETTINGS.MESSAGES.CREATE_LOT.ERRORS.NOT_CREATING_A_LOT)
+      await ctx.answerCbQuery("Похоже, что ты не делаешь выкуп")
     }
   } catch (e) {
     console.error('Failed to handle stop lot action:', e);

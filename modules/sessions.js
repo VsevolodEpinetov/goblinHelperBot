@@ -35,6 +35,11 @@ const channelsSession = new RedisSession({
   getSessionKey: () => { return "channels" }
 })
 
+const polls = new RedisSession({
+  property: 'polls',
+  getSessionKey: () => { return "polls" }
+})
+
 const userSession = new RedisSession({
   property: 'userSession',
   getSessionKey: (ctx) => { if (ctx.from) return `${ctx.from.id}-user` }
@@ -63,6 +68,7 @@ module.exports = {
   LOTS_SESSION: lots,
   MONTHS_SESSION: months,
   KICKSTARTERS_SESSION: kickstarters,
-  SETTINGS_SESSION: settings
+  SETTINGS_SESSION: settings,
+  POLLS_SESSION: polls
   //UNIQUE_SESSION: session
 };

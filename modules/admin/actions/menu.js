@@ -14,7 +14,8 @@ module.exports = Composer.action(/^adminMenu/g, async (ctx) => {
         Markup.button.callback('Релизы', 'adminReleases')
       ],
       [
-        Markup.button.callback('Люди', 'adminParticipants')
+        Markup.button.callback('Люди', 'adminParticipants'),
+        Markup.button.callback('Голосования', 'adminPolls'),
       ]
     ])
   })

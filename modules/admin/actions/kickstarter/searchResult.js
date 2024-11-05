@@ -3,7 +3,12 @@ const util = require('../../../util');
 const SETTINGS = require('../../../../settings.json');
 
 module.exports = Composer.action('searchResultKickstarter', async (ctx) => {
-  await ctx.deleteMessage(ctx.callbackQuery.message.message_id);
+  try {
+    await ctx.deleteMessage(ctx.callbackQuery.message.message_id);
+  } catch (e) {
+    await ctx.replyWithHTML(`Из-за ограничений телеграма тебе нужно использовать /start ещё раз. Старое сообщение останется, можешь его удалить вручную, если мешает.`)
+    return;
+  }
 
   const results = ctx.userSession.results;
   let menu = [];

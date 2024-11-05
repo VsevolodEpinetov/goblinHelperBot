@@ -4,13 +4,12 @@ const util = require('../../util')
 
 module.exports = Composer.command('count', async (ctx) => {
   util.log(ctx)
-  if (
-    ctx.message.chat.id != SETTINGS.CHATS.EPINETOV &&
-    ctx.message.chat.id != SETTINGS.CHATS.TEST &&
-    ctx.message.chat.id != SETTINGS.CHATS.GOBLIN
-  ) { return; }
+  const isAnAdmin = ctx.message.from.id == SETTINGS.CHATS.EPINETOV || ctx.message.from.id == SETTINGS.CHATS.ALEKS || ctx.message.from.id == SETTINGS.CHATS.ARTYOM;
 
-  if (ctx.message.from.id != SETTINGS.CHATS.EPINETOV || ctx.message.from.id == SETTINGS.CHATS.ARTYOM) { return; }
+  if (!isAnAdmin) { 
+    console.log('not an admin')
+    return; 
+  }
 
   if (!ctx.message.reply_to_message) {
     ctx.reply('Ты промахнулся')
@@ -34,7 +33,7 @@ module.exports = Composer.command('count', async (ctx) => {
       if (studio.text !== 'Пустой вариант') {
         const percent = Math.ceil((studio.voter_count / totalCount) * 100);
         message += `\n`
-        message += `${percent > 34 ? '🌟 <b>' : ''}${studio.text.split(' - ')[0]} - ${percent}%${percent > 34 ? '</b>' : ''}`
+        message += `${studio.text.split(' - ')[0]} - ${percent}%`
       }
     })
     ctx.reply(message, {

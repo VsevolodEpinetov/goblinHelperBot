@@ -7,7 +7,12 @@ module.exports = Composer.action(/^changeTicketsSpent_/g, async (ctx) => {
   const userId = data[1];
   ctx.userSession.userId = userId;
 
-  await ctx.deleteMessage(ctx.callbackQuery.message.message_id);
+  try {
+    await ctx.deleteMessage(ctx.callbackQuery.message.message_id);
+  } catch (e) {
+    await ctx.replyWithHTML(`Из-за ограничений телеграма тебе нужно использовать /start ещё раз. Старое сообщение останется, можешь его удалить вручную, если мешает.`)
+    return;
+  }
   
   ctx.scene.enter('ADMIN_SCENE_CHANGE_TICKETS_SPENT');
 });
