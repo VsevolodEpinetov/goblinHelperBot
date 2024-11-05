@@ -5,6 +5,7 @@ const SETTINGS = require('../../../../settings.json');
 module.exports = Composer.action('adminPolls', async (ctx) => {
   if (!ctx.polls.studios) ctx.polls.studios = [];
   if (!ctx.polls.core) ctx.polls.core = [];
+  const userId = ctx.callbackQuery.from.id;
 
   if (!ctx.callbackQuery.message.photo) {
     await ctx.editMessageText(`📊 <b>Меню работы с голосованиями</b> 📊\n\nСтудий в ядре: ${ctx.polls.core.length}\nДобавленных студий: ${ctx.polls.studios.length}`, {
@@ -19,7 +20,7 @@ module.exports = Composer.action('adminPolls', async (ctx) => {
           Markup.button.callback('🔄 Посчитать', 'adminPollsCount')
         ],
         [
-          Markup.button.callback('←', 'adminMenu')
+          Markup.button.callback('←', `${util.isSuperUser(userId) ? 'adminMenu' : 'userMenu'}`)
         ]
       ])
     })
@@ -37,7 +38,7 @@ module.exports = Composer.action('adminPolls', async (ctx) => {
           Markup.button.callback('🔄 Посчитать', 'adminPollsCount')
         ],
         [
-          Markup.button.callback('←', 'adminMenu')
+          Markup.button.callback('←', `${util.isSuperUser(userId) ? 'adminMenu' : 'userMenu'}`)
         ]
       ])
     })
