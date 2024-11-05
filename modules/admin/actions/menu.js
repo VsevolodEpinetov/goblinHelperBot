@@ -7,7 +7,7 @@ module.exports = Composer.action(/^adminMenu/g, async (ctx) => {
     ...Markup.inlineKeyboard([
       [
         Markup.button.callback('Месяцы', 'adminMonths'),
-        Markup.button.callback('Месяцы Плюс', 'adminMonthsPlus')
+        Markup.button.callback('🔔 Напомнить', 'adminRemind')
       ],
       [
         Markup.button.callback('Кикстартеры', 'adminKickstarters'),

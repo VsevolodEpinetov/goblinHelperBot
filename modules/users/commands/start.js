@@ -11,7 +11,6 @@ module.exports = Composer.command('start', async (ctx) => {
     return;
   }
 
-  if (!ctx.members) ctx.members = {};
   if (!ctx.users.list) ctx.users.list = {};
 
   const userId = ctx.message.from.id;

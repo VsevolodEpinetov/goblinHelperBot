@@ -9,7 +9,8 @@ module.exports = Composer.action(/^adminParticipants/g, async (ctx) => {
     parse_mode: "HTML",
     ...Markup.inlineKeyboard([
       [
-        Markup.button.callback('🔍', 'searchUser')
+        Markup.button.callback('🔍', 'searchUser'),
+        Markup.button.callback('🗑', 'removeRejected')
       ],
       [
         Markup.button.callback('←', `adminMenu`)
