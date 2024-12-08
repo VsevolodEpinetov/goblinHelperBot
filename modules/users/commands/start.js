@@ -16,7 +16,7 @@ module.exports = Composer.command('start', async (ctx) => {
   const userId = ctx.message.from.id;
   ctx.deleteMessage(ctx.message.message_id)
 
-  const IS_CLOSED = true; //TODO: move to settings
+  const IS_CLOSED = false; //TODO: move to settings
 
   if (!ctx.users.list[userId]) {
     if (!IS_CLOSED) {
