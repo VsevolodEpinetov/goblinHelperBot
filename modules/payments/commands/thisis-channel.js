@@ -6,8 +6,6 @@ module.exports = Composer.on('channel_post', async (ctx) => {
   const channelID = ctx.channelPost.chat.id;
   const messageText = ctx.channelPost.text;
 
-  console.log(messageText)
-
   if (!messageText) {
     return;
   }
@@ -39,8 +37,6 @@ module.exports = Composer.on('channel_post', async (ctx) => {
     name: 'Bot handled invitation',
     creates_join_request: true
   })
-
-  console.log(inviteLink);
 
   ctx.months.list[year][month][type].link = inviteLink.invite_link;
   await ctx.telegram.sendMessage(SETTINGS.CHATS.EPINETOV, `Записал чат с ID ${channelID} как группу ${type} для ${year}-${month}, ссылка для вступления - ${inviteLink.invite_link}`);

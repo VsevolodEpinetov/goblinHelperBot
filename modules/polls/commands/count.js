@@ -7,7 +7,6 @@ module.exports = Composer.command('count', async (ctx) => {
   const isAnAdmin = ctx.message.from.id == SETTINGS.CHATS.EPINETOV || ctx.message.from.id == SETTINGS.CHATS.ALEKS || ctx.message.from.id == SETTINGS.CHATS.ARTYOM;
 
   if (!isAnAdmin) { 
-    console.log('not an admin')
     return; 
   }
 
