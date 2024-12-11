@@ -111,7 +111,7 @@ module.exports = Composer.on('channel_post', async (ctx, next) => {
                       'пыпы': '88'
                     }
 
-                    if ((messageText.match(/^[a-zA-Z ]+- (20)[123][0-9]\-{0,1}[01][0-9]/g) || []).length) {
+                    if ((messageText.match(/^[a-zA-Z0-9"'& ]+- (20)[123][0-9]\-{0,1}[01][0-9]\s*/g) || []).length) {
                       needToChangeCaption = true;
 
                       studioName = messageText.match(/^[a-zA-Z ]+/g)[0].trim() || 'failedStudioName';
