@@ -18,7 +18,7 @@ module.exports = Composer.hears('+', async (ctx) => {
 
   const studioName = JSON.stringify(messageText).replaceAll('"', '').split('\\n')[0].trim();
 
-  ctx.settings.polls.studios.push(studioName);
+  ctx.polls.studios.push(studioName);
 
   const addedMessage = await ctx.reply(`Added ${studioName} and sorted`);
   setTimeout(async () => {
