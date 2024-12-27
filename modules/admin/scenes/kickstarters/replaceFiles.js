@@ -14,7 +14,6 @@ adminReplaceKickstarterFiles.enter(async (ctx) => {
 });
 
 adminReplaceKickstarterFiles.on('document', async (ctx) => {
-  ctx.session.editingKickstarter.files = [];
   ctx.session.editingKickstarter.files.push(ctx.message.document.file_id);
 
   await ctx.deleteMessage(ctx.message.message_id);

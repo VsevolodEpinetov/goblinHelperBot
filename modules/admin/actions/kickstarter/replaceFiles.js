@@ -12,5 +12,6 @@ module.exports = Composer.action(/^replaceFilesKickstarter_/g, async (ctx) => {
   const ksId = ctx.callbackQuery.data.split('_')[1];
   ctx.session.editingKickstarter = {};
   ctx.session.editingKickstarter.id = ksId;
+  ctx.session.editingKickstarter.files = [];
   ctx.scene.enter('ADMIN_SCENE_REPLACE_KICKSTARTER_FILES');
 });
