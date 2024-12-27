@@ -33,7 +33,7 @@ adminReplaceKickstarterFiles.action('finished', async (ctx) => {
 adminReplaceKickstarterFiles.leave(async (ctx) => {
   if (!ctx.kickstarters.list) ctx.kickstarters.list = [];
   const kstID = ctx.session.editingKickstarter.id;
-  ctx.kickstarters.list[kstID].files = ctx.sesssion.editingKickstarter.files;
+  ctx.kickstarters.list[kstID].files = ctx.session.editingKickstarter.files;
 
   ctx.telegram.editMessageText(ctx.session.chatID, ctx.session.toEdit, undefined, `♻️ Кикстартер успешно отредактрован с ID ${kstID}.\nКоличество файлов: ${ctx.kickstarters.list[kstID].files.length}`, {
     parse_mode: "HTML",
@@ -49,7 +49,7 @@ adminReplaceKickstarterFiles.leave(async (ctx) => {
     ])
   })
 
-  ctx.sesssion.editingKickstarter = null;
+  ctx.session.editingKickstarter = null;
 });
 
 module.exports = adminReplaceKickstarterFiles;
