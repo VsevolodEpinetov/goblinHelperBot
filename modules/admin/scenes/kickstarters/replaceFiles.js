@@ -4,7 +4,7 @@ const currentStageName = 'ADMIN_SCENE_REPLACE_KICKSTARTER_FILES'
 
 const adminReplaceKickstarterFiles = new Scenes.BaseScene(currentStageName);
 
-adminReplaceKickstarterFiles.enter(async (ctx) => {\
+adminReplaceKickstarterFiles.enter(async (ctx) => {
   await ctx.replyWithHTML(`Пришли <b>файлы</b> проекта`, {
     parse_mode: "HTML"
   }).then(nctx => {
