@@ -46,6 +46,7 @@ module.exports = Composer.action(/^showKickstarter_/g, async (ctx) => {
     buttons = [
       [
         Markup.button.callback('✍️', `editKickstarter_${projectID}`),
+        Markup.button.callback('📁♻️', `replaceFilesKickstarter_${projectID}`),
         Markup.button.callback('🗑', `deleteKickstarter_${projectID}`)
       ],
       [
