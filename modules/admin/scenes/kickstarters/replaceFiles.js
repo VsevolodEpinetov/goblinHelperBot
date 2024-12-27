@@ -4,9 +4,12 @@ const currentStageName = 'ADMIN_SCENE_REPLACE_KICKSTARTER_FILES'
 
 const adminReplaceKickstarterFiles = new Scenes.BaseScene(currentStageName);
 
-adminReplaceKickstarterFiles.enter(async (ctx) => {
-  await ctx.telegram.editMessageText(ctx.session.chatID, ctx.session.toEdit, undefined, `Пришли <b>файлы</b> проекта`, {
+adminReplaceKickstarterFiles.enter(async (ctx) => {\
+  await ctx.replyWithHTML(`Пришли <b>файлы</b> проекта`, {
     parse_mode: "HTML"
+  }).then(nctx => {
+    ctx.session.toEdit = nctx.message_id;
+    ctx.session.chatID = nctx.chat.id;
   });
 });
 
