@@ -14,7 +14,7 @@ module.exports = Composer.command('start', async (ctx) => {
   }
 
   const userId = ctx.message.from.id;
-  ctx.deleteMessage(ctx.message.message_id)
+  ctx.deleteMessage()
 
   const IS_CLOSED = false; //TODO: move to settings
 
