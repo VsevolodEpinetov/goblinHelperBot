@@ -1,3 +1,4 @@
+require('dotenv').config();
 const fs = require('fs');
 const path = require('path');
 const { Client } = require('pg');
@@ -23,12 +24,25 @@ function findLatestBackupDir(rootDir) {
 }
 
 (async () => {
+	// Check if password is provided
+	if (!process.env.PGPASSWORD) {
+		console.error('Error: PGPASSWORD environment variable is not set');
+		console.error('Please either:');
+		console.error('1. Create a .env file in the project root with:');
+		console.error('   PGPASSWORD=your_actual_password');
+		console.error('2. Set the environment variable:');
+		console.error('   export PGPASSWORD="your_password"');
+		console.error('3. Or run with inline password:');
+		console.error('   PGPASSWORD="your_password" node scripts/import_redis_to_pg.js');
+		process.exit(1);
+	}
+
 	const conn = {
 		host: process.env.PGHOST || '127.0.0.1',
 		port: parseInt(process.env.PGPORT || '5432', 10),
 		database: process.env.PGDATABASE || 'goblinhelperbot',
 		user: process.env.PGUSER || 'goblinhelper',
-		password: process.env.PGPASSWORD || ''
+		password: process.env.PGPASSWORD
 	};
 	const client = new Client(conn);
 	await client.connect();
