@@ -69,20 +69,11 @@ module.exports = Composer.command('start', async (ctx) => {
     }
 
     if (roles.indexOf('goblin') > -1 || roles.indexOf('admin') > -1 || roles.indexOf('adminPlus') > -1) {
-      const message = util.getUserMessage(ctx, userData)
-      let menu = util.getUserButtons(ctx, userData);
-
-      if (roles.indexOf('polls') > -1) {
-        menu = [
-          [
-            Markup.button.callback('Голосования', `adminPolls`),
-          ],
-          ...menu
-        ]
-      }
-
-      await ctx.replyWithHTML(message, {
-        ...Markup.inlineKeyboard(menu)
+      // Use new enhanced UX system
+      const interactiveMenu = util.createInteractiveMenu(ctx, userData);
+      
+      await ctx.replyWithHTML(interactiveMenu.message, {
+        ...Markup.inlineKeyboard(interactiveMenu.keyboard)
       });
       return;
     }

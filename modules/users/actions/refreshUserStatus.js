@@ -1,22 +1,21 @@
-const { Composer, Markup } = require("telegraf");
+const { Composer } = require("telegraf");
 const util = require('../../util');
-const { t } = require('../../../modules/i18n');
-const SETTINGS = require('../../../settings.json');
 const { getUser } = require('../../db/helpers');
 
-module.exports = Composer.action('userMenu', async (ctx) => {
+module.exports = Composer.action('refreshUserStatus', async (ctx) => {
   const userData = await getUser(ctx.callbackQuery.from.id);
   if (!userData) return;
-  const roles = userData.roles;
 
   if (userData.roles.indexOf('goblin') > -1) {
-    // Use new enhanced UX system
+    // Refresh the menu with updated data
     const interactiveMenu = util.createInteractiveMenu(ctx, userData);
     
     await ctx.editMessageText(interactiveMenu.message, {
       parse_mode: 'HTML',
       ...Markup.inlineKeyboard(interactiveMenu.keyboard)
     });
-    return;
+    
+    // Show confirmation
+    await ctx.answerCbQuery('✅ Статус обновлен!');
   }
 });

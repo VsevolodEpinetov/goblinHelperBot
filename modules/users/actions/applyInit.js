@@ -1,16 +1,40 @@
-const { Composer, Markup } = require('telegraf');
+const { Composer, Markup } = require("telegraf");
+const util = require('../../util');
 const { t } = require('../../../modules/i18n');
 
 module.exports = Composer.action('applyInit', async (ctx) => {
-  try { await ctx.answerCbQuery(); } catch {}
-  const text = t('apply.confirmation');
-  await ctx.editMessageText(text, {
+  const applyMessage = `📝 <b>ПОДАЧА ЗАЯВКИ НА УЧАСТИЕ</b>\n\n` +
+    `🎯 <b>Что нужно для подачи заявки:</b>\n\n` +
+    `✅ <b>Обязательные требования:</b>\n` +
+    `• Быть участником сообщества\n` +
+    `• Согласиться с правилами\n` +
+    `• Указать контактные данные\n` +
+    `• Объяснить мотивацию участия\n\n` +
+    `📋 <b>Процесс рассмотрения:</b>\n` +
+    `1. Подача заявки (5-10 минут)\n` +
+    `2. Рассмотрение администрацией (1-3 дня)\n` +
+    `3. Уведомление о решении\n` +
+    `4. Активация аккаунта при одобрении\n\n` +
+    `💡 <b>Советы для успешной заявки:</b>\n` +
+    `• Будьте искренними в мотивации\n` +
+    `• Укажите реальные контакты\n` +
+    `• Прочитайте правила заранее\n` +
+    `• Отвечайте на все вопросы\n\n` +
+    `🚀 <b>Готовы подать заявку?</b>`;
+
+  const applyKeyboard = [
+    [Markup.button.callback('📋 Читать правила', 'showRules')],
+    [Markup.button.callback('📝 Начать подачу заявки', 'startApplication')],
+    [Markup.button.callback('❓ Вопросы по заявке', 'applicationQuestions')],
+    [
+      Markup.button.callback('🔙 Назад', 'guestStart'),
+      Markup.button.callback('🏠 В начало', 'guestStart')
+    ]
+  ];
+
+  await ctx.editMessageText(applyMessage, {
     parse_mode: 'HTML',
-    ...Markup.inlineKeyboard([
-      [Markup.button.callback(t('start.buttons.ready'), 'applyYes')],
-      [Markup.button.callback(t('start.buttons.scared'), 'applyNo')],
-      [Markup.button.callback(t('start.buttons.back'), 'guestStart')]
-    ])
+    ...Markup.inlineKeyboard(applyKeyboard)
   });
 });
 

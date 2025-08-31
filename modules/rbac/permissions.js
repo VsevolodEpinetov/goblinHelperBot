@@ -5,34 +5,37 @@
  * Each role has specific permissions that determine what actions they can perform.
  */
 
+// Define base permissions first
+const USER_PERMISSIONS = {
+  // Basic user actions
+  'user:profile:view': true,
+  'user:profile:edit': true,
+  'user:payments:view': true,
+  'user:payments:request': true,
+  'user:kickstarters:view': true,
+  'user:kickstarters:join': true,
+  'user:lots:view': true,
+  'user:lots:join': true,
+  'user:lots:leave': true,
+  'user:polls:view': true,
+  'user:polls:vote': true,
+  
+  // No admin actions
+  'admin:*': false,
+  'admin:users:*': false,
+  'admin:content:*': false,
+  'admin:payments:*': false,
+  'admin:reports:*': false
+};
+
 const PERMISSIONS = {
   // Regular user permissions
-  user: {
-    // Basic user actions
-    'user:profile:view': true,
-    'user:profile:edit': true,
-    'user:payments:view': true,
-    'user:payments:request': true,
-    'user:kickstarters:view': true,
-    'user:kickstarters:join': true,
-    'user:lots:view': true,
-    'user:lots:join': true,
-    'user:lots:leave': true,
-    'user:polls:view': true,
-    'user:polls:vote': true,
-    
-    // No admin actions
-    'admin:*': false,
-    'admin:users:*': false,
-    'admin:content:*': false,
-    'admin:payments:*': false,
-    'admin:reports:*': false
-  },
+  user: USER_PERMISSIONS,
 
   // Goblin role (premium user)
   goblin: {
     // Inherit all user permissions
-    ...PERMISSIONS.user,
+    ...USER_PERMISSIONS,
     
     // Additional goblin-specific permissions
     'goblin:premium:access': true,
@@ -46,7 +49,7 @@ const PERMISSIONS = {
   // Polls admin (can manage polls)
   polls: {
     // Inherit user permissions
-    ...PERMISSIONS.user,
+    ...USER_PERMISSIONS,
     
     // Poll management permissions
     'admin:polls:create': true,
@@ -65,7 +68,7 @@ const PERMISSIONS = {
   // Regular admin
   admin: {
     // Inherit user permissions
-    ...PERMISSIONS.user,
+    ...USER_PERMISSIONS,
     
     // User management
     'admin:users:view': true,
@@ -100,13 +103,36 @@ const PERMISSIONS = {
   // Admin Plus (extended admin)
   adminPlus: {
     // Inherit all admin permissions
-    ...PERMISSIONS.admin,
+    ...USER_PERMISSIONS,
     
-    // Extended permissions
+    // User management
+    'admin:users:view': true,
+    'admin:users:edit': true,
+    'admin:users:roles:manage': true,
+    'admin:users:balance:manage': true,
+    'admin:users:months:manage': true,
     'admin:users:delete': true,
     'admin:users:ban': true,
+    
+    // Content management
+    'admin:content:months:manage': true,
+    'admin:content:kickstarters:manage': true,
+    'admin:content:files:manage': true,
+    'admin:content:links:manage': true,
     'admin:content:delete': true,
+    
+    // Payment management
+    'admin:payments:view': true,
+    'admin:payments:confirm': true,
+    'admin:payments:remind': true,
     'admin:payments:refund': true,
+    
+    // Polls management
+    'admin:polls:*': true,
+    
+    // Reports and analytics
+    'admin:reports:basic': true,
+    'admin:reports:users': true,
     'admin:reports:advanced': true,
     'admin:notifications:send': true,
     
@@ -118,7 +144,38 @@ const PERMISSIONS = {
   // Super admin (full system access)
   super: {
     // Inherit all permissions
-    ...PERMISSIONS.adminPlus,
+    ...USER_PERMISSIONS,
+    
+    // User management
+    'admin:users:view': true,
+    'admin:users:edit': true,
+    'admin:users:roles:manage': true,
+    'admin:users:balance:manage': true,
+    'admin:users:months:manage': true,
+    'admin:users:delete': true,
+    'admin:users:ban': true,
+    
+    // Content management
+    'admin:content:months:manage': true,
+    'admin:content:kickstarters:manage': true,
+    'admin:content:files:manage': true,
+    'admin:content:links:manage': true,
+    'admin:content:delete': true,
+    
+    // Payment management
+    'admin:payments:view': true,
+    'admin:payments:confirm': true,
+    'admin:payments:remind': true,
+    'admin:payments:refund': true,
+    
+    // Polls management
+    'admin:polls:*': true,
+    
+    // Reports and analytics
+    'admin:reports:basic': true,
+    'admin:reports:users': true,
+    'admin:reports:advanced': true,
+    'admin:notifications:send': true,
     
     // Super admin permissions
     'admin:super:roles:manage': true,

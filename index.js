@@ -59,6 +59,9 @@ bot.use(stage.middleware());
 // Ignore banned users
 bot.use(require('./modules/middleware/banned'))
 
+// Track user interactions and update user data
+bot.use(require('./modules/middleware/userTracker'))
+
 bot.use(require('./modules/lots'))
 bot.use(require('./modules/polls'))
 bot.use(require('./modules/indexator-creator'))
@@ -69,6 +72,35 @@ bot.use(require('./modules/admin/actions/users/inviteLinksMenu'))
 bot.use(require('./modules/users'))
 bot.use(require('./modules/common'))
 //#endregion
+
+// Handle user profile updates
+bot.on('message', async (ctx) => {
+  // This will be handled by the userTracker middleware
+  // but we can add specific logic here if needed
+});
+
+bot.on('edited_message', async (ctx) => {
+  // This will be handled by the userTracker middleware
+  // but we can add specific logic here if needed
+});
+
+// Handle user profile updates and chat member updates
+bot.on('my_chat_member', async (ctx) => {
+  // This will be handled by the userTracker middleware
+  // but we can add specific logic here if needed
+});
+
+// Handle callback queries (button clicks, etc.)
+bot.on('callback_query', async (ctx) => {
+  // This will be handled by the userTracker middleware
+  // but we can add specific logic here if needed
+});
+
+// Handle inline queries
+bot.on('inline_query', async (ctx) => {
+  // This will be handled by the userTracker middleware
+  // but we can add specific logic here if needed
+});
 
 bot.on('chat_join_request', async ctx => {
   const { getUser, findMonthByChatId, hasUserPurchasedMonth, incrementMonthCounter, getMonthChatId } = require('./modules/db/helpers');

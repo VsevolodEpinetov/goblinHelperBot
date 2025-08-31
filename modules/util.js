@@ -51,6 +51,127 @@ function getUserMessage (ctx, userData) {
           `<i>Выбери один из пунктов меню</i>`;
 }
 
+// Enhanced UX Functions
+function createStatusCard(ctx, userData) {
+  const tickets = Math.floor(userData.purchases.groups.plus.length / 3) * 2 - userData.purchases.ticketsSpent;
+  const currentPeriod = `${ctx.globalSession.current.year}_${ctx.globalSession.current.month}`;
+  const hasRegular = userData.purchases.groups.regular.indexOf(currentPeriod) > -1;
+  const hasPlus = userData.purchases.groups.plus.indexOf(currentPeriod) > -1;
+  
+  // Calculate trends and status
+  const balanceTrend = userData.purchases.balance > 0 ? "💰" : "💸";
+  const ticketStatus = tickets > 0 ? "🎟" : "🎫";
+  const monthStatus = hasRegular ? (hasPlus ? "✅" : "✅") : "⚠️";
+  
+  return `🎯 <b>СТАТУС АККАУНТА</b>\n\n` +
+         `${monthStatus} <b>Текущий месяц:</b> ${ctx.globalSession.current.year}-${ctx.globalSession.current.month}\n` +
+         `${hasRegular ? (hasPlus ? '✅ Оплачено с ➕' : '✅ Оплачено без ➕') : '⚠️ НЕ ОПЛАЧЕН'}\n\n` +
+         `${balanceTrend} <b>Баланс:</b> ${userData.purchases.balance}₽\n` +
+         `${ticketStatus} <b>Билетики:</b> ${tickets}\n\n` +
+         `📊 <b>Активные подписки:</b> ${userData.purchases.groups.regular.length}\n` +
+         `⭐ <b>Плюс подписки:</b> ${userData.purchases.groups.plus.length}\n` +
+         `🎁 <b>Кикстартеры:</b> ${userData.purchases.kickstarters.length}`;
+}
+
+function createSmartMenu(ctx, userData) {
+  const currentPeriod = `${ctx.globalSession.current.year}_${ctx.globalSession.current.month}`;
+  const hasCurrentMonth = userData.purchases.groups.regular.indexOf(currentPeriod) > -1;
+  const hasPlus = userData.purchases.groups.plus.indexOf(currentPeriod) > -1;
+  const tickets = Math.floor(userData.purchases.groups.plus.length / 3) * 2 - userData.purchases.ticketsSpent;
+  
+  // Primary actions based on current status
+  let primaryActions = [];
+  
+  if (!hasCurrentMonth) {
+    primaryActions.push(['💳 Оплатить текущий месяц', 'sendPayment_currentMonth']);
+  } else if (!hasPlus) {
+    primaryActions.push(['⭐ Добавить ➕ к месяцу', 'addPlusToCurrentMonth']);
+  }
+  
+  if (tickets > 0) {
+    primaryActions.push(['🎟 Использовать билетик', 'useTicket']);
+  }
+  
+  // Always available actions
+  const standardActions = [
+    ['📅 Подписки', 'userMonths'],
+    ['🚀 Кикстартеры', 'userKickstarters'],
+    ['💰 Баланс и билетики', 'userBalanceTickets'],
+    ['📊 Статистика', 'userStats']
+  ];
+  
+  // Secondary actions
+  const secondaryActions = [
+    ['🚧 Релизы', 'requestRelease'],
+    ['🚧 Коллекция', 'userCollections'],
+    ['🚧 Индивидуальный выкуп', 'requestBuyout']
+  ];
+  
+  // Quick actions for power users
+  const quickActions = [];
+  if (userData.roles.includes('polls')) {
+    quickActions.push(['🗳️ Голосования', 'adminPolls']);
+  }
+  
+  return {
+    primary: primaryActions.length > 0 ? primaryActions : [standardActions[0]],
+    standard: standardActions,
+    secondary: secondaryActions,
+    quick: quickActions
+  };
+}
+
+function createInteractiveMenu(ctx, userData) {
+  const smartMenu = createSmartMenu(ctx, userData);
+  const statusCard = createStatusCard(ctx, userData);
+  
+  // Build the complete menu structure
+  let allButtons = [];
+  
+  // Add primary actions if they exist
+  if (smartMenu.primary.length > 0) {
+    allButtons.push(...smartMenu.primary.map(btn => [Markup.button.callback(btn[0], btn[1])]));
+  }
+  
+  // Add standard actions in rows of 2
+  const standardRows = [];
+  for (let i = 0; i < smartMenu.standard.length; i += 2) {
+    const row = smartMenu.standard.slice(i, i + 2).map(btn => 
+      Markup.button.callback(btn[0], btn[1])
+    );
+    standardRows.push(row);
+  }
+  allButtons.push(...standardRows);
+  
+  // Add secondary actions
+  if (smartMenu.secondary.length > 0) {
+    const secondaryRows = [];
+    for (let i = 0; i < smartMenu.secondary.length; i += 2) {
+      const row = smartMenu.secondary.slice(i, i + 2).map(btn => 
+        Markup.button.callback(btn[0], btn[1])
+      );
+      secondaryRows.push(row);
+    }
+    allButtons.push(...secondaryRows);
+  }
+  
+  // Add quick actions
+  if (smartMenu.quick.length > 0) {
+    allButtons.push(smartMenu.quick.map(btn => Markup.button.callback(btn[0], btn[1])));
+  }
+  
+  // Add utility buttons
+  allButtons.push([
+    Markup.button.callback('🔄 Обновить', 'refreshUserStatus'),
+    Markup.button.callback('❓ Помощь', 'userHelp')
+  ]);
+  
+  return {
+    message: statusCard,
+    keyboard: allButtons
+  };
+}
+
 function isSuperUser (userId) {
   if (userId == SETTINGS.CHATS.EPINETOV || userId == SETTINGS.CHATS.ANN) {
     return true;
@@ -284,7 +405,10 @@ module.exports = {
   isSuperUser,
   getUserMenu,
   getUserDescription,
-  getUserTickets
+  getUserTickets,
+  createStatusCard,
+  createSmartMenu,
+  createInteractiveMenu
 
 
 }

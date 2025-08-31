@@ -1,0 +1,47 @@
+const { Composer, Markup } = require("telegraf");
+const util = require('../../util');
+const { getUser } = require('../../db/helpers');
+
+module.exports = Composer.action('addPlusToCurrentMonth', async (ctx) => {
+  const userData = await getUser(ctx.callbackQuery.from.id);
+  if (!userData) return;
+
+  const currentPeriod = `${ctx.globalSession.current.year}_${ctx.globalSession.current.month}`;
+  const hasRegular = userData.purchases.groups.regular.indexOf(currentPeriod) > -1;
+  const hasPlus = userData.purchases.groups.plus.indexOf(currentPeriod) > -1;
+  
+  if (!hasRegular) {
+    await ctx.answerCbQuery('❌ Сначала нужно оплатить обычную подписку на текущий месяц!');
+    return;
+  }
+  
+  if (hasPlus) {
+    await ctx.answerCbQuery('✅ У вас уже есть ➕ подписка на текущий месяц!');
+    return;
+  }
+
+  const plusMessage = `⭐ <b>ДОБАВЛЕНИЕ ➕ К ТЕКУЩЕМУ МЕСЯЦУ</b>\n\n` +
+    `📅 <b>Период:</b> ${ctx.globalSession.current.year}-${ctx.globalSession.current.month}\n` +
+    `💰 <b>Стоимость:</b> 500₽\n\n` +
+    `🎁 <b>Что дает ➕ подписка:</b>\n` +
+    `• Ранний доступ к релизам\n` +
+    `• Эксклюзивные материалы\n` +
+    `• 2 билетика за каждые 3 месяца ➕\n` +
+    `• Приоритетная поддержка\n\n` +
+    `💳 <b>Ваш баланс:</b> ${userData.purchases.balance}₽\n` +
+    `${userData.purchases.balance >= 500 ? '✅ Достаточно средств' : '❌ Недостаточно средств'}`;
+
+  const plusKeyboard = userData.purchases.balance >= 500 ? [
+    [Markup.button.callback('⭐ Купить ➕ подписку', 'confirmPlusPurchase')],
+    [Markup.button.callback('💳 Пополнить баланс', 'addBalance')]
+  ] : [
+    [Markup.button.callback('💳 Пополнить баланс', 'addBalance')]
+  ];
+  
+  plusKeyboard.push([Markup.button.callback('🔙 Назад', 'userMenu')]);
+
+  await ctx.editMessageText(plusMessage, {
+    parse_mode: 'HTML',
+    ...Markup.inlineKeyboard(plusKeyboard)
+  });
+});

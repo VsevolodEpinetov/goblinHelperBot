@@ -50,7 +50,7 @@ module.exports = Composer.action('applyYes', async (ctx) => {
           ]
         },
         'Status': {
-          select: {
+          status: {
             name: 'Pending'
           }
         },
@@ -58,7 +58,7 @@ module.exports = Composer.action('applyYes', async (ctx) => {
           date: {
             start: new Date().toISOString()
           }
-        }
+        },
       };
       
       await safeCreatePage(notionProperties);
