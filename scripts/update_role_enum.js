@@ -30,7 +30,7 @@ async function updateRoleEnum() {
     let currentEnumValues;
     try {
       currentEnumValues = await knex.raw(`
-        SELECT unnest(enum_range(NULL::${enumTypeName})) as role_value
+        SELECT unnest(enum_range(NULL::"${enumTypeName}")) as role_value
       `);
     } catch (error) {
       console.log(`❌ Error getting enum values: ${error.message}`);
@@ -46,9 +46,13 @@ async function updateRoleEnum() {
     }
     
     console.log('📋 Current enum values:');
-    currentEnumValues.rows.forEach(row => {
-      console.log(`  • ${row.role_value}`);
-    });
+    if (currentEnumValues.rows.length > 0) {
+      currentEnumValues.rows.forEach(row => {
+        console.log(`  • ${row.role_value}`);
+      });
+    } else {
+      console.log('  (no values yet)');
+    }
     
     // Define the roles we need
     const neededRoles = ['user', 'goblin', 'polls', 'admin', 'adminPlus', 'super', 'rejected', 'banned'];
@@ -73,7 +77,7 @@ async function updateRoleEnum() {
     for (const role of missingRoles) {
       try {
         console.log(`\n🔧 Adding role '${role}' to enum...`);
-        await knex.raw(`ALTER TYPE ${enumTypeName} ADD VALUE '${role}'`);
+        await knex.raw(`ALTER TYPE "${enumTypeName}" ADD VALUE '${role}'`);
         console.log(`✅ Successfully added '${role}'`);
       } catch (error) {
         if (error.message.includes('already exists')) {
@@ -87,7 +91,7 @@ async function updateRoleEnum() {
     // Show final enum values
     console.log('\n📋 Final enum values:');
     const finalEnumValues = await knex.raw(`
-      SELECT unnest(enum_range(NULL::${enumTypeName})) as role_value
+      SELECT unnest(enum_range(NULL::"${enumTypeName}")) as role_value
     `);
     
     finalEnumValues.rows.forEach(row => {

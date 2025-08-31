@@ -38,7 +38,7 @@ async function checkRoleEnum() {
     });
     
     // If it's an enum, get the allowed values
-    if (columns.rows[0]?.udt_name?.includes('enum')) {
+    if (columns.rows[0]?.udt_name?.includes('enum') || columns.rows[0]?.data_type === 'USER-DEFINED') {
       console.log('\n📝 Getting enum values...');
       
       const enumTypeName = columns.rows[0].udt_name;
@@ -46,13 +46,17 @@ async function checkRoleEnum() {
       
       try {
         const enumValues = await knex.raw(`
-          SELECT unnest(enum_range(NULL::${enumTypeName})) as role_value
+          SELECT unnest(enum_range(NULL::"${enumTypeName}")) as role_value
         `);
         
         console.log('✅ Allowed role values:');
-        enumValues.rows.forEach(row => {
-          console.log(`  • ${row.role_value}`);
-        });
+        if (enumValues.rows.length > 0) {
+          enumValues.rows.forEach(row => {
+            console.log(`  • ${row.role_value}`);
+          });
+        } else {
+          console.log('  (no values yet)');
+        }
       } catch (error) {
         console.log(`❌ Error getting enum values: ${error.message}`);
         
@@ -68,9 +72,13 @@ async function checkRoleEnum() {
           `, [enumTypeName]);
           
           console.log('✅ Allowed role values:');
-          enumValues.rows.forEach(row => {
-            console.log(`  • ${row.role_value}`);
-          });
+          if (enumValues.rows.length > 0) {
+            enumValues.rows.forEach(row => {
+              console.log(`  • ${row.role_value}`);
+            });
+          } else {
+            console.log('  (no values yet)');
+          }
         } catch (error2) {
           console.log(`❌ Alternative approach also failed: ${error2.message}`);
         }
