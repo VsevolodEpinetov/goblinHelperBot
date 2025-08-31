@@ -20,6 +20,8 @@ const enhancedActions = [
   require('./actions/contactSupport'),
   require('./actions/showFAQ'),
   require('./actions/applyInit'),
+  require('./actions/startApplication'),
+  require('./actions/applicationQuestions'),
   require('./actions/showRules'),
   require('./actions/showWhatIs'),
   require('./actions/months/menu'),

@@ -1,7 +1,9 @@
-const { Composer } = require('telegraf');
+const { Composer, Markup } = require('telegraf');
 const { t } = require('../../../modules/i18n');
 const { safeCreatePage } = require('../../integrations/notion');
 const SETTINGS = require('../../../settings.json');
+const knex = require('../../../modules/db/knex');
+const { updateUser } = require('../../db/helpers');
 
 module.exports = Composer.action('applyYes', async (ctx) => {
   try { await ctx.answerCbQuery(); } catch {}
@@ -64,7 +66,56 @@ module.exports = Composer.action('applyYes', async (ctx) => {
       await safeCreatePage(notionProperties);
     }
     
-    // 2. Send notification to admin
+    // 2. Save user to database with pending status
+    const userData = {
+      id: userId,
+      username: userInfo.username || 'not_set',
+      first_name: userInfo.first_name,
+      last_name: userInfo.last_name || '',
+      dateAdded: new Date().toISOString(),
+      roles: [],
+      purchases: {
+        kickstarters: [],
+        groups: {
+          regular: [],
+          plus: [],
+          special: []
+        },
+        collections: [],
+        balance: 0,
+        releases: {},
+        ticketsSpent: 0
+      }
+    };
+
+    await updateUser(userId, userData);
+
+    // Save to database via Knex
+    try {
+      const baseUser = {
+        id: Number(userId),
+        username: userInfo.username || null,
+        firstName: userInfo.first_name || null,
+        lastName: userInfo.last_name || null
+      };
+      await knex('users').insert(baseUser)
+        .onConflict('id').merge(baseUser);
+
+      await knex('userPurchases').insert({ userId: Number(userId), balance: 0, ticketsSpent: 0 })
+        .onConflict('userId').merge();
+
+      await knex('applications').insert({
+        userId: Number(userId),
+        username: userInfo.username || null,
+        firstName: userInfo.first_name || null,
+        lastName: userInfo.last_name || null,
+        status: 'pending'
+      });
+    } catch (e) {
+      console.log('Failed to save user/application via Knex', e);
+    }
+    
+    // 3. Send notification to admin with Accept/Deny buttons
     const adminMessage = t('apply.adminNotification', {
       userId: userId,
       firstName: userInfo.first_name || 'Not provided',
@@ -73,10 +124,17 @@ module.exports = Composer.action('applyYes', async (ctx) => {
       date: new Date().toLocaleString('ru-RU')
     });
     
-    // Send to admin chat (you can configure which admin receives these)
-    await ctx.telegram.sendMessage(SETTINGS.CHATS.LOGS, adminMessage, { parse_mode: 'HTML' });
+    await ctx.telegram.sendMessage(SETTINGS.CHATS.LOGS, adminMessage, { 
+      parse_mode: 'HTML',
+      ...Markup.inlineKeyboard([
+        [
+          Markup.button.callback('✅ Accept', `apply_admin_accept_${userId}`),
+          Markup.button.callback('❌ Deny', `apply_admin_deny_${userId}`)
+        ]
+      ])
+    });
     
-    // 3. Confirm to user
+    // 4. Confirm to user
     await ctx.editMessageText(t('apply.sent'), {
       parse_mode: 'HTML'
     });
