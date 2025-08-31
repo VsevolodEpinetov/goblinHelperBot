@@ -1,5 +1,6 @@
 const { Composer } = require("telegraf");
-const SETTINGS = require('../../../settings.json')
+const SETTINGS = require('../../../settings.json');
+const { getSetting, setSetting } = require('../../db/helpers');
 const util = require('../../util')
 
 module.exports = Composer.command('remember', async (ctx) => {
@@ -8,11 +9,10 @@ module.exports = Composer.command('remember', async (ctx) => {
   
   const name = ctx.message.text.split(' ')[1], value = ctx.message.text.split(' ')[2];
 
-  if (!ctx.settings) ctx.settings = {}
-
   await ctx.deleteMessage();
 
-  ctx.settings[name] = value;
+  // Save setting to database
+  await setSetting(name, value);
 
   await ctx.telegram.sendMessage(SETTINGS.CHATS.LOGS, `⚙️ ${ctx.message.from.username ? `@${ctx.message.from.username}` : `${ctx.message.from.first_name}`} (${ctx.message.from.id}) set the '${name}' to '${value}'`)
 })

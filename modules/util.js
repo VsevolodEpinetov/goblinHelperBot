@@ -207,6 +207,16 @@ function logError (ctx, error) {
   console.log(message);
 }
 
+function handleUserError(ctx, error, userMessage = 'Произошла ошибка. Попробуйте позже.') {
+  logError(ctx, error);
+  
+  if (ctx.callbackQuery) {
+    return ctx.answerCbQuery(userMessage);
+  } else {
+    return ctx.reply(userMessage);
+  }
+}
+
 
 function getRandomInt (min, max) {
   min = Math.ceil(min);
@@ -267,6 +277,7 @@ module.exports = {
   sleep,
   log,
   logError,
+  handleUserError,
   getRandomInt,
   isAdmin,
   getCommandParameter,

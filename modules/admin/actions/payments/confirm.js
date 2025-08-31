@@ -1,21 +1,33 @@
 const { Composer, Markup } = require("telegraf");
 const util = require('../../../util');
 const SETTINGS = require('../../../../settings.json');
+const knex = require('../../../../modules/db/knex');
+const { getUser, addUserToGroup, incrementMonthCounter, addUserKickstarter, getKickstarter, hasUserPurchasedKickstarter } = require('../../../db/helpers');
 
 module.exports = Composer.action(/^confirmPayment_/g, async (ctx) => {
   const data = ctx.callbackQuery.data.split('_');
   const userId = data[1];
   const type = data[2];
-  const userName = ctx.users.list[userId].username == 'not_set' ? ctx.users.list[userId].first_name : `@${ctx.users.list[userId].username}`;
+  // Get user data
+  const userData = await getUser(userId);
+  if (!userData) {
+    await ctx.replyWithHTML('Пользователь не найден');
+    return;
+  }
+
+  const userName = userData.username == 'not_set' ? userData.first_name : `@${userData.username}`;
 
   switch (type) {
     case 'group':
       year = data[3];
       month = data[4];
       groupType = data[5];
-      if (ctx.users.list[userId].purchases.groups[groupType].indexOf(`${year}_${month}`) < 0) {
-        ctx.users.list[userId].purchases.groups[groupType].push(`${year}_${month}`);
-        ctx.months.list[year][month][groupType].counter.paid = ctx.months.list[year][month][groupType].counter.paid + 1;
+      
+      // Check if user already has this group
+      const alreadyHasGroup = await hasUserPurchasedMonth(userId, year, month, groupType);
+      if (!alreadyHasGroup) {
+        await addUserToGroup(userId, year, month, groupType);
+        await incrementMonthCounter(year, month, groupType, 'paid');
         await ctx.telegram.sendMessage(SETTINGS.CHATS.LOGS, `ℹ️ user ${userId} got ${year}-${month}${groupType  == 'plus' ? '+' : ''} an access given by @${ctx.callbackQuery.from.username || ctx.callbackQuery.from.first_name} (${ctx.callbackQuery.from.id})`)
         ctx.replyWithHTML(`Выдал ${userName} (${userId}) доступ к ${year}-${month}${groupType  == 'plus' ? '+' : ''}`)
         ctx.telegram.sendMessage(userId, `Подтверждён доступ к ${year}-${month}${groupType  == 'plus' ? '+' : ''}`, {
@@ -35,10 +47,14 @@ module.exports = Composer.action(/^confirmPayment_/g, async (ctx) => {
       break;
     case 'kickstarter':
       ksId = data[3];
-      if (ctx.users.list[userId].purchases.kickstarters.indexOf(ksId) < 0) {
-        ctx.users.list[userId].purchases.kickstarters.push(ksId);
+      
+      // Check if user already has this kickstarter
+      const alreadyHasKickstarter = await hasUserPurchasedKickstarter(userId, ksId);
+      if (!alreadyHasKickstarter) {
+        await addUserKickstarter(userId, ksId);
+        const kickstarterData = await getKickstarter(ksId);
         await ctx.telegram.sendMessage(SETTINGS.CHATS.LOGS, `ℹ️ user ${userId} got kickstarter ${ksId} an access given by @${ctx.callbackQuery.from.username || ctx.callbackQuery.from.first_name} (${ctx.callbackQuery.from.id})`)
-        await ctx.telegram.sendMessage(userId, `Подтверждён доступ к кикстартеру ${ctx.kickstarters.list[ksId].name}`, {
+        await ctx.telegram.sendMessage(userId, `Подтверждён доступ к кикстартеру ${kickstarterData?.name || 'Unknown'}`, {
           parse_mode: 'HTML',
           ...Markup.inlineKeyboard([
             [
@@ -57,6 +73,11 @@ module.exports = Composer.action(/^confirmPayment_/g, async (ctx) => {
       collectionId = data[3];
       if (ctx.users.list[userId].purchases.collections.indexOf(collectionId) < 0) {
         ctx.users.list[userId].purchases.collections.push(collectionId);
+        try {
+          await knex('userCollections')
+            .insert({ userId: Number(userId), collectionId: Number(collectionId) })
+            .onConflict(['userId','collectionId']).ignore();
+        } catch (e) { console.log('Failed to persist userCollections via Knex', e); }
         await ctx.telegram.sendMessage(SETTINGS.CHATS.LOGS, `ℹ️ user ${userId} got collection ${collectionId} an access given by @${ctx.callbackQuery.from.username || ctx.callbackQuery.from.first_name} (${ctx.callbackQuery.from.id})`)
         ctx.telegram.sendMessage(userId, `Подтверждён доступ к коллекции ${ctx.collections.list[collectionId].name}`, {
           parse_mode: 'HTML',

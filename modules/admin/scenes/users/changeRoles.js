@@ -1,6 +1,7 @@
 const { Scenes, Markup } = require("telegraf");
 const SETTINGS = require('../../../../settings.json');
 const { getUserMenu, getUserDescription } = require("../../../util");
+const { getUser, updateUser } = require('../../../db/helpers');
 
 const changeRoles = new Scenes.BaseScene('ADMIN_SCENE_CHANGE_USER_ROLES');
 
@@ -16,20 +17,37 @@ changeRoles.on('text', async (ctx) => {
   const userId = ctx.userSession.userId;
   let roleName, message;
 
+  // Get current user data
+  const userData = await getUser(userId);
+  if (!userData) {
+    await ctx.replyWithHTML('Пользователь не найден');
+    ctx.scene.leave();
+    return;
+  }
+
   if (isRemoving) {
     roleName = ctx.message.text.split('-')[1];
-    if (ctx.users.list[userId].roles.indexOf(roleName) > -1) {
-      ctx.users.list[userId].roles = ctx.users.list[userId].roles.filter(role => role !== roleName);
+    if (userData.roles.indexOf(roleName) > -1) {
+      userData.roles = userData.roles.filter(role => role !== roleName);
       message = `Роль ${roleName} успешно удалена`
+      try {
+        const knex = require('../../../../modules/db/knex');
+        await knex('userRoles').where({ userId: Number(userId), role: roleName }).del();
+      } catch (e) { console.log('Failed to delete user role via Knex', e); }
       await ctx.telegram.sendMessage(SETTINGS.CHATS.LOGS, `❌ ${ctx.message.from.id} REMOVED role ${roleName} from ${userId}`)
     } else {
       message = `Роль ${roleName} не найдена`
     }
   } else {
     roleName = ctx.message.text;
-    if (ctx.users.list[userId].roles.indexOf(roleName) < 0) {
-      ctx.users.list[userId].roles.push(roleName);
+    if (userData.roles.indexOf(roleName) < 0) {
+      userData.roles.push(roleName);
+      await updateUser(userId, userData);
       message = `Роль ${roleName} успешно добавлена`
+      try {
+        const knex = require('../../../../modules/db/knex');
+        await knex('userRoles').insert({ userId: Number(userId), role: roleName }).onConflict(['userId','role']).ignore();
+      } catch (e) { console.log('Failed to insert user role via Knex', e); }
       await ctx.telegram.sendMessage(SETTINGS.CHATS.LOGS, ` ${ctx.message.from.id} ADDED role ${roleName} to ${userId}`)
     } else {
       message = `⚠️ Роль ${roleName} уже есть у этого пользователя`

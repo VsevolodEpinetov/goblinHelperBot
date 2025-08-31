@@ -7,6 +7,9 @@ module.exports = Composer.action(/^showUser_/g, async (ctx) => {
 
   ctx.editMessageText(util.getUserDescription(ctx, userId), {
     parse_mode: "HTML",
-    ...Markup.inlineKeyboard(util.getUserMenu(userId))
+    ...Markup.inlineKeyboard([
+      ...util.getUserMenu(userId),
+      [Markup.button.callback('🔗 Выслать ссылку', `resendInvite_${userId}`)]
+    ])
   })
 });

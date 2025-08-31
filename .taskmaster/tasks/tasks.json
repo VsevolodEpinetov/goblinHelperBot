@@ -1,0 +1,198 @@
+{
+  "master": {
+    "tasks": [
+      {
+        "id": 1,
+        "title": "Document Current Bot Implementation Analysis",
+        "description": "Create a detailed document explaining the GoblinHelperBot's architecture, current state, and implementation details based on a thorough codebase review.",
+        "status": "pending",
+        "dependencies": [],
+        "priority": "high",
+        "details": "To document the current bot implementation, begin by conducting a comprehensive review of the GoblinHelperBot codebase. Identify key components of the bot's architecture, including its main modules, data flow, and interaction patterns. Document the current state of the bot, noting any active features, known issues, and areas for improvement. Include diagrams to illustrate the architecture and data flow. Provide detailed explanations of the implementation details, such as algorithms used, libraries integrated, and any custom solutions developed. Ensure the document is structured logically, with sections for architecture, current state, and implementation details, and include an executive summary for quick reference. Highlight the layered architecture, session management, command processing, and state management. Discuss the strengths and areas for improvement, including data persistence, error handling, testing, documentation, performance, and monitoring. Specifically, cover the user management system, payment system, lot management system, kickstarter system, poll system, and administrative tools, detailing their current state, features, implementation, and status. Address technical architecture details such as session management, middleware system, data persistence, and error handling. Evaluate code quality and structure, noting strengths like modular design and areas for improvement such as configuration management and logging.",
+        "testStrategy": "Verify the document by cross-referencing with the GoblinHelperBot codebase to ensure accuracy. Conduct a peer review with team members who are familiar with the bot's implementation to validate the completeness and clarity of the documentation. Ensure that all sections are covered and that diagrams accurately represent the architecture. Check for technical accuracy in the explanation of algorithms and libraries used. Pay special attention to the description of session architecture, command processing, and state management. Validate the documentation of core features such as user management, payment, lot management, kickstarter, poll systems, and administrative tools. Confirm that recommendations for future development are included and align with the current development status.",
+        "subtasks": []
+      },
+      {
+        "id": 2,
+        "title": "Implement Admin Command for Bulk Payment Confirmation",
+        "description": "Develop a new admin command to confirm payments in bulk by parsing a space-separated list of payment details.",
+        "details": "To implement the new admin command for bulk payment confirmation, start by defining the command syntax and parsing logic. The command should accept a space-separated list containing three elements: an ID (integer < 1000), a Telegram username (starting with @), and a 6-character payment code. Implement input validation to ensure the format is correct. Once validated, the bot should search for expected payments matching the provided IDs and payment codes. Upon finding a match, update the payment status to 'completed' in the database and mark the corresponding user as 'paid' in the group where the command was issued. Ensure that the command can handle multiple entries in a single execution and provide feedback to the admin on the success or failure of each entry. Consider edge cases such as invalid entries, duplicate IDs, or mismatched payment codes. Use logging to track command execution and errors.",
+        "testStrategy": "To verify the implementation, create a series of test cases that cover various scenarios, including valid and invalid input formats, successful payment confirmations, and error handling for mismatched or duplicate entries. Test the command in a controlled environment with mock data to ensure it correctly updates payment statuses and user records. Additionally, conduct integration testing to confirm that the command interacts properly with the existing database and user management systems. Review logs to ensure all operations are recorded accurately. Finally, perform a peer review to validate the code quality and adherence to project standards.",
+        "status": "pending",
+        "dependencies": [
+          1
+        ],
+        "priority": "high",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Define Command Syntax and Parsing Logic",
+            "description": "Create the syntax for the admin command and implement the logic to parse a space-separated list of payment details.",
+            "dependencies": [],
+            "details": "Design the command to accept inputs in the format: <ID> <Telegram Username> <Payment Code>. Implement a parser that splits the input string by spaces and extracts these three components for each entry.",
+            "status": "pending",
+            "testStrategy": "Test with various input strings to ensure correct parsing of IDs, usernames, and payment codes."
+          },
+          {
+            "id": 2,
+            "title": "Implement Input Validation",
+            "description": "Develop validation logic to ensure that each parsed entry meets the required format and constraints.",
+            "dependencies": [
+              "2.1"
+            ],
+            "details": "Check that the ID is an integer less than 1000, the username starts with '@', and the payment code is exactly 6 characters long. Return errors for any invalid entries.",
+            "status": "pending",
+            "testStrategy": "Create test cases with valid and invalid inputs to verify that validation logic correctly identifies errors."
+          },
+          {
+            "id": 3,
+            "title": "Search for Matching Payments",
+            "description": "Implement logic to search for payments in the database that match the provided IDs and payment codes.",
+            "dependencies": [
+              "2.2"
+            ],
+            "details": "Query the database for each validated entry to find payments with matching IDs and payment codes. Handle cases where no match is found.",
+            "status": "pending",
+            "testStrategy": "Test with mock database entries to ensure that the search logic correctly identifies matches and handles non-matches."
+          },
+          {
+            "id": 4,
+            "title": "Update Payment Status in Database",
+            "description": "Develop functionality to update the payment status to 'completed' for matched entries in the database.",
+            "dependencies": [
+              "2.3"
+            ],
+            "details": "For each matched payment, update its status to 'completed' in the database. Ensure that updates are atomic and handle potential database errors.",
+            "status": "pending",
+            "testStrategy": "Verify that the database updates correctly reflect the 'completed' status for matched payments."
+          },
+          {
+            "id": 5,
+            "title": "Mark User as Paid in Group",
+            "description": "Implement logic to mark the corresponding user as 'paid' in the group where the command was issued.",
+            "dependencies": [
+              "2.4"
+            ],
+            "details": "Use the Telegram API to update the user's status in the group chat. Ensure that the update is only applied to users with confirmed payments.",
+            "status": "pending",
+            "testStrategy": "Test with mock group data to ensure that users are correctly marked as 'paid' in the group."
+          },
+          {
+            "id": 6,
+            "title": "Handle Multiple Entries in Single Execution",
+            "description": "Ensure that the command can process multiple payment entries in a single execution.",
+            "dependencies": [
+              "2.5"
+            ],
+            "details": "Iterate over each parsed entry and apply the validation, search, and update logic. Ensure that the command handles each entry independently and accumulates results.",
+            "status": "pending",
+            "testStrategy": "Test with multiple entries to verify that each is processed correctly and independently."
+          },
+          {
+            "id": 7,
+            "title": "Provide Feedback to Admin",
+            "description": "Develop a mechanism to provide feedback to the admin on the success or failure of each entry processed by the command.",
+            "dependencies": [
+              "2.6"
+            ],
+            "details": "Compile a summary of results for each entry, indicating success or failure and any errors encountered. Send this feedback to the admin via the bot.",
+            "status": "pending",
+            "testStrategy": "Test with various scenarios to ensure that feedback is accurate and informative."
+          },
+          {
+            "id": 8,
+            "title": "Implement Logging for Command Execution",
+            "description": "Add logging to track the execution of the command and any errors that occur.",
+            "dependencies": [
+              "2.7"
+            ],
+            "details": "Implement logging at key points in the command execution process, including parsing, validation, database updates, and feedback. Ensure that logs capture sufficient detail for troubleshooting.",
+            "status": "pending",
+            "testStrategy": "Review logs after test executions to ensure that they accurately reflect the command's operations and any issues encountered."
+          }
+        ]
+      },
+      {
+        "id": 3,
+        "title": "Modify PayPal Payment Note Logic",
+        "description": "Revise the PayPal payment note logic to include the payment code in the message, enhancing flexibility while maintaining security.",
+        "details": "To modify the PayPal payment note logic, update the existing code to allow the payment code to be included anywhere within the payment note message, rather than requiring an exact match. This involves changing the string matching logic to a substring search. Ensure that the payment code is still validated securely to prevent any potential security vulnerabilities. Review the current implementation to identify where the note is processed and adjust the logic accordingly. Consider edge cases where the payment code might appear multiple times or be part of other text. Update any related documentation to reflect this change.",
+        "testStrategy": "Develop test cases to verify that the payment note logic correctly identifies the payment code within various note formats. Test scenarios should include notes where the code is at the beginning, middle, and end of the message, as well as cases with multiple occurrences of the code. Ensure that the system still rejects notes without the correct code. Perform security testing to confirm that the new logic does not introduce vulnerabilities. Conduct regression testing to ensure existing functionality is unaffected.",
+        "status": "pending",
+        "dependencies": [
+          1
+        ],
+        "priority": "medium",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Review Current Payment Note Logic",
+            "description": "Analyze the existing codebase to understand how the PayPal payment note is currently processed and identify the specific areas where the payment code is matched.",
+            "dependencies": [],
+            "details": "Locate the section of the code responsible for processing PayPal payment notes. Document the current logic used for matching the payment code within the note. Identify any related functions or modules that interact with this logic.",
+            "status": "pending",
+            "testStrategy": "Ensure that the current logic is well-documented and that any existing tests for this functionality are passing."
+          },
+          {
+            "id": 2,
+            "title": "Implement Substring Search for Payment Code",
+            "description": "Modify the payment note processing logic to use a substring search for the payment code, allowing it to appear anywhere within the note.",
+            "dependencies": [
+              "3.1"
+            ],
+            "details": "Update the string matching logic to use a substring search method, such as 'contains' or a regular expression, to locate the payment code within the note. Ensure that the logic is flexible enough to handle the payment code appearing at any position in the note.",
+            "status": "pending",
+            "testStrategy": "Develop test cases to verify that the payment code is correctly identified when it appears at the beginning, middle, or end of the note."
+          },
+          {
+            "id": 3,
+            "title": "Enhance Security Validation for Payment Code",
+            "description": "Ensure that the payment code is securely validated to prevent any potential security vulnerabilities.",
+            "dependencies": [
+              "3.2"
+            ],
+            "details": "Review and enhance the security measures used to validate the payment code. This may include checking for code integrity, ensuring it matches expected patterns, and verifying against a secure list of valid codes.",
+            "status": "pending",
+            "testStrategy": "Create test scenarios to simulate potential security threats, such as injection attacks or invalid code formats, and verify that the validation logic effectively mitigates these risks."
+          },
+          {
+            "id": 4,
+            "title": "Handle Edge Cases in Payment Note Logic",
+            "description": "Address edge cases where the payment code might appear multiple times or be part of other text within the payment note.",
+            "dependencies": [
+              "3.3"
+            ],
+            "details": "Identify and implement logic to handle scenarios where the payment code appears more than once in the note or is embedded within other text. Ensure that the logic can distinguish between valid and invalid occurrences of the code.",
+            "status": "pending",
+            "testStrategy": "Develop comprehensive test cases covering various edge cases, including multiple occurrences of the code and partial matches within other text."
+          },
+          {
+            "id": 5,
+            "title": "Update Documentation and Conduct Final Testing",
+            "description": "Revise any related documentation to reflect changes in the payment note logic and conduct final testing to ensure all modifications work as intended.",
+            "dependencies": [
+              "3.4"
+            ],
+            "details": "Update the documentation to describe the new logic for processing payment notes, including examples of valid and invalid note formats. Conduct a final round of testing to verify that all changes are functioning correctly and that no new issues have been introduced.",
+            "status": "pending",
+            "testStrategy": "Perform regression testing to ensure that existing functionality is unaffected. Validate that all new test cases pass and that documentation accurately reflects the updated logic."
+          }
+        ]
+      }
+    ],
+    "metadata": {
+      "totalTasks": 15,
+      "pendingTasks": 15,
+      "inProgressTasks": 0,
+      "completedTasks": 0,
+      "blockedTasks": 0,
+      "deferredTasks": 0,
+      "cancelledTasks": 0,
+      "estimatedTotalHours": 130,
+      "averageComplexity": 5.5,
+      "created": "2025-08-10T15:26:44.693Z",
+      "description": "Tasks for master context",
+      "updated": "2025-08-10T20:47:00.448Z"
+    }
+  }
+}

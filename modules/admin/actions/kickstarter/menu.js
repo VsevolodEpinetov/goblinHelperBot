@@ -1,12 +1,13 @@
 const { Composer, Markup } = require("telegraf");
 const util = require('../../../util');
 const SETTINGS = require('../../../../settings.json');
+const { getKickstarters } = require('../../../db/helpers');
 
 module.exports = Composer.action('adminKickstarters', async (ctx) => {
-  if (!ctx.kickstarters.list) ctx.kickstarters.list = [];
+  const kickstartersData = await getKickstarters();
 
   if (!ctx.callbackQuery.message.photo) {
-    await ctx.editMessageText(`Меню работы с кикстартерами\n\nВсего кикстартеров в базе: ${ctx.kickstarters.list.length}`, {
+    await ctx.editMessageText(`Меню работы с кикстартерами\n\nВсего кикстартеров в базе: ${kickstartersData.list.length}`, {
       ...Markup.inlineKeyboard([
         [
           Markup.button.callback('+', 'adminAddKickstarter'),
@@ -20,7 +21,7 @@ module.exports = Composer.action('adminKickstarters', async (ctx) => {
     })
   } else {
     await ctx.deleteMessage();
-    await ctx.replyWithHTML(`Меню работы с кикстартерами\n\nВсего кикстартеров в базе: ${ctx.kickstarters.list.length}`, {
+    await ctx.replyWithHTML(`Меню работы с кикстартерами\n\nВсего кикстартеров в базе: ${kickstartersData.list.length}`, {
       ...Markup.inlineKeyboard([
         [
           Markup.button.callback('+', 'adminAddKickstarter'),

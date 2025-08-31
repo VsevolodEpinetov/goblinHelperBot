@@ -1,11 +1,15 @@
 const { Composer, Markup } = require("telegraf");
 const util = require('../../../util');
 const SETTINGS = require('../../../../settings.json');
+const { getUser, getKickstarters } = require('../../../db/helpers');
 
 module.exports = Composer.action('userKickstarters', async (ctx) => {
-  if (!ctx.kickstarters.list) ctx.kickstarters.list = [];
+  const kickstartersData = await getKickstarters();
   const userId = ctx.callbackQuery.from.id;
-  const purchasedAtLeastOne = ctx.users.list[userId].purchases.kickstarters.length > 0;
+  const userData = await getUser(userId);
+  if (!userData) return;
+  
+  const purchasedAtLeastOne = userData.purchases.kickstarters.length > 0;
 
   let buttons = [
     [
@@ -29,13 +33,13 @@ module.exports = Composer.action('userKickstarters', async (ctx) => {
   }
 
   if (!ctx.callbackQuery.message.photo) {
-    await ctx.editMessageText(`<b>Кикстартеры</b>\n\nВсего кикстартеров в базе: ${ctx.kickstarters.list.length}`, {
+    await ctx.editMessageText(`<b>Кикстартеры</b>\n\nВсего кикстартеров в базе: ${kickstartersData.list.length}`, {
       parse_mode: "HTML",
       ...Markup.inlineKeyboard(buttons)
     })
   } else {
     await ctx.deleteMessage();
-    await ctx.replyWithHTML(`<b>Кикстартеры</b>\n\nВсего кикстартеров в базе: ${ctx.kickstarters.list.length}`, {
+    await ctx.replyWithHTML(`<b>Кикстартеры</b>\n\nВсего кикстартеров в базе: ${kickstartersData.list.length}`, {
       parse_mode: "HTML",
       ...Markup.inlineKeyboard(buttons)
     })

@@ -1,17 +1,20 @@
 const { Composer, Markup } = require("telegraf");
 const util = require('../../../util');
 const SETTINGS = require('../../../../settings.json');
+const { getUser, getMonths } = require('../../../db/helpers');
 
 module.exports = Composer.action(/^userMonths/g, async (ctx) => {
   const userId = ctx.callbackQuery.from.id;
   const callbackData = ctx.callbackQuery.data;
 
-  if (!ctx.months.list) ctx.months.list = {};
+  const monthsData = await getMonths();
+  const userData = await getUser(userId);
+  if (!userData) return;
 
   let menu = [];
 
   if (callbackData.indexOf('_') < 0) {
-    for (let year in ctx.months.list) {
+    for (let year in monthsData.list) {
       menu.push(Markup.button.callback(year, `userMonths_show_${year}`))
     }
 
@@ -29,10 +32,12 @@ module.exports = Composer.action(/^userMonths/g, async (ctx) => {
   } else {
     if (!callbackData.split('_')[3]) {
       const year = callbackData.split('_')[2];
-      const sortedMonths = Object.keys(ctx.months.list[year]).sort((a, b) => a - b);
+      const sortedMonths = Object.keys(monthsData.list[year]).sort((a, b) => a - b);
 
       for (let month of sortedMonths) {
-        const monthIsPurchasable = !(ctx.users.list[userId].purchases.groups.regular.indexOf(`${year}_${month}`) > -1 && ctx.users.list[userId].purchases.groups.plus.indexOf(`${year}_${month}`) > -1)
+        const regularPurchased = userData.purchases.groups.regular.indexOf(`${year}_${month}`) > -1;
+        const plusPurchased = userData.purchases.groups.plus.indexOf(`${year}_${month}`) > -1;
+        const monthIsPurchasable = !(regularPurchased && plusPurchased);
         menu.push(Markup.button.callback(`${monthIsPurchasable ? '💰 ' : ''}${month}`, `userMonths_show_${year}_${month}`))
       }
 
@@ -51,13 +56,12 @@ module.exports = Composer.action(/^userMonths/g, async (ctx) => {
     } else {
       const year = callbackData.split('_')[2];
       const month = callbackData.split('_')[3];
-      const info = ctx.months.list[year][month];
-      const userInfo = ctx.users.list[userId];
-      const regularPurchased = userInfo.purchases.groups.regular.indexOf(`${year}_${month}`) > -1;
-      const plusPurchased = userInfo.purchases.groups.plus.indexOf(`${year}_${month}`) > -1;
+      const info = monthsData.list[year][month];
+      const regularPurchased = userData.purchases.groups.regular.indexOf(`${year}_${month}`) > -1;
+      const plusPurchased = userData.purchases.groups.plus.indexOf(`${year}_${month}`) > -1;
       const monthIsPurchasable = !(regularPurchased && plusPurchased)
-      const isAdmin = userInfo.roles.indexOf('admin') > -1;
-      const isAdminPlus = userInfo.roles.indexOf('adminPlus') > -1;
+      const isAdmin = userData.roles.indexOf('admin') > -1;
+      const isAdminPlus = userData.roles.indexOf('adminPlus') > -1;
 
       let message = `Данные за ${year}-${month}`;
 

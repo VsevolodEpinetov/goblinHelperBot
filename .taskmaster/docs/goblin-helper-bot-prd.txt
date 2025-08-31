@@ -1,0 +1,198 @@
+# Goblin Helper Bot - Product Requirements Document
+
+## Overview
+The Goblin Helper Bot is a comprehensive Telegram bot designed to manage goblin community activities, including user management, payment processing, polls, kickstarters, lots, and administrative functions. The bot serves as a central hub for community engagement, financial transactions, and event management within the goblin community ecosystem.
+
+## Core Features
+
+### User Management System
+- User registration and profile management
+- Role-based access control (admin, regular user)
+- Month-based membership tracking
+- Balance and ticket management
+- User search and display functionality
+
+### Payment Processing
+- Payment initiation and confirmation
+- Balance tracking and management
+- Payment reminders and notifications
+- Integration with payment channels
+
+### Polling System
+- Core and studio-based polls
+- Poll creation, voting, and counting
+- Results display and analytics
+- Poll reset and management capabilities
+
+### Kickstarter Management
+- Kickstarter project creation and management
+- File and photo management
+- Pledge tracking and cost management
+- Creator and tag management
+
+### Lot System
+- Lot creation and management
+- User participation (join/leave)
+- Lot information display and updates
+- Lot closing and completion
+
+### Administrative Functions
+- User role management
+- System configuration and maintenance
+- Data migration and backup
+- Community moderation tools
+
+## User Experience
+
+### User Personas
+- **Regular Users**: Community members who participate in polls, join lots, and make payments
+- **Administrators**: Community leaders who manage users, create polls, and oversee system operations
+- **Creators**: Users who initiate kickstarter projects and manage community events
+
+### Key User Flows
+1. **User Onboarding**: Start command → User registration → Role assignment → Month tracking setup
+2. **Poll Participation**: Poll creation → User voting → Results display → Analytics
+3. **Payment Processing**: Payment initiation → Confirmation → Balance update → Receipt
+4. **Kickstarter Management**: Project creation → File upload → Pledge management → Completion
+
+### UI/UX Considerations
+- Intuitive command-based interface
+- Clear feedback and confirmation messages
+- Consistent formatting and structure
+- Error handling with helpful guidance
+
+## Technical Architecture
+
+### System Components
+- **Core Bot Engine**: Main bot logic and command handling
+- **Module System**: Organized functionality by feature area
+- **Scene Management**: Multi-step user interactions
+- **Action Handlers**: Business logic implementation
+- **Command Processors**: User input interpretation
+
+### Data Models
+- **User Model**: Profile, roles, balance, months, tickets
+- **Poll Model**: Core polls, studio polls, votes, results
+- **Kickstarter Model**: Projects, files, pledges, creators
+- **Lot Model**: Lots, participants, status, information
+- **Payment Model**: Transactions, balances, confirmations
+
+### APIs and Integrations
+- Telegram Bot API for messaging and interactions
+- Payment processing integration
+- File storage and management
+- Database persistence (JSON-based)
+
+### Infrastructure Requirements
+- Node.js runtime environment
+- Telegram Bot API access
+- File storage capabilities
+- Secure payment processing
+- Backup and recovery systems
+
+## Development Roadmap
+
+### Phase 1: Core Infrastructure (MVP)
+- Basic bot framework and command handling
+- User registration and basic profile management
+- Simple command structure and response system
+- Basic error handling and validation
+
+### Phase 2: User Management & Authentication
+- Complete user profile system
+- Role-based access control
+- Month tracking and membership management
+- User search and display functionality
+
+### Phase 3: Polling System
+- Poll creation and management
+- Voting mechanism and validation
+- Results calculation and display
+- Poll reset and maintenance tools
+
+### Phase 4: Payment Processing
+- Payment initiation and flow
+- Balance tracking and updates
+- Payment confirmation and receipts
+- Integration with payment channels
+
+### Phase 5: Advanced Features
+- Kickstarter project management
+- Lot system implementation
+- File and media management
+- Advanced administrative tools
+
+### Phase 6: Enhancement & Optimization
+- Performance optimization
+- Advanced analytics and reporting
+- User experience improvements
+- Security enhancements
+
+## Logical Dependency Chain
+
+### Foundation First
+1. **Bot Framework**: Core bot structure and command handling
+2. **User System**: Basic user management and authentication
+3. **Data Persistence**: JSON-based storage and retrieval
+
+### Core Functionality
+4. **Command Processing**: User input interpretation and routing
+5. **Action Handlers**: Business logic implementation
+6. **Scene Management**: Multi-step user interactions
+
+### Feature Implementation
+7. **Polling System**: Core voting and management
+8. **Payment Processing**: Financial transaction handling
+9. **Kickstarter Management**: Project and file management
+10. **Lot System**: Community participation features
+
+### Advanced Features
+11. **Administrative Tools**: System management and moderation
+12. **Analytics and Reporting**: Data insights and monitoring
+13. **Integration Enhancements**: External service connections
+
+## Risks and Mitigations
+
+### Technical Challenges
+- **Risk**: Complex state management for multi-step interactions
+- **Mitigation**: Implement robust scene management with clear state transitions
+
+- **Risk**: File storage and management complexity
+- **Mitigation**: Use structured file organization and validation
+
+- **Risk**: Payment processing security
+- **Mitigation**: Implement secure payment flows with proper validation
+
+### MVP Scope Management
+- **Risk**: Feature creep during development
+- **Mitigation**: Focus on core user management and basic polling first
+
+- **Risk**: Complex user flows overwhelming users
+- **Mitigation**: Start with simple commands and gradually add complexity
+
+### Resource Constraints
+- **Risk**: Limited development time for complex features
+- **Mitigation**: Prioritize features by user value and implementation complexity
+
+## Appendix
+
+### Current Codebase Analysis
+The existing codebase shows a well-structured modular architecture with:
+- Organized module system by feature area
+- Consistent action and command patterns
+- Scene-based user interaction management
+- Comprehensive administrative functionality
+
+### Technical Specifications
+- **Platform**: Telegram Bot API
+- **Language**: JavaScript/Node.js
+- **Architecture**: Module-based with scene management
+- **Data Storage**: JSON-based file system
+- **Deployment**: Node.js runtime environment
+
+### Success Metrics
+- User engagement in polls and lots
+- Payment processing success rate
+- Administrative task completion efficiency
+- User satisfaction with bot interactions
+- Community participation levels

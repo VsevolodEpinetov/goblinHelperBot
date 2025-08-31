@@ -1,5 +1,6 @@
 const { Scenes, Markup } = require("telegraf");
-const SETTINGS = require('../../../../settings.json')
+const SETTINGS = require('../../../../settings.json');
+const { getUser, updateUser } = require('../../../db/helpers');
 
 const changeTicketsSpent = new Scenes.BaseScene('ADMIN_SCENE_CHANGE_TICKETS_SPENT');
 
@@ -15,15 +16,26 @@ changeTicketsSpent.on('text', async (ctx) => {
   const userId = ctx.userSession.userId;
   let amount = 0;
 
-  if (isSubstract) {
-    amount = parseInt(ctx.message.text.split('-')[1]);
-    ctx.users.list[userId].purchases.ticketsSpent = ctx.users.list[userId].purchases.ticketsSpent - amount;
-  } else {
-    amount = parseInt(ctx.message.text);
-    ctx.users.list[userId].purchases.ticketsSpent = ctx.users.list[userId].purchases.ticketsSpent + amount;
+  // Get current user data
+  const userData = await getUser(userId);
+  if (!userData) {
+    await ctx.replyWithHTML('Пользователь не найден');
+    ctx.scene.leave();
+    return;
   }
 
-  const tickets = Math.floor(ctx.users.list[userId].purchases.groups.plus.length / 3) * 2 - ctx.users.list[userId].purchases.ticketsSpent;
+  if (isSubstract) {
+    amount = parseInt(ctx.message.text.split('-')[1]);
+    userData.purchases.ticketsSpent = userData.purchases.ticketsSpent - amount;
+  } else {
+    amount = parseInt(ctx.message.text);
+    userData.purchases.ticketsSpent = userData.purchases.ticketsSpent + amount;
+  }
+
+  // Update user in database
+  await updateUser(userId, userData);
+
+  const tickets = Math.floor(userData.purchases.groups.plus.length / 3) * 2 - userData.purchases.ticketsSpent;
 
   await ctx.deleteMessage(ctx.message.message_id);
   await ctx.deleteMessage(ctx.session.toRemove);

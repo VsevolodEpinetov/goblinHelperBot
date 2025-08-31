@@ -1,51 +1,55 @@
 const { Composer, Markup } = require('telegraf');
 const util = require('../../util');
+const { t } = require('../../../modules/i18n');
 const SETTINGS = require('../../../settings.json');
+const { getUser, getAllUsers } = require('../../db/helpers');
 
 // Команда /start
 module.exports = Composer.command('start', async (ctx) => {
   util.log(ctx);
 
   if (ctx.message.chat.id < 0) {
-    await ctx.replyWithHTML('Работаю только в личке, пупсик')
+    await ctx.replyWithHTML(t('start.chatOnlyPrivate'))
     return;
   }
-
-  if (!ctx.users.list) ctx.users.list = {};
 
   const userId = ctx.message.from.id;
   ctx.deleteMessage(ctx.message.message_id)
 
   const IS_CLOSED = false; //TODO: move to settings
 
-  if (!ctx.users.list[userId]) {
+  // Get user data from database
+  const userData = await getUser(userId);
+
+  if (!userData) {
     if (!IS_CLOSED) {
       await ctx.replyWithHTML(
-        `Привет! Ты ещё не зарегистрирован. Нажми на кнопку, чтобы подать запрос на добавление.`, {
+        t('start.welcome'), {
         ...Markup.inlineKeyboard([
-          Markup.button.callback('Отправить запрос', 'requestAddUser')
+          [Markup.button.callback(t('start.buttons.rules'), 'showRules')],
+          [Markup.button.callback(t('start.buttons.apply'), 'applyInit')],
+          [Markup.button.callback(t('start.buttons.whatIs'), 'showWhatIs')]
         ])
       }
       );
     } else {
-      await ctx.reply('Сори, но регистрация закрыта')
+      await ctx.reply(t('start.closed'))
     }
   } else {
-    const userData = ctx.users.list[userId];
     const roles = userData.roles;
 
     if (roles.length == 0) {
-      await ctx.replyWithHTML('Твоё участие ещё не было подтверждено. Ожидай')
+      await ctx.replyWithHTML(t('start.pending'))
       return;
     }
 
     if (roles.indexOf('rejected') > -1) {
-      await ctx.replyWithHTML('К сожалению, тебе было отказано в вступлении.')
+      await ctx.replyWithHTML(t('start.rejected'))
       return;
     }
 
     if (util.isSuperUser(userId)) {
-      await ctx.replyWithHTML(`Выбери нужное действие`, {
+      await ctx.replyWithHTML(t('start.menuSelect'), {
         ...Markup.inlineKeyboard([
           [
             Markup.button.callback('Месяцы', 'adminMonths'),

@@ -17,7 +17,7 @@ adminSceneAddMonth.on('text', async (ctx) => {
   await ctx.deleteMessage(ctx.message.message_id);
 
   if (!ctx.months.list[year]) ctx.months.list[year] = {};
-  
+
   if (!ctx.months.list[year][month]) {
     ctx.months.list[year][month] = {
       regular: {
@@ -37,6 +37,14 @@ adminSceneAddMonth.on('text', async (ctx) => {
         }   
       }
     };
+
+    try {
+      const knex = require('../../db/knex');
+      await knex('months').insert([
+        { period: `${year}_${month}`, type: 'regular', chatId: null, counterJoined: 0, counterPaid: 0 },
+        { period: `${year}_${month}`, type: 'plus', chatId: null, counterJoined: 0, counterPaid: 0 }
+      ]).onConflict(['period','type']).ignore();
+    } catch (e) { console.log('Failed to insert months via Knex', e); }
 
     let menu = [];
 

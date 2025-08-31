@@ -35,7 +35,6 @@ module.exports = Composer.action(/^action-close-lot-[0-9]+$/g, async (ctx) => {
 
     await ctx.answerCbQuery('Лот успешно закрыт!');
   } catch (error) {
-    console.error('Failed to close lot:', error);
-    await ctx.reply('Ошибка при закрытии лота.');
+    await util.handleUserError(ctx, error, '❌ Ошибка при закрытии лота. Попробуйте позже.');
   }
 });

@@ -4,6 +4,7 @@ require('dotenv').config();
 const bot = new Telegraf(process.env.TOKEN)
 const SETTINGS = require('./settings.json')
 const path = require('path');
+const { t } = require('./modules/i18n');
 
 const util = require('./modules/util.js');
 //#endregion
@@ -21,10 +22,6 @@ bot.use(
   SESSIONS.USER_SESSION,
   SESSIONS.CHAT_SESSION,
   SESSIONS.LOTS_SESSION,
-  SESSIONS.USERS_SESSION,
-  SESSIONS.MONTHS_SESSION,
-  SESSIONS.KICKSTARTERS_SESSION,
-  SESSIONS.SETTINGS_SESSION,
   SESSIONS.POLLS_SESSION
 )
 //#endregion
@@ -59,49 +56,42 @@ const stage = new Scenes.Stage([
 bot.use(session());
 bot.use(stage.middleware());
 
+// Ignore banned users
+bot.use(require('./modules/middleware/banned'))
+
 bot.use(require('./modules/lots'))
 bot.use(require('./modules/polls'))
 bot.use(require('./modules/indexator-creator'))
 bot.use(require('./modules/payments'))
 bot.use(require('./modules/admin'))
+// Admin helper actions for invite links
+bot.use(require('./modules/admin/actions/users/inviteLinksMenu'))
 bot.use(require('./modules/users'))
 bot.use(require('./modules/common'))
 //#endregion
 
 bot.on('chat_join_request', async ctx => {
-  if (!ctx.users.list[ctx.from.id]) {
+  const { getUser, findMonthByChatId, hasUserPurchasedMonth, incrementMonthCounter, getMonthChatId } = require('./modules/db/helpers');
+  
+  const userInfo = await getUser(ctx.from.id);
+  if (!userInfo) {
     return;
   }
-
-  const userInfo = ctx.users.list[ctx.from.id];
 
   if (userInfo.roles.indexOf('rejected') > -1) {
     return;
   }
 
-  let month;
-  let year;
-  let type = 'regular';
-
-  for (const yearRaw in ctx.months.list) {
-    for (const monthRaw in ctx.months.list[yearRaw]) {
-      if (ctx.months.list[yearRaw][monthRaw].regular.id == ctx.chat.id) {
-        year = yearRaw;
-        month = monthRaw;
-      }
-      if (ctx.months.list[yearRaw][monthRaw].plus.id == ctx.chat.id) {
-        year = yearRaw;
-        month = monthRaw;
-        type = 'plus';
-      }
-    }
-  }
-
-  if (!month) {
+  // Find which month this chat belongs to
+  const monthData = await findMonthByChatId(ctx.chat.id);
+  if (!monthData) {
     ctx.telegram.sendMessage(SETTINGS.CHATS.EPINETOV, `Не смог найти группу`)
+    return;
   }
 
-  const monthPurchased = userInfo.purchases.groups[type].indexOf(`${year}_${month}`) > -1;
+  const { year, month, type } = monthData;
+
+  const monthPurchased = await hasUserPurchasedMonth(ctx.from.id, year, month, type);
   const adminRole = type == 'plus' ? 'adminPlus' : 'admin';
   const isAppropriateAdmin = userInfo.roles.indexOf(adminRole) > -1;
 
@@ -109,12 +99,28 @@ bot.on('chat_join_request', async ctx => {
 
   if (monthPurchased || isAppropriateAdmin) {
     await ctx.approveChatJoinRequest(ctx.from.id);
-    ctx.months.list[year][month][type].counter.joined = ctx.months.list[year][month][type].counter.joined + 1;
+    await incrementMonthCounter(year, month, type, 'joined');
+    // Mark last unused invitation link as used
+    try {
+      const knex = require('./modules/db/knex');
+      const sub = knex('invitationLinks')
+        .select('id')
+        .where({ userId: ctx.from.id, groupPeriod: `${year}_${month}`, groupType: type })
+        .whereNull('usedAt')
+        .orderBy('createdAt', 'desc')
+        .limit(1);
+      await knex('invitationLinks')
+        .where('id', '=', sub)
+        .update({ usedAt: knex.fn.now() });
+    } catch (e) {
+      console.log('Failed to mark invite as used', e);
+    }
     await ctx.telegram.sendMessage(SETTINGS.CHATS.LOGS, `🟢 Added ${userInfo.username != 'not_set' ? `@${userInfo.username}` : `${userInfo.first_name}`} (${ctx.from.id}) to the ${year}_${month}_${type}`)
     if (isAppropriateAdmin) {
       await ctx.telegram.sendMessage(SETTINGS.CHATS.LOGS, `⚠️ Promoted ${userInfo.username != 'not_set' ? `@${userInfo.username}` : `${userInfo.first_name}`} (${ctx.from.id}) in the ${year}_${month}_${type}`)
+      const chatId = await getMonthChatId(year, month, type);
       if (type == 'regular') {
-        await ctx.telegram.promoteChatMember(ctx.months.list[year][month][type].id, userInfo.id, {
+        await ctx.telegram.promoteChatMember(chatId, userInfo.id, {
           can_delete_messages: true,
           can_edit_messages: true,
           can_post_messages: true,
@@ -122,7 +128,7 @@ bot.on('chat_join_request', async ctx => {
         })
       }
       if (type == 'plus') {
-        await ctx.telegram.promoteChatMember(ctx.months.list[year][month][type].id, userInfo.id, {
+        await ctx.telegram.promoteChatMember(chatId, userInfo.id, {
           can_delete_messages: true,
           can_edit_messages: true,
           can_post_messages: true,
@@ -157,7 +163,7 @@ bot.catch((error) => {
 // --------------------------------------------------------------------------
 // 4. Service
 // --------------------------------------------------------------------------
-bot.launch()
+bot.launch({ dropPendingUpdates: true })
 // Enable graceful stop
 process.once('SIGINT', () => bot.stop('SIGINT'))
 process.once('SIGTERM', () => bot.stop('SIGTERM'))

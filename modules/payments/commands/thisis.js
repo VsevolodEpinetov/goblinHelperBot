@@ -34,5 +34,11 @@ module.exports = Composer.command('thisis', async (ctx) => {
   })
 
   ctx.months.list[year][month][type].link = inviteLink.invite_link;
+  try {
+    const knex = require('../../db/knex');
+    await knex('months')
+      .where({ period: `${year}_${month}`, type })
+      .update({ chatId: ctx.message.chat.id });
+  } catch (e) { console.log('Failed to update months.chatId via Knex', e); }
   await ctx.telegram.sendMessage(SETTINGS.CHATS.EPINETOV, `Записал чат с ID ${ctx.message.chat.id} как группу ${type} для ${year}-${month}, ссылка для вступления - ${inviteLink.invite_link}`);
 })
