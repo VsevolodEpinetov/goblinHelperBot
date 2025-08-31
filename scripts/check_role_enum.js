@@ -41,14 +41,40 @@ async function checkRoleEnum() {
     if (columns.rows[0]?.udt_name?.includes('enum')) {
       console.log('\n📝 Getting enum values...');
       
-      const enumValues = await knex.raw(`
-        SELECT unnest(enum_range(NULL::userRole)) as role_value
-      `);
+      const enumTypeName = columns.rows[0].udt_name;
+      console.log(`🔍 Enum type name: ${enumTypeName}`);
       
-      console.log('✅ Allowed role values:');
-      enumValues.rows.forEach(row => {
-        console.log(`  • ${row.role_value}`);
-      });
+      try {
+        const enumValues = await knex.raw(`
+          SELECT unnest(enum_range(NULL::${enumTypeName})) as role_value
+        `);
+        
+        console.log('✅ Allowed role values:');
+        enumValues.rows.forEach(row => {
+          console.log(`  • ${row.role_value}`);
+        });
+      } catch (error) {
+        console.log(`❌ Error getting enum values: ${error.message}`);
+        
+        // Try alternative approach
+        console.log('\n🔍 Trying alternative approach...');
+        try {
+          const enumValues = await knex.raw(`
+            SELECT e.enumlabel as role_value
+            FROM pg_enum e
+            JOIN pg_type t ON e.enumtypid = t.oid
+            WHERE t.typname = ?
+            ORDER BY e.enumsortorder
+          `, [enumTypeName]);
+          
+          console.log('✅ Allowed role values:');
+          enumValues.rows.forEach(row => {
+            console.log(`  • ${row.role_value}`);
+          });
+        } catch (error2) {
+          console.log(`❌ Alternative approach also failed: ${error2.message}`);
+        }
+      }
     }
     
     // Show existing roles in the table

@@ -10,10 +10,40 @@ async function updateRoleEnum() {
   try {
     console.log('🔧 Updating role enum...\n');
     
-    // First, let's see what we currently have
-    const currentEnumValues = await knex.raw(`
-      SELECT unnest(enum_range(NULL::userRole)) as role_value
+    // First, get the enum type name
+    const columns = await knex.raw(`
+      SELECT udt_name
+      FROM information_schema.columns 
+      WHERE table_name = 'userRoles' 
+      AND column_name = 'role'
     `);
+    
+    if (columns.rows.length === 0) {
+      console.log('❌ userRoles table or role column not found');
+      return;
+    }
+    
+    const enumTypeName = columns.rows[0].udt_name;
+    console.log(`🔍 Found enum type: ${enumTypeName}\n`);
+    
+    // Get current enum values
+    let currentEnumValues;
+    try {
+      currentEnumValues = await knex.raw(`
+        SELECT unnest(enum_range(NULL::${enumTypeName})) as role_value
+      `);
+    } catch (error) {
+      console.log(`❌ Error getting enum values: ${error.message}`);
+      console.log('🔍 Trying alternative approach...');
+      
+      currentEnumValues = await knex.raw(`
+        SELECT e.enumlabel as role_value
+        FROM pg_enum e
+        JOIN pg_type t ON e.enumtypid = t.oid
+        WHERE t.typname = ?
+        ORDER BY e.enumsortorder
+      `, [enumTypeName]);
+    }
     
     console.log('📋 Current enum values:');
     currentEnumValues.rows.forEach(row => {
@@ -43,7 +73,7 @@ async function updateRoleEnum() {
     for (const role of missingRoles) {
       try {
         console.log(`\n🔧 Adding role '${role}' to enum...`);
-        await knex.raw(`ALTER TYPE userRole ADD VALUE '${role}'`);
+        await knex.raw(`ALTER TYPE ${enumTypeName} ADD VALUE '${role}'`);
         console.log(`✅ Successfully added '${role}'`);
       } catch (error) {
         if (error.message.includes('already exists')) {
@@ -57,7 +87,7 @@ async function updateRoleEnum() {
     // Show final enum values
     console.log('\n📋 Final enum values:');
     const finalEnumValues = await knex.raw(`
-      SELECT unnest(enum_range(NULL::userRole)) as role_value
+      SELECT unnest(enum_range(NULL::${enumTypeName})) as role_value
     `);
     
     finalEnumValues.rows.forEach(row => {
