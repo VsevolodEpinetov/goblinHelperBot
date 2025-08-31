@@ -1,6 +1,13 @@
 //#region imports
 const { Telegraf, Scenes, session } = require('telegraf');
 require('dotenv').config();
+
+console.log('🚀 Starting bot initialization...');
+console.log('📋 Environment check:');
+console.log('  - TOKEN exists:', !!process.env.TOKEN);
+console.log('  - TOKEN length:', process.env.TOKEN ? process.env.TOKEN.length : 0);
+console.log('  - Database config exists:', !!process.env.PGHOST);
+
 const bot = new Telegraf(process.env.TOKEN)
 const SETTINGS = require('./settings.json')
 const path = require('path');
@@ -57,11 +64,14 @@ bot.use(session());
 bot.use(stage.middleware());
 
 // Ignore banned users
+console.log('🔧 Loading banned middleware...');
 bot.use(require('./modules/middleware/banned'))
 
 // Track user interactions and update user data
+console.log('🔧 Loading userTracker middleware...');
 bot.use(require('./modules/middleware/userTracker'))
 
+console.log('🔧 Loading modules...');
 bot.use(require('./modules/lots'))
 bot.use(require('./modules/polls'))
 bot.use(require('./modules/indexator-creator'))
@@ -75,8 +85,24 @@ bot.use(require('./modules/common'))
 
 // Handle user profile updates
 bot.on('message', async (ctx) => {
+  console.log('📨 Received message:', {
+    from: ctx.from?.id,
+    username: ctx.from?.username,
+    text: ctx.message?.text?.substring(0, 50),
+    chatType: ctx.chat?.type,
+    chatId: ctx.chat?.id
+  });
   // This will be handled by the userTracker middleware
   // but we can add specific logic here if needed
+});
+
+// Add a catch-all handler for any updates
+bot.on('text', async (ctx) => {
+  console.log('📝 Text message received:', ctx.message.text);
+});
+
+bot.on('callback_query', async (ctx) => {
+  console.log('🔘 Callback query received:', ctx.callbackQuery.data);
 });
 
 bot.on('edited_message', async (ctx) => {
@@ -189,13 +215,29 @@ bot.command('ex', ctx => {
 })
 
 bot.catch((error) => {
-  console.log(error);
+  console.log('❌ Bot error caught:', error);
+  console.log('❌ Error stack:', error.stack);
 })
 
 // --------------------------------------------------------------------------
 // 4. Service
 // --------------------------------------------------------------------------
+console.log('🚀 Launching bot...');
 bot.launch({ dropPendingUpdates: true })
+  .then(() => {
+    console.log('✅ Bot launched successfully!');
+    console.log('🤖 Bot info:', bot.botInfo);
+  })
+  .catch((error) => {
+    console.log('❌ Failed to launch bot:', error);
+  });
+
 // Enable graceful stop
-process.once('SIGINT', () => bot.stop('SIGINT'))
-process.once('SIGTERM', () => bot.stop('SIGTERM'))
+process.once('SIGINT', () => {
+  console.log('🛑 Received SIGINT, stopping bot...');
+  bot.stop('SIGINT')
+})
+process.once('SIGTERM', () => {
+  console.log('🛑 Received SIGTERM, stopping bot...');
+  bot.stop('SIGTERM')
+})

@@ -6,6 +6,17 @@ const { getUser, getAllUsers } = require('../../db/helpers');
 
 // Команда /start
 module.exports = Composer.command('start', async (ctx) => {
+  console.log('🎯 START command received!');
+  console.log('👤 User:', {
+    id: ctx.message?.from?.id,
+    username: ctx.message?.from?.username,
+    firstName: ctx.message?.from?.first_name
+  });
+  console.log('💬 Chat:', {
+    id: ctx.message?.chat?.id,
+    type: ctx.message?.chat?.type
+  });
+  
   util.log(ctx);
 
   if (ctx.message.chat.id < 0) {
@@ -19,7 +30,14 @@ module.exports = Composer.command('start', async (ctx) => {
   const IS_CLOSED = false; //TODO: move to settings
 
   // Get user data from database
+  console.log('🔍 Fetching user data for ID:', userId);
   const userData = await getUser(userId);
+  console.log('📊 User data:', userData ? {
+    id: userData.id,
+    username: userData.username,
+    roles: userData.roles,
+    hasPurchases: !!userData.purchases
+  } : 'null');
 
   if (!userData) {
     if (!IS_CLOSED) {
@@ -48,7 +66,9 @@ module.exports = Composer.command('start', async (ctx) => {
       return;
     }
 
+    console.log('🔍 Checking if user is super user...');
     if (util.isSuperUser(userId)) {
+      console.log('👑 User is super user, showing admin menu');
       await ctx.replyWithHTML(t('start.menuSelect'), {
         ...Markup.inlineKeyboard([
           [
@@ -72,7 +92,9 @@ module.exports = Composer.command('start', async (ctx) => {
       return;
     }
 
+    console.log('🔍 Checking user roles:', roles);
     if (roles.indexOf('goblin') > -1 || roles.indexOf('admin') > -1 || roles.indexOf('adminPlus') > -1) {
+      console.log('👤 User has goblin/admin role, showing interactive menu');
       // Use new enhanced UX system
       const interactiveMenu = util.createInteractiveMenu(ctx, userData);
       

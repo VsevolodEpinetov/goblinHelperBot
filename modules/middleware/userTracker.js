@@ -15,17 +15,24 @@ const SETTINGS = require('../../settings.json');
 
 module.exports = async (ctx, next) => {
 	try {
+		console.log('🔄 UserTracker middleware: Processing context');
+		
 		// Get user ID from different context types
 		const userId = (ctx.from && ctx.from.id) || 
 					  (ctx.callbackQuery && ctx.callbackQuery.from && ctx.callbackQuery.from.id) ||
 					  (ctx.message && ctx.message.from && ctx.message.from.id);
+		
+		console.log('🔄 UserTracker middleware: User ID:', userId);
 		
 		if (DEBUG_MODE) {
 			console.log(`[userTracker] Processing context for user: ${userId}`);
 			console.log(`[userTracker] Context type:`, Object.keys(ctx).filter(key => ctx[key] && typeof ctx[key] === 'object'));
 		}
 		
-		if (!userId) return next();
+		if (!userId) {
+			console.log('🔄 UserTracker middleware: No userId, skipping');
+			return next();
+		}
 		
 		// Check rate limiting for this user
 		const now = Date.now();
@@ -168,8 +175,9 @@ module.exports = async (ctx, next) => {
 		}
 		
 	} catch (error) {
-		console.log('Error in userTracker middleware:', error);
+		console.log('❌ Error in userTracker middleware:', error);
 	}
 	
+	console.log('🔄 UserTracker middleware: Completed, calling next()');
 	return next();
 };
