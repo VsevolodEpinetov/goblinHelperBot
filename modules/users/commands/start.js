@@ -39,6 +39,11 @@ module.exports = Composer.command('start', async (ctx) => {
     hasPurchases: !!userData.purchases
   } : 'null');
 
+  console.log('🎭 Role analysis:');
+  console.log('  - User roles:', userData?.roles || []);
+  console.log('  - Expected roles for super user: [super]');
+  console.log('  - Expected roles for goblin/admin: [goblin, admin, adminPlus]');
+
   if (!userData) {
     if (!IS_CLOSED) {
       await ctx.replyWithHTML(
@@ -67,6 +72,11 @@ module.exports = Composer.command('start', async (ctx) => {
     }
 
     console.log('🔍 Checking if user is super user...');
+    console.log('  - User ID:', userId);
+    console.log('  - EPINETOV ID from settings:', SETTINGS.CHATS.EPINETOV);
+    console.log('  - ANN ID from settings:', SETTINGS.CHATS.ANN);
+    console.log('  - Is super user:', util.isSuperUser(userId));
+    
     if (util.isSuperUser(userId)) {
       console.log('👑 User is super user, showing admin menu');
       await ctx.replyWithHTML(t('start.menuSelect'), {

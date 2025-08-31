@@ -5,10 +5,28 @@ const path = require('path');
 console.log('🔧 Loading users module...');
 
 const actions = getAllFilesFromFolder(path.join(__dirname, './actions'))
-  .map(file => require(file));  // Импортируем файлы
+  .map(file => {
+    try {
+      console.log('📄 Loading action file:', file);
+      return require(file);
+    } catch (error) {
+      console.log('❌ Error loading action file:', file, error.message);
+      return null;
+    }
+  })
+  .filter(Boolean);  // Импортируем файлы
 
 const commands = getAllFilesFromFolder(path.join(__dirname, './commands'))
-  .map(file => require(file));  // Импортируем файлы
+  .map(file => {
+    try {
+      console.log('📄 Loading command file:', file);
+      return require(file);
+    } catch (error) {
+      console.log('❌ Error loading command file:', file, error.message);
+      return null;
+    }
+  })
+  .filter(Boolean);  // Импортируем файлы
 
 console.log('📁 Users module - Actions loaded:', actions.length);
 console.log('📁 Users module - Commands loaded:', commands.length);

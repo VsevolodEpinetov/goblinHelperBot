@@ -118,6 +118,14 @@ bot.command('*', async (ctx) => {
   console.log('🎯 DEBUG: Any command received:', ctx.message.text);
 });
 
+// Specific debug handler for start command
+bot.command('start', async (ctx) => {
+  console.log('🎯 DEBUG: START command caught by debug handler!');
+  console.log('  - User ID:', ctx.from?.id);
+  console.log('  - Username:', ctx.from?.username);
+  console.log('  - Chat type:', ctx.chat?.type);
+});
+
 bot.on('edited_message', async (ctx) => {
   // This will be handled by the userTracker middleware
   // but we can add specific logic here if needed
