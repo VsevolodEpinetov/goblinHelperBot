@@ -255,18 +255,22 @@ function getUserDescription (ctx, userId) {
 }
 
 function getAllFilesFromFolder (dir) {
+  console.log('📁 Scanning directory:', dir);
   const files = fs.readdirSync(dir);
   let allFiles = [];
 
   files.forEach(file => {
     const fullPath = path.join(dir, file);
     if (fs.statSync(fullPath).isDirectory()) {
+      console.log('📁 Found subdirectory:', file);
       allFiles = allFiles.concat(getAllFilesFromFolder(fullPath));  // Рекурсивно проходим по подпапкам
     } else {
+      console.log('📄 Found file:', file);
       allFiles.push(fullPath);  // Добавляем путь к файлу
     }
   });
 
+  console.log('📁 Total files found in', dir, ':', allFiles.length);
   return allFiles;
 }
 

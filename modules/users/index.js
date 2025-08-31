@@ -2,11 +2,16 @@ const { Composer } = require('telegraf');
 const { getAllFilesFromFolder } = require('../util');
 const path = require('path');
 
+console.log('🔧 Loading users module...');
+
 const actions = getAllFilesFromFolder(path.join(__dirname, './actions'))
   .map(file => require(file));  // Импортируем файлы
 
 const commands = getAllFilesFromFolder(path.join(__dirname, './commands'))
   .map(file => require(file));  // Импортируем файлы
+
+console.log('📁 Users module - Actions loaded:', actions.length);
+console.log('📁 Users module - Commands loaded:', commands.length);
 
 // Import all new enhanced UX actions
 const enhancedActions = [
@@ -28,8 +33,15 @@ const enhancedActions = [
   require('./actions/kickstarter/menu')
 ];
 
-module.exports = Composer.compose([
+console.log('📁 Users module - Enhanced actions loaded:', enhancedActions.length);
+
+const composer = Composer.compose([
   ...actions,
   ...commands,
   ...enhancedActions
-])
+]);
+
+console.log('📁 Users module - Total handlers:', actions.length + commands.length + enhancedActions.length);
+console.log('✅ Users module loaded successfully');
+
+module.exports = composer;

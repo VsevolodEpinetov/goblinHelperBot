@@ -72,14 +72,22 @@ console.log('🔧 Loading userTracker middleware...');
 bot.use(require('./modules/middleware/userTracker'))
 
 console.log('🔧 Loading modules...');
+console.log('📦 Loading lots module...');
 bot.use(require('./modules/lots'))
+console.log('📦 Loading polls module...');
 bot.use(require('./modules/polls'))
+console.log('📦 Loading indexator-creator module...');
 bot.use(require('./modules/indexator-creator'))
+console.log('📦 Loading payments module...');
 bot.use(require('./modules/payments'))
+console.log('📦 Loading admin module...');
 bot.use(require('./modules/admin'))
 // Admin helper actions for invite links
+console.log('📦 Loading inviteLinksMenu...');
 bot.use(require('./modules/admin/actions/users/inviteLinksMenu'))
+console.log('📦 Loading users module...');
 bot.use(require('./modules/users'))
+console.log('📦 Loading common module...');
 bot.use(require('./modules/common'))
 //#endregion
 
@@ -103,6 +111,11 @@ bot.on('text', async (ctx) => {
 
 bot.on('callback_query', async (ctx) => {
   console.log('🔘 Callback query received:', ctx.callbackQuery.data);
+});
+
+// Debug handler for any command
+bot.command('*', async (ctx) => {
+  console.log('🎯 DEBUG: Any command received:', ctx.message.text);
 });
 
 bot.on('edited_message', async (ctx) => {
