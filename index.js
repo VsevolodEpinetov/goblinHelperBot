@@ -71,6 +71,25 @@ bot.use(require('./modules/middleware/banned'))
 console.log('🔧 Loading userTracker middleware...');
 bot.use(require('./modules/middleware/userTracker'))
 
+// Add debug handlers BEFORE module loading to see if they get triggered
+console.log('🔧 Adding debug handlers...');
+bot.on('update', async (ctx) => {
+  console.log('🔄 Update received:', {
+    updateType: Object.keys(ctx.update)[0],
+    hasMessage: !!ctx.update.message,
+    hasCallbackQuery: !!ctx.update.callback_query,
+    messageText: ctx.update.message?.text,
+    isCommand: ctx.update.message?.text?.startsWith('/')
+  });
+});
+
+bot.command('start', async (ctx) => {
+  console.log('🎯 DEBUG: START command caught by debug handler!');
+  console.log('  - User ID:', ctx.from?.id);
+  console.log('  - Username:', ctx.from?.username);
+  console.log('  - Chat type:', ctx.chat?.type);
+});
+
 console.log('🔧 Loading modules...');
 console.log('📦 Loading lots module...');
 bot.use(require('./modules/lots'))
@@ -98,7 +117,9 @@ bot.on('message', async (ctx) => {
     username: ctx.from?.username,
     text: ctx.message?.text?.substring(0, 50),
     chatType: ctx.chat?.type,
-    chatId: ctx.chat?.id
+    chatId: ctx.chat?.id,
+    isCommand: ctx.message?.text?.startsWith('/'),
+    commandName: ctx.message?.text?.startsWith('/') ? ctx.message.text.split(' ')[0] : null
   });
   // This will be handled by the userTracker middleware
   // but we can add specific logic here if needed
@@ -111,19 +132,6 @@ bot.on('text', async (ctx) => {
 
 bot.on('callback_query', async (ctx) => {
   console.log('🔘 Callback query received:', ctx.callbackQuery.data);
-});
-
-// Debug handler for any command
-bot.command('*', async (ctx) => {
-  console.log('🎯 DEBUG: Any command received:', ctx.message.text);
-});
-
-// Specific debug handler for start command
-bot.command('start', async (ctx) => {
-  console.log('🎯 DEBUG: START command caught by debug handler!');
-  console.log('  - User ID:', ctx.from?.id);
-  console.log('  - Username:', ctx.from?.username);
-  console.log('  - Chat type:', ctx.chat?.type);
 });
 
 bot.on('edited_message', async (ctx) => {
