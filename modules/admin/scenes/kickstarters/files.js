@@ -1,4 +1,5 @@
 const { Scenes, Markup } = require("telegraf");
+const { getSetting, addKickstarter } = require('../../../db/helpers');
 
 const currentStageName = 'ADMIN_SCENE_ADD_KICKSTARTER_FILES'
 
@@ -28,14 +29,16 @@ adminAddKickstarterFiles.action('finished', async (ctx) => {
 });
 
 adminAddKickstarterFiles.leave(async (ctx) => {
-  if (!ctx.kickstarters.list) ctx.kickstarters.list = [];
-  const kstID = ctx.kickstarters.list.length
-  ctx.kickstarters.list.push(ctx.session.kickstarter);
-  if (ctx.settings.chats.ks) {
+  // Add kickstarter to PostgreSQL
+  const kstID = await addKickstarter(ctx.session.kickstarter);
+  
+  // Get kickstarter chat settings from PostgreSQL
+  const ksChat = await getSetting('chats.ks');
+  if (ksChat) {
     const projectData = ctx.session.kickstarter;
-    await ctx.telegram.sendPhoto(ctx.settings.chats.ks.id, projectData.photos[0], {
+    await ctx.telegram.sendPhoto(ksChat.id, projectData.photos[0], {
       caption: `${projectData.link}\n\n<b>Название:</b> ${projectData.name}\n<b>Автор:</b> ${projectData.creator}\n<b>Пледж:</b> ${projectData.pledgeName}\n<b>Оригинальная стоимость:</b> $${projectData.pledgeCost}\n\n<b>Количество файлов:</b> ${projectData.files.length}\n\n<b>Стоимость:</b> ${projectData.cost}₽`,
-      message_thread_id: ctx.settings.chats.ks.thread_id,
+      message_thread_id: ksChat.thread_id,
       parse_mode: 'HTML',
       ...Markup.inlineKeyboard([
         Markup.button.callback('Купить', `showKickstarterFromGoblin_${kstID}`),
@@ -45,7 +48,7 @@ adminAddKickstarterFiles.leave(async (ctx) => {
     await ctx.telegram.sendMessage(SETTINGS.CHATS.LOGS, `🆘 Chat 'ks' is not defined, you should fix it before adding any more projects!!! @send_dog_pics @WarmDuck`)
   }
 
-  ctx.telegram.editMessageText(ctx.session.chatID, ctx.session.toEdit, undefined, `✅ Кикстартер успешно добавлен с ID ${kstID}.\nВсего проектов внесено: ${ctx.kickstarters.list.length}`, {
+  ctx.telegram.editMessageText(ctx.session.chatID, ctx.session.toEdit, undefined, `✅ Кикстартер успешно добавлен с ID ${kstID}.`, {
     parse_mode: "HTML",
     ...Markup.inlineKeyboard([
       [

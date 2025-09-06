@@ -1,11 +1,11 @@
 const { Composer } = require("telegraf");
 const SETTINGS = require('../../../settings.json');
+const { getUser, getAllUsers, updateUser, addUserToGroup, incrementMonthCounter } = require('../../db/helpers');
 
 module.exports = Composer.command(['bulkconfirm', 'bc'], async (ctx) => {
   // Check if user is admin
-  if (!ctx.users.list[ctx.message.from.id] || 
-      !ctx.users.list[ctx.message.from.id].roles || 
-      !ctx.users.list[ctx.message.from.id].roles.includes('admin')) {
+  const adminUser = await getUser(ctx.message.from.id);
+  if (!adminUser || !adminUser.roles || !adminUser.roles.includes('admin')) {
     return;
   }
 
@@ -48,8 +48,9 @@ module.exports = Composer.command(['bulkconfirm', 'bc'], async (ctx) => {
     }
 
     // Find user by username
-    const userId = Object.keys(ctx.users.list).find(uid => 
-      ctx.users.list[uid].username === username.substring(1)
+    const allUsers = await getAllUsers();
+    const userId = Object.keys(allUsers.list).find(uid => 
+      allUsers.list[uid].username === username.substring(1)
     );
 
     if (!userId) {
@@ -90,16 +91,13 @@ module.exports = Composer.command(['bulkconfirm', 'bc'], async (ctx) => {
       const currentPeriod = `${currentYear}_${currentMonth}`;
 
       // Add to user's purchases
-      if (!ctx.users.list[userId].purchases.groups.regular.includes(currentPeriod)) {
-        ctx.users.list[userId].purchases.groups.regular.push(currentPeriod);
+      const user = await getUser(userId);
+      if (user && !user.purchases.groups.regular.includes(currentPeriod)) {
+        user.purchases.groups.regular.push(currentPeriod);
+        await updateUser(userId, user);
         
         // Update group counter
-        if (ctx.months.list && ctx.months.list[currentYear] && ctx.months.list[currentYear][currentMonth]) {
-          if (!ctx.months.list[currentYear][currentMonth].regular.counter) {
-            ctx.months.list[currentYear][currentMonth].regular.counter = { paid: 0 };
-          }
-          ctx.months.list[currentYear][currentMonth].regular.counter.paid += 1;
-        }
+        await incrementMonthCounter(currentYear, currentMonth, 'regular', 'paid');
 
         results.push(`✅ ${username} (ID: ${id}) - платеж подтвержден, доступ к ${currentYear}-${currentMonth} выдан`);
         

@@ -16,9 +16,9 @@ const { t } = require('./modules/i18n');
 const util = require('./modules/util.js');
 //#endregion
 
-//#region Redis
+//#region Sessions
 // --------------------------------------------------------------------------
-// 1. Redis, sessions
+// 1. Sessions (Redis for temporary data, PostgreSQL for persistent data)
 // --------------------------------------------------------------------------
 const RedisSession = require('telegraf-session-redis-upd')
 const sessionInstance = new RedisSession();
@@ -31,6 +31,8 @@ bot.use(
   SESSIONS.LOTS_SESSION,
   SESSIONS.POLLS_SESSION
 )
+// Note: USERS_SESSION, MONTHS_SESSION, KICKSTARTERS_SESSION, SETTINGS_SESSION 
+// have been removed - now using PostgreSQL directly via helper functions
 //#endregion
 
 

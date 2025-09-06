@@ -1,4 +1,5 @@
 const { Scenes, Markup } = require("telegraf");
+const { getKickstarters } = require('../../../db/helpers');
 
 const currentStageName = 'ADMIN_SCENE_ADD_KICKSTARTER_LINK'
 const nextStageName = 'ADMIN_SCENE_ADD_KICKSTARTER_NAME'
@@ -17,12 +18,15 @@ adminAddKickstarterLink.on('text', async (ctx) => {
 
   await ctx.deleteMessage(ctx.message.message_id);
 
-  ctx.kickstarters.list.forEach(async (ks, id) => {
+  // Check if kickstarter already exists in PostgreSQL
+  const kickstartersData = await getKickstarters();
+  for (let id = 0; id < kickstartersData.list.length; id++) {
+    const ks = kickstartersData.list[id];
     if (ks.link == link) {
       await ctx.replyWithHTML(`Этот кикстартер уже есть в списке. ID: ${id}\n\n${ks.creator}\n${ks.name}\n${ks.link}`)
       return ctx.scene.leave();
     }
-  });
+  }
 
   ctx.session.kickstarter.link = link;
 

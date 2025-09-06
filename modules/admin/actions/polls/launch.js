@@ -1,9 +1,12 @@
 const { Composer, Markup } = require("telegraf");
 const util = require('../../../util');
 const SETTINGS = require('../../../../settings.json');
+const { getSetting } = require('../../../db/helpers');
 
 module.exports = Composer.action('adminPollsStart', async (ctx) => {
-  if (!ctx.settings.chats.polls) {
+  // Get polls chat settings from PostgreSQL
+  const pollsChat = await getSetting('chats.polls');
+  if (!pollsChat) {
     await ctx.editMessageText(`❌ Не смог запустить голосование - нет чата.\n\nСтудий в ядре: ${ctx.polls.core.length}\nДобавленных студий: ${ctx.polls.studios.length}`, {
       parse_mode: 'HTML',
       ...Markup.inlineKeyboard([
@@ -48,13 +51,13 @@ module.exports = Composer.action('adminPollsStart', async (ctx) => {
   for (let i = 0; i < options.length; i++) {
     if (options[i].length > 0) { // Skip empty options
       await ctx.telegram.sendPoll(
-        ctx.settings.chats.polls.id,
+        pollsChat.id,
         `Голосование. Часть ${i + 1}`,
         options[i],
         {
           is_anonymous: false,
           allows_multiple_answers: true,
-          message_thread_id: ctx.settings.chats.polls.thread_id
+          message_thread_id: pollsChat.thread_id
         }
       );
     }

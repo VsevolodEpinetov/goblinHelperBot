@@ -1,11 +1,11 @@
 const { Composer } = require("telegraf");
 const SETTINGS = require('../../../settings.json');
+const { getUser, updateUser } = require('../../db/helpers');
 
 module.exports = Composer.command('processnote', async (ctx) => {
   // Check if user is admin
-  if (!ctx.users.list[ctx.message.from.id] || 
-      !ctx.users.list[ctx.message.from.id].roles || 
-      !ctx.users.list[ctx.message.from.id].roles.includes('admin')) {
+  const adminUser = await getUser(ctx.message.from.id);
+  if (!adminUser || !adminUser.roles || !adminUser.roles.includes('admin')) {
     return;
   }
 
@@ -45,11 +45,12 @@ module.exports = Composer.command('processnote', async (ctx) => {
       
       // Update user balance or apply benefits
       const userId = paymentDetails.userId;
-      const user = ctx.users.list[userId];
+      const user = await getUser(userId);
       
       if (user) {
         if (paymentDetails.type === 'balance') {
-          user.balance = (user.balance || 0) + paymentDetails.amount;
+          user.purchases.balance = (user.purchases.balance || 0) + paymentDetails.amount;
+          await updateUser(userId, user);
           await ctx.reply(`✅ Платеж обработан!\\n\\n💰 Баланс пользователя ${paymentDetails.username} пополнен на ${paymentDetails.amount}`);
         } else if (paymentDetails.type === 'premium') {
           // Apply premium benefits
@@ -59,6 +60,7 @@ module.exports = Composer.command('processnote', async (ctx) => {
             new Date(Math.max(new Date(user.premium.expiresAt), new Date()).getTime() + premiumDays * 24 * 60 * 60 * 1000) :
             new Date(Date.now() + premiumDays * 24 * 60 * 60 * 1000);
           
+          await updateUser(userId, user);
           await ctx.reply(`✅ Платеж обработан!\\n\\n👑 Пользователю ${paymentDetails.username} добавлено ${premiumDays} дней премиум подписки`);
         } else {
           await ctx.reply(`✅ Платеж обработан!\\n\\n📋 Тип: ${paymentDetails.type}\\n💰 Сумма: ${paymentDetails.amount}`);

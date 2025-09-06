@@ -1,5 +1,6 @@
 const { Scenes, Markup } = require("telegraf");
 const SETTINGS = require('../../../settings.json')
+const { getUser } = require('../../db/helpers');
 
 const sceneSendPayment = new Scenes.BaseScene('SEND_PAYMENT');
 
@@ -43,7 +44,12 @@ sceneSendPayment.on(['photo', 'document'], async (ctx) => {
 
   const userId = ctx.message.from.id;
   const purchaseInfo = ctx.userSession.purchasing;
-  const userInfo = ctx.users.list[purchaseInfo.userId];
+  const userInfo = await getUser(purchaseInfo.userId);
+  
+  if (!userInfo) {
+    await ctx.reply('Пользователь не найден');
+    return;
+  }
 
   let message = `Уведомление об оплате\n\n<b>Имя:</b> ${userInfo.first_name}\n<b>Telegram Username</b>: @${userInfo.username}\n<b>Telegram ID</b>: ${userId}\n`
   message += `\nПокупает: `

@@ -1,6 +1,7 @@
 const { Composer, Markup } = require("telegraf");
 const util = require('../../../util');
 const SETTINGS = require('../../../../settings.json');
+const { getAllUsers } = require('../../../db/helpers');
 
 module.exports = Composer.action('adminRemind', async (ctx) => {
   const currentYear = ctx.globalSession.current.year, currentMonth = ctx.globalSession.current.month;
@@ -8,9 +9,9 @@ module.exports = Composer.action('adminRemind', async (ctx) => {
   let counter = 0, failed = 0;
   let usernames = [], failedUsernames = [];
 
-  for (const userId in ctx.users.list) {
-    //ctx.users.list[userId].purchases.groups[type].push(`${year}_${month}`);
-    const userData = ctx.users.list[userId];
+  const allUsers = await getAllUsers();
+  for (const userId in allUsers.list) {
+    const userData = allUsers.list[userId];
     const isPurchased = userData.purchases.groups.regular.includes(current) || userData.roles.includes('admin') || userData.roles.includes('adminPlus');
     if (!isPurchased) {
       if (userData.roles.includes('goblin') && !userData.roles.includes('rejected')) {

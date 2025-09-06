@@ -1,5 +1,6 @@
 const { Scenes, Markup } = require("telegraf");
 const SETTINGS = require('../../../settings.json')
+const { getUser, updateUser, getMonths, addUserToGroup, incrementMonthCounter } = require('../../db/helpers');
 
 const sceneAddUserMonth = new Scenes.BaseScene('ADMIN_SCENE_ADD_USER_MONTH');
 
@@ -12,16 +13,24 @@ sceneAddUserMonth.enter(async (ctx) => {
 sceneAddUserMonth.on('text', async (ctx) => {
   const userId = ctx.userSession.userId;
   const data = ctx.message.text.split('-');
-  const userData = ctx.users.list[userId];
+  const userData = await getUser(userId);
   const year = data[0], type = data[1].indexOf('+') > -1 ? 'plus' : 'regular', month = type == 'regular' ? data[1] : data[1].split('+')[0];
   await ctx.deleteMessage(ctx.session.toRemove);
   await ctx.deleteMessage(ctx.message.message_id);
 
+  if (!userData) {
+    await ctx.replyWithHTML('Пользователь не найден');
+    ctx.scene.leave();
+    return;
+  }
+
   let monthExists = false;
   let alreadyHave = false;
 
-  if (ctx.months.list[year]) {
-    if (ctx.months.list[year][month]) monthExists = true;
+  // Check if month exists in PostgreSQL
+  const monthsData = await getMonths();
+  if (monthsData.list[year] && monthsData.list[year][month]) {
+    monthExists = true;
   }
 
   if (userData.purchases.groups[type].indexOf(`${year}_${month}`) > -1) {
@@ -40,8 +49,9 @@ sceneAddUserMonth.on('text', async (ctx) => {
     return;
   }
 
-  ctx.users.list[userId].purchases.groups[type].push(`${year}_${month}`);
-  ctx.months.list[year][month][type].counter.paid = ctx.months.list[year][month][type].counter.paid + 1;
+  // Add user to group and increment month counter in PostgreSQL
+  await addUserToGroup(userId, year, month, type);
+  await incrementMonthCounter(year, month, type, 'paid');
   await ctx.replyWithHTML(`Добавил ${userData.username != 'not_set' ? `@${userData.username}` : `${userData.first_name}`} ${year}_${month}_${type}\n\n<b>Обычные:</b> ${userData.purchases.groups.regular.join(', ')}\n<b>Плюсовые:</b> ${userData.purchases.groups.plus.join(', ')}`, {
     parse_mode: "HTML",
     ...Markup.inlineKeyboard([

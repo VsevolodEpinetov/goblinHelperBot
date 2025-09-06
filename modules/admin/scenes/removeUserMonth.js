@@ -1,5 +1,6 @@
 const { Scenes, Markup } = require("telegraf");
 const SETTINGS = require('../../../settings.json')
+const { getUser, updateUser, incrementMonthCounter } = require('../../db/helpers');
 
 const sceneRemoveUserMonth = new Scenes.BaseScene('ADMIN_SCENE_REMOVE_USER_MONTH');
 
@@ -12,10 +13,16 @@ sceneRemoveUserMonth.enter(async (ctx) => {
 sceneRemoveUserMonth.on('text', async (ctx) => {
   const userId = ctx.userSession.userId;
   const data = ctx.message.text.split('-');
-  const userData = ctx.users.list[userId];
+  const userData = await getUser(userId);
   const year = data[0], type = data[1].indexOf('+') > -1 ? 'plus' : 'regular', month = type == 'regular' ? data[1] : data[1].split('+')[0];
   await ctx.deleteMessage(ctx.session.toRemove);
   await ctx.deleteMessage(ctx.message.message_id);
+
+  if (!userData) {
+    await ctx.replyWithHTML('Пользователь не найден');
+    ctx.scene.leave();
+    return;
+  }
 
   let alreadyHave = false;
 
@@ -29,14 +36,16 @@ sceneRemoveUserMonth.on('text', async (ctx) => {
     return;
   }
 
-  let copy = ctx.users.list[userId].purchases.groups[type];
+  // Remove user from group and decrement month counter in PostgreSQL
+  let copy = userData.purchases.groups[type];
   let index = copy.indexOf(`${year}_${month}`);
   if (index !== -1) {
     copy.splice(index, 1);
   }
 
-  ctx.users.list[userId].purchases.groups[type] = copy;
-  ctx.months.list[year][month][type].counter.paid = ctx.months.list[year][month][type].counter.paid - 1;
+  userData.purchases.groups[type] = copy;
+  await updateUser(userId, userData);
+  await incrementMonthCounter(year, month, type, 'paid', -1);
   await ctx.replyWithHTML(`Убрал у ${userData.username != 'not_set' ? `@${userData.username}` : `${userData.first_name}`} ${year}_${month}_${type}\n\n<b>Обычные:</b> ${userData.purchases.groups.regular.join(', ')}\n<b>Плюсовые:</b> ${userData.purchases.groups.plus.join(', ')}`, {
     parse_mode: "HTML",
     ...Markup.inlineKeyboard([

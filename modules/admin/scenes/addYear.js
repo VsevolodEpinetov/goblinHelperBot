@@ -1,5 +1,6 @@
 const { Scenes, Markup } = require("telegraf");
 const SETTINGS = require('../../../settings.json')
+const { getMonths } = require('../../db/helpers');
 
 const adminSceneAddYear = new Scenes.BaseScene('ADMIN_SCENE_ADD_YEAR');
 
@@ -14,14 +15,17 @@ adminSceneAddYear.on('text', async (ctx) => {
   await ctx.deleteMessage(ctx.session.toRemove);
   await ctx.deleteMessage(ctx.message.message_id);
 
-  if (!ctx.months.list[year]) {
-    ctx.months.list[year] = {};
+  // Get months data from PostgreSQL
+  const monthsData = await getMonths();
+  
+  if (!monthsData.list[year]) {
+    // Year doesn't exist yet, create empty structure
+    monthsData.list[year] = {};
 
     let menu = [];
 
-    for (let year in ctx.months.list) {
-      if (!ctx.months.list[year]) ctx.months.list[year] = {};
-      menu.push(Markup.button.callback(year, `adminMonths_show_${year}`))
+    for (let yearName in monthsData.list) {
+      menu.push(Markup.button.callback(yearName, `adminMonths_show_${yearName}`))
     }
 
     ctx.replyWithHTML(`✅ Добавил год <b>${year}</b>. Доступные года`, {
@@ -36,6 +40,13 @@ adminSceneAddYear.on('text', async (ctx) => {
       ])
     })
   } else {
+    // Year already exists, show existing years
+    let menu = [];
+
+    for (let yearName in monthsData.list) {
+      menu.push(Markup.button.callback(yearName, `adminMonths_show_${yearName}`))
+    }
+
     ctx.replyWithHTML(`⚠️ Год <b>${year}</b> уже существует. Доступные года`, {
       parse_mode: 'HTML',
       ...Markup.inlineKeyboard([

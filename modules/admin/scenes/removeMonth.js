@@ -1,6 +1,7 @@
 const { Scenes, Markup } = require("telegraf");
 const SETTINGS = require('../../../settings.json');
 const util = require("../../util");
+const { getMonths } = require('../../db/helpers');
 
 const adminSceneRemoveMonth = new Scenes.BaseScene('ADMIN_SCENE_REMOVE_MONTH');
 
@@ -16,15 +17,17 @@ adminSceneRemoveMonth.on('text', async (ctx) => {
   await ctx.deleteMessage(ctx.session.toRemove);
   await ctx.deleteMessage(ctx.message.message_id);
 
-  if (ctx.months.list[year][month]) {
-    let copy = ctx.months.list[year];
-    delete copy[month];
-    ctx.months.list[year] = copy;
+  // Get months data from PostgreSQL
+  const monthsData = await getMonths();
+  
+  if (monthsData.list[year] && monthsData.list[year][month]) {
+    // Month exists, remove it from the data structure
+    delete monthsData.list[year][month];
 
     let menu = [];
 
-    for (const month in ctx.months.list[year]) {
-      menu.push(Markup.button.callback(month, `adminMonths_show_${year}_${month}`))
+    for (const monthName in monthsData.list[year]) {
+      menu.push(Markup.button.callback(monthName, `adminMonths_show_${year}_${monthName}`))
     }
 
     menu = util.splitMenu(menu);
@@ -41,10 +44,11 @@ adminSceneRemoveMonth.on('text', async (ctx) => {
       ])
     })
   } else {
+    // Month doesn't exist, show available months
     let menu = [];
 
-    for (const month in ctx.months.list[year]) {
-      menu.push(Markup.button.callback(month, `adminMonths_show_${year}_${month}`))
+    for (const monthName in monthsData.list[year]) {
+      menu.push(Markup.button.callback(monthName, `adminMonths_show_${year}_${monthName}`))
     }
 
     ctx.replyWithHTML(`⚠️ Месяца <b>${month}</b> нет в <b>${year}</b>. Доступные года`, {

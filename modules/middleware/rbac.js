@@ -30,8 +30,6 @@ function requirePermission(permission, errorMessage = null) {
       // Try to get roles from context first (if already loaded)
       if (ctx.userData && ctx.userData.roles) {
         userRoles = ctx.userData.roles;
-      } else if (ctx.users && ctx.users.list && ctx.users.list[userId]) {
-        userRoles = ctx.users.list[userId].roles || [];
       } else {
         // Load user data from database
         const { getUser } = require('../db/helpers');
@@ -73,8 +71,6 @@ function requireAdmin(errorMessage = null) {
       
       if (ctx.userData && ctx.userData.roles) {
         userRoles = ctx.userData.roles;
-      } else if (ctx.users && ctx.users.list && ctx.users.list[userId]) {
-        userRoles = ctx.users.list[userId].roles || [];
       } else {
         const { getUser } = require('../db/helpers');
         const userData = await getUser(userId);
@@ -113,8 +109,6 @@ function requireSuperAdmin(errorMessage = null) {
       
       if (ctx.userData && ctx.userData.roles) {
         userRoles = ctx.userData.roles;
-      } else if (ctx.users && ctx.users.list && ctx.users.list[userId]) {
-        userRoles = ctx.users.list[userId].roles || [];
       } else {
         const { getUser } = require('../db/helpers');
         const userData = await getUser(userId);
@@ -154,8 +148,6 @@ function requireAnyPermission(permissions, errorMessage = null) {
       
       if (ctx.userData && ctx.userData.roles) {
         userRoles = ctx.userData.roles;
-      } else if (ctx.users && ctx.users.list && ctx.users.list[userId]) {
-        userRoles = ctx.users.list[userId].roles || [];
       } else {
         const { getUser } = require('../db/helpers');
         const userData = await getUser(userId);
@@ -200,8 +192,6 @@ function requireAllPermissions(permissions, errorMessage = null) {
       
       if (ctx.userData && ctx.userData.roles) {
         userRoles = ctx.userData.roles;
-      } else if (ctx.users && ctx.users.list && ctx.users.list[userId]) {
-        userRoles = ctx.users.list[userId].roles || [];
       } else {
         const { getUser } = require('../db/helpers');
         const userData = await getUser(userId);

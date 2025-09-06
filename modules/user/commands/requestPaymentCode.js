@@ -1,5 +1,6 @@
 const { Composer } = require("telegraf");
 const SETTINGS = require('../../../settings.json');
+const { getAllUsers } = require('../../db/helpers');
 
 module.exports = Composer.command('requestcode', async (ctx) => {
   const userId = ctx.message.from.id;
@@ -117,7 +118,8 @@ async function notifyAdmins(ctx, paymentCode, paymentDetails) {
     const adminIds = [];
     
     // Find all admin users
-    for (const [userId, user] of Object.entries(ctx.users.list)) {
+    const allUsers = await getAllUsers();
+    for (const [userId, user] of Object.entries(allUsers.list)) {
       if (user.roles && user.roles.includes('admin')) {
         adminIds.push(userId);
       }

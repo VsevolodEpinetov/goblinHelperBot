@@ -1,11 +1,11 @@
 const { Composer } = require("telegraf");
 const SETTINGS = require('../../../settings.json');
+const { getUser, getAllUsers } = require('../../db/helpers');
 
 module.exports = Composer.command('generatecode', async (ctx) => {
   // Check if user is admin
-  if (!ctx.users.list[ctx.message.from.id] || 
-      !ctx.users.list[ctx.message.from.id].roles || 
-      !ctx.users.list[ctx.message.from.id].roles.includes('admin')) {
+  const adminUser = await getUser(ctx.message.from.id);
+  if (!adminUser || !adminUser.roles || !adminUser.roles.includes('admin')) {
     return;
   }
 
@@ -34,8 +34,9 @@ module.exports = Composer.command('generatecode', async (ctx) => {
   }
 
   // Find user by username
-  const userId = Object.keys(ctx.users.list).find(id => 
-    ctx.users.list[id].username === username.substring(1)
+  const allUsers = await getAllUsers();
+  const userId = Object.keys(allUsers.list).find(id => 
+    allUsers.list[id].username === username.substring(1)
   );
 
   if (!userId) {
@@ -43,7 +44,7 @@ module.exports = Composer.command('generatecode', async (ctx) => {
     return;
   }
 
-  const user = ctx.users.list[userId];
+  const user = allUsers.list[userId];
 
   // Generate unique 6-character payment code
   const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';

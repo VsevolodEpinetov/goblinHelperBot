@@ -2,12 +2,11 @@ const Telegraf = require('telegraf');
 const { Composer, Markup } = require("telegraf");
 const SETTINGS = require('../settings.json')
 
-
 const fs = require('fs');
 const path = require('path');
 
-
 const date = require('./date');
+const { getUser } = require('./db/helpers');
 const colors = require('./colors.js')
 
 
@@ -228,16 +227,20 @@ function getUserMenu (userId) {
   return buttons;
 }
 
-function getUserTickets (ctx, userId) {
-  const userData = ctx.users.list[userId];
+async function getUserTickets (ctx, userId) {
+  const userData = await getUser(userId);
+  if (!userData) return 0;
+  
   const tickets = Math.floor(userData.purchases.groups.plus.length / 3) * 2 - userData.purchases.ticketsSpent;
 
   return tickets;
 }
 
-function getUserDescription (ctx, userId) {
-  const userData = ctx.users.list[userId];
-  const tickets = getUserTickets(ctx, userId);
+async function getUserDescription (ctx, userId) {
+  const userData = await getUser(userId);
+  if (!userData) return 'Пользователь не найден';
+  
+  const tickets = await getUserTickets(ctx, userId);
 
   const message = `Информация о пользователе\n` +
                   `\n` + 

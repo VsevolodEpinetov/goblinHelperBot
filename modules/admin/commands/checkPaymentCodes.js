@@ -1,11 +1,11 @@
 const { Composer } = require("telegraf");
 const SETTINGS = require('../../../settings.json');
+const { getUser } = require('../../db/helpers');
 
 module.exports = Composer.command('checkcodes', async (ctx) => {
   // Check if user is admin
-  if (!ctx.users.list[ctx.message.from.id] || 
-      !ctx.users.list[ctx.message.from.id].roles || 
-      !ctx.users.list[ctx.message.from.id].roles.includes('admin')) {
+  const adminUser = await getUser(ctx.message.from.id);
+  if (!adminUser || !adminUser.roles || !adminUser.roles.includes('admin')) {
     return;
   }
 

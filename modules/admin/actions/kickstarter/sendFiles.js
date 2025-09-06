@@ -1,6 +1,7 @@
 const { Composer, Markup } = require("telegraf");
 const util = require('../../../util');
 const SETTINGS = require('../../../../settings.json');
+const { getKickstarter } = require('../../../db/helpers');
 
 module.exports = Composer.action(/^sendFilesKickstarter_/g, async (ctx) => {
   try {
@@ -11,7 +12,12 @@ module.exports = Composer.action(/^sendFilesKickstarter_/g, async (ctx) => {
   }
   const ksId = ctx.callbackQuery.data.split('_')[2];
   const userId = ctx.callbackQuery.data.split('_')[1];
-  const ksData = ctx.kickstarters.list[ksId];
+  const ksData = await getKickstarter(ksId);
+  
+  if (!ksData) {
+    await ctx.replyWithHTML('Кикстартер не найден');
+    return;
+  }
 
   if (ksData.photos.length > 1) {
     await ctx.replyWithMediaGroup(

@@ -1,5 +1,6 @@
 const { Markup } = require("telegraf");
 const SETTINGS = require('../../settings.json');
+const { getSetting } = require('../db/helpers');
 
 // Progress tracking for lot creation
 const LOT_CREATION_STEPS = {
@@ -22,10 +23,10 @@ function generateProgressBar(currentStep, totalSteps = 4) {
 }
 
 // Enhanced lot caption with better formatting and hashtag-style tags
-function getLotCaption(ctx, { author, name, link, price, currency, organizator, status, participants, tags = [], lotId = null }) {
+async function getLotCaption(ctx, { author, name, link, price, currency, organizator, status, participants, tags = [], lotId = null }) {
   const statusLabel = status ? '✅ ОТКРЫТ НАБОР' : '❌ ЛОТ ЗАКРЫТ';
   const participantsList = participants.map((p, index) => `${index + 1}. @${p.username || p.first_name}`).join('\n') || 'Нет участников';
-  const exchangeRate = ctx.settings?.[currency] || SETTINGS.CURRENCIES[currency]?.EXCHANGE_RATE || 1;
+  const exchangeRate = await getSetting(currency) || SETTINGS.CURRENCIES[currency]?.EXCHANGE_RATE || 1;
 
   // Format hashtag-style tags display
   const tagsDisplay = tags.length > 0 
@@ -91,7 +92,7 @@ async function updateLotMessageCaption(ctx, lotID, lotData, isClosed = false) {
   try {
     const organizator = `${lotData.whoCreated?.first_name || ''} ${lotData.whoCreated?.last_name || ''}${lotData.whoCreated?.username ? ` (@${lotData.whoCreated.username})` : ''}`.trim();
 
-    const updatedCaption = getLotCaption(ctx, {
+    const updatedCaption = await getLotCaption(ctx, {
       author: lotData.author,
       name: lotData.name,
       link: lotData.link,

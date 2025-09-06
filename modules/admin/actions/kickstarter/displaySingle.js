@@ -1,6 +1,7 @@
 const { Composer, Markup } = require("telegraf");
 const util = require('../../../util');
 const SETTINGS = require('../../../../settings.json');
+const { getKickstarter, getUser } = require('../../../db/helpers');
 
 module.exports = Composer.action(/^showKickstarter_/g, async (ctx) => {
   try {
@@ -12,9 +13,15 @@ module.exports = Composer.action(/^showKickstarter_/g, async (ctx) => {
 
   const resultID = ctx.callbackQuery.data.split('_')[1];
   const projectID = ctx.userSession.results[resultID];
-  const projectData = ctx.kickstarters.list[projectID];
+  const projectData = await getKickstarter(projectID);
   const userId = ctx.callbackQuery.from.id;
-  const userData = ctx.users.list[userId];
+  const userData = await getUser(userId);
+  
+  if (!projectData || !userData) {
+    await ctx.replyWithHTML('Данные не найдены');
+    return;
+  }
+  
   const tickets = (Math.floor(userData.purchases.groups.plus.length / 3) * 2 - userData.purchases.ticketsSpent) || 0;
 
   ctx.userSession.purchasing = {

@@ -2,7 +2,7 @@ const { Composer, Markup } = require("telegraf");
 const util = require('../../../util');
 const SETTINGS = require('../../../../settings.json');
 const knex = require('../../../../modules/db/knex');
-const { getUser, addUserToGroup, incrementMonthCounter, addUserKickstarter, getKickstarter, hasUserPurchasedKickstarter } = require('../../../db/helpers');
+const { getUser, updateUser, addUserToGroup, incrementMonthCounter, addUserKickstarter, getKickstarter, hasUserPurchasedKickstarter } = require('../../../db/helpers');
 
 module.exports = Composer.action(/^confirmPayment_/g, async (ctx) => {
   const data = ctx.callbackQuery.data.split('_');
@@ -71,8 +71,9 @@ module.exports = Composer.action(/^confirmPayment_/g, async (ctx) => {
       break;
     case 'collection':
       collectionId = data[3];
-      if (ctx.users.list[userId].purchases.collections.indexOf(collectionId) < 0) {
-        ctx.users.list[userId].purchases.collections.push(collectionId);
+      if (userData.purchases.collections.indexOf(collectionId) < 0) {
+        userData.purchases.collections.push(collectionId);
+        await updateUser(userId, userData);
         try {
           await knex('userCollections')
             .insert({ userId: Number(userId), collectionId: Number(collectionId) })
@@ -98,8 +99,9 @@ module.exports = Composer.action(/^confirmPayment_/g, async (ctx) => {
       studioName = data[3];
       year = data[4];
       month = data[5];
-      if (ctx.users.list[userId].purchases.releases[studioName].indexOf(`${year}_${month}`) < 0) {
-        ctx.users.list[userId].purchases.releases[studioName].push(`${year}_${month}`)
+      if (userData.purchases.releases[studioName].indexOf(`${year}_${month}`) < 0) {
+        userData.purchases.releases[studioName].push(`${year}_${month}`)
+        await updateUser(userId, userData);
         await ctx.telegram.sendMessage(SETTINGS.CHATS.LOGS, `ℹ️ user ${userId} got release an access given by @${ctx.callbackQuery.from.username || ctx.callbackQuery.from.first_name} (${ctx.callbackQuery.from.id})`)
         ctx.telegram.sendMessage(userId, `Подтверждён доступ к релизу ${ctx.collections.list[collectionId].name}`, {
           parse_mode: 'HTML',

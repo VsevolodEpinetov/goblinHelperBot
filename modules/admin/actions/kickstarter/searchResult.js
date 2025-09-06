@@ -1,6 +1,7 @@
 const { Composer, Markup } = require("telegraf");
 const util = require('../../../util');
 const SETTINGS = require('../../../../settings.json');
+const { getKickstarter } = require('../../../db/helpers');
 
 module.exports = Composer.action('searchResultKickstarter', async (ctx) => {
   try {
@@ -15,10 +16,14 @@ module.exports = Composer.action('searchResultKickstarter', async (ctx) => {
 
   if (results.length > 0) {
     message = `Найдено ${results.length} проектов\n\n`;
-    results.forEach((ksID, id) => {
-      message += `${id + 1}. ${ctx.kickstarters.list[ksID].creator} - ${ctx.kickstarters.list[ksID].name}\n`
-      menu.push(Markup.button.callback(id + 1, `showKickstarter_${id}`))
-    })
+    for (let id = 0; id < results.length; id++) {
+      const ksID = results[id];
+      const projectData = await getKickstarter(ksID);
+      if (projectData) {
+        message += `${id + 1}. ${projectData.creator} - ${projectData.name}\n`
+        menu.push(Markup.button.callback(id + 1, `showKickstarter_${id}`))
+      }
+    }
 
     message += `\nКакой проект вывести?`
   }

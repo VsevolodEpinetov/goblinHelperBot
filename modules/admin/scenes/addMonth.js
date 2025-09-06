@@ -1,6 +1,7 @@
 const { Scenes, Markup } = require("telegraf");
 const SETTINGS = require('../../../settings.json');
 const util = require("../../util");
+const { getMonths, updateMonth } = require('../../db/helpers');
 
 const adminSceneAddMonth = new Scenes.BaseScene('ADMIN_SCENE_ADD_MONTH');
 
@@ -16,40 +17,29 @@ adminSceneAddMonth.on('text', async (ctx) => {
   await ctx.deleteMessage(ctx.session.toRemove);
   await ctx.deleteMessage(ctx.message.message_id);
 
-  if (!ctx.months.list[year]) ctx.months.list[year] = {};
+  // Check if month already exists in PostgreSQL
+  const monthsData = await getMonths();
+  const monthExists = monthsData.list[year] && monthsData.list[year][month];
 
-  if (!ctx.months.list[year][month]) {
-    ctx.months.list[year][month] = {
-      regular: {
-        link: '',
-        id: '',
-        counter: {
-          paid: 0,
-          joined: 0
-        }
-      },
-      plus: {
-        link: '',
-        id: '',
-        counter: {
-          paid: 0,
-          joined: 0
-        }   
-      }
-    };
+  if (!monthExists) {
+    // Create month entries in PostgreSQL
+    await updateMonth(`${year}_${month}`, 'regular', {
+      link: '',
+      id: '',
+      counter: { paid: 0, joined: 0 }
+    });
+    await updateMonth(`${year}_${month}`, 'plus', {
+      link: '',
+      id: '',
+      counter: { paid: 0, joined: 0 }
+    });
 
-    try {
-      const knex = require('../../db/knex');
-      await knex('months').insert([
-        { period: `${year}_${month}`, type: 'regular', chatId: null, counterJoined: 0, counterPaid: 0 },
-        { period: `${year}_${month}`, type: 'plus', chatId: null, counterJoined: 0, counterPaid: 0 }
-      ]).onConflict(['period','type']).ignore();
-    } catch (e) { console.log('Failed to insert months via Knex', e); }
-
+    // Get updated months data for menu
+    const updatedMonths = await getMonths();
     let menu = [];
 
-    for (const month in ctx.months.list[year]) {
-      menu.push(Markup.button.callback(month, `adminMonths_show_${year}_${month}`))
+    for (const monthName in updatedMonths.list[year]) {
+      menu.push(Markup.button.callback(monthName, `adminMonths_show_${year}_${monthName}`))
     }
 
     menu = util.splitMenu(menu);
@@ -66,10 +56,12 @@ adminSceneAddMonth.on('text', async (ctx) => {
       ])
     })
   } else {
+    // Get months data for menu
+    const monthsData = await getMonths();
     let menu = [];
 
-    for (const month in ctx.months.list[year]) {
-      menu.push(Markup.button.callback(month, `adminMonths_show_${year}_${month}`))
+    for (const monthName in monthsData.list[year]) {
+      menu.push(Markup.button.callback(monthName, `adminMonths_show_${year}_${monthName}`))
     }
 
     ctx.replyWithHTML(`⚠️ Месяц <b>${month}</b> уже существует в <b>${year}</b> уже существует. Доступные года`, {

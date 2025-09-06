@@ -1,5 +1,6 @@
 const { Scenes, Markup } = require("telegraf");
 const SETTINGS = require('../../../settings.json')
+const { updateMonth, getMonths } = require('../../db/helpers');
 
 const adminSceneAddLink = new Scenes.BaseScene('ADMIN_SCENE_ADD_LINK');
 
@@ -16,9 +17,16 @@ adminSceneAddLink.on('text', async (ctx) => {
   await ctx.deleteMessage(ctx.session.toRemove);
   await ctx.deleteMessage(ctx.message.message_id);
 
-  ctx.months.list[year][month].regular.link = ctx.message.text;
+  // Update month data in PostgreSQL
+  await updateMonth(`${year}_${month}`, 'regular', {
+    link: ctx.message.text
+  });
 
-  await ctx.replyWithHTML(`Данные за ${year}-${month}:\n\nСсылка на обычную группу: ${ctx.months.list[year][month].regular.link || 'not set'}\nПодтверждено участников: ${ctx.months.list[year][month].regular.counter}\n\nСсылка на плюсовую группу: ${ctx.months.list[year][month].plus.link || 'not set'}\nПодтверждено участников: ${ctx.months.list[year][month].plus.counter}`, {
+  // Get updated months data for display
+  const monthsData = await getMonths();
+  const monthData = monthsData.list[year][month];
+
+  await ctx.replyWithHTML(`Данные за ${year}-${month}:\n\nСсылка на обычную группу: ${monthData.regular.link || 'not set'}\nПодтверждено участников: ${monthData.regular.counter}\n\nСсылка на плюсовую группу: ${monthData.plus.link || 'not set'}\nПодтверждено участников: ${monthData.plus.counter}`, {
     parse_mode: 'HTML',
     ...Markup.inlineKeyboard([
       [

@@ -1,5 +1,6 @@
 const { Scenes, Markup } = require("telegraf");
 const SETTINGS = require('../../../settings.json')
+const { getMonths } = require('../../db/helpers');
 
 const adminSceneRemoveYear = new Scenes.BaseScene('ADMIN_SCENE_REMOVE_YEAR');
 
@@ -14,16 +15,17 @@ adminSceneRemoveYear.on('text', async (ctx) => {
   await ctx.deleteMessage(ctx.session.toRemove);
   await ctx.deleteMessage(ctx.message.message_id);
 
-  if (ctx.months.list[year]) {
-    let copy = ctx.months.list;
-    delete copy[year];
-    ctx.months.list = copy;
+  // Get months data from PostgreSQL
+  const monthsData = await getMonths();
+  
+  if (monthsData.list[year]) {
+    // Year exists, remove it from the data structure
+    delete monthsData.list[year];
 
     let menu = [];
 
-    for (let year in ctx.months.list) {
-      if (!ctx.months.list[year]) ctx.months.list[year] = {};
-      menu.push(Markup.button.callback(year, `adminMonths_show_${year}`))
+    for (let yearName in monthsData.list) {
+      menu.push(Markup.button.callback(yearName, `adminMonths_show_${yearName}`))
     }
 
     ctx.replyWithHTML(`✅ Убрал год <b>${year}</b>. Доступные года`, {
@@ -38,6 +40,13 @@ adminSceneRemoveYear.on('text', async (ctx) => {
       ])
     })
   } else {
+    // Year doesn't exist, show available years
+    let menu = [];
+
+    for (let yearName in monthsData.list) {
+      menu.push(Markup.button.callback(yearName, `adminMonths_show_${yearName}`))
+    }
+
     ctx.replyWithHTML(`⚠️ Года <b>${year}</b> не существует. Доступные года`, {
       parse_mode: 'HTML',
       ...Markup.inlineKeyboard([
