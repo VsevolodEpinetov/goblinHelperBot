@@ -97,9 +97,6 @@ sceneSendPayment.on(['photo', 'document'], async (ctx) => {
     ...Markup.inlineKeyboard([
       ...menu,
       [
-        Markup.button.callback('💳 Изменить баланс', `changeBalance_${userId}`)
-      ],
-      [
         Markup.button.callback('❌ Закончить', `finishAdminPayment_${userId}-${currentTimestamp}`)
       ]
     ]),

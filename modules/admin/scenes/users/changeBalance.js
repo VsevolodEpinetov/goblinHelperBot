@@ -43,4 +43,5 @@ changeBalance.on('text', async (ctx) => {
   ctx.scene.leave();
 });
 
+// Deprecated: balance management removed
 module.exports = changeBalance;

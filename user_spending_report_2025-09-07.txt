@@ -1,0 +1,1930 @@
+================================================================================
+                    USER SPENDING REPORT
+================================================================================
+Generated: 9/7/2025, 9:55:24 PM
+Regular Month Price: 1 stars
+Plus Month Price: 2 stars
+Total Users: 170
+================================================================================
+
+SUMMARY STATISTICS:
+----------------------------------------
+Total Regular Months Purchased: 756
+Total Plus Months Purchased: 475
+Total Kickstarters Purchased: 171
+Total Spending (Stars): 11337
+Average Spending per User: 67 stars
+
+INDIVIDUAL USER BREAKDOWN:
+================================================================================
+
+1. User ID: 1292914182
+   Username: Komrad13sq
+   Name: 13sq not_set
+   Regular Months: 11 (11 stars)
+   Plus Months: 11 (22 stars)
+   Kickstarters: 22 (911 stars)
+   TOTAL SPENDING: 944 stars
+   Kickstarter Details:
+     - British wheeled armored cars of WW2: 45 stars (ticket)
+     - Game Of Thrones: 115 stars (ticket)
+     - Fighting vehicles of INTERWAR (1918-1939): 48 stars (ticket)
+     - Passenger Military Cars of 1930-1945 years: 48 stars (ticket)
+     - ITALIAN Military Utility vehicles of WW2: 45 stars (ticket)
+     - Aloe: High Elf Warrior 1:12 scale: 15 stars (ticket)
+     - 3D Printable Basing Bits 3: 40 stars (ticket)
+     - 3D Printable Basing Bits 2: 63 stars (ticket)
+     - 3D Printable Basing Bits: 35 stars (ticket)
+     - Apolo and Dafne: 18 stars (ticket)
+     - Dungeons & Terrors - Expansion Pack: 20 stars (ticket)
+     - The Frost City 3: 130 stars (ticket)
+     - The Axe Class: 22 stars (ticket)
+     - Enchanting Realms V: 29 stars (ticket)
+     - Supermassive Space Dwarves: 45 stars (ticket)
+     - Ladies of Fairy Tales: 33 stars (ticket)
+     - Space Aussies: 30 stars (ticket)
+     - Tales from the Radiation Zone: 20 stars (ticket)
+     - Dungeons and Damsels: 33 stars (ticket)
+     - Queen-Pawn: 15 stars (ticket)
+     - Ladies of Chaos: Afterlife: 35 stars (ticket)
+     - Hunger of Yggdrasil: 27 stars (ticket)
+
+--------------------------------------------------------------------------------
+
+2. User ID: 440173485
+   Username: Volodja23
+   Name: Vladimir Vladimirovich
+   Regular Months: 8 (8 stars)
+   Plus Months: 0 (0 stars)
+   Kickstarters: 20 (923 stars)
+   TOTAL SPENDING: 931 stars
+   Kickstarter Details:
+     - Guardians of the Sacred Forest: 25 stars (ticket)
+     - Game Of Thrones: 115 stars (ticket)
+     - Great Folks: 29 stars (ticket)
+     - The Rag Elves: 16 stars (ticket)
+     - Gnadug The Bonebreaker: 5 stars (ticket)
+     - Legend of Keepers: 140 stars (ticket)
+     - Anheron Quest 4: 13 stars (ticket)
+     - Cthulhu Investigators: 25 stars (ticket)
+     - Ladies of Chaos: Afterlife: 35 stars (ticket)
+     - Cthulhu Investigators 2: 25 stars (ticket)
+     - Argoth the Orc King: 13 stars (ticket)
+     - Greywind's Guide To Tharador: 85 stars (ticket)
+     - Wasteland & Post Apocalyptic Miniatures: 88 stars (ticket)
+     - Pinup Corps: 75 stars (ticket)
+     - Rise of the Eldertubbies: 25 stars (ticket)
+     - FatesEnd Tomes: 37 stars (ticket)
+     - Green Tide - 3 Pirate Fantasy Football Teams: 52 stars (ticket)
+     - Dungeons and Damsels: 33 stars (ticket)
+     - Amazing Adventures: 65 stars (ticket)
+     - The Axe Class: 22 stars (ticket)
+
+--------------------------------------------------------------------------------
+
+3. User ID: 1427093277
+   Username: EvgenMol
+   Name: Евгений N/A
+   Regular Months: 11 (11 stars)
+   Plus Months: 20 (40 stars)
+   Kickstarters: 10 (859 stars)
+   TOTAL SPENDING: 910 stars
+   Kickstarter Details:
+     - Spectre Operations Part 9: 350 stars (ticket)
+     - Rebel Command Base: 60 stars (ticket)
+     - Game Of Thrones: 115 stars (ticket)
+     - Grim Brotherhood: 76 stars (ticket)
+     - Supermassive Space Dwarves: 45 stars (ticket)
+     - Space Aussies: 30 stars (ticket)
+     - The Longsnouts: 33 stars (ticket)
+     - Penitent Crusade: The Iron Legion: 95 stars (ticket)
+     - Gakou Tactics RELOADED: 35 stars (ticket)
+     - Tales from the Radiation Zone: 20 stars (ticket)
+
+--------------------------------------------------------------------------------
+
+4. User ID: 495764441
+   Username: ChLPDR
+   Name: D not_set
+   Regular Months: 11 (11 stars)
+   Plus Months: 18 (36 stars)
+   Kickstarters: 13 (821 stars)
+   TOTAL SPENDING: 868 stars
+   Kickstarter Details:
+     - Rise of the Eldertubbies: 25 stars (ticket)
+     - 3D Printable Coins | Tabletop Game Accessories Vol.2: 73 stars (ticket)
+     - The Longsnouts: 33 stars (ticket)
+     - Penitent Crusade: The Iron Legion: 95 stars (ticket)
+     - JERRY´S SCRAPYARD: 63 stars (ticket)
+     - Enchanting Realms IV: 28 stars (ticket)
+     - Terrain Essentials IV: Interiors 2: 119 stars (ticket)
+     - Fantasy Fillers and Heroes: Gallia: 35 stars (ticket)
+     - Hold My Dwarf - Village (Закрытые стретч цели): 41 stars (ticket)
+     - Greywind's Guide To Tharador: 85 stars (ticket)
+     - The Frost City 3: 130 stars (ticket)
+     - Enchanting Realms V: 29 stars (ticket)
+     - Amazing Adventures: 65 stars (ticket)
+
+--------------------------------------------------------------------------------
+
+5. User ID: 463332905
+   Username: Fedtago7
+   Name: Ис˥ֹॱк not_set
+   Regular Months: 11 (11 stars)
+   Plus Months: 2 (4 stars)
+   Kickstarters: 12 (730 stars)
+   TOTAL SPENDING: 745 stars
+   Kickstarter Details:
+     - Green Tide - 3 Pirate Fantasy Football Teams: 52 stars (ticket)
+     - Corrupted Sanctum: 71 stars (ticket)
+     - Supermassive Space Dwarves: 45 stars (ticket)
+     - The Longsnouts: 33 stars (ticket)
+     - Penitent Crusade: The Iron Legion: 95 stars (ticket)
+     - Tales from the Radiation Zone: 20 stars (ticket)
+     - Schatten über Grimstadt - The Tale Begins: 45 stars (ticket)
+     - WASTELAND OUTSIDERS - VOLUME 1: 33 stars (ticket)
+     - Welcome to Helwick - Part I - There's Something Fishy Afoot!: 75 stars (ticket)
+     - Escape from Drakov: 55 stars (ticket)
+     - The Frost City 3: 130 stars (ticket)
+     - Grim Brotherhood: 76 stars (ticket)
+
+--------------------------------------------------------------------------------
+
+6. User ID: 104866555
+   Username: renfun
+   Name: Ренат not_set
+   Regular Months: 15 (15 stars)
+   Plus Months: 16 (32 stars)
+   Kickstarters: 6 (517 stars)
+   TOTAL SPENDING: 564 stars
+   Kickstarter Details:
+     - Ladies of Fairy Tales: 33 stars (ticket)
+     - Tales from the Radiation Zone: 20 stars (ticket)
+     - Spectre Operations Part 9: 350 stars (ticket)
+     - FatesEnd Tomes: 37 stars (ticket)
+     - Ladies of 2133: 22 stars (ticket)
+     - Escape from Drakov: 55 stars (ticket)
+
+--------------------------------------------------------------------------------
+
+7. User ID: 387515762
+   Username: JoeRay71
+   Name: Евгений Миляев
+   Regular Months: 11 (11 stars)
+   Plus Months: 17 (34 stars)
+   Kickstarters: 7 (413 stars)
+   TOTAL SPENDING: 458 stars
+   Kickstarter Details:
+     - Commander Sebastian Highway "The Vulture": 19 stars (ticket)
+     - Morozivka, City of the Frost: 45 stars (ticket)
+     - Scarlet Empire - Legends of Old World vol2.: 39 stars (ticket)
+     - Might Against the Maledict: 85 stars (ticket)
+     - USSR War Machines: 45 stars (ticket)
+     - The Frost City 2: 50 stars (ticket)
+     - The Frost City 3: 130 stars (ticket)
+
+--------------------------------------------------------------------------------
+
+8. User ID: 1206422029
+   Username: masnakls
+   Name: Александр Валерьевич
+   Regular Months: 11 (11 stars)
+   Plus Months: 7 (14 stars)
+   Kickstarters: 8 (410 stars)
+   TOTAL SPENDING: 435 stars
+   Kickstarter Details:
+     - Game Of Thrones: 115 stars (ticket)
+     - Hunger of Yggdrasil: 27 stars (ticket)
+     - Greywind's Guide To Tharador: 85 stars (ticket)
+     - Apolo and Dafne: 18 stars (ticket)
+     - Might Against the Maledict: 85 stars (ticket)
+     - Dungeons and Damsels: 33 stars (ticket)
+     - Dungeons & Terrors - Expansion Pack: 20 stars (ticket)
+     - Dark Charm III: The Diorama & The Barbarian: 27 stars (ticket)
+
+--------------------------------------------------------------------------------
+
+9. User ID: 425696085
+   Username: dwarfworkshop
+   Name: Dwarf Workshop
+   Regular Months: 11 (11 stars)
+   Plus Months: 19 (38 stars)
+   Kickstarters: 7 (333 stars)
+   TOTAL SPENDING: 382 stars
+   Kickstarter Details:
+     - Game Of Thrones: 115 stars (ticket)
+     - Escape from Drakov: 55 stars (ticket)
+     - Cube Pro Organizer: 33 stars (ticket)
+     - The Longsnouts: 33 stars (ticket)
+     - Gakou Tactics RELOADED: 35 stars (ticket)
+     - Hunger of Yggdrasil: 27 stars (ticket)
+     - Ladies of Chaos: Afterlife: 35 stars (ticket)
+
+--------------------------------------------------------------------------------
+
+10. User ID: 1629116317
+   Username: PrintUsDmitry
+   Name: UsDmitry not_set
+   Regular Months: 6 (6 stars)
+   Plus Months: 0 (0 stars)
+   Kickstarters: 5 (321 stars)
+   TOTAL SPENDING: 327 stars
+   Kickstarter Details:
+     - The Longsnouts: 33 stars (ticket)
+     - Commander Sebastian Highway "The Vulture": 19 stars (ticket)
+     - JERRY´S SCRAPYARD: 63 stars (ticket)
+     - The Frost City 3: 130 stars (ticket)
+     - Grim Brotherhood: 76 stars (ticket)
+
+--------------------------------------------------------------------------------
+
+11. User ID: 58568340
+   Username: CheshireKot
+   Name: Dmitri Kot
+   Regular Months: 0 (0 stars)
+   Plus Months: 0 (0 stars)
+   Kickstarters: 5 (307 stars)
+   TOTAL SPENDING: 307 stars
+   Kickstarter Details:
+     - Schatten über Grimstadt - The Tale Begins: 45 stars (ticket)
+     - Penitent Crusade: The Iron Legion: 95 stars (ticket)
+     - MARCH TO HELL NAPOLEONIC WARS: 50 stars (ticket)
+     - Arkham horror: 90 stars (ticket)
+     - Hunger of Yggdrasil: 27 stars (ticket)
+
+--------------------------------------------------------------------------------
+
+12. User ID: 400253080
+   Username: ElisabetthIris
+   Name: Nata Iris
+   Regular Months: 11 (11 stars)
+   Plus Months: 1 (2 stars)
+   Kickstarters: 6 (273 stars)
+   TOTAL SPENDING: 286 stars
+   Kickstarter Details:
+     - Cthulhu Investigators 2: 25 stars (ticket)
+     - Tales from the Radiation Zone: 20 stars (ticket)
+     - Dungeons and Damsels: 33 stars (ticket)
+     - Escape from Drakov: 55 stars (ticket)
+     - Cthulhu Investigators: 25 stars (ticket)
+     - Game Of Thrones: 115 stars (ticket)
+
+--------------------------------------------------------------------------------
+
+13. User ID: 187034022
+   Username: cr_alex_nn
+   Name: Alex not_set
+   Regular Months: 11 (11 stars)
+   Plus Months: 12 (24 stars)
+   Kickstarters: 2 (225 stars)
+   TOTAL SPENDING: 260 stars
+   Kickstarter Details:
+     - Legend of Keepers: 140 stars (ticket)
+     - Greywind's Guide To Tharador: 85 stars (ticket)
+
+--------------------------------------------------------------------------------
+
+14. User ID: 5947625123
+   Username: stl_hoarder
+   Name: STL Hoarder
+   Regular Months: 0 (0 stars)
+   Plus Months: 0 (0 stars)
+   Kickstarters: 3 (259 stars)
+   TOTAL SPENDING: 259 stars
+   Kickstarter Details:
+     - Legend of Keepers: 140 stars (ticket)
+     - Great Folks: 29 stars (ticket)
+     - Arkham horror: 90 stars (ticket)
+
+--------------------------------------------------------------------------------
+
+15. User ID: 1102475259
+   Username: yaretsP
+   Name: Павел Ярец
+   Regular Months: 11 (11 stars)
+   Plus Months: 14 (28 stars)
+   Kickstarters: 3 (210 stars)
+   TOTAL SPENDING: 249 stars
+   Kickstarter Details:
+     - Grim Brotherhood: 76 stars (ticket)
+     - Penitent Crusade: The Iron Legion: 95 stars (ticket)
+     - Scarlet Empire - Legends of Old World vol2.: 39 stars (ticket)
+
+--------------------------------------------------------------------------------
+
+16. User ID: 1987405994
+   Username: TahoDog
+   Name: Сергей Зданович
+   Regular Months: 10 (10 stars)
+   Plus Months: 20 (40 stars)
+   Kickstarters: 4 (165 stars)
+   TOTAL SPENDING: 215 stars
+   Kickstarter Details:
+     - Demons, Orcs, and Rats: 55 stars (ticket)
+     - Infernal Heroes: 60 stars (ticket)
+     - Cthulhu Investigators 2: 25 stars (ticket)
+     - Cthulhu Investigators: 25 stars (ticket)
+
+--------------------------------------------------------------------------------
+
+17. User ID: 320427886
+   Username: Nolandsman
+   Name: Oleg N/A
+   Regular Months: 11 (11 stars)
+   Plus Months: 22 (44 stars)
+   Kickstarters: 4 (156 stars)
+   TOTAL SPENDING: 211 stars
+   Kickstarter Details:
+     - Gothic Sector: Lost Ships Part 2: 30 stars (ticket)
+     - The Axe Class: 22 stars (ticket)
+     - Corrupted Sanctum: 71 stars (ticket)
+     - Ladies of Fairy Tales: 33 stars (ticket)
+
+--------------------------------------------------------------------------------
+
+18. User ID: 1726644883
+   Username: IgorBch
+   Name: Igor B
+   Regular Months: 10 (10 stars)
+   Plus Months: 0 (0 stars)
+   Kickstarters: 3 (187 stars)
+   TOTAL SPENDING: 197 stars
+   Kickstarter Details:
+     - Blades of Persia: The Rise of the Shah: 71 stars (ticket)
+     - Troops of Napoleonic Wars - Army of the Austrian Empire: 87 stars (ticket)
+     - Great Folks: 29 stars (ticket)
+
+--------------------------------------------------------------------------------
+
+19. User ID: 386904870
+   Username: RiruD
+   Name: Анастасия not_set
+   Regular Months: 10 (10 stars)
+   Plus Months: 2 (4 stars)
+   Kickstarters: 2 (148 stars)
+   TOTAL SPENDING: 162 stars
+   Kickstarter Details:
+     - Game Of Thrones: 115 stars (ticket)
+     - Ladies of Fairy Tales: 33 stars (ticket)
+
+--------------------------------------------------------------------------------
+
+20. User ID: 897497132
+   Username: eboblog
+   Name: Ebobolog not_set
+   Regular Months: 10 (10 stars)
+   Plus Months: 17 (34 stars)
+   Kickstarters: 3 (91 stars)
+   TOTAL SPENDING: 135 stars
+   Kickstarter Details:
+     - Commander Sebastian Highway "The Vulture": 19 stars (ticket)
+     - Fantastic Ladies of the Dimensions: 39 stars (ticket)
+     - Cube Pro Organizer: 33 stars (ticket)
+
+--------------------------------------------------------------------------------
+
+21. User ID: 5853237200
+   Username: Vyacheslav_Nord
+   Name: Dr_Jew not_set
+   Regular Months: 11 (11 stars)
+   Plus Months: 14 (28 stars)
+   Kickstarters: 2 (95 stars)
+   TOTAL SPENDING: 134 stars
+   Kickstarter Details:
+     - Pinup Corps: 75 stars (ticket)
+     - Tales from the Radiation Zone: 20 stars (ticket)
+
+--------------------------------------------------------------------------------
+
+22. User ID: 6192973372
+   Username: PetrCherno
+   Name: Петр Чернопятов
+   Regular Months: 11 (11 stars)
+   Plus Months: 0 (0 stars)
+   Kickstarters: 2 (121 stars)
+   TOTAL SPENDING: 132 stars
+   Kickstarter Details:
+     - Grim Brotherhood: 76 stars (ticket)
+     - Schatten über Grimstadt - The Tale Begins: 45 stars (ticket)
+
+--------------------------------------------------------------------------------
+
+23. User ID: 920572103
+   Username: alexseveryanov
+   Name: Александр Северьянов
+   Regular Months: 11 (11 stars)
+   Plus Months: 11 (22 stars)
+   Kickstarters: 1 (95 stars)
+   TOTAL SPENDING: 128 stars
+   Kickstarter Details:
+     - Penitent Crusade: The Iron Legion: 95 stars (ticket)
+
+--------------------------------------------------------------------------------
+
+24. User ID: 437129878
+   Username: Magestin
+   Name: Alexandr Danshin
+   Regular Months: 11 (11 stars)
+   Plus Months: 22 (44 stars)
+   Kickstarters: 1 (71 stars)
+   TOTAL SPENDING: 126 stars
+   Kickstarter Details:
+     - Corrupted Sanctum: 71 stars (ticket)
+
+--------------------------------------------------------------------------------
+
+25. User ID: 348347335
+   Username: odysseus1973
+   Name: Alexey not_set
+   Regular Months: 11 (11 stars)
+   Plus Months: 0 (0 stars)
+   Kickstarters: 1 (95 stars)
+   TOTAL SPENDING: 106 stars
+   Kickstarter Details:
+     - Penitent Crusade: The Iron Legion: 95 stars (ticket)
+
+--------------------------------------------------------------------------------
+
+26. User ID: 434370797
+   Username: Alexander_Key
+   Name: Alexader Key
+   Regular Months: 11 (11 stars)
+   Plus Months: 9 (18 stars)
+   Kickstarters: 1 (75 stars)
+   TOTAL SPENDING: 104 stars
+   Kickstarter Details:
+     - Welcome to Helwick - Part I - There's Something Fishy Afoot!: 75 stars (ticket)
+
+--------------------------------------------------------------------------------
+
+27. User ID: 854956012
+   Username: Master_Mimic
+   Name: Master Mimic not_set
+   Regular Months: 11 (11 stars)
+   Plus Months: 0 (0 stars)
+   Kickstarters: 1 (90 stars)
+   TOTAL SPENDING: 101 stars
+   Kickstarter Details:
+     - Arkham horror: 90 stars (ticket)
+
+--------------------------------------------------------------------------------
+
+28. User ID: 1339947231
+   Username: MeduzaRus
+   Name: Андрей Барбин
+   Regular Months: 11 (11 stars)
+   Plus Months: 4 (8 stars)
+   Kickstarters: 2 (79 stars)
+   TOTAL SPENDING: 98 stars
+   Kickstarter Details:
+     - MARCH TO HELL NAPOLEONIC WARS: 50 stars (ticket)
+     - Heroes of Eldengaard II: 29 stars (ticket)
+
+--------------------------------------------------------------------------------
+
+29. User ID: 405125289
+   Username: SpaseSam
+   Name: matthew not_set
+   Regular Months: 11 (11 stars)
+   Plus Months: 6 (12 stars)
+   Kickstarters: 1 (73 stars)
+   TOTAL SPENDING: 96 stars
+   Kickstarter Details:
+     - 3D Printable Coins | Tabletop Game Accessories Vol.2: 73 stars (ticket)
+
+--------------------------------------------------------------------------------
+
+30. User ID: 1393463449
+   Username: Kermit_Swag
+   Name: Anton Alexandrov not_set
+   Regular Months: 0 (0 stars)
+   Plus Months: 0 (0 stars)
+   Kickstarters: 1 (90 stars)
+   TOTAL SPENDING: 90 stars
+   Kickstarter Details:
+     - Arkham horror: 90 stars (ticket)
+
+--------------------------------------------------------------------------------
+
+31. User ID: 389123917
+   Username: Zaremus
+   Name: Pavel Pinzhin
+   Regular Months: 11 (11 stars)
+   Plus Months: 15 (30 stars)
+   Kickstarters: 1 (45 stars)
+   TOTAL SPENDING: 86 stars
+   Kickstarter Details:
+     - Morozivka, City of the Frost: 45 stars (ticket)
+
+--------------------------------------------------------------------------------
+
+32. User ID: 628694430
+   Username: Sphericalhorseinvacuum
+   Name: Aleks .
+   Regular Months: 0 (0 stars)
+   Plus Months: 0 (0 stars)
+   Kickstarters: 3 (86 stars)
+   TOTAL SPENDING: 86 stars
+   Kickstarter Details:
+     - The Shadow over Haven's Harbor: 18 stars (ticket)
+     - Destroyed Fighting vehicles of WW2: 35 stars (ticket)
+     - The Longsnouts: 33 stars (ticket)
+
+--------------------------------------------------------------------------------
+
+33. User ID: 267852186
+   Username: Holod_Airsoft
+   Name: Holod Airsoft N/A
+   Regular Months: 6 (6 stars)
+   Plus Months: 0 (0 stars)
+   Kickstarters: 1 (75 stars)
+   TOTAL SPENDING: 81 stars
+   Kickstarter Details:
+     - Welcome to Helwick - Part I - There's Something Fishy Afoot!: 75 stars (ticket)
+
+--------------------------------------------------------------------------------
+
+34. User ID: 176988041
+   Username: Mackay
+   Name: Yuri Anishenko
+   Regular Months: 11 (11 stars)
+   Plus Months: 2 (4 stars)
+   Kickstarters: 1 (65 stars)
+   TOTAL SPENDING: 80 stars
+   Kickstarter Details:
+     - Amazing Adventures: 65 stars (ticket)
+
+--------------------------------------------------------------------------------
+
+35. User ID: 5822931325
+   Username: AxeLsForge
+   Name: Axl Low
+   Regular Months: 0 (0 stars)
+   Plus Months: 0 (0 stars)
+   Kickstarters: 2 (63 stars)
+   TOTAL SPENDING: 63 stars
+   Kickstarter Details:
+     - Cube Pro Organizer: 33 stars (ticket)
+     - Gothic Sector: Lost Ships Part 2: 30 stars (ticket)
+
+--------------------------------------------------------------------------------
+
+36. User ID: 734472773
+   Username: Zakffvii
+   Name: Василий Соколов not_set
+   Regular Months: 10 (10 stars)
+   Plus Months: 0 (0 stars)
+   Kickstarters: 2 (50 stars)
+   TOTAL SPENDING: 60 stars
+   Kickstarter Details:
+     - The Rapid Fire Dicebox: 20 stars (ticket)
+     - Gothic Sector: Lost Ships Part 2: 30 stars (ticket)
+
+--------------------------------------------------------------------------------
+
+37. User ID: 669148193
+   Username: Alexander_Ship
+   Name: Alex Ship
+   Regular Months: 12 (12 stars)
+   Plus Months: 22 (44 stars)
+   Kickstarters: 0 (0 stars)
+   TOTAL SPENDING: 56 stars
+
+--------------------------------------------------------------------------------
+
+38. User ID: 401733995
+   Username: KyterMan
+   Name: Kirill Permyakov
+   Regular Months: 10 (10 stars)
+   Plus Months: 21 (42 stars)
+   Kickstarters: 0 (0 stars)
+   TOTAL SPENDING: 52 stars
+
+--------------------------------------------------------------------------------
+
+39. User ID: 475503977
+   Username: ALeXVB1
+   Name: Алексей Веселков
+   Regular Months: 10 (10 stars)
+   Plus Months: 21 (42 stars)
+   Kickstarters: 0 (0 stars)
+   TOTAL SPENDING: 52 stars
+
+--------------------------------------------------------------------------------
+
+40. User ID: 417718935
+   Username: Goroson
+   Name: Артем Федоров
+   Regular Months: 11 (11 stars)
+   Plus Months: 20 (40 stars)
+   Kickstarters: 0 (0 stars)
+   TOTAL SPENDING: 51 stars
+
+--------------------------------------------------------------------------------
+
+41. User ID: 1519577898
+   Username: id_3878
+   Name: мимо проходил
+   Regular Months: 11 (11 stars)
+   Plus Months: 0 (0 stars)
+   Kickstarters: 1 (40 stars)
+   TOTAL SPENDING: 51 stars
+   Kickstarter Details:
+     - 3D Printable Basing Bits 3: 40 stars (ticket)
+
+--------------------------------------------------------------------------------
+
+42. User ID: 262773814
+   Username: alkolon
+   Name: Oleg Amirov
+   Regular Months: 9 (9 stars)
+   Plus Months: 20 (40 stars)
+   Kickstarters: 0 (0 stars)
+   TOTAL SPENDING: 49 stars
+
+--------------------------------------------------------------------------------
+
+43. User ID: 5565596708
+   Username: csangry
+   Name: Angry not_set
+   Regular Months: 11 (11 stars)
+   Plus Months: 18 (36 stars)
+   Kickstarters: 0 (0 stars)
+   TOTAL SPENDING: 47 stars
+
+--------------------------------------------------------------------------------
+
+44. User ID: 456740412
+   Username: aadrnd
+   Name: Sanych not_set
+   Regular Months: 11 (11 stars)
+   Plus Months: 0 (0 stars)
+   Kickstarters: 1 (35 stars)
+   TOTAL SPENDING: 46 stars
+   Kickstarter Details:
+     - Ladies of Chaos: Afterlife: 35 stars (ticket)
+
+--------------------------------------------------------------------------------
+
+45. User ID: 1193382536
+   Username: hoot156
+   Name: koda ivan
+   Regular Months: 11 (11 stars)
+   Plus Months: 15 (30 stars)
+   Kickstarters: 0 (0 stars)
+   TOTAL SPENDING: 41 stars
+
+--------------------------------------------------------------------------------
+
+46. User ID: 235591625
+   Username: not_set
+   Name: Artemon not_set
+   Regular Months: 3 (3 stars)
+   Plus Months: 14 (28 stars)
+   Kickstarters: 0 (0 stars)
+   TOTAL SPENDING: 31 stars
+
+--------------------------------------------------------------------------------
+
+47. User ID: 257670004
+   Username: kawaiidon
+   Name: Philipp Kamenev
+   Regular Months: 2 (2 stars)
+   Plus Months: 0 (0 stars)
+   Kickstarters: 1 (29 stars)
+   TOTAL SPENDING: 31 stars
+   Kickstarter Details:
+     - Heroes of Eldengaard II: 29 stars (ticket)
+
+--------------------------------------------------------------------------------
+
+48. User ID: 699230065
+   Username: terminaltitan
+   Name: Vladimir not_set
+   Regular Months: 9 (9 stars)
+   Plus Months: 8 (16 stars)
+   Kickstarters: 0 (0 stars)
+   TOTAL SPENDING: 25 stars
+
+--------------------------------------------------------------------------------
+
+49. User ID: 135292978
+   Username: MSMikon
+   Name: Mikhail Semisotov
+   Regular Months: 9 (9 stars)
+   Plus Months: 7 (14 stars)
+   Kickstarters: 0 (0 stars)
+   TOTAL SPENDING: 23 stars
+
+--------------------------------------------------------------------------------
+
+50. User ID: 444212458
+   Username: Andrey_Karpochev
+   Name: Андрей not_set
+   Regular Months: 11 (11 stars)
+   Plus Months: 6 (12 stars)
+   Kickstarters: 0 (0 stars)
+   TOTAL SPENDING: 23 stars
+
+--------------------------------------------------------------------------------
+
+51. User ID: 1358974437
+   Username: laughingbeaver
+   Name: Дмитрий Боробов
+   Regular Months: 11 (11 stars)
+   Plus Months: 5 (10 stars)
+   Kickstarters: 0 (0 stars)
+   TOTAL SPENDING: 21 stars
+
+--------------------------------------------------------------------------------
+
+52. User ID: 6131929859
+   Username: ION_TLT
+   Name: ION MAN
+   Regular Months: 7 (7 stars)
+   Plus Months: 7 (14 stars)
+   Kickstarters: 0 (0 stars)
+   TOTAL SPENDING: 21 stars
+
+--------------------------------------------------------------------------------
+
+53. User ID: 127273718
+   Username: p_serdiuk
+   Name: Paul Serdiuk
+   Regular Months: 20 (20 stars)
+   Plus Months: 0 (0 stars)
+   Kickstarters: 0 (0 stars)
+   TOTAL SPENDING: 20 stars
+
+--------------------------------------------------------------------------------
+
+54. User ID: 255757294
+   Username: LeoGalanteRus
+   Name: Леонид Вячеславович Арустамов-Андрияка
+   Regular Months: 14 (14 stars)
+   Plus Months: 0 (0 stars)
+   Kickstarters: 0 (0 stars)
+   TOTAL SPENDING: 14 stars
+
+--------------------------------------------------------------------------------
+
+55. User ID: 813810627
+   Username: dartvodka
+   Name: Сергей not_set
+   Regular Months: 10 (10 stars)
+   Plus Months: 2 (4 stars)
+   Kickstarters: 0 (0 stars)
+   TOTAL SPENDING: 14 stars
+
+--------------------------------------------------------------------------------
+
+56. User ID: 2066869625
+   Username: koshk451
+   Name: koshk451 not_set
+   Regular Months: 14 (14 stars)
+   Plus Months: 0 (0 stars)
+   Kickstarters: 0 (0 stars)
+   TOTAL SPENDING: 14 stars
+
+--------------------------------------------------------------------------------
+
+57. User ID: 84978786
+   Username: ZOObastik
+   Name: Лёха Макаров
+   Regular Months: 11 (11 stars)
+   Plus Months: 1 (2 stars)
+   Kickstarters: 0 (0 stars)
+   TOTAL SPENDING: 13 stars
+
+--------------------------------------------------------------------------------
+
+58. User ID: 246334931
+   Username: kerukt
+   Name: ivan not_set
+   Regular Months: 10 (10 stars)
+   Plus Months: 1 (2 stars)
+   Kickstarters: 0 (0 stars)
+   TOTAL SPENDING: 12 stars
+
+--------------------------------------------------------------------------------
+
+59. User ID: 42799644
+   Username: Zuperzuche
+   Name: Zuche not_set
+   Regular Months: 11 (11 stars)
+   Plus Months: 0 (0 stars)
+   Kickstarters: 0 (0 stars)
+   TOTAL SPENDING: 11 stars
+
+--------------------------------------------------------------------------------
+
+60. User ID: 214097883
+   Username: nellit_dm
+   Name: Dmitry Shitov
+   Regular Months: 11 (11 stars)
+   Plus Months: 0 (0 stars)
+   Kickstarters: 0 (0 stars)
+   TOTAL SPENDING: 11 stars
+
+--------------------------------------------------------------------------------
+
+61. User ID: 433592664
+   Username: Borodobrid
+   Name: Даниил Алликас
+   Regular Months: 5 (5 stars)
+   Plus Months: 3 (6 stars)
+   Kickstarters: 0 (0 stars)
+   TOTAL SPENDING: 11 stars
+
+--------------------------------------------------------------------------------
+
+62. User ID: 642772993
+   Username: hamsterzavr
+   Name: Саадир not_set
+   Regular Months: 11 (11 stars)
+   Plus Months: 0 (0 stars)
+   Kickstarters: 0 (0 stars)
+   TOTAL SPENDING: 11 stars
+
+--------------------------------------------------------------------------------
+
+63. User ID: 692445732
+   Username: Vit_Franc
+   Name: Vitaliy not_set
+   Regular Months: 11 (11 stars)
+   Plus Months: 0 (0 stars)
+   Kickstarters: 0 (0 stars)
+   TOTAL SPENDING: 11 stars
+
+--------------------------------------------------------------------------------
+
+64. User ID: 739689021
+   Username: K_n_a_v_e
+   Name: Knave 🃏
+   Regular Months: 11 (11 stars)
+   Plus Months: 0 (0 stars)
+   Kickstarters: 0 (0 stars)
+   TOTAL SPENDING: 11 stars
+
+--------------------------------------------------------------------------------
+
+65. User ID: 790430972
+   Username: marvelous_gyatto
+   Name: Cursed Thing
+   Regular Months: 11 (11 stars)
+   Plus Months: 0 (0 stars)
+   Kickstarters: 0 (0 stars)
+   TOTAL SPENDING: 11 stars
+
+--------------------------------------------------------------------------------
+
+66. User ID: 814608036
+   Username: OrdoHeretycus
+   Name: OrdoHeretycus not_set
+   Regular Months: 11 (11 stars)
+   Plus Months: 0 (0 stars)
+   Kickstarters: 0 (0 stars)
+   TOTAL SPENDING: 11 stars
+
+--------------------------------------------------------------------------------
+
+67. User ID: 947137695
+   Username: Rathat_1
+   Name: Вячеслав not_set
+   Regular Months: 11 (11 stars)
+   Plus Months: 0 (0 stars)
+   Kickstarters: 0 (0 stars)
+   TOTAL SPENDING: 11 stars
+
+--------------------------------------------------------------------------------
+
+68. User ID: 957473939
+   Username: magus_magna
+   Name: Антошка not_set
+   Regular Months: 11 (11 stars)
+   Plus Months: 0 (0 stars)
+   Kickstarters: 0 (0 stars)
+   TOTAL SPENDING: 11 stars
+
+--------------------------------------------------------------------------------
+
+69. User ID: 1030834944
+   Username: Technodrozd
+   Name: Akseley not_set
+   Regular Months: 11 (11 stars)
+   Plus Months: 0 (0 stars)
+   Kickstarters: 0 (0 stars)
+   TOTAL SPENDING: 11 stars
+
+--------------------------------------------------------------------------------
+
+70. User ID: 425388360
+   Username: LastXanter
+   Name: Leoric 👁
+   Regular Months: 10 (10 stars)
+   Plus Months: 0 (0 stars)
+   Kickstarters: 0 (0 stars)
+   TOTAL SPENDING: 10 stars
+
+--------------------------------------------------------------------------------
+
+71. User ID: 612818429
+   Username: gooseart
+   Name: Artem G
+   Regular Months: 10 (10 stars)
+   Plus Months: 0 (0 stars)
+   Kickstarters: 0 (0 stars)
+   TOTAL SPENDING: 10 stars
+
+--------------------------------------------------------------------------------
+
+72. User ID: 950320031
+   Username: Rocket_rain
+   Name: Константин Сергеевич
+   Regular Months: 10 (10 stars)
+   Plus Months: 0 (0 stars)
+   Kickstarters: 0 (0 stars)
+   TOTAL SPENDING: 10 stars
+
+--------------------------------------------------------------------------------
+
+73. User ID: 5138014296
+   Username: KirShadowwalker
+   Name: Kir not_set
+   Regular Months: 10 (10 stars)
+   Plus Months: 0 (0 stars)
+   Kickstarters: 0 (0 stars)
+   TOTAL SPENDING: 10 stars
+
+--------------------------------------------------------------------------------
+
+74. User ID: 473582830
+   Username: matyraux
+   Name: MATY RAUX not_set
+   Regular Months: 9 (9 stars)
+   Plus Months: 0 (0 stars)
+   Kickstarters: 0 (0 stars)
+   TOTAL SPENDING: 9 stars
+
+--------------------------------------------------------------------------------
+
+75. User ID: 683200394
+   Username: shiroyashia
+   Name: Вадим not_set
+   Regular Months: 9 (9 stars)
+   Plus Months: 0 (0 stars)
+   Kickstarters: 0 (0 stars)
+   TOTAL SPENDING: 9 stars
+
+--------------------------------------------------------------------------------
+
+76. User ID: 193025665
+   Username: Zzyth
+   Name: Sergey not_set
+   Regular Months: 8 (8 stars)
+   Plus Months: 0 (0 stars)
+   Kickstarters: 0 (0 stars)
+   TOTAL SPENDING: 8 stars
+
+--------------------------------------------------------------------------------
+
+77. User ID: 491622625
+   Username: primaryNoir
+   Name: Nøir АУРЭК N/A
+   Regular Months: 4 (4 stars)
+   Plus Months: 2 (4 stars)
+   Kickstarters: 0 (0 stars)
+   TOTAL SPENDING: 8 stars
+
+--------------------------------------------------------------------------------
+
+78. User ID: 933823562
+   Username: Andrew_B_D
+   Name: Андрей Бобр
+   Regular Months: 7 (7 stars)
+   Plus Months: 0 (0 stars)
+   Kickstarters: 0 (0 stars)
+   TOTAL SPENDING: 7 stars
+
+--------------------------------------------------------------------------------
+
+79. User ID: 24835051
+   Username: sister_psychosis
+   Name: The Sniper at the Gates of Dawn N/A
+   Regular Months: 3 (3 stars)
+   Plus Months: 0 (0 stars)
+   Kickstarters: 0 (0 stars)
+   TOTAL SPENDING: 3 stars
+
+--------------------------------------------------------------------------------
+
+80. User ID: 395054875
+   Username: katrin_jupiter
+   Name: Катерина Юпитер
+   Regular Months: 3 (3 stars)
+   Plus Months: 0 (0 stars)
+   Kickstarters: 0 (0 stars)
+   TOTAL SPENDING: 3 stars
+
+--------------------------------------------------------------------------------
+
+81. User ID: 1898411672
+   Username: katerinafelix
+   Name: Katerina not_set
+   Regular Months: 1 (1 stars)
+   Plus Months: 1 (2 stars)
+   Kickstarters: 0 (0 stars)
+   TOTAL SPENDING: 3 stars
+
+--------------------------------------------------------------------------------
+
+82. User ID: 407762110
+   Username: Almiton
+   Name: Aleksandr Mitrofanov not_set
+   Regular Months: 2 (2 stars)
+   Plus Months: 0 (0 stars)
+   Kickstarters: 0 (0 stars)
+   TOTAL SPENDING: 2 stars
+
+--------------------------------------------------------------------------------
+
+83. User ID: 7058039189
+   Username: i_lost_all_PATience
+   Name: Joe Woe
+   Regular Months: 1 (1 stars)
+   Plus Months: 0 (0 stars)
+   Kickstarters: 0 (0 stars)
+   TOTAL SPENDING: 1 stars
+
+--------------------------------------------------------------------------------
+
+84. User ID: 332336
+   Username: Zlodeykin
+   Name: Sergey SM
+   Regular Months: 0 (0 stars)
+   Plus Months: 0 (0 stars)
+   Kickstarters: 0 (0 stars)
+   TOTAL SPENDING: 0 stars
+
+--------------------------------------------------------------------------------
+
+85. User ID: 89056171
+   Username: whoisdn4k
+   Name: ДånR not_set
+   Regular Months: 0 (0 stars)
+   Plus Months: 0 (0 stars)
+   Kickstarters: 0 (0 stars)
+   TOTAL SPENDING: 0 stars
+
+--------------------------------------------------------------------------------
+
+86. User ID: 91430770
+   Username: send_dog_pics
+   Name: Velipedastal Zamovsky
+   Regular Months: 0 (0 stars)
+   Plus Months: 0 (0 stars)
+   Kickstarters: 0 (0 stars)
+   TOTAL SPENDING: 0 stars
+
+--------------------------------------------------------------------------------
+
+87. User ID: 101922344
+   Username: WarmDuck
+   Name: Анна not_set
+   Regular Months: 0 (0 stars)
+   Plus Months: 0 (0 stars)
+   Kickstarters: 0 (0 stars)
+   TOTAL SPENDING: 0 stars
+
+--------------------------------------------------------------------------------
+
+88. User ID: 189298303
+   Username: Vadim_Mazur
+   Name: Vadim Mazur
+   Regular Months: 0 (0 stars)
+   Plus Months: 0 (0 stars)
+   Kickstarters: 0 (0 stars)
+   TOTAL SPENDING: 0 stars
+
+--------------------------------------------------------------------------------
+
+89. User ID: 200763359
+   Username: Napalm_z
+   Name: Pavel Nazarov
+   Regular Months: 0 (0 stars)
+   Plus Months: 0 (0 stars)
+   Kickstarters: 0 (0 stars)
+   TOTAL SPENDING: 0 stars
+
+--------------------------------------------------------------------------------
+
+90. User ID: 292083844
+   Username: Frol152
+   Name: Frol N/A
+   Regular Months: 0 (0 stars)
+   Plus Months: 0 (0 stars)
+   Kickstarters: 0 (0 stars)
+   TOTAL SPENDING: 0 stars
+
+--------------------------------------------------------------------------------
+
+91. User ID: 350865539
+   Username: frankymad
+   Name: franky mad
+   Regular Months: 0 (0 stars)
+   Plus Months: 0 (0 stars)
+   Kickstarters: 0 (0 stars)
+   TOTAL SPENDING: 0 stars
+
+--------------------------------------------------------------------------------
+
+92. User ID: 352250364
+   Username: ins0mn
+   Name: Артем Ins0mn1
+   Regular Months: 0 (0 stars)
+   Plus Months: 0 (0 stars)
+   Kickstarters: 0 (0 stars)
+   TOTAL SPENDING: 0 stars
+
+--------------------------------------------------------------------------------
+
+93. User ID: 386852843
+   Username: ershua
+   Name: Denis not_set
+   Regular Months: 0 (0 stars)
+   Plus Months: 0 (0 stars)
+   Kickstarters: 0 (0 stars)
+   TOTAL SPENDING: 0 stars
+
+--------------------------------------------------------------------------------
+
+94. User ID: 398906141
+   Username: andreiGOMEL
+   Name: Andrei not_set
+   Regular Months: 0 (0 stars)
+   Plus Months: 0 (0 stars)
+   Kickstarters: 0 (0 stars)
+   TOTAL SPENDING: 0 stars
+
+--------------------------------------------------------------------------------
+
+95. User ID: 403676410
+   Username: AngelSanguine
+   Name: Шамиль N/A
+   Regular Months: 0 (0 stars)
+   Plus Months: 0 (0 stars)
+   Kickstarters: 0 (0 stars)
+   TOTAL SPENDING: 0 stars
+
+--------------------------------------------------------------------------------
+
+96. User ID: 449241043
+   Username: Aleksandr_Savv
+   Name: Aleksandr Savvinmsk
+   Regular Months: 0 (0 stars)
+   Plus Months: 0 (0 stars)
+   Kickstarters: 0 (0 stars)
+   TOTAL SPENDING: 0 stars
+
+--------------------------------------------------------------------------------
+
+97. User ID: 498812873
+   Username: Svetlanashik
+   Name: Svetlana Shik Ⓜ️ MEMES not_set
+   Regular Months: 0 (0 stars)
+   Plus Months: 0 (0 stars)
+   Kickstarters: 0 (0 stars)
+   TOTAL SPENDING: 0 stars
+
+--------------------------------------------------------------------------------
+
+98. User ID: 500656237
+   Username: not_set
+   Name: Seral Garado
+   Regular Months: 0 (0 stars)
+   Plus Months: 0 (0 stars)
+   Kickstarters: 0 (0 stars)
+   TOTAL SPENDING: 0 stars
+
+--------------------------------------------------------------------------------
+
+99. User ID: 548905854
+   Username: taktikqwerty
+   Name: Taktik N/A
+   Regular Months: 0 (0 stars)
+   Plus Months: 0 (0 stars)
+   Kickstarters: 0 (0 stars)
+   TOTAL SPENDING: 0 stars
+
+--------------------------------------------------------------------------------
+
+100. User ID: 661082275
+   Username: epineuson
+   Name: Lia not_set
+   Regular Months: 0 (0 stars)
+   Plus Months: 0 (0 stars)
+   Kickstarters: 0 (0 stars)
+   TOTAL SPENDING: 0 stars
+
+--------------------------------------------------------------------------------
+
+101. User ID: 663899692
+   Username: Babarruco
+   Name: Guitar66 not_set
+   Regular Months: 0 (0 stars)
+   Plus Months: 0 (0 stars)
+   Kickstarters: 0 (0 stars)
+   TOTAL SPENDING: 0 stars
+
+--------------------------------------------------------------------------------
+
+102. User ID: 691675552
+   Username: Dzhamalova_Naida_Atomi
+   Name: Dzhamalova Naida
+   Regular Months: 0 (0 stars)
+   Plus Months: 0 (0 stars)
+   Kickstarters: 0 (0 stars)
+   TOTAL SPENDING: 0 stars
+
+--------------------------------------------------------------------------------
+
+103. User ID: 697422303
+   Username: yttikmi
+   Name: Kate not_set
+   Regular Months: 0 (0 stars)
+   Plus Months: 0 (0 stars)
+   Kickstarters: 0 (0 stars)
+   TOTAL SPENDING: 0 stars
+
+--------------------------------------------------------------------------------
+
+104. User ID: 739243348
+   Username: Xander_Lumina
+   Name: Xander Lumina
+   Regular Months: 0 (0 stars)
+   Plus Months: 0 (0 stars)
+   Kickstarters: 0 (0 stars)
+   TOTAL SPENDING: 0 stars
+
+--------------------------------------------------------------------------------
+
+105. User ID: 796352911
+   Username: Inst1nct67
+   Name: Jackie Chan
+   Regular Months: 0 (0 stars)
+   Plus Months: 0 (0 stars)
+   Kickstarters: 0 (0 stars)
+   TOTAL SPENDING: 0 stars
+
+--------------------------------------------------------------------------------
+
+106. User ID: 836484742
+   Username: AlefGy
+   Name: Alef Guiop
+   Regular Months: 0 (0 stars)
+   Plus Months: 0 (0 stars)
+   Kickstarters: 0 (0 stars)
+   TOTAL SPENDING: 0 stars
+
+--------------------------------------------------------------------------------
+
+107. User ID: 854480437
+   Username: Raimik133
+   Name: Rai not_set
+   Regular Months: 0 (0 stars)
+   Plus Months: 0 (0 stars)
+   Kickstarters: 0 (0 stars)
+   TOTAL SPENDING: 0 stars
+
+--------------------------------------------------------------------------------
+
+108. User ID: 862497921
+   Username: pavelkalyuta
+   Name: Pavel Kaliuta
+   Regular Months: 0 (0 stars)
+   Plus Months: 0 (0 stars)
+   Kickstarters: 0 (0 stars)
+   TOTAL SPENDING: 0 stars
+
+--------------------------------------------------------------------------------
+
+109. User ID: 962450116
+   Username: Fortes_fortuna_adiuvat
+   Name: Dzmitry 🐾 Ⓜ️ MEMES 🍅 🐈‍⬛ 🐍 🐐 🌱SEED not_set
+   Regular Months: 0 (0 stars)
+   Plus Months: 0 (0 stars)
+   Kickstarters: 0 (0 stars)
+   TOTAL SPENDING: 0 stars
+
+--------------------------------------------------------------------------------
+
+110. User ID: 999152730
+   Username: Saltuha999
+   Name: Jaroslav N/A
+   Regular Months: 0 (0 stars)
+   Plus Months: 0 (0 stars)
+   Kickstarters: 0 (0 stars)
+   TOTAL SPENDING: 0 stars
+
+--------------------------------------------------------------------------------
+
+111. User ID: 1015214825
+   Username: ABOALHANUOF
+   Name: Abu_Al Hanouf Al-Anzi
+   Regular Months: 0 (0 stars)
+   Plus Months: 0 (0 stars)
+   Kickstarters: 0 (0 stars)
+   TOTAL SPENDING: 0 stars
+
+--------------------------------------------------------------------------------
+
+112. User ID: 1032904486
+   Username: A_rmman
+   Name: GHULAM hassan
+   Regular Months: 0 (0 stars)
+   Plus Months: 0 (0 stars)
+   Kickstarters: 0 (0 stars)
+   TOTAL SPENDING: 0 stars
+
+--------------------------------------------------------------------------------
+
+113. User ID: 1067273529
+   Username: GoshaGraiD
+   Name: GoshA GraiD
+   Regular Months: 0 (0 stars)
+   Plus Months: 0 (0 stars)
+   Kickstarters: 0 (0 stars)
+   TOTAL SPENDING: 0 stars
+
+--------------------------------------------------------------------------------
+
+114. User ID: 1086472785
+   Username: Artur_Krip
+   Name: Artur Krip 🐾 🐶🐍
+   Regular Months: 0 (0 stars)
+   Plus Months: 0 (0 stars)
+   Kickstarters: 0 (0 stars)
+   TOTAL SPENDING: 0 stars
+
+--------------------------------------------------------------------------------
+
+115. User ID: 1090274107
+   Username: not_set
+   Name: Nader Almehrzi
+   Regular Months: 0 (0 stars)
+   Plus Months: 0 (0 stars)
+   Kickstarters: 0 (0 stars)
+   TOTAL SPENDING: 0 stars
+
+--------------------------------------------------------------------------------
+
+116. User ID: 1108825622
+   Username: siebtehimmel
+   Name: Joanna Budzyn
+   Regular Months: 0 (0 stars)
+   Plus Months: 0 (0 stars)
+   Kickstarters: 0 (0 stars)
+   TOTAL SPENDING: 0 stars
+
+--------------------------------------------------------------------------------
+
+117. User ID: 1129968341
+   Username: Arteme1s
+   Name: Artyom Sorokin
+   Regular Months: 0 (0 stars)
+   Plus Months: 0 (0 stars)
+   Kickstarters: 0 (0 stars)
+   TOTAL SPENDING: 0 stars
+
+--------------------------------------------------------------------------------
+
+118. User ID: 1132306234
+   Username: not_set
+   Name: tacki y macki not_set
+   Regular Months: 0 (0 stars)
+   Plus Months: 0 (0 stars)
+   Kickstarters: 0 (0 stars)
+   TOTAL SPENDING: 0 stars
+
+--------------------------------------------------------------------------------
+
+119. User ID: 1161746332
+   Username: tt_0oo
+   Name: Владислав 🐾 not_set
+   Regular Months: 0 (0 stars)
+   Plus Months: 0 (0 stars)
+   Kickstarters: 0 (0 stars)
+   TOTAL SPENDING: 0 stars
+
+--------------------------------------------------------------------------------
+
+120. User ID: 1195974773
+   Username: not_set
+   Name: Tata... not_set
+   Regular Months: 0 (0 stars)
+   Plus Months: 0 (0 stars)
+   Kickstarters: 0 (0 stars)
+   TOTAL SPENDING: 0 stars
+
+--------------------------------------------------------------------------------
+
+121. User ID: 1204072704
+   Username: litvinovda
+   Name: Дмитрий N/A
+   Regular Months: 0 (0 stars)
+   Plus Months: 0 (0 stars)
+   Kickstarters: 0 (0 stars)
+   TOTAL SPENDING: 0 stars
+
+--------------------------------------------------------------------------------
+
+122. User ID: 1224536032
+   Username: not_set
+   Name: k7 not_set
+   Regular Months: 0 (0 stars)
+   Plus Months: 0 (0 stars)
+   Kickstarters: 0 (0 stars)
+   TOTAL SPENDING: 0 stars
+
+--------------------------------------------------------------------------------
+
+123. User ID: 1227852219
+   Username: Saed1469
+   Name: Saeed not_set
+   Regular Months: 0 (0 stars)
+   Plus Months: 0 (0 stars)
+   Kickstarters: 0 (0 stars)
+   TOTAL SPENDING: 0 stars
+
+--------------------------------------------------------------------------------
+
+124. User ID: 1281377991
+   Username: not_set
+   Name: Натали not_set
+   Regular Months: 0 (0 stars)
+   Plus Months: 0 (0 stars)
+   Kickstarters: 0 (0 stars)
+   TOTAL SPENDING: 0 stars
+
+--------------------------------------------------------------------------------
+
+125. User ID: 1318615545
+   Username: not_set
+   Name: Павел not_set
+   Regular Months: 0 (0 stars)
+   Plus Months: 0 (0 stars)
+   Kickstarters: 0 (0 stars)
+   TOTAL SPENDING: 0 stars
+
+--------------------------------------------------------------------------------
+
+126. User ID: 1419523980
+   Username: serw85
+   Name: Максим Якименко
+   Regular Months: 0 (0 stars)
+   Plus Months: 0 (0 stars)
+   Kickstarters: 0 (0 stars)
+   TOTAL SPENDING: 0 stars
+
+--------------------------------------------------------------------------------
+
+127. User ID: 1430374902
+   Username: German2083
+   Name: 💠🐦🐐🦉🐶🦒✨️🧀#NeoHash 💊#TotalHash German
+   Regular Months: 0 (0 stars)
+   Plus Months: 0 (0 stars)
+   Kickstarters: 0 (0 stars)
+   TOTAL SPENDING: 0 stars
+
+--------------------------------------------------------------------------------
+
+128. User ID: 1461633552
+   Username: lev4ik01
+   Name: Алёна🦒 not_set
+   Regular Months: 0 (0 stars)
+   Plus Months: 0 (0 stars)
+   Kickstarters: 0 (0 stars)
+   TOTAL SPENDING: 0 stars
+
+--------------------------------------------------------------------------------
+
+129. User ID: 1526381762
+   Username: Petro1982
+   Name: петро not_set
+   Regular Months: 0 (0 stars)
+   Plus Months: 0 (0 stars)
+   Kickstarters: 0 (0 stars)
+   TOTAL SPENDING: 0 stars
+
+--------------------------------------------------------------------------------
+
+130. User ID: 1531352052
+   Username: Daotta
+   Name: Dani Otta
+   Regular Months: 0 (0 stars)
+   Plus Months: 0 (0 stars)
+   Kickstarters: 0 (0 stars)
+   TOTAL SPENDING: 0 stars
+
+--------------------------------------------------------------------------------
+
+131. User ID: 1558368175
+   Username: AndiOlyna
+   Name: Andy Olyna
+   Regular Months: 0 (0 stars)
+   Plus Months: 0 (0 stars)
+   Kickstarters: 0 (0 stars)
+   TOTAL SPENDING: 0 stars
+
+--------------------------------------------------------------------------------
+
+132. User ID: 1615636864
+   Username: Andrey_Andreevich_27
+   Name: Хобот Феи
+   Regular Months: 0 (0 stars)
+   Plus Months: 0 (0 stars)
+   Kickstarters: 0 (0 stars)
+   TOTAL SPENDING: 0 stars
+
+--------------------------------------------------------------------------------
+
+133. User ID: 1632202596
+   Username: yasya_1
+   Name: Yasya, not_set
+   Regular Months: 0 (0 stars)
+   Plus Months: 0 (0 stars)
+   Kickstarters: 0 (0 stars)
+   TOTAL SPENDING: 0 stars
+
+--------------------------------------------------------------------------------
+
+134. User ID: 1675986660
+   Username: Donbas2020
+   Name: Ivan🐾🥠 not_set
+   Regular Months: 0 (0 stars)
+   Plus Months: 0 (0 stars)
+   Kickstarters: 0 (0 stars)
+   TOTAL SPENDING: 0 stars
+
+--------------------------------------------------------------------------------
+
+135. User ID: 1823682058
+   Username: Adelkassem
+   Name: Adel Kassem
+   Regular Months: 0 (0 stars)
+   Plus Months: 0 (0 stars)
+   Kickstarters: 0 (0 stars)
+   TOTAL SPENDING: 0 stars
+
+--------------------------------------------------------------------------------
+
+136. User ID: 1968225771
+   Username: not_set
+   Name: Malik not_set
+   Regular Months: 0 (0 stars)
+   Plus Months: 0 (0 stars)
+   Kickstarters: 0 (0 stars)
+   TOTAL SPENDING: 0 stars
+
+--------------------------------------------------------------------------------
+
+137. User ID: 1971739642
+   Username: Pushkin90spb
+   Name: Andrey not_set
+   Regular Months: 0 (0 stars)
+   Plus Months: 0 (0 stars)
+   Kickstarters: 0 (0 stars)
+   TOTAL SPENDING: 0 stars
+
+--------------------------------------------------------------------------------
+
+138. User ID: 2065303897
+   Username: P1P7P7
+   Name: ㅤPeter not_set
+   Regular Months: 0 (0 stars)
+   Plus Months: 0 (0 stars)
+   Kickstarters: 0 (0 stars)
+   TOTAL SPENDING: 0 stars
+
+--------------------------------------------------------------------------------
+
+139. User ID: 5009814581
+   Username: not_set
+   Name: Вячеслав not_set
+   Regular Months: 0 (0 stars)
+   Plus Months: 0 (0 stars)
+   Kickstarters: 0 (0 stars)
+   TOTAL SPENDING: 0 stars
+
+--------------------------------------------------------------------------------
+
+140. User ID: 5125642464
+   Username: Sellaoui1957
+   Name: sadek Sadek 💲BLM Meshchain.Ai $MOKL MyGate Network
+   Regular Months: 0 (0 stars)
+   Plus Months: 0 (0 stars)
+   Kickstarters: 0 (0 stars)
+   TOTAL SPENDING: 0 stars
+
+--------------------------------------------------------------------------------
+
+141. User ID: 5169718770
+   Username: Archibaidi
+   Name: Александр🐾▪️🦒 Чабанов
+   Regular Months: 0 (0 stars)
+   Plus Months: 0 (0 stars)
+   Kickstarters: 0 (0 stars)
+   TOTAL SPENDING: 0 stars
+
+--------------------------------------------------------------------------------
+
+142. User ID: 5182396311
+   Username: uZig_zaGu
+   Name: Артемий Знахаренко
+   Regular Months: 0 (0 stars)
+   Plus Months: 0 (0 stars)
+   Kickstarters: 0 (0 stars)
+   TOTAL SPENDING: 0 stars
+
+--------------------------------------------------------------------------------
+
+143. User ID: 5196118838
+   Username: xsteartimo
+   Name: Moha not_set
+   Regular Months: 0 (0 stars)
+   Plus Months: 0 (0 stars)
+   Kickstarters: 0 (0 stars)
+   TOTAL SPENDING: 0 stars
+
+--------------------------------------------------------------------------------
+
+144. User ID: 5411032357
+   Username: daintnd
+   Name: Phọt🍅 🌱SEEDⓂ️ MEMES🐾📦 Bums Đại▪️
+   Regular Months: 0 (0 stars)
+   Plus Months: 0 (0 stars)
+   Kickstarters: 0 (0 stars)
+   TOTAL SPENDING: 0 stars
+
+--------------------------------------------------------------------------------
+
+145. User ID: 5551937435
+   Username: Fuente1w
+   Name: 🐍 Mota
+   Regular Months: 0 (0 stars)
+   Plus Months: 0 (0 stars)
+   Kickstarters: 0 (0 stars)
+   TOTAL SPENDING: 0 stars
+
+--------------------------------------------------------------------------------
+
+146. User ID: 5769020196
+   Username: Mirrza1122
+   Name: Mirza Baig
+   Regular Months: 0 (0 stars)
+   Plus Months: 0 (0 stars)
+   Kickstarters: 0 (0 stars)
+   TOTAL SPENDING: 0 stars
+
+--------------------------------------------------------------------------------
+
+147. User ID: 5822388596
+   Username: Sava79Stas
+   Name: Станислав not_set
+   Regular Months: 0 (0 stars)
+   Plus Months: 0 (0 stars)
+   Kickstarters: 0 (0 stars)
+   TOTAL SPENDING: 0 stars
+
+--------------------------------------------------------------------------------
+
+148. User ID: 5830404256
+   Username: not_set
+   Name: Szai Obligacion🍅
+   Regular Months: 0 (0 stars)
+   Plus Months: 0 (0 stars)
+   Kickstarters: 0 (0 stars)
+   TOTAL SPENDING: 0 stars
+
+--------------------------------------------------------------------------------
+
+149. User ID: 5847284954
+   Username: not_set
+   Name: Сергей🐍 not_set
+   Regular Months: 0 (0 stars)
+   Plus Months: 0 (0 stars)
+   Kickstarters: 0 (0 stars)
+   TOTAL SPENDING: 0 stars
+
+--------------------------------------------------------------------------------
+
+150. User ID: 5979090520
+   Username: evlxtgYura
+   Name: Yura not_set
+   Regular Months: 0 (0 stars)
+   Plus Months: 0 (0 stars)
+   Kickstarters: 0 (0 stars)
+   TOTAL SPENDING: 0 stars
+
+--------------------------------------------------------------------------------
+
+151. User ID: 6024594394
+   Username: not_set
+   Name: 🥠murat not_set
+   Regular Months: 0 (0 stars)
+   Plus Months: 0 (0 stars)
+   Kickstarters: 0 (0 stars)
+   TOTAL SPENDING: 0 stars
+
+--------------------------------------------------------------------------------
+
+152. User ID: 6073920749
+   Username: not_set
+   Name: Sebbe Helge
+   Regular Months: 0 (0 stars)
+   Plus Months: 0 (0 stars)
+   Kickstarters: 0 (0 stars)
+   TOTAL SPENDING: 0 stars
+
+--------------------------------------------------------------------------------
+
+153. User ID: 6133817165
+   Username: not_set
+   Name: Ramon González
+   Regular Months: 0 (0 stars)
+   Plus Months: 0 (0 stars)
+   Kickstarters: 0 (0 stars)
+   TOTAL SPENDING: 0 stars
+
+--------------------------------------------------------------------------------
+
+154. User ID: 6154123477
+   Username: M_S_KhaNx
+   Name: SuLiMaN khanX not_set
+   Regular Months: 0 (0 stars)
+   Plus Months: 0 (0 stars)
+   Kickstarters: 0 (0 stars)
+   TOTAL SPENDING: 0 stars
+
+--------------------------------------------------------------------------------
+
+155. User ID: 6193053018
+   Username: gella22011991
+   Name: G A
+   Regular Months: 0 (0 stars)
+   Plus Months: 0 (0 stars)
+   Kickstarters: 0 (0 stars)
+   TOTAL SPENDING: 0 stars
+
+--------------------------------------------------------------------------------
+
+156. User ID: 6321492181
+   Username: pochxo
+   Name: Davit 👾 BITS❤️🌱SEED🍅Ⓜ️ MEMES 🦴🐍Σ✌️Yescoiner $MAGAS #P4L 🍖 PocketFiEmoji
+   Regular Months: 0 (0 stars)
+   Plus Months: 0 (0 stars)
+   Kickstarters: 0 (0 stars)
+   TOTAL SPENDING: 0 stars
+
+--------------------------------------------------------------------------------
+
+157. User ID: 6324413127
+   Username: not_set
+   Name: Женя not_set
+   Regular Months: 0 (0 stars)
+   Plus Months: 0 (0 stars)
+   Kickstarters: 0 (0 stars)
+   TOTAL SPENDING: 0 stars
+
+--------------------------------------------------------------------------------
+
+158. User ID: 6520933444
+   Username: Kirill040719
+   Name: Кирилл 🐍
+   Regular Months: 0 (0 stars)
+   Plus Months: 0 (0 stars)
+   Kickstarters: 0 (0 stars)
+   TOTAL SPENDING: 0 stars
+
+--------------------------------------------------------------------------------
+
+159. User ID: 6629282332
+   Username: Cep1313
+   Name: Сергей not_set
+   Regular Months: 0 (0 stars)
+   Plus Months: 0 (0 stars)
+   Kickstarters: 0 (0 stars)
+   TOTAL SPENDING: 0 stars
+
+--------------------------------------------------------------------------------
+
+160. User ID: 6774680155
+   Username: not_set
+   Name: Prophet not_set
+   Regular Months: 0 (0 stars)
+   Plus Months: 0 (0 stars)
+   Kickstarters: 0 (0 stars)
+   TOTAL SPENDING: 0 stars
+
+--------------------------------------------------------------------------------
+
+161. User ID: 6882711214
+   Username: Aguirre_miguel
+   Name: 98838 Aguirre
+   Regular Months: 0 (0 stars)
+   Plus Months: 0 (0 stars)
+   Kickstarters: 0 (0 stars)
+   TOTAL SPENDING: 0 stars
+
+--------------------------------------------------------------------------------
+
+162. User ID: 7017579752
+   Username: NikaGan
+   Name: Вероника not_set
+   Regular Months: 0 (0 stars)
+   Plus Months: 0 (0 stars)
+   Kickstarters: 0 (0 stars)
+   TOTAL SPENDING: 0 stars
+
+--------------------------------------------------------------------------------
+
+163. User ID: 7082884031
+   Username: Vitia48
+   Name: Виктор Zevs
+   Regular Months: 0 (0 stars)
+   Plus Months: 0 (0 stars)
+   Kickstarters: 0 (0 stars)
+   TOTAL SPENDING: 0 stars
+
+--------------------------------------------------------------------------------
+
+164. User ID: 7111643796
+   Username: Malibufta
+   Name: Branko Srnec🥠
+   Regular Months: 0 (0 stars)
+   Plus Months: 0 (0 stars)
+   Kickstarters: 0 (0 stars)
+   TOTAL SPENDING: 0 stars
+
+--------------------------------------------------------------------------------
+
+165. User ID: 7493830530
+   Username: aditya426363
+   Name: $XAditya $X
+   Regular Months: 0 (0 stars)
+   Plus Months: 0 (0 stars)
+   Kickstarters: 0 (0 stars)
+   TOTAL SPENDING: 0 stars
+
+--------------------------------------------------------------------------------
+
+166. User ID: 7644881410
+   Username: SanyaGameCoinsApps
+   Name: Саня_ GameCoinsApps
+   Regular Months: 0 (0 stars)
+   Plus Months: 0 (0 stars)
+   Kickstarters: 0 (0 stars)
+   TOTAL SPENDING: 0 stars
+
+--------------------------------------------------------------------------------
+
+167. User ID: 7654108174
+   Username: not_set
+   Name: Саша not_set
+   Regular Months: 0 (0 stars)
+   Plus Months: 0 (0 stars)
+   Kickstarters: 0 (0 stars)
+   TOTAL SPENDING: 0 stars
+
+--------------------------------------------------------------------------------
+
+168. User ID: 7712160204
+   Username: not_set
+   Name: Oksa Oksa
+   Regular Months: 0 (0 stars)
+   Plus Months: 0 (0 stars)
+   Kickstarters: 0 (0 stars)
+   TOTAL SPENDING: 0 stars
+
+--------------------------------------------------------------------------------
+
+169. User ID: 7841861014
+   Username: not_set
+   Name: Khan not_set
+   Regular Months: 0 (0 stars)
+   Plus Months: 0 (0 stars)
+   Kickstarters: 0 (0 stars)
+   TOTAL SPENDING: 0 stars
+
+--------------------------------------------------------------------------------
+
+170. User ID: 8478543564
+   Username: glavgoblin
+   Name: Гоблин Шеф
+   Regular Months: 0 (0 stars)
+   Plus Months: 0 (0 stars)
+   Kickstarters: 0 (0 stars)
+   TOTAL SPENDING: 0 stars
+
+--------------------------------------------------------------------------------
+

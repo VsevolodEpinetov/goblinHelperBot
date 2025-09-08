@@ -32,7 +32,7 @@ module.exports = Composer.action('useTicket', async (ctx) => {
       Markup.button.callback('🎁 Спецпредложения', 'ticketSpecial'),
       Markup.button.callback('📅 Ранний доступ', 'ticketEarlyAccess')
     ],
-    [Markup.button.callback('🔙 Назад', 'userMenu')]
+    [Markup.button.callback(require('../../../modules/i18n').t('messages.back'), 'userMenu')]
   ];
 
   await ctx.editMessageText(ticketMessage, {

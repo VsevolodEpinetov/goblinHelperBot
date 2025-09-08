@@ -4,29 +4,16 @@ const { t } = require('../../../modules/i18n');
 module.exports = Composer.action('applicationQuestions', async (ctx) => {
   try { await ctx.answerCbQuery(); } catch {}
   
-  const questionsMessage = `❓ <b>ЧАСТО ЗАДАВАЕМЫЕ ВОПРОСЫ</b>\n\n` +
-    `🤔 <b>Как долго рассматривается заявка?</b>\n` +
-    `Обычно 1-3 дня, но может занять до недели.\n\n` +
-    `💰 <b>Сколько стоит участие?</b>\n` +
-    `• 350 ⭐ — обычный сундук месяца\n` +
-    `• 1000 ⭐ — обычный + расширенный сундук\n\n` +
-    `📅 <b>Как часто обновляется контент?</b>\n` +
-    `Новые модели добавляются каждый месяц.\n\n` +
-    `🔒 <b>Можно ли делиться моделями?</b>\n` +
-    `Нет, модели только для личного использования.\n\n` +
-    `❌ <b>Что если заявку отклонят?</b>\n` +
-    `Вы получите уведомление и можете попробовать позже.\n\n` +
-    `💬 <b>Есть ли вопросы?</b>\n` +
-    `Обратитесь к администрации через кнопку "Поддержка".`;
+  const questionsMessage = t('messages.questions.text');
 
   const questionsKeyboard = [
-    [Markup.button.callback('📝 Подать заявку', 'startApplication')],
-    [Markup.button.callback('📋 Правила', 'showRules')],
-    [Markup.button.callback('❓ Что это', 'showWhatIs')],
-    [Markup.button.callback('💬 Поддержка', 'contactSupport')],
+    [Markup.button.callback(t('messages.questions.submit'), 'startApplication')],
+    [Markup.button.callback(t('messages.questions.rules'), 'showRules')],
+    [Markup.button.callback(t('messages.questions.whatIs'), 'showWhatIs')],
+    [Markup.button.callback(t('messages.questions.support'), 'contactSupport')],
     [
-      Markup.button.callback('🔙 Назад', 'applyInit'),
-      Markup.button.callback('🏠 В начало', 'guestStart')
+      Markup.button.callback(t('messages.back'), 'applyInit'),
+      Markup.button.callback(t('messages.home'), 'guestStart')
     ]
   ];
 

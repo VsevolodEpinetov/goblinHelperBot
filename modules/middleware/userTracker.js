@@ -136,48 +136,36 @@ module.exports = async (ctx, next) => {
 				}
 			}
 		} else {
-			// User doesn't exist in database, create basic entry
-			// This handles cases where users interact before going through the full registration process
-			const basicUserData = {
-				id: userId,
-				username: telegramUser.username || 'not_set',
-				first_name: telegramUser.first_name || 'not_set',
-				last_name: telegramUser.last_name || '',
-				roles: [],
-				purchases: {
-					balance: 0,
-					ticketsSpent: 0,
-					groups: {
-						regular: [],
-						plus: []
-					},
-					kickstarters: [],
-					collections: []
-				}
-			};
+			// User doesn't exist in database - don't create them automatically
+			// Only log the interaction for tracking purposes
+			if (DEBUG_MODE) {
+				console.log(`[userTracker] User ${userId} doesn't exist in database, skipping auto-creation`);
+			}
 			
+			// Log new user interaction (but don't create user)
+			const newUserLog = `🆕 New user interaction (not registered): ${telegramUser.username ? `@${telegramUser.username}` : telegramUser.first_name} (${userId})`;
 			try {
-				await updateUser(userId, basicUserData);
-				
-				// Update rate limit for this user
-				userRateLimit.set(userId, now);
-				
-				// Log new user interaction
-				const newUserLog = `🆕 New user interaction: ${telegramUser.username ? `@${telegramUser.username}` : telegramUser.first_name} (${userId})`;
-				try {
-					await ctx.telegram.sendMessage(SETTINGS.CHATS.LOGS, newUserLog);
-				} catch (e) {
-					console.log('Failed to send new user log:', e);
-				}
+				await ctx.telegram.sendMessage(SETTINGS.CHATS.LOGS, newUserLog);
 			} catch (e) {
-				console.log('Failed to create basic user entry:', e);
+				console.log('Failed to send new user log:', e);
 			}
 		}
 		
 	} catch (error) {
 		console.log('❌ Error in userTracker middleware:', error);
+		// Even if there's an error, we must call next() to continue the chain
 	}
 	
 	console.log('🔄 UserTracker middleware: Completed, calling next()');
-	return next();
+	
+	// Always call next() to ensure the middleware chain continues
+	try {
+		const result = await next();
+		console.log('🔄 UserTracker middleware: next() returned:', typeof result);
+		return result;
+	} catch (error) {
+		console.log('❌ Error calling next() in userTracker middleware:', error);
+		// Re-throw the error to maintain error propagation
+		throw error;
+	}
 };

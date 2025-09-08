@@ -28,17 +28,13 @@ module.exports = Composer.action('addPlusToCurrentMonth', async (ctx) => {
     `• Эксклюзивные материалы\n` +
     `• 2 билетика за каждые 3 месяца ➕\n` +
     `• Приоритетная поддержка\n\n` +
-    `💳 <b>Ваш баланс:</b> ${userData.purchases.balance}₽\n` +
-    `${userData.purchases.balance >= 500 ? '✅ Достаточно средств' : '❌ Недостаточно средств'}`;
+    `💡 Оплата через встроенные платежи.\n`;
 
-  const plusKeyboard = userData.purchases.balance >= 500 ? [
-    [Markup.button.callback('⭐ Купить ➕ подписку', 'confirmPlusPurchase')],
-    [Markup.button.callback('💳 Пополнить баланс', 'addBalance')]
-  ] : [
-    [Markup.button.callback('💳 Пополнить баланс', 'addBalance')]
+  const plusKeyboard = [
+    [Markup.button.callback('⭐ Купить ➕ подписку', 'confirmPlusPurchase')]
   ];
   
-  plusKeyboard.push([Markup.button.callback('🔙 Назад', 'userMenu')]);
+  plusKeyboard.push([Markup.button.callback(require('../../../modules/i18n').t('messages.back'), 'userMenu')]);
 
   await ctx.editMessageText(plusMessage, {
     parse_mode: 'HTML',

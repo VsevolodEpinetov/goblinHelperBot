@@ -2,6 +2,7 @@ const { Composer } = require("telegraf");
 const SETTINGS = require('../../../settings.json')
 const util = require('../../util')
 const { updateMonth } = require('../../db/helpers');
+const knex = require('../../db/knex');
 
 module.exports = Composer.on('channel_post', async (ctx) => {
   const channelID = ctx.channelPost.chat.id;
@@ -20,11 +21,28 @@ module.exports = Composer.on('channel_post', async (ctx) => {
     creates_join_request: true
   })
 
-  // Update month data in PostgreSQL
+  // Store invitation link in invitationLinks table (group link)
+  await knex('invitationLinks').insert({
+    userId: null, // Group link, not user-specific
+    groupPeriod: `${year}_${month}`,
+    groupType: type,
+    telegramInviteLink: inviteLink.invite_link,
+    telegramInviteLinkName: inviteLink.name,
+    telegramInviteLinkCreatorId: inviteLink.creator?.id,
+    telegramInviteLinkIsPrimary: inviteLink.is_primary || false,
+    telegramInviteLinkIsRevoked: inviteLink.is_revoked || false,
+    telegramInviteLinkExpireDate: inviteLink.expire_date ? new Date(inviteLink.expire_date * 1000) : null,
+    telegramInviteLinkMemberLimit: inviteLink.member_limit || 1,
+    createsJoinRequest: inviteLink.creates_join_request || true,
+    useCount: 0,
+    createdAt: new Date()
+  });
+
+  // Update month data in PostgreSQL (without link since it's now in invitationLinks)
   await updateMonth(`${year}_${month}`, type, {
     id: channelID,
-    link: inviteLink.invite_link,
     counter: { joined: 0, paid: 0 }
   });
+  
   await ctx.telegram.sendMessage(SETTINGS.CHATS.EPINETOV, `Записал чат с ID ${channelID} как группу ${type} для ${year}-${month}, ссылка для вступления - ${inviteLink.invite_link}`);
 })

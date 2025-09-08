@@ -1,67 +1,72 @@
 const { Composer, Markup } = require("telegraf");
-const util = require('../../../util');
 const { getUser } = require('../../../db/helpers');
+const { t } = require('../../../../modules/i18n');
 
 module.exports = Composer.action('userKickstarters', async (ctx) => {
-  const userData = await getUser(ctx.callbackQuery.from.id);
-  if (!userData) return;
-
-  const tickets = Math.floor(userData.purchases.groups.plus.length / 3) * 2 - userData.purchases.ticketsSpent;
-  const purchasedKickstarters = userData.purchases.kickstarters.length;
-  const availableKickstarters = 5; // Example number
+  try { await ctx.answerCbQuery(); } catch {}
   
-  const kickstarterMessage = `🚀 <b>КИКСТАРТЕРЫ И ПРОЕКТЫ</b>\n\n` +
-    `🎯 <b>Ваши возможности:</b>\n` +
-    `• <b>Билетики:</b> ${tickets} доступно\n` +
-    `• <b>Куплено проектов:</b> ${purchasedKickstarters}\n` +
-    `• <b>Доступно проектов:</b> ${availableKickstarters}\n\n` +
-    `💡 <b>Как это работает:</b>\n` +
-    `• Билетики получаются за ➕ подписки\n` +
-    `• 1 билетик = 1 проект\n` +
-    `• Проекты доступны сразу после покупки\n` +
-    `• Материалы приходят по мере готовности\n\n` +
-    `🎁 <b>Что включено в проект:</b>\n` +
-    `• Доступ к эксклюзивному контенту\n` +
-    `• Ранние релизы и обновления\n` +
-    `• Специальные материалы\n` +
-    `• Участие в бета-тестировании\n\n` +
-    `📊 <b>Рекомендации:</b>\n` +
-    `${tickets > 0 ? '✅ У вас есть билетики - можете покупать проекты!' : '❌ Нет билетиков - купите ➕ подписку для получения билетиков'}`;
+  try {
+    const userData = await getUser(ctx.from.id);
+    if (!userData) {
+      await ctx.editMessageText(t('kickstarters.menu.errors.userNotFound'), {
+        parse_mode: 'HTML',
+        ...Markup.inlineKeyboard([[Markup.button.callback(t('kickstarters.menu.buttons.back'), 'refreshUserStatus')]])
+      });
+      return;
+    }
 
-  const kickstarterKeyboard = [];
-  
-  // Primary actions based on available tickets
-  if (tickets > 0) {
+    const purchases = userData.purchases || {};
+    const tickets = Math.floor((purchases.groups?.plus?.length || 0) / 3) * 2 - (purchases.ticketsSpent || 0);
+    const purchasedKickstarters = purchases.kickstarters?.length || 0;
+    const availableKickstarters = 5; // Example number
+    
+    const kickstarterMessage = `${t('kickstarters.menu.title')}\n\n` +
+      `${t('kickstarters.menu.abilities', { tickets, purchased: purchasedKickstarters, available: availableKickstarters })}\n\n` +
+      `${t('kickstarters.menu.how')}\n\n` +
+      `${t('kickstarters.menu.whatIncluded')}\n\n` +
+      `📊 <b>Рекомендации:</b>\n` +
+      `${tickets > 0 ? t('kickstarters.menu.recommend.canBuy') : t('kickstarters.menu.recommend.noTickets')}`;
+
+    const kickstarterKeyboard = [];
+    
+    // Primary actions based on available tickets
+    if (tickets > 0) {
+      kickstarterKeyboard.push([
+        Markup.button.callback(t('kickstarters.menu.buttons.buy'), 'browseKickstarters'),
+        Markup.button.callback(t('kickstarters.menu.buttons.useTicket'), 'useTicket')
+      ]);
+    } else {
+      kickstarterKeyboard.push([
+        Markup.button.callback(t('kickstarters.menu.buttons.buyPlus'), 'addPlusToCurrentMonth')
+      ]);
+    }
+    
+    // Standard actions
     kickstarterKeyboard.push([
-      Markup.button.callback('🛒 Купить проект', 'browseKickstarters'),
-      Markup.button.callback('🎟 Использовать билетик', 'useTicket')
+      Markup.button.callback(t('kickstarters.menu.buttons.my'), 'myKickstarters'),
+      Markup.button.callback(t('kickstarters.menu.buttons.search'), 'searchKickstarters')
     ]);
-  } else {
+    
     kickstarterKeyboard.push([
-      Markup.button.callback('⭐ Купить ➕ подписку', 'addPlusToCurrentMonth'),
-      Markup.button.callback('💳 Пополнить баланс', 'addBalance')
+      Markup.button.callback(t('kickstarters.menu.buttons.stats'), 'kickstarterStats'),
+      Markup.button.callback(t('kickstarters.menu.buttons.help'), 'kickstarterHelp')
     ]);
+    
+    // Single back button
+    kickstarterKeyboard.push([
+      Markup.button.callback(t('kickstarters.menu.buttons.back'), 'refreshUserStatus')
+    ]);
+
+    await ctx.editMessageText(kickstarterMessage, {
+      parse_mode: 'HTML',
+      ...Markup.inlineKeyboard(kickstarterKeyboard)
+    });
+    
+  } catch (error) {
+    console.error('Error in userKickstarters:', error);
+    await ctx.editMessageText(t('kickstarters.menu.errors.generic'), {
+      parse_mode: 'HTML',
+      ...Markup.inlineKeyboard([[Markup.button.callback(t('kickstarters.menu.buttons.back'), 'refreshUserStatus')]])
+    });
   }
-  
-  // Standard actions
-  kickstarterKeyboard.push([
-    Markup.button.callback('📋 Мои проекты', 'myKickstarters'),
-    Markup.button.callback('🔍 Поиск проектов', 'searchKickstarters')
-  ]);
-  
-  kickstarterKeyboard.push([
-    Markup.button.callback('📊 Статистика', 'kickstarterStats'),
-    Markup.button.callback('❓ Помощь', 'kickstarterHelp')
-  ]);
-  
-  // Navigation
-  kickstarterKeyboard.push([
-    Markup.button.callback('🔙 Назад в меню', 'userMenu'),
-    Markup.button.callback('🏠 В главное меню', 'userMenu')
-  ]);
-
-  await ctx.editMessageText(kickstarterMessage, {
-    parse_mode: 'HTML',
-    ...Markup.inlineKeyboard(kickstarterKeyboard)
-  });
 });

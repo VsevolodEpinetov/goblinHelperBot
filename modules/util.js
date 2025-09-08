@@ -95,6 +95,7 @@ function createSmartMenu(ctx, userData) {
   const standardActions = [
     ['📅 Подписки', 'userMonths'],
     ['🚀 Кикстартеры', 'userKickstarters'],
+    ['⚔️ Мои рейды', 'userRaids'],
     ['💰 Баланс и билетики', 'userBalanceTickets'],
     ['📊 Статистика', 'userStats']
   ];
@@ -415,7 +416,8 @@ module.exports = {
   getUserTickets,
   createStatusCard,
   createSmartMenu,
-  createInteractiveMenu
+  createInteractiveMenu,
+  messageRouter: require('./util/messageRouter')
 
 
 }

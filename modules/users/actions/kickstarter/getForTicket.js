@@ -1,4 +1,5 @@
 const { Composer, Markup } = require("telegraf");
+const { t } = require('../../../../modules/i18n');
 const util = require('../../../util');
 const SETTINGS = require('../../../../settings.json');
 
@@ -6,7 +7,7 @@ module.exports = Composer.action(/^getKickstarterForTicket_/g, async (ctx) => {
   try {
     await ctx.deleteMessage(ctx.callbackQuery.message.message_id);
   } catch (e) {
-    await ctx.replyWithHTML(`Из-за ограничений телеграма тебе нужно использовать /start ещё раз. Старое сообщение останется, можешь его удалить вручную, если мешает.`)
+    await ctx.replyWithHTML(t('user.messages.telegramLimitation'))
     return;
   }
   const ksId = ctx.callbackQuery.data.split('_')[2];
@@ -19,21 +20,21 @@ module.exports = Composer.action(/^getKickstarterForTicket_/g, async (ctx) => {
     if (userData.purchases.kickstarters.indexOf(ksId) < 0) {
       ctx.users.list[userId].purchases.ticketsSpent = ctx.users.list[userId].purchases.ticketsSpent + 1;
       ctx.users.list[userId].purchases.kickstarters.push(ksId);
-      await ctx.replyWithHTML(`Поздравляю, ты получил этот проект за билетик! Ты сможешь его найти в меню кикстартеров`, {
+      await ctx.replyWithHTML(t('kickstarters.ticket.received'), {
         parse_mode: "HTML",
         ...Markup.inlineKeyboard([
           [
-            Markup.button.callback('Перейти к кикстартерам', `userKickstarters`)
+            Markup.button.callback(t('kickstarters.ticket.goTo'), `userKickstarters`)
           ],
           [
-            Markup.button.callback('🏠', `userMenu`)
+            Markup.button.callback(t('buttons.homeIcon'), `userMenu`)
           ]
         ])
       })
       await ctx.telegram.sendMessage(SETTINGS.CHATS.LOGS, `ℹ️ user ${userId} got kickstarter ${ksId} for a ticket. ${tickets - 1} remaining`);
     }
   } else {
-    ctx.replyWithHTML(`Не смог выдать кикстартер за билетик - похоже, что они у тебя кончились`)
+    ctx.replyWithHTML(t('kickstarters.ticket.noneLeft'))
     await ctx.telegram.sendMessage(SETTINGS.CHATS.LOGS, `⚠️ user ${userId} attempted got kickstarter ${ksId} for a ticket, but he got only ${tickets} left `)
   }
 });

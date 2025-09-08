@@ -3,19 +3,33 @@ const { t } = require('../../../../modules/i18n');
 const knex = require('../../../../modules/db/knex');
 const SETTINGS = require('../../../../settings.json');
 
-module.exports = Composer.action('adminAllApplications', async (ctx) => {
+// Main handler for all applications view
+const allApplicationsHandler = Composer.action('adminAllApplications', async (ctx) => {
+  console.log('🎯 adminAllApplications action triggered!');
+  console.log('🎯 Callback data:', ctx.callbackQuery?.data);
+  console.log('🎯 User ID:', ctx.from?.id);
+  
   try { await ctx.answerCbQuery(); } catch {}
   
   try {
-    // Get all applications ordered by creation date
-    const allApplications = await knex('applications')
-      .orderBy('createdAt', 'desc')
+    // Get all users with their roles
+    const allUsers = await knex('users')
+      .leftJoin('userRoles', 'users.id', 'userRoles.userId')
+      .select(
+        'users.id',
+        'users.username', 
+        'users.firstName',
+        'users.lastName',
+        knex.raw('ARRAY_AGG("userRoles".role) FILTER (WHERE "userRoles".role IS NOT NULL) as roles')
+      )
+      .groupBy('users.id', 'users.username', 'users.firstName', 'users.lastName')
+      .orderBy('users.id', 'desc')
       .limit(50); // Limit to prevent message overflow
 
-    if (allApplications.length === 0) {
+    if (allUsers.length === 0) {
       await ctx.editMessageText(
-        '📊 <b>Все заявки</b>\n\n' +
-        'Нет заявок в системе.',
+        '📋 <b>Управление заявками</b>\n\n' +
+        'Нет пользователей в системе.',
         {
           parse_mode: 'HTML',
           ...Markup.inlineKeyboard([
@@ -26,74 +40,95 @@ module.exports = Composer.action('adminAllApplications', async (ctx) => {
       return;
     }
 
-    // Group applications by status
+    // Ensure roles are arrays and filter out null values
+    const processedUsers = allUsers.map(user => ({
+      ...user,
+      roles: Array.isArray(user.roles) ? user.roles.filter(role => role !== null) : []
+    }));
+
+    // Group users by status based on their roles
     const statusGroups = {
-      pending: [],
-      interview: [],
-      approved: [],
-      rejected: []
+      prereg: processedUsers.filter(user => user.roles && user.roles.includes('prereg')),
+      pending: processedUsers.filter(user => user.roles && user.roles.includes('pending')),
+      preapproved: processedUsers.filter(user => user.roles && user.roles.includes('preapproved')),
+      rejected: processedUsers.filter(user => user.roles && user.roles.includes('rejected')),
+      approved: processedUsers.filter(user => user.roles && user.roles.some(role => ['goblin', 'admin', 'adminPlus', 'super'].includes(role))),
+      other: processedUsers.filter(user => user.roles && user.roles.length > 0 && !user.roles.includes('rejected') && !user.roles.includes('pending') && !user.roles.includes('prereg') && !user.roles.includes('preapproved') && !user.roles.some(role => ['goblin', 'admin', 'adminPlus', 'super'].includes(role)))
     };
 
-    allApplications.forEach(app => {
-      if (statusGroups[app.status]) {
-        statusGroups[app.status].push(app);
-      }
-    });
-
-    let message = '📊 <b>Все заявки</b>\n\n';
-    let totalCount = 0;
+    let message = '📋 <b>Управление заявками</b>\n\n';
+    let totalCount = processedUsers.length;
 
     // Add status counts
     message += `📈 <b>Статистика:</b>\n`;
+    message += `📝 Предварительная регистрация: <b>${statusGroups.prereg.length}</b>\n`;
     message += `⏳ Ожидают рассмотрения: <b>${statusGroups.pending.length}</b>\n`;
-    message += `📞 На собеседовании: <b>${statusGroups.interview.length}</b>\n`;
-    message += `✅ Одобрены: <b>${statusGroups.approved.length}</b>\n`;
-    message += `❌ Отклонены: <b>${statusGroups.rejected.length}</b>\n\n`;
+    message += `✅ Приняты к собеседованию: <b>${statusGroups.preapproved.length}</b>\n`;
+    message += `❌ Отклонены: <b>${statusGroups.rejected.length}</b>\n`;
+    message += `🎉 Полностью одобрены: <b>${statusGroups.approved.length}</b>\n`;
+    message += `🔍 Прочие роли: <b>${statusGroups.other.length}</b>\n\n`;
 
-    totalCount = allApplications.length;
-    message += `📋 <b>Последние заявки (${totalCount}):</b>\n\n`;
+    message += `📋 <b>Последние пользователи (${totalCount}):</b>\n\n`;
 
-    const keyboard = [];
-
-    // Show recent applications (last 10)
-    const recentApps = allApplications.slice(0, 10);
-    for (const app of recentApps) {
-      const user = await knex('users').where({ id: app.userId }).first();
-      const username = user?.username || 'no-username';
-      const firstName = user?.firstName || app.firstName || 'Unknown';
-      const lastName = user?.lastName || app.lastName || '';
+    // Add recent users (limit to 5 for readability)
+    const recentUsers = processedUsers.slice(0, 5);
+    for (const user of recentUsers) {
+      const firstName = user.firstName || 'Unknown';
+      const lastName = user.lastName || '';
+      const username = user.username ? `@${user.username}` : 'No username';
       
-      const statusEmoji = {
-        pending: '⏳',
-        interview: '📞',
-        approved: '✅',
-        rejected: '❌'
-      }[app.status] || '❓';
+      let statusEmoji = '❓';
+      let statusText = 'Неизвестно';
       
-      const statusText = {
-        pending: 'Ожидает',
-        interview: 'Собеседование',
-        approved: 'Одобрена',
-        rejected: 'Отклонена'
-      }[app.status] || 'Неизвестно';
+      if (!user.roles || user.roles.length === 0) {
+        statusEmoji = '⏳';
+        statusText = 'Ожидает рассмотрения';
+      } else if (user.roles.includes('prereg')) {
+        statusEmoji = '📝';
+        statusText = 'Предварительная регистрация';
+      } else if (user.roles.includes('pending')) {
+        statusEmoji = '⏳';
+        statusText = 'Ожидает рассмотрения';
+      } else if (user.roles.includes('preapproved')) {
+        statusEmoji = '✅';
+        statusText = 'Принят к собеседованию';
+      } else if (user.roles.includes('rejected')) {
+        statusEmoji = '❌';
+        statusText = 'Отклонен';
+      } else if (user.roles.some(role => ['goblin', 'admin', 'adminPlus', 'super'].includes(role))) {
+        statusEmoji = '🎉';
+        statusText = 'Полностью одобрен';
+      } else {
+        statusEmoji = '🔍';
+        statusText = user.roles.join(', ');
+      }
       
-      message += `${statusEmoji} <b>${firstName} ${lastName}</b>\n`;
-      message += `🆔 ID: <code>${app.userId}</code>\n`;
-      message += `👤 @${username}\n`;
-      message += `📅 ${new Date(app.createdAt).toLocaleDateString('ru-RU')}\n`;
-      message += `📊 Статус: <b>${statusText}</b>\n\n`;
+      message += `${statusEmoji} <b>${firstName} ${lastName}</b> (${username})\n`;
+      message += `   ID: ${user.id} | ${statusText}\n\n`;
     }
+
+    // Create keyboard
+    const keyboard = [];
 
     // Add filter buttons
     keyboard.push([
-      Markup.button.callback('⏳ Ожидают', 'admin_filter_pending'),
-      Markup.button.callback('📞 Собеседование', 'admin_filter_interview')
+      Markup.button.callback('📝 Предварительная регистрация', 'admin_filter_prereg'),
+      Markup.button.callback('⏳ Новые заявки', 'admin_filter_pending')
     ]);
     keyboard.push([
-      Markup.button.callback('✅ Одобрены', 'admin_filter_approved'),
-      Markup.button.callback('❌ Отклонены', 'admin_filter_rejected')
+      Markup.button.callback('❌ Отклоненные', 'admin_filter_rejected'),
+      Markup.button.callback('✅ Одобренные', 'admin_filter_approved')
     ]);
-    keyboard.push([Markup.button.callback('🔙 Назад', 'adminMenu')]);
+    keyboard.push([
+      Markup.button.callback('🔍 Прочие роли', 'admin_filter_other')
+    ]);
+    keyboard.push([
+      Markup.button.callback('🔍 Поиск пользователя', 'admin_search_user')
+    ]);
+    keyboard.push([
+      Markup.button.callback('🔄 Обновить', 'adminAllApplications'),
+      Markup.button.callback('🔙 Назад', 'adminMenu')
+    ]);
 
     await ctx.editMessageText(message, {
       parse_mode: 'HTML',
@@ -102,48 +137,94 @@ module.exports = Composer.action('adminAllApplications', async (ctx) => {
 
   } catch (error) {
     console.error('Error fetching all applications:', error);
-    await ctx.editMessageText(
-      '❌ <b>Ошибка при загрузке заявок</b>',
-      {
-        parse_mode: 'HTML',
-        ...Markup.inlineKeyboard([
-          [Markup.button.callback('🔙 Назад', 'adminMenu')]
-        ])
-      }
-    );
+    
+    let errorMessage = '❌ <b>Ошибка при загрузке заявок</b>\n\n';
+    errorMessage += `Техническая ошибка: ${error.message}`;
+    
+    await ctx.editMessageText(errorMessage, {
+      parse_mode: 'HTML',
+      ...Markup.inlineKeyboard([
+        [Markup.button.callback('🔙 Назад', 'adminMenu')]
+      ])
+    });
   }
 });
 
 // Handle status filters
-module.exports = Composer.action(/^admin_filter_(pending|interview|approved|rejected)$/g, async (ctx) => {
+const filterHandler = Composer.action(/^admin_filter_(prereg|pending|rejected|approved|other)$/g, async (ctx) => {
+  console.log('🎯 admin_filter action triggered!');
+  console.log('🎯 Callback data:', ctx.callbackQuery?.data);
+  console.log('🎯 User ID:', ctx.from?.id);
+  
   const status = ctx.callbackQuery.data.split('_')[2];
   try { await ctx.answerCbQuery(); } catch {}
   
   try {
-    const statusText = {
-      pending: 'Ожидают рассмотрения',
-      interview: 'На собеседовании',
-      approved: 'Одобрены',
-      rejected: 'Отклонены'
-    }[status];
+    let users;
+    let statusText;
+    let statusEmoji;
+    
+    switch (status) {
+      case 'prereg':
+        users = await knex('users')
+          .join('userRoles', 'users.id', 'userRoles.userId')
+          .where('userRoles.role', 'prereg')
+          .select('users.*')
+          .orderBy('users.id', 'desc')
+          .limit(5);
+        statusText = 'Предварительная регистрация';
+        statusEmoji = '📝';
+        break;
+        
+      case 'pending':
+        users = await knex('users')
+          .join('userRoles', 'users.id', 'userRoles.userId')
+          .where('userRoles.role', 'pending')
+          .select('users.*')
+          .orderBy('users.id', 'desc')
+          .limit(5);
+        statusText = 'Ожидают рассмотрения';
+        statusEmoji = '⏳';
+        break;
+        
+      case 'rejected':
+        users = await knex('users')
+          .join('userRoles', 'users.id', 'userRoles.userId')
+          .where('userRoles.role', 'rejected')
+          .select('users.*')
+          .orderBy('users.id', 'desc')
+          .limit(5);
+        statusText = 'Отклонены';
+        statusEmoji = '❌';
+        break;
+        
+      case 'approved':
+        users = await knex('users')
+          .join('userRoles', 'users.id', 'userRoles.userId')
+          .whereIn('userRoles.role', ['goblin', 'admin', 'adminPlus', 'super'])
+          .select('users.*')
+          .orderBy('users.id', 'desc')
+          .limit(5);
+        statusText = 'Одобрены';
+        statusEmoji = '✅';
+        break;
+        
+      case 'other':
+        users = await knex('users')
+          .join('userRoles', 'users.id', 'userRoles.userId')
+          .whereNotIn('userRoles.role', ['goblin', 'admin', 'adminPlus', 'super', 'rejected'])
+          .select('users.*')
+          .orderBy('users.id', 'desc')
+          .limit(5);
+        statusText = 'Прочие роли';
+        statusEmoji = '🔍';
+        break;
+    }
 
-    const statusEmoji = {
-      pending: '⏳',
-      interview: '📞',
-      approved: '✅',
-      rejected: '❌'
-    }[status];
-
-    // Get applications with specific status
-    const filteredApplications = await knex('applications')
-      .where({ status })
-      .orderBy('createdAt', 'desc')
-      .limit(20);
-
-    if (filteredApplications.length === 0) {
+    if (users.length === 0) {
       await ctx.editMessageText(
-        `${statusEmoji} <b>${statusText}</b>\n\n` +
-        `Нет заявок со статусом "${statusText}".`,
+        `📋 <b>${statusEmoji} ${statusText}</b>\n\n` +
+        'Нет пользователей в этой категории.',
         {
           parse_mode: 'HTML',
           ...Markup.inlineKeyboard([
@@ -154,49 +235,328 @@ module.exports = Composer.action(/^admin_filter_(pending|interview|approved|reje
       return;
     }
 
-    let message = `${statusEmoji} <b>${statusText}</b>\n\n`;
-    message += `📊 Найдено: <b>${filteredApplications.length}</b> заявок\n\n`;
+    let message = `📋 <b>${statusEmoji} ${statusText}</b>\n\n`;
+    message += `Найдено: <b>${users.length}</b> пользователей\n\n`;
+
+    for (const user of users) {
+      const firstName = user.firstName || 'Unknown';
+      const lastName = user.lastName || '';
+      const username = user.username ? `@${user.username}` : 'No username';
+      
+      message += `${statusEmoji} <b>${firstName} ${lastName}</b> (${username})\n`;
+      message += `   ID: ${user.id}\n\n`;
+    }
+
+    await ctx.editMessageText(message, {
+      parse_mode: 'HTML',
+      ...Markup.inlineKeyboard([
+        [Markup.button.callback('🔙 Назад к списку', 'adminAllApplications')]
+      ])
+    });
+
+  } catch (error) {
+    console.error('Error filtering applications:', error);
+    await ctx.editMessageText(
+      '❌ <b>Ошибка при фильтрации</b>\n\n' +
+      `Техническая ошибка: ${error.message}`,
+      {
+        parse_mode: 'HTML',
+        ...Markup.inlineKeyboard([
+          [Markup.button.callback('🔙 Назад к списку', 'adminAllApplications')]
+        ])
+      }
+    );
+  }
+});
+
+// Handle user search
+const searchHandler = Composer.action('admin_search_user', async (ctx) => {
+  console.log('🎯 admin_search_user action triggered!');
+  console.log('🎯 Callback data:', ctx.callbackQuery?.data);
+  console.log('🎯 User ID:', ctx.from?.id);
+  
+  try { await ctx.answerCbQuery(); } catch {}
+  
+  await ctx.editMessageText(
+    '🔍 <b>Поиск пользователя</b>\n\n' +
+    'Введите ID пользователя или username для поиска:\n\n' +
+    'Примеры:\n' +
+    '• <code>123456789</code> - поиск по ID\n' +
+    '• <code>username</code> - поиск по username\n' +
+    '• <code>@username</code> - поиск по username с @\n\n' +
+    'Отправьте сообщение с данными для поиска.',
+    {
+      parse_mode: 'HTML',
+      ...Markup.inlineKeyboard([
+        [Markup.button.callback('🔙 Назад к списку', 'adminAllApplications')]
+      ])
+    }
+  );
+});
+
+// Handle search results (this will be triggered by a message handler)
+const searchMessageHandler = Composer.hears(/^[0-9@a-zA-Z_]+$/, async (ctx, next) => {
+  // Skip if it's a command (starts with /)
+  if (ctx.message.text.startsWith('/')) {
+    return next();
+  }
+  
+  // Skip if user is not in search mode (you might want to add a session flag for this)
+  // For now, we'll be more restrictive and only handle specific search patterns
+  if (!ctx.message.text.match(/^[0-9@a-zA-Z_]{3,}$/)) {
+    return next();
+  }
+  // Only process if we're in search mode (you might want to add a session flag for this)
+  const searchQuery = ctx.message.text.trim();
+  
+  try {
+    let users = [];
+    
+    // Check if it's a numeric ID
+    if (/^\d+$/.test(searchQuery)) {
+      users = await knex('users')
+        .leftJoin('userRoles', 'users.id', 'userRoles.userId')
+        .where('users.id', searchQuery)
+        .select(
+          'users.id',
+          'users.username', 
+          'users.firstName',
+          'users.lastName',
+          knex.raw('ARRAY_AGG("userRoles".role) FILTER (WHERE "userRoles".role IS NOT NULL) as roles')
+        )
+        .groupBy('users.id', 'users.username', 'users.firstName', 'users.lastName');
+    } else {
+      // Search by username (with or without @)
+      const cleanUsername = searchQuery.replace('@', '');
+      users = await knex('users')
+        .leftJoin('userRoles', 'users.id', 'userRoles.userId')
+        .where('users.username', 'ilike', `%${cleanUsername}%`)
+        .select(
+          'users.id',
+          'users.username', 
+          'users.firstName',
+          'users.lastName',
+          knex.raw('ARRAY_AGG("userRoles".role) FILTER (WHERE "userRoles".role IS NOT NULL) as roles')
+        )
+        .groupBy('users.id', 'users.username', 'users.firstName', 'users.lastName')
+        .limit(10);
+    }
+
+    if (users.length === 0) {
+      await ctx.reply(
+        '❌ <b>Пользователь не найден</b>\n\n' +
+        `По запросу "${searchQuery}" ничего не найдено.`,
+        {
+          parse_mode: 'HTML',
+          ...Markup.inlineKeyboard([
+            [Markup.button.callback('🔙 Назад к списку', 'adminAllApplications')]
+          ])
+        }
+      );
+      return;
+    }
+
+    // Ensure roles are arrays and filter out null values
+    const processedUsers = users.map(user => ({
+      ...user,
+      roles: Array.isArray(user.roles) ? user.roles.filter(role => role !== null) : []
+    }));
+
+    let message = `🔍 <b>Результаты поиска: "${searchQuery}"</b>\n\n`;
+    message += `Найдено: <b>${processedUsers.length}</b> пользователей\n\n`;
 
     const keyboard = [];
 
-    for (const app of filteredApplications) {
-      const user = await knex('users').where({ id: app.userId }).first();
-      const username = user?.username || 'no-username';
-      const firstName = user?.firstName || app.firstName || 'Unknown';
-      const lastName = user?.lastName || app.lastName || '';
+    for (const user of processedUsers) {
+      const firstName = user.firstName || 'Unknown';
+      const lastName = user.lastName || '';
+      const username = user.username ? `@${user.username}` : 'No username';
       
-      message += `👤 <b>${firstName} ${lastName}</b>\n`;
-      message += `🆔 ID: <code>${app.userId}</code>\n`;
-      message += `👤 @${username}\n`;
-      message += `📅 ${new Date(app.createdAt).toLocaleDateString('ru-RU')}\n`;
-      if (app.updatedAt) {
-        message += `🔄 Обновлено: ${new Date(app.updatedAt).toLocaleDateString('ru-RU')}\n`;
-      }
-      message += `\n`;
+      let statusEmoji = '❓';
+      let statusText = 'Неизвестно';
       
-      // Add action buttons based on status
-      if (status === 'pending') {
-        keyboard.push([
-          Markup.button.callback(
-            `✅ Принять ${firstName}`,
-            `apply_admin_accept_${app.userId}`
-          ),
-          Markup.button.callback(
-            `❌ Отклонить ${firstName}`,
-            `apply_admin_deny_${app.userId}`
-          )
-        ]);
-      } else if (status === 'interview') {
-        keyboard.push([
-          Markup.button.callback(
-            `📞 Вызвать ${firstName}`,
-            `admin_call_interview_${app.userId}`
-          )
-        ]);
+      if (!user.roles || user.roles.length === 0) {
+        statusEmoji = '⏳';
+        statusText = 'Ожидает рассмотрения';
+      } else if (user.roles.includes('prereg')) {
+        statusEmoji = '📝';
+        statusText = 'Предварительная регистрация';
+      } else if (user.roles.includes('pending')) {
+        statusEmoji = '⏳';
+        statusText = 'Ожидает рассмотрения';
+      } else if (user.roles.includes('preapproved')) {
+        statusEmoji = '✅';
+        statusText = 'Принят к собеседованию';
+      } else if (user.roles.includes('rejected')) {
+        statusEmoji = '❌';
+        statusText = 'Отклонен';
+      } else if (user.roles.some(role => ['goblin', 'admin', 'adminPlus', 'super'].includes(role))) {
+        statusEmoji = '🎉';
+        statusText = 'Полностью одобрен';
+      } else {
+        statusEmoji = '🔍';
+        statusText = user.roles.join(', ');
       }
+      
+      message += `${statusEmoji} <b>${firstName} ${lastName}</b> (${username})\n`;
+      message += `   ID: ${user.id} | ${statusText}\n\n`;
+
+      // Add management buttons for each user
+        keyboard.push([
+        Markup.button.callback(`👤 Управление ${firstName}`, `admin_manage_user_${user.id}`)
+      ]);
     }
 
     keyboard.push([Markup.button.callback('🔙 Назад к списку', 'adminAllApplications')]);
+
+    await ctx.reply(message, {
+      parse_mode: 'HTML',
+      ...Markup.inlineKeyboard(keyboard)
+    });
+
+  } catch (error) {
+    console.error('Error searching users:', error);
+    await ctx.reply(
+      '❌ <b>Ошибка при поиске</b>\n\n' +
+      `Техническая ошибка: ${error.message}`,
+      {
+        parse_mode: 'HTML',
+        ...Markup.inlineKeyboard([
+          [Markup.button.callback('🔙 Назад к списку', 'adminAllApplications')]
+        ])
+      }
+    );
+  }
+});
+
+// Handle user management interface
+const userManagementHandler = Composer.action(/^admin_manage_user_(\d+)$/g, async (ctx) => {
+  const userId = ctx.callbackQuery.data.split('_')[3];
+  console.log('🎯 admin_manage_user action triggered!');
+  console.log('🎯 User ID to manage:', userId);
+  
+  try { await ctx.answerCbQuery(); } catch {}
+  
+  try {
+    // Get user details
+    const user = await knex('users')
+      .leftJoin('userRoles', 'users.id', 'userRoles.userId')
+      .where('users.id', userId)
+      .select(
+        'users.id',
+        'users.username', 
+        'users.firstName',
+        'users.lastName',
+        knex.raw('ARRAY_AGG("userRoles".role) FILTER (WHERE "userRoles".role IS NOT NULL) as roles')
+      )
+      .groupBy('users.id', 'users.username', 'users.firstName', 'users.lastName')
+      .first();
+
+    if (!user) {
+      await ctx.editMessageText(
+        '❌ <b>Пользователь не найден</b>\n\n' +
+        'Пользователь с указанным ID не существует.',
+        {
+          parse_mode: 'HTML',
+          ...Markup.inlineKeyboard([
+            [Markup.button.callback('🔙 Назад к поиску', 'admin_search_user')]
+          ])
+        }
+      );
+      return;
+    }
+
+    // Ensure roles are arrays and filter out null values
+    console.log('🔍 Raw user data from DB:', user);
+    console.log('🔍 user.roles type:', typeof user.roles);
+    console.log('🔍 user.roles value:', user.roles);
+    console.log('🔍 Array.isArray(user.roles):', Array.isArray(user.roles));
+    
+    const processedUser = {
+      ...user,
+      roles: Array.isArray(user.roles) ? user.roles.filter(role => role !== null) : []
+    };
+    
+    console.log('🔍 Processed user roles:', processedUser.roles);
+
+    const firstName = processedUser.firstName || 'Unknown';
+    const lastName = processedUser.lastName || '';
+    const username = processedUser.username ? `@${processedUser.username}` : 'No username';
+    
+    let statusEmoji = '❓';
+    let statusText = 'Неизвестно';
+    
+    if (!processedUser.roles || processedUser.roles.length === 0) {
+      statusEmoji = '⏳';
+      statusText = 'Ожидает рассмотрения';
+    } else if (processedUser.roles.includes('prereg')) {
+      statusEmoji = '📝';
+      statusText = 'Предварительная регистрация';
+    } else if (processedUser.roles.includes('pending')) {
+      statusEmoji = '⏳';
+      statusText = 'Ожидает рассмотрения';
+    } else if (processedUser.roles.includes('preapproved')) {
+      statusEmoji = '✅';
+      statusText = 'Предварительно одобрен';
+    } else if (processedUser.roles.includes('rejected')) {
+      statusEmoji = '❌';
+      statusText = 'Отклонен';
+    } else if (processedUser.roles.some(role => ['goblin', 'admin', 'adminPlus', 'super'].includes(role))) {
+      statusEmoji = '🎉';
+      statusText = 'Полностью одобрен';
+    } else {
+      statusEmoji = '🔍';
+      statusText = processedUser.roles.join(', ');
+    }
+
+    let message = `👤 <b>Управление пользователем</b>\n\n`;
+    message += `${statusEmoji} <b>${firstName} ${lastName}</b> (${username})\n`;
+    message += `ID: <code>${processedUser.id}</code>\n`;
+    message += `Статус: ${statusText}\n`;
+    message += `Роли: ${processedUser.roles && processedUser.roles.length > 0 ? processedUser.roles.join(', ') : 'Нет ролей'}\n\n`;
+    message += `Выберите действие:`;
+
+    const keyboard = [];
+
+    // Add action buttons based on current status
+    if (!processedUser.roles || processedUser.roles.length === 0) {
+      // Pending user - can approve or reject
+      keyboard.push([
+        Markup.button.callback('✅ Одобрить', `admin_approve_user_${userId}`),
+        Markup.button.callback('❌ Отклонить', `admin_reject_user_${userId}`)
+      ]);
+      keyboard.push([
+        Markup.button.callback('⭐ Супер одобрить', `admin_super_approve_user_${userId}`)
+      ]);
+    } else if (processedUser.roles.includes('preapproved')) {
+      // Preapproved user - can super approve or downgrade
+      keyboard.push([
+        Markup.button.callback('⭐ Супер одобрить', `admin_super_approve_user_${userId}`),
+        Markup.button.callback('⬇️ Понизить статус', `admin_downgrade_user_${userId}`)
+      ]);
+    } else if (processedUser.roles.includes('rejected')) {
+      // Rejected user - can approve or super approve
+      keyboard.push([
+        Markup.button.callback('✅ Одобрить', `admin_approve_user_${userId}`),
+        Markup.button.callback('⭐ Супер одобрить', `admin_super_approve_user_${userId}`)
+      ]);
+    } else if (processedUser.roles.some(role => ['goblin', 'admin', 'adminPlus', 'super'].includes(role))) {
+      // Already fully approved - can downgrade or ban
+      keyboard.push([
+        Markup.button.callback('⬇️ Понизить статус', `admin_downgrade_user_${userId}`),
+        Markup.button.callback('🚫 Забанить', `admin_ban_user_${userId}`)
+      ]);
+    }
+
+    // Always show ban and delete options
+    keyboard.push([
+      Markup.button.callback('🚫 Забанить', `admin_ban_user_${userId}`),
+      Markup.button.callback('🗑️ Удалить (DEBUG)', `admin_delete_user_${userId}`)
+    ]);
+
+    keyboard.push([
+      Markup.button.callback('🔙 Назад к поиску', 'admin_search_user')
+    ]);
 
     await ctx.editMessageText(message, {
       parse_mode: 'HTML',
@@ -204,15 +564,282 @@ module.exports = Composer.action(/^admin_filter_(pending|interview|approved|reje
     });
 
   } catch (error) {
-    console.error('Error filtering applications:', error);
+    console.error('Error managing user:', error);
     await ctx.editMessageText(
-      '❌ <b>Ошибка при фильтрации заявок</b>',
+      '❌ <b>Ошибка при загрузке пользователя</b>\n\n' +
+      `Техническая ошибка: ${error.message}`,
       {
         parse_mode: 'HTML',
         ...Markup.inlineKeyboard([
-          [Markup.button.callback('🔙 Назад', 'adminAllApplications')]
+          [Markup.button.callback('🔙 Назад к поиску', 'admin_search_user')]
         ])
       }
     );
   }
 });
+
+// Handle user actions
+const userActionHandler = Composer.action(/^admin_(approve|reject|super_approve|ban|delete|downgrade)_user_(\d+)$/g, async (ctx) => {
+  // Extract action and userId more robustly
+  const parts = ctx.callbackQuery.data.split('_');
+  let action, userId;
+  
+  if (parts[1] === 'super' && parts[2] === 'approve') {
+    action = 'super_approve';
+    userId = parts[4];
+  } else {
+    action = parts[1];
+    userId = parts[3];
+  }
+  
+  console.log(`🎯 admin_${action}_user action triggered!`);
+  console.log('🎯 Callback data:', ctx.callbackQuery.data);
+  console.log('🎯 Split result:', ctx.callbackQuery.data.split('_'));
+  console.log('🎯 User ID:', userId);
+  console.log('🎯 Action:', action);
+  
+  try { await ctx.answerCbQuery(); } catch {}
+  
+  // Validate userId
+  if (!userId || isNaN(Number(userId))) {
+    console.error('❌ Invalid userId:', userId);
+    await ctx.editMessageText('❌ Ошибка: неверный ID пользователя');
+    return;
+  }
+  
+  try {
+    // Get user details first
+    const user = await knex('users').where('id', Number(userId)).first();
+    if (!user) {
+      await ctx.editMessageText('❌ Пользователь не найден');
+      return;
+    }
+
+    const firstName = user.firstName || 'Unknown';
+    const username = user.username ? `@${user.username}` : 'No username';
+
+    switch (action) {
+      case 'approve':
+        // Remove rejected role if exists and add preapproved role
+        await knex('userRoles').where('userId', Number(userId)).where('role', 'rejected').del();
+        await knex('userRoles').insert({ userId: Number(userId), role: 'preapproved' }).onConflict(['userId', 'role']).ignore();
+        
+        // Generate natural code phrase
+        const codePhrase = `гоблин-${userId.toString().slice(-4)}`;
+        
+        // Send approval message to user
+        try {
+          await ctx.telegram.sendMessage(userId, 
+            '✅ <b>Заявка принята к рассмотрению</b>\n\n' +
+            `Твоя заявка была принята к рассмотрению. Для прохождения собеседования свяжись с ${process.env.TEST_ADMIN_USERNAME || '@test'} и используй кодовую фразу:\n\n` +
+            `<code>${codePhrase}</code>\n\n` +
+            'После собеседования будет принято окончательное решение о твоем участии в сообществе.',
+            {
+              parse_mode: 'HTML'
+            }
+          );
+        } catch (error) {
+          console.error(`Failed to send approval message to user ${userId}:`, error);
+        }
+        
+        await ctx.editMessageText(
+          `✅ <b>Пользователь принят к собеседованию</b>\n\n` +
+          `${firstName} (${username}) получил роль "preapproved"\n` +
+          `Кодовая фраза: <code>${codePhrase}</code>\n\n` +
+          `📨 Уведомление отправлено пользователю`,
+          {
+            parse_mode: 'HTML',
+            ...Markup.inlineKeyboard([
+              [Markup.button.callback('🔙 Назад к управлению', `admin_manage_user_${userId}`)]
+            ])
+          }
+        );
+        break;
+
+      case 'reject':
+        // Remove all roles and add rejected role
+        await knex('userRoles').where('userId', Number(userId)).del();
+        await knex('userRoles').insert({ userId: Number(userId), role: 'rejected' });
+        
+        // Send rejection message to user
+        try {
+          await ctx.telegram.sendMessage(userId, 
+            '❌ <b>Заявка отклонена</b>\n\n' +
+            'К сожалению, твоя заявка на участие в сообществе была отклонена.\n\n' +
+            'Если у тебя есть вопросы, можешь обратиться к администрации.\n\n' +
+            'Спасибо за понимание.',
+            {
+              parse_mode: 'HTML'
+            }
+          );
+        } catch (error) {
+          console.error(`Failed to send rejection message to user ${userId}:`, error);
+        }
+        
+        await ctx.editMessageText(
+          `❌ <b>Пользователь отклонен</b>\n\n` +
+          `${firstName} (${username}) получил роль "rejected"\n\n` +
+          `📨 Уведомление отправлено пользователю`,
+          {
+            parse_mode: 'HTML',
+            ...Markup.inlineKeyboard([
+              [Markup.button.callback('🔙 Назад к управлению', `admin_manage_user_${userId}`)]
+            ])
+          }
+        );
+        break;
+
+      case 'super_approve':
+        // Remove all roles and add goblin role
+        await knex('userRoles').where('userId', Number(userId)).del();
+        await knex('userRoles').insert({ userId: Number(userId), role: 'goblin' });
+        
+        // Send super approval message to user
+        try {
+          await ctx.telegram.sendMessage(userId, 
+            '🎉 <b>Заявка полностью одобрена!</b>\n\n' +
+            'Поздравляем! Твоя заявка была полностью одобрена.\n\n' +
+            'Теперь ты можешь пользоваться всеми возможностями бота через /start\n\n' +
+            'Добро пожаловать в сообщество!',
+            {
+              parse_mode: 'HTML'
+            }
+          );
+        } catch (error) {
+          console.error(`Failed to send super approval message to user ${userId}:`, error);
+        }
+        
+        await ctx.editMessageText(
+          `⭐ <b>Пользователь полностью одобрен</b>\n\n` +
+          `${firstName} (${username}) получил роль "goblin"\n\n` +
+          `📨 Уведомление отправлено пользователю`,
+          {
+            parse_mode: 'HTML',
+            ...Markup.inlineKeyboard([
+              [Markup.button.callback('🔙 Назад к управлению', `admin_manage_user_${userId}`)]
+            ])
+          }
+        );
+        break;
+
+      case 'ban':
+        // Add banned role
+        await knex('userRoles').insert({ userId: Number(userId), role: 'banned' }).onConflict(['userId', 'role']).ignore();
+        
+        // Send ban message to user
+        try {
+          await ctx.telegram.sendMessage(userId, 
+            '🚫 <b>Доступ ограничен</b>\n\n' +
+            'Твой доступ к боту был ограничен администрацией.\n\n' +
+            'Если у тебя есть вопросы, можешь обратиться к администрации.\n\n' +
+            'Спасибо за понимание.',
+            {
+              parse_mode: 'HTML'
+            }
+          );
+        } catch (error) {
+          console.error(`Failed to send ban message to user ${userId}:`, error);
+        }
+        
+        await ctx.editMessageText(
+          `🚫 <b>Пользователь забанен</b>\n\n` +
+          `${firstName} (${username}) получил роль "banned"\n\n` +
+          `📨 Уведомление отправлено пользователю`,
+          {
+            parse_mode: 'HTML',
+            ...Markup.inlineKeyboard([
+              [Markup.button.callback('🔙 Назад к управлению', `admin_manage_user_${userId}`)]
+            ])
+          }
+        );
+        break;
+
+      case 'delete':
+        // Delete user - CASCADE DELETE will handle all related records
+        console.log(`🗑️ Starting delete process for user ${userId}`);
+        
+        try {
+          const deletedCount = await knex('users').where('id', Number(userId)).del();
+          console.log(`🗑️ Deleted ${deletedCount} user record(s)`);
+          
+          if (deletedCount === 0) {
+            console.log(`❌ User ${userId} not found for deletion`);
+            await ctx.editMessageText(
+              `❌ <b>Пользователь не найден</b>\n\n` +
+              `Пользователь ${firstName} (${username}) не найден в системе.`,
+              {
+                parse_mode: 'HTML',
+                ...Markup.inlineKeyboard([
+                  [Markup.button.callback('🔙 Назад к управлению', `admin_manage_user_${userId}`)]
+                ])
+              }
+            );
+          } else {
+            console.log(`✅ User ${userId} successfully deleted with CASCADE`);
+            await ctx.editMessageText(
+              `🗑️ <b>Пользователь удален</b>\n\n` +
+              `${firstName} (${username}) полностью удален из системы\n\n` +
+              `Все связанные записи удалены автоматически.`,
+              {
+                parse_mode: 'HTML',
+                ...Markup.inlineKeyboard([
+                  [Markup.button.callback('🔙 Назад к поиску', 'admin_search_user')]
+                ])
+              }
+            );
+          }
+        } catch (error) {
+          console.error(`❌ Error deleting user ${userId}:`, error);
+          await ctx.editMessageText(
+            `❌ <b>Ошибка при удалении</b>\n\n` +
+            `Не удалось удалить пользователя ${firstName} (${username}).\n\n` +
+            `Ошибка: ${error.message}`,
+            {
+              parse_mode: 'HTML',
+              ...Markup.inlineKeyboard([
+                [Markup.button.callback('🔙 Назад к управлению', `admin_manage_user_${userId}`)]
+              ])
+            }
+          );
+        }
+        break;
+
+      case 'downgrade':
+        // Remove all roles (back to pending)
+        await knex('userRoles').where('userId', Number(userId)).del();
+        await ctx.editMessageText(
+          `⬇️ <b>Статус понижен</b>\n\n` +
+          `${firstName} (${username}) возвращен в статус "ожидает рассмотрения"`,
+          {
+            parse_mode: 'HTML',
+            ...Markup.inlineKeyboard([
+              [Markup.button.callback('🔙 Назад к управлению', `admin_manage_user_${userId}`)]
+            ])
+          }
+        );
+        break;
+    }
+
+  } catch (error) {
+    console.error(`Error performing ${action} on user:`, error);
+    await ctx.editMessageText(
+      `❌ <b>Ошибка при выполнении действия</b>\n\n` +
+      `Техническая ошибка: ${error.message}`,
+      {
+        parse_mode: 'HTML',
+        ...Markup.inlineKeyboard([
+          [Markup.button.callback('🔙 Назад к управлению', `admin_manage_user_${userId}`)]
+        ])
+      }
+    );
+  }
+});
+
+module.exports = Composer.compose([
+  allApplicationsHandler,
+  filterHandler,
+  searchHandler,
+  searchMessageHandler,
+  userManagementHandler,
+  userActionHandler
+]);

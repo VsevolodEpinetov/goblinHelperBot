@@ -7,12 +7,14 @@ console.log('📋 Environment check:');
 console.log('  - TOKEN exists:', !!process.env.TOKEN);
 console.log('  - TOKEN length:', process.env.TOKEN ? process.env.TOKEN.length : 0);
 console.log('  - Database config exists:', !!process.env.PGHOST);
+console.log('  - PAYMENT_TEST_MODE:', process.env.PAYMENT_TEST_MODE);
+console.log('  - REGULAR_PRICE:', process.env.REGULAR_PRICE);
+console.log('  - PLUS_PRICE:', process.env.PLUS_PRICE);
 
 const bot = new Telegraf(process.env.TOKEN)
 const SETTINGS = require('./settings.json')
 const path = require('path');
 const { t } = require('./modules/i18n');
-
 const util = require('./modules/util.js');
 //#endregion
 
@@ -28,27 +30,15 @@ bot.use(
   SESSIONS.CHANNELS_SESSION,
   SESSIONS.USER_SESSION,
   SESSIONS.CHAT_SESSION,
-  SESSIONS.LOTS_SESSION,
   SESSIONS.POLLS_SESSION
 )
-// Note: USERS_SESSION, MONTHS_SESSION, KICKSTARTERS_SESSION, SETTINGS_SESSION 
-// have been removed - now using PostgreSQL directly via helper functions
 //#endregion
 
-
-
-const replyToTheMessage = (ctx, message, replyToID) => {
-  ctx.replyWithHTML(message, {
-    reply_to_message_id: replyToID
-  }).catch((error) => {
-    console.log("Error! Couldn't reply to a message, just sending a message. Reason:")
-    console.log(error)
-    ctx.replyWithHTML(message)
-  })
-}
-
-const lotsScenes = util.getAllFilesFromFolder(path.join(__dirname, './modules/lots/scenes'))
-  .map(file => require(file));
+//#region Scenes
+// --------------------------------------------------------------------------
+// 2. Scenes (for multi-step interactions)
+// --------------------------------------------------------------------------
+// Lots system removed - replaced with raids
 
 const adminScenes = util.getAllFilesFromFolder(path.join(__dirname, './modules/admin/scenes'))
   .map(file => require(file));
@@ -56,109 +46,93 @@ const adminScenes = util.getAllFilesFromFolder(path.join(__dirname, './modules/a
 const usersScenes = util.getAllFilesFromFolder(path.join(__dirname, './modules/users/scenes'))
   .map(file => require(file));
 
-//#region Register Scenes, Init Stage
+const raidsScenes = util.getAllFilesFromFolder(path.join(__dirname, './modules/raids/scenes'))
+  .map(file => require(file));
+
 const stage = new Scenes.Stage([
-  ...lotsScenes,
   ...adminScenes,
-  ...usersScenes
+  ...usersScenes,
+  ...raidsScenes
 ]);
 bot.use(session());
 bot.use(stage.middleware());
-
-// Ignore banned users
-console.log('🔧 Loading banned middleware...');
-bot.use(require('./modules/middleware/banned'))
-
-// Track user interactions and update user data
-console.log('🔧 Loading userTracker middleware...');
-bot.use(require('./modules/middleware/userTracker'))
-
-// Add debug handlers BEFORE module loading to see if they get triggered
-console.log('🔧 Adding debug handlers...');
-bot.on('update', async (ctx) => {
-  console.log('🔄 Update received:', {
-    updateType: Object.keys(ctx.update)[0],
-    hasMessage: !!ctx.update.message,
-    hasCallbackQuery: !!ctx.update.callback_query,
-    messageText: ctx.update.message?.text,
-    isCommand: ctx.update.message?.text?.startsWith('/')
-  });
-});
-
-bot.command('start', async (ctx) => {
-  console.log('🎯 DEBUG: START command caught by debug handler!');
-  console.log('  - User ID:', ctx.from?.id);
-  console.log('  - Username:', ctx.from?.username);
-  console.log('  - Chat type:', ctx.chat?.type);
-});
-
-console.log('🔧 Loading modules...');
-console.log('📦 Loading lots module...');
-bot.use(require('./modules/lots'))
-console.log('📦 Loading polls module...');
-bot.use(require('./modules/polls'))
-console.log('📦 Loading indexator-creator module...');
-bot.use(require('./modules/indexator-creator'))
-console.log('📦 Loading payments module...');
-bot.use(require('./modules/payments'))
-console.log('📦 Loading admin module...');
-bot.use(require('./modules/admin'))
-// Admin helper actions for invite links
-console.log('📦 Loading inviteLinksMenu...');
-bot.use(require('./modules/admin/actions/users/inviteLinksMenu'))
-console.log('📦 Loading users module...');
-bot.use(require('./modules/users'))
-console.log('📦 Loading common module...');
-bot.use(require('./modules/common'))
 //#endregion
 
-// Handle user profile updates
-bot.on('message', async (ctx) => {
-  console.log('📨 Received message:', {
-    from: ctx.from?.id,
-    username: ctx.from?.username,
-    text: ctx.message?.text?.substring(0, 50),
-    chatType: ctx.chat?.type,
-    chatId: ctx.chat?.id,
-    isCommand: ctx.message?.text?.startsWith('/'),
-    commandName: ctx.message?.text?.startsWith('/') ? ctx.message.text.split(' ')[0] : null
-  });
-  // This will be handled by the userTracker middleware
-  // but we can add specific logic here if needed
-});
+//#region Middleware
+// --------------------------------------------------------------------------
+// 3. Middleware (in order of execution)
+// --------------------------------------------------------------------------
+console.log('🔧 Loading middleware...');
 
-// Add a catch-all handler for any updates
-bot.on('text', async (ctx) => {
-  console.log('📝 Text message received:', ctx.message.text);
-});
+// 3.1. Logging middleware (first - logs everything)
+console.log('📝 Loading logger middleware...');
+try {
+  const logger = require('./modules/middleware/logger');
+  console.log('📝 Logger middleware loaded successfully:', !!logger);
+  bot.use(logger);
+  console.log('📝 Logger middleware registered with bot');
+} catch (error) {
+  console.log('❌ Error loading logger middleware:', error);
+}
 
-bot.on('callback_query', async (ctx) => {
-  console.log('🔘 Callback query received:', ctx.callbackQuery.data);
-});
+// 3.2. Banned users middleware
+console.log('🚫 Loading banned middleware...');
+bot.use(require('./modules/middleware/banned'));
 
-bot.on('edited_message', async (ctx) => {
-  // This will be handled by the userTracker middleware
-  // but we can add specific logic here if needed
-});
+// 3.3. User tracking middleware
+console.log('👤 Loading userTracker middleware...');
+bot.use(require('./modules/middleware/userTracker'));
+//#endregion
 
-// Handle user profile updates and chat member updates
-bot.on('my_chat_member', async (ctx) => {
-  // This will be handled by the userTracker middleware
-  // but we can add specific logic here if needed
-});
+//#region Modules
+// --------------------------------------------------------------------------
+// 4. Modules (command and action handlers)
+// --------------------------------------------------------------------------
+console.log('🔧 Loading modules...');
 
-// Handle callback queries (button clicks, etc.)
-bot.on('callback_query', async (ctx) => {
-  // This will be handled by the userTracker middleware
-  // but we can add specific logic here if needed
-});
+// Temporarily commenting out other modules to test users module in isolation
+// Lots module removed - replaced with raids
 
-// Handle inline queries
-bot.on('inline_query', async (ctx) => {
-  // This will be handled by the userTracker middleware
-  // but we can add specific logic here if needed
-});
+// console.log('📦 Loading polls module...');
+// bot.use(require('./modules/polls'));
 
+// console.log('📦 Loading indexator-creator module...');
+// bot.use(require('./modules/indexator-creator'));
+
+console.log('📦 Loading payments module...');
+bot.use(require('./modules/payments'));
+
+console.log('📦 Loading common module...');
+bot.use(require('./modules/common'));
+
+console.log('📦 Loading users module...');
+const usersModule = require('./modules/users');
+console.log('📦 Users module loaded:', !!usersModule);
+bot.use(usersModule);
+console.log('📦 Users module registered with bot');
+
+console.log('📦 Loading raids module...');
+bot.use(require('./modules/raids'));
+
+console.log('📦 Loading admin module...');
+bot.use(require('./modules/admin'));
+
+// console.log('📦 Loading inviteLinksMenu...');
+// bot.use(require('./modules/admin/actions/users/inviteLinksMenu'));
+
+// Debug: Add a test handler to see if modules are being called
+bot.use(async (ctx, next) => {
+  console.log('🔧 Main bot: Processing update after all modules...');
+  return next();
+});
+//#endregion
+
+//#region Special Handlers
+// --------------------------------------------------------------------------
+// 5. Special handlers (not part of modules)
+// --------------------------------------------------------------------------
+
+// Chat join request handler
 bot.on('chat_join_request', async ctx => {
   const { getUser, findMonthByChatId, hasUserPurchasedMonth, incrementMonthCounter, getMonthChatId } = require('./modules/db/helpers');
   
@@ -183,8 +157,6 @@ bot.on('chat_join_request', async ctx => {
   const monthPurchased = await hasUserPurchasedMonth(ctx.from.id, year, month, type);
   const adminRole = type == 'plus' ? 'adminPlus' : 'admin';
   const isAppropriateAdmin = userInfo.roles.indexOf(adminRole) > -1;
-
-  // TODO: check bot's administrator rights
 
   if (monthPurchased || isAppropriateAdmin) {
     await ctx.approveChatJoinRequest(ctx.from.id);
@@ -230,34 +202,182 @@ bot.on('chat_join_request', async ctx => {
   } else {
     await ctx.telegram.sendMessage(SETTINGS.CHATS.LOGS, `🆘 ${userInfo.username != 'not_set' ? `@${userInfo.username}` : `${userInfo.first_name}`} (${ctx.from.id}) applied to the ${year}_${month}_${type} but was rejected`)
   }
-})
+});
 
+// Legacy payment format handler
 bot.hears(/^[яЯ]\s*оплатил(!)*$/g, async (ctx) => {
   if (ctx.message.chat.id < 0) return;
   ctx.reply(`Это старый формат, я уже работаю в новом. Пожалуйста, используй /start и работай через меню 🤗`)
-})
+});
 
+// Admin eval command
 bot.command('ex', ctx => {
   if (ctx.message.from.id != SETTINGS.CHATS.EPINETOV) {
     return;
   }
   ctx.deleteMessage();
   eval(ctx.message.text.split('/ex ')[1]);
-})
+});
 
-bot.catch((error) => {
+// Pre-checkout query handler (required for Telegram Stars)
+bot.on('pre_checkout_query', async (ctx) => {
+  try {
+    console.log('💳 Pre-checkout query received:', ctx.preCheckoutQuery);
+    
+    const payload = JSON.parse(ctx.preCheckoutQuery.invoice_payload);
+    
+    if (payload.type === 'subscription') {
+      const rpg = require('./configs/rpg');
+      const expectedPrice = payload.subscriptionType === 'plus' ? 
+        parseInt(rpg.prices.plusStars || process.env.PLUS_PRICE) : parseInt(rpg.prices.regularStars || process.env.REGULAR_PRICE);
+      if (ctx.preCheckoutQuery.total_amount < expectedPrice) {
+        console.error('Pre-checkout amount too low (subscription):', { expected: expectedPrice, received: ctx.preCheckoutQuery.total_amount, subscriptionType: payload.subscriptionType, currency: ctx.preCheckoutQuery.currency });
+        await ctx.answerPreCheckoutQuery(false, 'Payment amount too low');
+        return;
+      }
+      await ctx.answerPreCheckoutQuery(true);
+    } else if (payload.type === 'old_month') {
+      const rpg = require('./configs/rpg');
+      const expectedPrice = parseInt((rpg.prices.regularStars || process.env.REGULAR_PRICE)) * 3;
+      if (ctx.preCheckoutQuery.total_amount < expectedPrice) {
+        console.error('Pre-checkout amount too low (old_month):', { expected: expectedPrice, received: ctx.preCheckoutQuery.total_amount, currency: ctx.preCheckoutQuery.currency });
+        await ctx.answerPreCheckoutQuery(false, 'Payment amount too low');
+        return;
+      }
+      await ctx.answerPreCheckoutQuery(true);
+    } else {
+      await ctx.answerPreCheckoutQuery(false, 'Invalid payment type');
+      return;
+    }
+    const isTestMode = process.env.PAYMENT_TEST_MODE === 'true';
+    console.log('✅ Pre-checkout query approved for user:', ctx.from.id);
+    if (isTestMode) {
+      console.log('🧪 Test mode - payment will be simulated');
+    }
+    
+  } catch (error) {
+    console.error('❌ Error processing pre-checkout query:', error);
+    await ctx.answerPreCheckoutQuery(false, 'Payment processing error');
+  }
+});
+
+// Payment success handler
+bot.on('successful_payment', async (ctx) => {
+  try {
+    console.log('💰 Payment received:', ctx.message.successful_payment);
+    
+    const paymentData = ctx.message.successful_payment;
+    const payload = JSON.parse(paymentData.invoice_payload);
+    console.log('💰 Payment payload type:', payload.type);
+    
+    if (payload.type === 'subscription') {
+      const { processSubscriptionPayment } = require('./modules/payments/subscriptionPaymentService');
+      const { getUser } = require('./modules/db/helpers');
+      const { getUserMenu } = require('./modules/users/menuSystem');
+      const { Markup } = require('telegraf');
+      const result = await processSubscriptionPayment(ctx, paymentData);
+      if (!result.success) {
+        console.error('❌ Payment processing failed:', result.error);
+        await ctx.reply('❌ <b>Ошибка обработки платежа</b>\n\nПлатеж получен, но произошла ошибка при активации подписки.\nОбратись к администрации для решения проблемы.', { parse_mode: 'HTML' });
+        return;
+      }
+      const userData = await getUser(ctx.from.id);
+      if (!userData) {
+        await ctx.reply('❌ <b>Ошибка обновления данных</b>\n\nПлатеж обработан, но не удалось обновить твой профиль.\nПопробуй обновить меню.', { parse_mode: 'HTML' });
+        return;
+      }
+      const subscriptionType = result.subscriptionType === 'plus' ? '➕ Расширенная' : 'Обычная';
+      const isTestMode = process.env.PAYMENT_TEST_MODE === 'true';
+      const testModeText = isTestMode ? '\n\n🧪 <b>ТЕСТОВЫЙ РЕЖИМ</b> - Платеж был симулирован\n💡 <b>В тестовом режиме</b> - реальные деньги не списываются' : '';
+      const successMessage = `🎉 <b>ПЛАТЕЖ УСПЕШНО ОБРАБОТАН!</b>\n\n✅ <b>Подписка активирована</b>\n🔹 <b>Тип:</b> ${subscriptionType}\n📅 <b>Период:</b> ${result.period}\n💰 <b>Сумма:</b> ${paymentData.total_amount} звёзд${testModeText}`;
+      const menu = await getUserMenu(ctx, userData);
+      await ctx.reply(successMessage, { parse_mode: 'HTML', ...Markup.inlineKeyboard(menu.keyboard) });
+      return;
+    }
+    if (payload.type === 'old_month') {
+      const { processOldMonthPayment } = require('./modules/payments/oldMonthPaymentService');
+      const result = await processOldMonthPayment(ctx, paymentData);
+      if (!result.success) {
+        console.error('❌ Old month payment failed:', result.error);
+        await ctx.reply('❌ Ошибка обработки покупки старого месяца');
+      } else {
+        await ctx.reply(`✅ Доступ к месяцу ${result.period} выдан`);
+      }
+      return;
+    }
+    
+    
+  } catch (error) {
+    console.error('❌ Error processing payment success:', error);
+    await ctx.reply(
+      '❌ <b>Произошла ошибка</b>\n\n' +
+      'Платеж получен, но произошла ошибка при обработке.\n' +
+      'Обратись к администрации.',
+      { parse_mode: 'HTML' }
+    );
+  }
+});
+
+// Fallback: some clients deliver successful payment as a message event
+bot.on('message', async (ctx) => {
+  try {
+    const sp = ctx.message?.successful_payment;
+    if (!sp) return;
+    console.log('💰 Fallback handler: Payment received (message):', sp);
+    const payload = JSON.parse(sp.invoice_payload);
+    console.log('💰 Fallback payload type:', payload.type);
+    if (payload.type === 'subscription') {
+      const { processSubscriptionPayment } = require('./modules/payments/subscriptionPaymentService');
+      const result = await processSubscriptionPayment(ctx, sp);
+      if (!result.success) console.error('❌ Fallback: subscription processing failed:', result.error);
+      return;
+    }
+    if (payload.type === 'old_month') {
+      const { processOldMonthPayment } = require('./modules/payments/oldMonthPaymentService');
+      const result = await processOldMonthPayment(ctx, sp);
+      if (!result.success) console.error('❌ Fallback: old month processing failed:', result.error);
+      return;
+    }
+  } catch (e) {
+    console.error('❌ Fallback payment handler error:', e);
+  }
+});
+//#endregion
+
+//#region Error Handling
+// --------------------------------------------------------------------------
+// 6. Error handling
+// --------------------------------------------------------------------------
+bot.catch((error, ctx) => {
   console.log('❌ Bot error caught:', error);
   console.log('❌ Error stack:', error.stack);
-})
+  console.log('❌ Error context:', {
+    updateType: Object.keys(ctx.update).filter(key => key !== 'update_id')[0],
+    userId: ctx.from?.id,
+    chatId: ctx.chat?.id,
+    messageText: ctx.message?.text
+  });
+  
+  // Try to send error message to user if possible
+  if (ctx.reply) {
+    ctx.reply('Произошла ошибка. Попробуйте позже.').catch(e => 
+      console.log('Failed to send error message to user:', e)
+    );
+  }
+});
+//#endregion
 
+//#region Launch
 // --------------------------------------------------------------------------
-// 4. Service
+// 7. Bot launch
 // --------------------------------------------------------------------------
 console.log('🚀 Launching bot...');
 bot.launch({ dropPendingUpdates: true })
   .then(() => {
     console.log('✅ Bot launched successfully!');
     console.log('🤖 Bot info:', bot.botInfo);
+    // expose bot for RPG notifications
+    globalThis.__bot = bot;
   })
   .catch((error) => {
     console.log('❌ Failed to launch bot:', error);
@@ -272,3 +392,4 @@ process.once('SIGTERM', () => {
   console.log('🛑 Received SIGTERM, stopping bot...');
   bot.stop('SIGTERM')
 })
+//#endregion

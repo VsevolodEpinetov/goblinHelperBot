@@ -66,6 +66,27 @@ composer.on('message', async (ctx, next) => {
   const userId = ctx.from && ctx.from.id;
   if (!userId) return;
 
+  // NEW: Route JSON payloads (new payment flows) to dedicated processors
+  try {
+    if (payload && typeof payload === 'string' && payload.trim().startsWith('{')) {
+      const parsed = JSON.parse(payload);
+      if (parsed && parsed.type === 'subscription') {
+        console.log('💰 stars.js: routing JSON subscription payment');
+        const { processSubscriptionPayment } = require('./subscriptionPaymentService');
+        await processSubscriptionPayment(ctx, sp);
+        return; // prevent legacy handler
+      }
+      if (parsed && parsed.type === 'old_month') {
+        console.log('💰 stars.js: routing JSON old_month payment');
+        const { processOldMonthPayment } = require('./oldMonthPaymentService');
+        await processOldMonthPayment(ctx, sp);
+        return; // prevent legacy handler
+      }
+    }
+  } catch (e) {
+    console.log('stars.js: JSON payload parse/routing error, falling back to legacy flow', e.message);
+  }
+
   let tier = 'regular';
   if (payload.includes('plus')) tier = 'plus';
   const periodMatch = payload.match(/_(\d{4}_\d{2})$/);

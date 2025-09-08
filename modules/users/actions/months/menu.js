@@ -1,6 +1,7 @@
 const { Composer, Markup } = require("telegraf");
 const util = require('../../../util');
 const { getUser } = require('../../../db/helpers');
+const { t } = require('../../../i18n');
 
 module.exports = Composer.action('userMonths', async (ctx) => {
   const userData = await getUser(ctx.callbackQuery.from.id);
@@ -15,44 +16,35 @@ module.exports = Composer.action('userMonths', async (ctx) => {
   const totalPlus = userData.purchases.groups.plus.length;
   const upcomingMonths = 3; // Show next 3 months
   
-  const monthsMessage = `📅 <b>УПРАВЛЕНИЕ ПОДПИСКАМИ</b>\n\n` +
-    `🎯 <b>Текущий статус:</b>\n` +
-    `• <b>Месяц:</b> ${ctx.globalSession.current.year}-${ctx.globalSession.current.month}\n` +
-    `• <b>Обычная подписка:</b> ${hasCurrentMonth ? '✅ Активна' : '❌ Не активна'}\n` +
-    `• <b>➕ Подписка:</b> ${hasCurrentPlus ? '✅ Активна' : '❌ Не активна'}\n\n` +
-    `📊 <b>Статистика подписок:</b>\n` +
-    `• <b>Всего месяцев:</b> ${totalMonths}\n` +
-    `• <b>➕ месяцев:</b> ${totalPlus}\n` +
-    `• <b>Процент ➕:</b> ${totalMonths > 0 ? Math.round((totalPlus / totalMonths) * 100) : 0}%\n\n` +
-    `🔮 <b>Планирование:</b>\n` +
-    `• <b>Следующие месяцы:</b> ${upcomingMonths} доступно для покупки\n` +
-    `• <b>Рекомендуется:</b> ${!hasCurrentMonth ? 'Оплатить текущий месяц' : !hasCurrentPlus ? 'Добавить ➕ к текущему месяцу' : 'Планировать будущие месяцы'}`;
+  const intro = t('messages.months.title');
+  const status = t('messages.months.status', {
+    year: ctx.globalSession.current.year,
+    month: ctx.globalSession.current.month,
+    regular: hasCurrentMonth ? '✅ Активна' : '❌ Нет',
+    plus: hasCurrentPlus ? '✅ Активна' : '❌ Нет'
+  });
+  const stats = t('messages.months.stats', {
+    total: totalMonths,
+    plus: totalPlus,
+    ratio: totalMonths > 0 ? Math.round((totalPlus / totalMonths) * 100) : 0
+  });
+  const rec = !hasCurrentMonth ? t('messages.months.payNow') : !hasCurrentPlus ? t('messages.months.addPlus') : 'Планировать будущие месяцы';
+  const plan = t('messages.months.plan', { upcoming: upcomingMonths, recommendation: rec });
+  const monthsMessage = `${intro}\n\n${status}\n\n${stats}\n\n${plan}`;
 
   const monthsKeyboard = [];
   
   // Primary actions based on current status
-  if (!hasCurrentMonth) {
-    monthsKeyboard.push([Markup.button.callback('💳 Оплатить текущий месяц', 'sendPayment_currentMonth')]);
-  } else if (!hasCurrentPlus) {
-    monthsKeyboard.push([Markup.button.callback('⭐ Добавить ➕ к месяцу', 'addPlusToCurrentMonth')]);
-  }
+  if (!hasCurrentMonth) monthsKeyboard.push([Markup.button.callback(t('messages.months.payNow'), 'sendPayment_currentMonth')]);
+  else if (!hasCurrentPlus) monthsKeyboard.push([Markup.button.callback(t('messages.months.addPlus'), 'addPlusToCurrentMonth')]);
   
   // Standard actions
-  monthsKeyboard.push([
-    Markup.button.callback('📋 История подписок', 'subscriptionHistory'),
-    Markup.button.callback('🔮 Планирование', 'subscriptionPlanning')
-  ]);
+  monthsKeyboard.push([Markup.button.callback(t('messages.months.history'), 'subscriptionHistory'), Markup.button.callback(t('messages.months.planning'), 'subscriptionPlanning')]);
   
-  monthsKeyboard.push([
-    Markup.button.callback('💰 Управление балансом', 'userBalanceTickets'),
-    Markup.button.callback('📊 Статистика', 'userStats')
-  ]);
+  monthsKeyboard.push([Markup.button.callback(t('messages.months.statsBtn'), 'userStats')]);
   
   // Navigation
-  monthsKeyboard.push([
-    Markup.button.callback('🔙 Назад в меню', 'userMenu'),
-    Markup.button.callback('🏠 В главное меню', 'userMenu')
-  ]);
+  monthsKeyboard.push([Markup.button.callback(t('messages.months.back'), 'userMenu'), Markup.button.callback(t('messages.months.home'), 'userMenu')]);
 
   await ctx.editMessageText(monthsMessage, {
     parse_mode: 'HTML',

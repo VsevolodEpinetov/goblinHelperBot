@@ -3,32 +3,22 @@ const util = require('../../util');
 const { t } = require('../../../modules/i18n');
 
 module.exports = Composer.action('contactSupport', async (ctx) => {
-  const supportMessage = `💬 <b>ПОДДЕРЖКА И КОНТАКТЫ</b>\n\n` +
-    `🤝 <b>Как получить помощь:</b>\n\n` +
-    `📧 <b>Email поддержка:</b>\n` +
-    `support@goblinhelper.com\n\n` +
-    `💬 <b>Telegram чат:</b>\n` +
-    `@goblin_support\n\n` +
-    `📱 <b>Администраторы:</b>\n` +
-    `@epinetov - главный администратор\n` +
-    `@ann_admin - администратор\n\n` +
-    `⏰ <b>Время работы поддержки:</b>\n` +
-    `Пн-Пт: 9:00-18:00 (МСК)\n` +
-    `Сб-Вс: 10:00-16:00 (МСК)\n\n` +
-    `💡 <b>Часто задаваемые вопросы:</b>\n` +
-    `• Как пополнить баланс?\n` +
-    `• Как получить билетики?\n` +
-    `• Проблемы с доступом\n` +
-    `• Технические вопросы`;
+  const supportMessage = `${t('support.title')}\n\n` +
+    `${t('support.how')}\n\n` +
+    `${t('support.emailTitle')}\n${t('support.emailValue')}\n\n` +
+    `${t('support.tgTitle')}\n${t('support.tgValue')}\n\n` +
+    `${t('support.adminsTitle')}\n${t('support.adminList')}\n\n` +
+    `${t('support.hoursTitle')}\n${t('support.hoursValue')}\n\n` +
+    `${t('support.faqTitle')}\n${t('support.faqTopics')}`;
 
   const supportKeyboard = [
     [
-      Markup.button.callback('❓ FAQ', 'showFAQ'),
-      Markup.button.callback('📧 Написать в поддержку', 'writeToSupport')
+      Markup.button.callback(t('support.buttons.faq'), 'showFAQ'),
+      Markup.button.callback(t('support.buttons.write'), 'writeToSupport')
     ],
     [
-      Markup.button.callback('🔙 Назад', 'guestStart'),
-      Markup.button.callback('🏠 В начало', 'guestStart')
+      Markup.button.callback(t('support.buttons.back'), 'guestStart'),
+      Markup.button.callback(t('support.buttons.home'), 'guestStart')
     ]
   ];
 

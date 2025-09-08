@@ -7,15 +7,19 @@ module.exports = Composer.action('adminPendingApplications', async (ctx) => {
   try { await ctx.answerCbQuery(); } catch {}
   
   try {
-    // Get all applications with 'interview' status
-    const pendingApplications = await knex('applications')
-      .where({ status: 'interview' })
-      .orderBy('createdAt', 'desc');
+    // Get users without any roles (pending applications)
+    const pendingUsers = await knex('users')
+      .leftJoin('userRoles', 'users.id', 'userRoles.userId')
+      .whereNull('userRoles.role')
+      .orWhere('userRoles.role', '')
+      .select('users.*')
+      .orderBy('users.id', 'desc')
+      .limit(5);
 
-    if (pendingApplications.length === 0) {
+    if (pendingUsers.length === 0) {
       await ctx.editMessageText(
-        '📋 <b>Заявки на собеседование</b>\n\n' +
-        'Нет заявок, ожидающих собеседования.',
+        '📋 <b>Новые заявки</b>\n\n' +
+        'Нет новых заявок, ожидающих рассмотрения.',
         {
           parse_mode: 'HTML',
           ...Markup.inlineKeyboard([
@@ -26,28 +30,37 @@ module.exports = Composer.action('adminPendingApplications', async (ctx) => {
       return;
     }
 
-    let message = '📋 <b>Заявки на собеседование</b>\n\n';
+    let message = '📋 <b>Новые заявки</b>\n\n';
+    message += `Найдено: <b>${pendingUsers.length}</b> новых заявок\n\n`;
+
     const keyboard = [];
 
-    for (const app of pendingApplications) {
-      const user = await knex('users').where({ id: app.userId }).first();
-      const username = user?.username || 'no-username';
-      const firstName = user?.firstName || app.firstName || 'Unknown';
-      const lastName = user?.lastName || app.lastName || '';
+    for (const user of pendingUsers) {
+      const firstName = user.firstName || 'Unknown';
+      const lastName = user.lastName || '';
+      const username = user.username ? `@${user.username}` : 'No username';
       
-      message += `👤 <b>${firstName} ${lastName}</b>\n`;
-      message += `🆔 ID: <code>${app.userId}</code>\n`;
-      message += `👤 @${username}\n`;
-      message += `📅 ${new Date(app.createdAt).toLocaleDateString('ru-RU')}\n\n`;
-      
+      message += `⏳ <b>${firstName} ${lastName}</b> (${username})\n`;
+      message += `   ID: ${user.id}\n\n`;
+
+      // Add action buttons for each user
       keyboard.push([
         Markup.button.callback(
-          `📞 Вызвать ${firstName}`,
-          `admin_call_interview_${app.userId}`
+          `✅ Принять ${firstName}`,
+          `apply_admin_accept_${user.id}`
+        ),
+        Markup.button.callback(
+          `❌ Отклонить ${firstName}`,
+          `apply_admin_deny_${user.id}`
         )
       ]);
     }
 
+    // Add navigation buttons
+    keyboard.push([
+      Markup.button.callback('🔄 Обновить', 'adminPendingApplications'),
+      Markup.button.callback('📊 Все заявки', 'adminAllApplications')
+    ]);
     keyboard.push([Markup.button.callback('🔙 Назад', 'adminMenu')]);
 
     await ctx.editMessageText(message, {
@@ -57,56 +70,15 @@ module.exports = Composer.action('adminPendingApplications', async (ctx) => {
 
   } catch (error) {
     console.error('Error fetching pending applications:', error);
-    await ctx.editMessageText(
-      '❌ <b>Ошибка при загрузке заявок</b>',
-      {
-        parse_mode: 'HTML',
-        ...Markup.inlineKeyboard([
-          [Markup.button.callback('🔙 Назад', 'adminMenu')]
-        ])
-      }
-    );
-  }
-});
-
-// Handle calling a user for interview
-module.exports = Composer.action(/^admin_call_interview_\d+$/g, async (ctx) => {
-  const userId = ctx.callbackQuery.data.split('_').pop();
-  try { await ctx.answerCbQuery(); } catch {}
-  
-  try {
-    const user = await knex('users').where({ id: Number(userId) }).first();
-    const application = await knex('applications').where({ userId: Number(userId) }).first();
     
-    if (!user || !application) {
-      await ctx.replyWithHTML('❌ Пользователь или заявка не найдены');
-      return;
-    }
-
-    const username = user.username || 'no-username';
-    const firstName = user.firstName || application.firstName || 'Unknown';
-    const lastName = user.lastName || application.lastName || '';
-
-    const interviewMessage = `📞 <b>Собеседование с кандидатом</b>\n\n` +
-      `👤 <b>Кандидат:</b> ${firstName} ${lastName}\n` +
-      `🆔 <b>ID:</b> <code>${userId}</code>\n` +
-      `👤 <b>Username:</b> @${username}\n` +
-      `📅 <b>Дата заявки:</b> ${new Date(application.createdAt).toLocaleDateString('ru-RU')}\n\n` +
-      `💬 <b>Проведите собеседование и выберите решение:</b>`;
-
-    await ctx.editMessageText(interviewMessage, {
+    let errorMessage = '❌ <b>Ошибка при загрузке заявок</b>\n\n';
+    errorMessage += `Техническая ошибка: ${error.message}`;
+    
+    await ctx.editMessageText(errorMessage, {
       parse_mode: 'HTML',
       ...Markup.inlineKeyboard([
-        [
-          Markup.button.callback('✅ Принять', `admin_final_approve_${userId}`),
-          Markup.button.callback('❌ Отклонить', `admin_final_deny_${userId}`)
-        ],
-        [Markup.button.callback('🔙 Назад к списку', 'adminPendingApplications')]
+        [Markup.button.callback('🔙 Назад', 'adminMenu')]
       ])
     });
-
-  } catch (error) {
-    console.error('Error calling user for interview:', error);
-    await ctx.replyWithHTML('❌ Ошибка при вызове пользователя');
   }
 });

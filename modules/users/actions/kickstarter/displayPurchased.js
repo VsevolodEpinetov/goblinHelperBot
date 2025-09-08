@@ -1,4 +1,5 @@
 const { Composer, Markup } = require("telegraf");
+const { t } = require('../../../../modules/i18n');
 const util = require('../../../util');
 const SETTINGS = require('../../../../settings.json');
 
@@ -9,7 +10,7 @@ module.exports = Composer.action('showPurchasedKickstarters', async (ctx) => {
   const purchasedKickstarters = userData.purchases.kickstarters;
 
   let menu = [];
-  let message = `<b>Мои покупки</b>\n\n`
+  let message = t('kickstarters.purchased.title') + '\n\n'
 
   purchasedKickstarters.forEach((ksId, id) => {
     menu.push(Markup.button.callback(id + 1, `sendFilesKickstarter_${userId}_${ksId}`))
@@ -18,14 +19,14 @@ module.exports = Composer.action('showPurchasedKickstarters', async (ctx) => {
 
   menu = util.splitMenu(menu)
 
-  message += `\n<i>Нажми на кнопку, чтобы получить файлы</i>`;
+  message += t('kickstarters.purchased.clickToGet');
   
   ctx.editMessageText(message, {
     parse_mode: "HTML",
     ...Markup.inlineKeyboard([
       ...menu,
       [
-        Markup.button.callback('🏠', 'userMenu')
+        Markup.button.callback(t('buttons.homeIcon'), 'userMenu')
       ]
     ])
   })

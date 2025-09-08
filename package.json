@@ -1,7 +1,8 @@
 {
   "scripts": {
     "start": "node index.js",
-    "dev": "node indexf.js",
+    "dev": "nodemon index.js",
+    "dev:old": "node indexf.js",
     "migrate": "knex migrate:latest",
     "migrate:rollback": "knex migrate:rollback",
     "seed": "knex seed:run",
@@ -18,7 +19,7 @@
     "axios": "^1.4.0",
     "canvas": "^3.1.2",
     "dayjs": "^1.11.7",
-    "dotenv": "^16.0.3",
+    "dotenv": "^16.6.1",
     "form-data": "^4.0.0",
     "knex": "^3.1.0",
     "pg": "^8.13.1",
@@ -26,5 +27,8 @@
     "telegraf-session-redis-upd": "^5.1.4",
     "telegraf-throttler": "^0.6.0",
     "yandex-disk": "^0.0.8"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
   }
 }

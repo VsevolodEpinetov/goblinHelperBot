@@ -25,7 +25,7 @@ module.exports = Composer.action('userBalanceTickets', async (ctx) => {
     ],
     [
       Markup.button.callback('📊 История операций', 'transactionHistory'),
-      Markup.button.callback('🔙 Назад', 'userMenu')
+      Markup.button.callback(require('../../../modules/i18n').t('messages.back'), 'userMenu')
     ]
   ];
 

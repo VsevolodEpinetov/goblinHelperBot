@@ -1,4 +1,5 @@
 const { Composer, Markup } = require("telegraf");
+const { t } = require('../../../../modules/i18n');
 const util = require('../../../util');
 const SETTINGS = require('../../../../settings.json');
 
@@ -18,14 +19,14 @@ module.exports = Composer.action(/^showKickstarterFromGoblin_/g, async (ctx) => 
   }
 
   let buttons = [
-    Markup.button.callback('Купить', `sendPayment`)
+    Markup.button.callback(t('kickstarters.single.buy'), `sendPayment`)
   ];
 
   if (tickets > 0 && projectData.cost < 500) {
     buttons = [
       [
-        Markup.button.callback('Купить', `sendPayment`),
-        Markup.button.callback(`Купить за 🎟`, `getKickstarterForTicket_${userId}_${projectID}`)
+        Markup.button.callback(t('kickstarters.single.buy'), `sendPayment`),
+        Markup.button.callback(t('kickstarters.single.buyForTicket'), `getKickstarterForTicket_${userId}_${projectID}`)
       ]
     ]
   }
@@ -33,12 +34,12 @@ module.exports = Composer.action(/^showKickstarterFromGoblin_/g, async (ctx) => 
   if (util.isSuperUser(ctx.callbackQuery.from.id)) {
     buttons = [
       [
-        Markup.button.callback('✍️', `editKickstarter_${projectID}`),
-        Markup.button.callback('🗑', `deleteKickstarter_${projectID}`),
-        Markup.button.callback('Купить', `sendPayment`),
+        Markup.button.callback(t('kickstarters.single.admin.edit'), `editKickstarter_${projectID}`),
+        Markup.button.callback(t('kickstarters.single.admin.delete'), `deleteKickstarter_${projectID}`),
+        Markup.button.callback(t('kickstarters.single.admin.buy'), `sendPayment`),
       ],
       [
-        Markup.button.callback('В начало', `adminMenu`),
+        Markup.button.callback(t('kickstarters.single.admin.home'), `adminMenu`),
       ]
     ]
   }
@@ -47,7 +48,15 @@ module.exports = Composer.action(/^showKickstarterFromGoblin_/g, async (ctx) => 
   if (projectData.photos.length > 0) {
 
     await ctx.telegram.sendPhoto(userId, projectData.photos[0], {
-      caption: `${projectData.link}\n\n<b>Название:</b> ${projectData.name}\n<b>Автор:</b> ${projectData.creator}\n<b>Пледж:</b> ${projectData.pledgeName}\n<b>Оригинальная стоимость:</b> $${projectData.pledgeCost}\n\n<b>Количество файлов:</b> ${projectData.files.length}\n\n<b>Стоимость:</b> ${projectData.cost}₽`,
+      caption: t('kickstarters.single.caption', {
+        link: projectData.link,
+        name: projectData.name,
+        creator: projectData.creator,
+        pledgeName: projectData.pledgeName,
+        pledgeCost: projectData.pledgeCost,
+        files: projectData.files.length,
+        cost: projectData.cost
+      }),
       parse_mode: 'HTML',
       ...Markup.inlineKeyboard(buttons)
     });
