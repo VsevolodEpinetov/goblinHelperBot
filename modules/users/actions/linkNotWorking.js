@@ -24,7 +24,7 @@ module.exports = Composer.action('linkNotWorking', async (ctx) => {
     // Record notification request
     await requestLinkNotification(userData.id, userGroup.groupPeriod, userGroup.groupType);
 
-    // Send notification to EPINETOV
+    // Send notification to EPINETOV and GLAVGOBLIN
     const userName = userData.username ? `@${userData.username}` : 
                     (userData.first_name ? `${userData.first_name} ${userData.last_name || ''}`.trim() : `User ${userData.id}`);
     
@@ -41,10 +41,18 @@ module.exports = Composer.action('linkNotWorking', async (ctx) => {
     ];
 
     try {
+      // Send to EPINETOV
       await ctx.telegram.sendMessage(SETTINGS.CHATS.EPINETOV, adminMessage, {
         parse_mode: 'HTML',
         ...Markup.inlineKeyboard(adminKeyboard)
       });
+      
+      // Send to GLAVGOBLIN
+      await ctx.telegram.sendMessage(SETTINGS.CHATS.GLAVGOBLIN, adminMessage, {
+        parse_mode: 'HTML',
+        ...Markup.inlineKeyboard(adminKeyboard)
+      });
+      
       console.log(`📧 Link issue reported by user ${userData.id} for ${userGroup.groupPeriod}_${userGroup.groupType}`);
     } catch (error) {
       console.error('Failed to send admin notification:', error);

@@ -89,7 +89,7 @@ function formatRaidData(raidData) {
 // Check if user is authorized to manage raid
 function isUserAuthorizedToManage(ctx, raidData) {
   const userID = ctx.from.id;
-  return userID === raidData.whoCreated?.id || userID === SETTINGS.CHATS.EPINETOV;
+  return userID === raidData.whoCreated?.id || userID === SETTINGS.CHATS.EPINETOV || userID === SETTINGS.CHATS.GLAVGOBLIN;
 }
 
 // Generate raid display message

@@ -90,6 +90,7 @@ sceneSendPayment.on(['photo', 'document'], async (ctx) => {
 
   const currentTimestamp = Date.now();
 
+  // Send to EPINETOV
   const newCtx1 = await ctx.telegram.sendMessage(SETTINGS.CHATS.EPINETOV, '-----------');
   const newCtx2 = await ctx.telegram.forwardMessage(SETTINGS.CHATS.EPINETOV, ctx.message.from.id, ctx.message.message_id);
   const newCtx3 = await  ctx.telegram.sendMessage(SETTINGS.CHATS.EPINETOV, message, {
@@ -103,9 +104,25 @@ sceneSendPayment.on(['photo', 'document'], async (ctx) => {
   })
   const newCtx4 = await ctx.telegram.sendMessage(SETTINGS.CHATS.EPINETOV, '-----------');
 
+  // Send to GLAVGOBLIN
+  const glavCtx1 = await ctx.telegram.sendMessage(SETTINGS.CHATS.GLAVGOBLIN, '-----------');
+  const glavCtx2 = await ctx.telegram.forwardMessage(SETTINGS.CHATS.GLAVGOBLIN, ctx.message.from.id, ctx.message.message_id);
+  const glavCtx3 = await  ctx.telegram.sendMessage(SETTINGS.CHATS.GLAVGOBLIN, message, {
+    parse_mode: "HTML",
+    ...Markup.inlineKeyboard([
+      ...menu,
+      [
+        Markup.button.callback('❌ Закончить', `finishAdminPayment_${userId}-${currentTimestamp}`)
+      ]
+    ]),
+  })
+  const glavCtx4 = await ctx.telegram.sendMessage(SETTINGS.CHATS.GLAVGOBLIN, '-----------');
+
   if (!ctx.globalSession.toRemove) ctx.globalSession.toRemove = {}
   if (!ctx.globalSession.toRemove[SETTINGS.CHATS.EPINETOV]) ctx.globalSession.toRemove[SETTINGS.CHATS.EPINETOV] = {}
+  if (!ctx.globalSession.toRemove[SETTINGS.CHATS.GLAVGOBLIN]) ctx.globalSession.toRemove[SETTINGS.CHATS.GLAVGOBLIN] = {}
   ctx.globalSession.toRemove[SETTINGS.CHATS.EPINETOV][`${userId}-${currentTimestamp}`] = [newCtx1.message_id, newCtx2.message_id, newCtx3.message_id, newCtx4.message_id]
+  ctx.globalSession.toRemove[SETTINGS.CHATS.GLAVGOBLIN][`${userId}-${currentTimestamp}`] = [glavCtx1.message_id, glavCtx2.message_id, glavCtx3.message_id, glavCtx4.message_id]
 
   await ctx.deleteMessage(ctx.message.message_id);
   ctx.replyWithHTML(`Твоя оплата была отправлена на проверку. Ожидай подтверждения, обычно это происходит в течение 24 часов`)

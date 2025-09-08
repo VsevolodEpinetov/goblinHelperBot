@@ -78,8 +78,8 @@ module.exports = async (ctx) => {
     message += `• <b>Тип сообщения:</b> ${ctx.message.message_id ? 'Команда' : 'Неизвестно'}\n`;
     message += `• <b>ID сообщения:</b> <code>${ctx.message.message_id}</code>\n`;
     
-    // Add EPINETOV check
-    if (userInfo.userId.toString() === SETTINGS.CHATS.EPINETOV) {
+    // Add EPINETOV and GLAVGOBLIN check
+    if (userInfo.userId.toString() === SETTINGS.CHATS.EPINETOV || userInfo.userId.toString() === SETTINGS.CHATS.GLAVGOBLIN) {
       message += `• <b>Статус:</b> 🔥 АДМИНИСТРАТОР\n`;
     }
     

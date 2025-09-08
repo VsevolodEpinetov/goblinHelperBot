@@ -5,9 +5,19 @@ const SETTINGS = require('../../../../settings.json');
 module.exports = Composer.action(/^finishAdminPayment_/g, async (ctx) => {
   const paymentId = ctx.callbackQuery.data.split('_')[1];
 
-  ctx.globalSession.toRemove[SETTINGS.CHATS.EPINETOV][paymentId].forEach(async messageId => {
-    await ctx.deleteMessage(messageId);
-  })
+  // Remove messages from EPINETOV
+  if (ctx.globalSession.toRemove[SETTINGS.CHATS.EPINETOV] && ctx.globalSession.toRemove[SETTINGS.CHATS.EPINETOV][paymentId]) {
+    ctx.globalSession.toRemove[SETTINGS.CHATS.EPINETOV][paymentId].forEach(async messageId => {
+      await ctx.deleteMessage(messageId);
+    })
+    ctx.globalSession.toRemove[SETTINGS.CHATS.EPINETOV][paymentId] = null;
+  }
 
-  ctx.globalSession.toRemove[SETTINGS.CHATS.EPINETOV][paymentId] = null;
+  // Remove messages from GLAVGOBLIN
+  if (ctx.globalSession.toRemove[SETTINGS.CHATS.GLAVGOBLIN] && ctx.globalSession.toRemove[SETTINGS.CHATS.GLAVGOBLIN][paymentId]) {
+    ctx.globalSession.toRemove[SETTINGS.CHATS.GLAVGOBLIN][paymentId].forEach(async messageId => {
+      await ctx.deleteMessage(messageId);
+    })
+    ctx.globalSession.toRemove[SETTINGS.CHATS.GLAVGOBLIN][paymentId] = null;
+  }
 });

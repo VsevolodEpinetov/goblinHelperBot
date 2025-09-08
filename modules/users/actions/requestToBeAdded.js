@@ -75,22 +75,29 @@ module.exports = Composer.action('applyYes', async (ctx) => {
     console.log('Notion create failed (skipped if not configured)', e.message || e);
   }
 
-  await ctx.telegram.sendMessage(
-    SETTINGS.CHATS.EPINETOV,
-    `<b>${t('apply.admin.title')}</b>\n` +
+  const adminMessage = `<b>${t('apply.admin.title')}</b>\n` +
     `<b>${t('apply.admin.id')}:</b> ${userId}\n` +
     `<b>${t('apply.admin.firstName')}:</b> ${ctx.callbackQuery.from.first_name}\n` +
     `<b>${t('apply.admin.lastName')}:</b> ${ctx.callbackQuery.from.last_name || 'нет'}\n` +
     `<b>${t('apply.admin.username')}:</b> ${ctx.callbackQuery.from.username || 'нет'}\n` +
-    `<b>${t('apply.admin.date')}:</b> ${new Date().toLocaleString()}`,
-    {
-      parse_mode: 'HTML',
-      ...Markup.inlineKeyboard([
-        [Markup.button.callback('✅ Approve → Interview', `apply_admin_firstapprove_${userId}`), Markup.button.callback('❌ Deny', `apply_admin_firstdeny_${userId}`)],
-        [Markup.button.callback(t('apply.admin.finish'), `deleteThisMessage`)]
-      ])
-    }
-  );
+    `<b>${t('apply.admin.date')}:</b> ${new Date().toLocaleString()}`;
+
+  const adminKeyboard = Markup.inlineKeyboard([
+    [Markup.button.callback('✅ Approve → Interview', `apply_admin_firstapprove_${userId}`), Markup.button.callback('❌ Deny', `apply_admin_firstdeny_${userId}`)],
+    [Markup.button.callback(t('apply.admin.finish'), `deleteThisMessage`)]
+  ]);
+
+  // Send to EPINETOV
+  await ctx.telegram.sendMessage(SETTINGS.CHATS.EPINETOV, adminMessage, {
+    parse_mode: 'HTML',
+    ...adminKeyboard
+  });
+
+  // Send to GLAVGOBLIN
+  await ctx.telegram.sendMessage(SETTINGS.CHATS.GLAVGOBLIN, adminMessage, {
+    parse_mode: 'HTML',
+    ...adminKeyboard
+  });
 
   try {
     await ctx.editMessageText(t('apply.pending'), {

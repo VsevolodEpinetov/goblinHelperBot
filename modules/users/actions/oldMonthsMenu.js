@@ -138,6 +138,10 @@ mod.action(/^oldMonths_join_(\d{4}_\d{2})_(regular|plus)$/, async (ctx) => {
           SETTINGS.CHATS.EPINETOV,
           t('payments.invoices.oldMonth.noLinkAdmin', { period: groupPeriod, type, userId: ctx.from.id })
         );
+        await ctx.telegram.sendMessage(
+          SETTINGS.CHATS.GLAVGOBLIN,
+          t('payments.invoices.oldMonth.noLinkAdmin', { period: groupPeriod, type, userId: ctx.from.id })
+        );
       } catch {}
     }
   } catch (e) {
@@ -145,6 +149,10 @@ mod.action(/^oldMonths_join_(\d{4}_\d{2})_(regular|plus)$/, async (ctx) => {
     try {
       await ctx.telegram.sendMessage(
         SETTINGS.CHATS.EPINETOV,
+        t('payments.invoices.oldMonth.noLinkAdmin', { period: `${year}_${month}`, type, userId: ctx.from.id })
+      );
+      await ctx.telegram.sendMessage(
+        SETTINGS.CHATS.GLAVGOBLIN,
         t('payments.invoices.oldMonth.noLinkAdmin', { period: `${year}_${month}`, type, userId: ctx.from.id })
       );
     } catch {}

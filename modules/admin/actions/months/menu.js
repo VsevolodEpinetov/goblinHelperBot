@@ -6,7 +6,7 @@ module.exports = Composer.action(/^adminMonths/g, async (ctx) => {
   const userId = ctx.callbackQuery.from.id;
   const callbackData = ctx.callbackQuery.data;
 
-  if (userId != SETTINGS.CHATS.EPINETOV) {
+  if (userId != SETTINGS.CHATS.EPINETOV && userId != SETTINGS.CHATS.GLAVGOBLIN) {
     return;
   }
 

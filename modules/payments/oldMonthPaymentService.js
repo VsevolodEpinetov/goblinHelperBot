@@ -113,6 +113,10 @@ async function processOldMonthPayment(ctx, paymentData) {
           SETTINGS.CHATS.EPINETOV,
           t('payments.invoices.oldMonth.noLinkAdmin', { period, type: monthType, userId: ctx.from.id })
         );
+        await ctx.telegram.sendMessage(
+          SETTINGS.CHATS.GLAVGOBLIN,
+          t('payments.invoices.oldMonth.noLinkAdmin', { period, type: monthType, userId: ctx.from.id })
+        );
       } catch {}
     }
 

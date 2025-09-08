@@ -173,7 +173,7 @@ function createInteractiveMenu(ctx, userData) {
 }
 
 function isSuperUser (userId) {
-  if (userId == SETTINGS.CHATS.EPINETOV || userId == SETTINGS.CHATS.ANN) {
+  if (userId == SETTINGS.CHATS.EPINETOV || userId == SETTINGS.CHATS.GLAVGOBLIN || userId == SETTINGS.CHATS.ANN) {
     return true;
   } else {
     return false;
@@ -355,6 +355,7 @@ function getRandomInt (min, max) {
 
 function isAdmin (telegramUserID) {
   const isAnAdmin = telegramUserID == SETTINGS.CHATS.EPINETOV ||
+    telegramUserID == SETTINGS.CHATS.GLAVGOBLIN ||
     telegramUserID == SETTINGS.CHATS.ALEKS ||
     telegramUserID == SETTINGS.CHATS.ARTYOM;
 

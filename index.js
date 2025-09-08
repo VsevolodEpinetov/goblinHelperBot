@@ -149,6 +149,7 @@ bot.on('chat_join_request', async ctx => {
   const monthData = await findMonthByChatId(ctx.chat.id);
   if (!monthData) {
     ctx.telegram.sendMessage(SETTINGS.CHATS.EPINETOV, `Не смог найти группу`)
+    ctx.telegram.sendMessage(SETTINGS.CHATS.GLAVGOBLIN, `Не смог найти группу`)
     return;
   }
 
@@ -212,7 +213,7 @@ bot.hears(/^[яЯ]\s*оплатил(!)*$/g, async (ctx) => {
 
 // Admin eval command
 bot.command('ex', ctx => {
-  if (ctx.message.from.id != SETTINGS.CHATS.EPINETOV) {
+  if (ctx.message.from.id != SETTINGS.CHATS.EPINETOV && ctx.message.from.id != SETTINGS.CHATS.GLAVGOBLIN) {
     return;
   }
   ctx.deleteMessage();

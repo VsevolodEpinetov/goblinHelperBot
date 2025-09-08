@@ -5,7 +5,7 @@ const { setSetting } = require('../../db/helpers');
 
 module.exports = Composer.command('rememberchat', async (ctx) => {
   util.log(ctx);
-  if (ctx.message.from.id != SETTINGS.CHATS.EPINETOV) return;
+  if (ctx.message.from.id != SETTINGS.CHATS.EPINETOV && ctx.message.from.id != SETTINGS.CHATS.GLAVGOBLIN) return;
   
   const chatName = ctx.message.text.split('/rememberchat ')[1];
 

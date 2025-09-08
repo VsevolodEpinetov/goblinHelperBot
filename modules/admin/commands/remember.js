@@ -5,7 +5,7 @@ const util = require('../../util')
 
 module.exports = Composer.command('remember', async (ctx) => {
   util.log(ctx);
-  if (ctx.message.from.id != SETTINGS.CHATS.EPINETOV) return;
+  if (ctx.message.from.id != SETTINGS.CHATS.EPINETOV && ctx.message.from.id != SETTINGS.CHATS.GLAVGOBLIN) return;
   
   const name = ctx.message.text.split(' ')[1], value = ctx.message.text.split(' ')[2];
 
