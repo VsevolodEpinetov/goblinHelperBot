@@ -7,6 +7,9 @@ module.exports = async (ctx) => {
     console.log('🔍 Chat ID:', ctx.chat.id);
     console.log('🔍 Message ID:', ctx.message.message_id);
     
+    // Store message ID before deleting
+    const originalMessageId = ctx.message.message_id;
+    
     // Delete the command message
     await ctx.deleteMessage();
     
@@ -106,9 +109,7 @@ module.exports = async (ctx) => {
     
     // Send confirmation to the original chat
     const confirmMessage = `✅ Информация отправлена в личные сообщения`;
-    await ctx.reply(confirmMessage, { 
-      reply_to_message_id: ctx.message.message_id 
-    });
+    await ctx.reply(confirmMessage);
     
   } catch (error) {
     console.error('Error in /info command:', error);
