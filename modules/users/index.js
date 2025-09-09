@@ -93,8 +93,7 @@ const composer = Composer.compose([
   debugHandler,
   ...actions,
   ...commands,
-  ...enhancedActions,
-  finalHandler
+  ...enhancedActions
 ]);
 
 console.log('📁 Users module - Total handlers:', actions.length + commands.length + enhancedActions.length);

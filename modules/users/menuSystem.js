@@ -6,6 +6,26 @@ const { getUserSubscriptionStatus, getSubscriptionStatusMessage } = require('./s
 const SETTINGS = require('../../settings.json');
 
 /**
+ * Safe function to get current period with fallback
+ */
+function getCurrentPeriod(ctx) {
+  try {
+    if (ctx.globalSession?.current?.year && ctx.globalSession?.current?.month) {
+      return `${ctx.globalSession.current.year}_${ctx.globalSession.current.month}`;
+    }
+  } catch (error) {
+    console.error('❌ Global session access error:', error.message);
+  }
+  
+  // Fallback to current date
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = String(now.getMonth() + 1).padStart(2, '0');
+  console.log(`⚠️  Using fallback period: ${year}_${month}`);
+  return `${year}_${month}`;
+}
+
+/**
  * Comprehensive User Menu System
  * Handles different user states and provides appropriate menus
  */
@@ -157,29 +177,54 @@ async function getMainUserMenu(ctx, userData) {
   const roles = userData.roles || [];
   const isAdmin = roles.includes('admin') || roles.includes('adminPlus');
   
-  // Get subscription status
-  const subscriptionStatus = await getUserSubscriptionStatus(userData.id);
-  const statusMessage = getSubscriptionStatusMessage(subscriptionStatus);
+  // Get subscription status with error handling
+  let subscriptionStatus;
+  let statusMessage;
+  try {
+    subscriptionStatus = await getUserSubscriptionStatus(userData.id);
+    statusMessage = getSubscriptionStatusMessage(subscriptionStatus);
+  } catch (statusError) {
+    console.error('❌ Subscription status error:', statusError.message);
+    subscriptionStatus = { status: 'unpaid' };
+    statusMessage = '❌ Статус подписки недоступен';
+  }
   
   let message = `👋 <b>Добро пожаловать в главное меню!</b>\n\n`;
   const { t } = require('../i18n');
   message += t('messages.main_intro') + `\n\n`;
   message += `📅 <b>Статус подписки:</b>\n${statusMessage}\n\n`;
-  // RPG status (loyalty)
+  // RPG status (loyalty) with robust error handling
   try {
     const lvl = await knex('user_levels').where({ user_id: Number(userData.id) }).first();
     if (lvl) {
-      const benefitsByTier = require('../../configs/benefits');
-      const perks = benefitsByTier[lvl.current_tier] || [];
-      message += `🏅 <b>RPG уровень:</b> ${lvl.current_tier.toUpperCase()} ${lvl.current_level}\n`;
-      message += `✨ <b>XP:</b> ${lvl.total_xp}` + (lvl.xp_to_next_level != null ? ` (до след.: ${lvl.xp_to_next_level})` : '') + `\n`;
-      if (perks.length) message += `🎁 <b>Бонусы:</b> ${perks.join(', ')}\n\n`;
-      else message += `\n`;
-      
-      // Log meaningful user interaction with XP info
-      console.log(`🎮 Main Menu: User ${userData.id} (@${userData.username}) - ${lvl.current_tier.toUpperCase()} ${lvl.current_level}, ${lvl.total_xp} XP`);
+      try {
+        const benefitsByTier = require('../../configs/benefits');
+        const perks = benefitsByTier[lvl.current_tier] || [];
+        const tier = String(lvl.current_tier || 'wood').toUpperCase();
+        const level = lvl.current_level || 1;
+        const xp = lvl.total_xp || 0;
+        const xpToNext = lvl.xp_to_next_level;
+        
+        message += `🏅 <b>RPG уровень:</b> ${tier} ${level}\n`;
+        message += `✨ <b>XP:</b> ${xp}` + (xpToNext != null ? ` (до след.: ${xpToNext})` : '') + `\n`;
+        if (perks.length) message += `🎁 <b>Бонусы:</b> ${perks.join(', ')}\n\n`;
+        else message += `\n`;
+        
+        // Log meaningful user interaction with XP info
+        console.log(`🎮 Main Menu: User ${userData.id} (@${userData.username}) - ${tier} ${level}, ${xp} XP`);
+      } catch (benefitsError) {
+        console.error('❌ Benefits config error:', benefitsError.message);
+        message += `🏅 <b>RPG уровень:</b> ${lvl.current_tier || 'wood'} ${lvl.current_level || 1}\n\n`;
+      }
+    } else {
+      // User has no XP record - this is fine for existing users
+      message += `🏅 <b>RPG уровень:</b> Загружается...\n\n`;
     }
-  } catch {}
+  } catch (xpError) {
+    console.error('❌ XP lookup error (non-fatal):', xpError.message);
+    // Continue without XP display
+    message += `\n`;
+  }
   
   const keyboard = [];
   
@@ -377,5 +422,6 @@ async function markInvitationUsed(userId) {
 
 module.exports = {
   getUserMenu,
-  markInvitationUsed
+  markInvitationUsed,
+  getCurrentPeriod
 };

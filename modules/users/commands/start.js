@@ -73,7 +73,26 @@ const startCommand = Composer.command('start', async (ctx) => {
   
   // Use the new comprehensive menu system for existing users
   try {
+    console.log(`🔄 Generating menu for ${userId} (@${username})...`);
     const menu = await getUserMenu(ctx, userData);
+    
+    if (!menu || !menu.message) {
+      throw new Error('Menu generation returned invalid data');
+    }
+    
+    // Validate message content
+    if (menu.message.length > 4096) {
+      console.error(`❌ Message too long: ${menu.message.length} characters`);
+      throw new Error('Message too long for Telegram');
+    }
+    
+    // Validate keyboard
+    if (!Array.isArray(menu.keyboard)) {
+      console.error('❌ Invalid keyboard format');
+      throw new Error('Invalid keyboard format');
+    }
+    
+    console.log(`🔄 Sending response to ${userId} (@${username})...`);
     
     // Show the appropriate menu based on user state
     await ctx.replyWithHTML(menu.message, {
@@ -84,10 +103,12 @@ const startCommand = Composer.command('start', async (ctx) => {
     
   } catch (error) {
     console.error(`❌ /start failed for ${userId} (@${username}):`, error.message);
+    console.error('Full error:', error);
     
     // Send a simple fallback response
     try {
-      await ctx.reply('❌ Произошла ошибка. Попробуйте позже или обратитесь к администратору.');
+      await ctx.reply(`❌ Произошла ошибка при загрузке меню.\n\nОбратитесь к администратору: ${error.message}`);
+      console.log(`✅ Fallback response sent to ${userId} (@${username})`);
     } catch (fallbackError) {
       console.error('❌ Even fallback response failed:', fallbackError.message);
     }

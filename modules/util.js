@@ -7,7 +7,38 @@ const path = require('path');
 
 const date = require('./date');
 const { getUser } = require('./db/helpers');
-const colors = require('./colors.js')
+const colors = require('./colors.js');
+
+/**
+ * Safe function to get current period with fallback
+ */
+function getCurrentPeriod(ctx) {
+  try {
+    if (ctx?.globalSession?.current?.year && ctx?.globalSession?.current?.month) {
+      return {
+        period: `${ctx.globalSession.current.year}_${ctx.globalSession.current.month}`,
+        year: ctx.globalSession.current.year,
+        month: ctx.globalSession.current.month,
+        display: `${ctx.globalSession.current.year}-${ctx.globalSession.current.month}`
+      };
+    }
+  } catch (error) {
+    console.error('❌ Global session access error in util:', error.message);
+  }
+  
+  // Fallback to current date
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = String(now.getMonth() + 1).padStart(2, '0');
+  console.log(`⚠️  Using fallback period in util: ${year}_${month}`);
+  
+  return {
+    period: `${year}_${month}`,
+    year: year.toString(),
+    month: month,
+    display: `${year}-${month}`
+  };
+}
 
 
 function sleep(ms) {
@@ -33,17 +64,18 @@ function splitMenu (menu, rowSize = 5) {
 
 function getUserMessage (ctx, userData) {
   const tickets = Math.floor(userData.purchases.groups.plus.length / 3) * 2 - userData.purchases.ticketsSpent;
-  let purchasedCurrent = userData.purchases.groups.regular.indexOf(`${ctx.globalSession.current.year}_${ctx.globalSession.current.month}`) > -1;
+  const currentPeriodInfo = getCurrentPeriod(ctx);
+  let purchasedCurrent = userData.purchases.groups.regular.indexOf(currentPeriodInfo.period) > -1;
   let notPurchasedPart = '';
   if (!purchasedCurrent) {
     notPurchasedPart = `⚠️ НЕ ОПЛАЧЕН ⚠️\n\n`
   } else {
-    const plusIsPurchased = userData.purchases.groups.plus.indexOf(`${ctx.globalSession.current.year}_${ctx.globalSession.current.month}`) > -1;
+    const plusIsPurchased = userData.purchases.groups.plus.indexOf(currentPeriodInfo.period) > -1;
     notPurchasedPart = `✅ Оплачено${plusIsPurchased ? '' : ' (без ➕)\n\n'}`
   }
 
   return  `Привет, ${userData.first_name}!\n\n` + 
-          `🗓 <b>Текущий месяц: </b>${ctx.globalSession.current.year}-${ctx.globalSession.current.month}\n`+
+          `🗓 <b>Текущий месяц: </b>${currentPeriodInfo.display}\n`+
           notPurchasedPart +
           `💰 <b>Баланс: </b>${userData.purchases.balance}₽\n` +
           `🎟 <b>Билетики: </b>${tickets}\n\n`+
@@ -53,9 +85,9 @@ function getUserMessage (ctx, userData) {
 // Enhanced UX Functions
 function createStatusCard(ctx, userData) {
   const tickets = Math.floor(userData.purchases.groups.plus.length / 3) * 2 - userData.purchases.ticketsSpent;
-  const currentPeriod = `${ctx.globalSession.current.year}_${ctx.globalSession.current.month}`;
-  const hasRegular = userData.purchases.groups.regular.indexOf(currentPeriod) > -1;
-  const hasPlus = userData.purchases.groups.plus.indexOf(currentPeriod) > -1;
+  const currentPeriodInfo = getCurrentPeriod(ctx);
+  const hasRegular = userData.purchases.groups.regular.indexOf(currentPeriodInfo.period) > -1;
+  const hasPlus = userData.purchases.groups.plus.indexOf(currentPeriodInfo.period) > -1;
   
   // Calculate trends and status
   const balanceTrend = userData.purchases.balance > 0 ? "💰" : "💸";
@@ -63,7 +95,7 @@ function createStatusCard(ctx, userData) {
   const monthStatus = hasRegular ? (hasPlus ? "✅" : "✅") : "⚠️";
   
   return `🎯 <b>СТАТУС АККАУНТА</b>\n\n` +
-         `${monthStatus} <b>Текущий месяц:</b> ${ctx.globalSession.current.year}-${ctx.globalSession.current.month}\n` +
+         `${monthStatus} <b>Текущий месяц:</b> ${currentPeriodInfo.display}\n` +
          `${hasRegular ? (hasPlus ? '✅ Оплачено с ➕' : '✅ Оплачено без ➕') : '⚠️ НЕ ОПЛАЧЕН'}\n\n` +
          `${balanceTrend} <b>Баланс:</b> ${userData.purchases.balance}₽\n` +
          `${ticketStatus} <b>Билетики:</b> ${tickets}\n\n` +
@@ -73,9 +105,9 @@ function createStatusCard(ctx, userData) {
 }
 
 function createSmartMenu(ctx, userData) {
-  const currentPeriod = `${ctx.globalSession.current.year}_${ctx.globalSession.current.month}`;
-  const hasCurrentMonth = userData.purchases.groups.regular.indexOf(currentPeriod) > -1;
-  const hasPlus = userData.purchases.groups.plus.indexOf(currentPeriod) > -1;
+  const currentPeriodInfo = getCurrentPeriod(ctx);
+  const hasCurrentMonth = userData.purchases.groups.regular.indexOf(currentPeriodInfo.period) > -1;
+  const hasPlus = userData.purchases.groups.plus.indexOf(currentPeriodInfo.period) > -1;
   const tickets = Math.floor(userData.purchases.groups.plus.length / 3) * 2 - userData.purchases.ticketsSpent;
   
   // Primary actions based on current status
@@ -181,7 +213,8 @@ function isSuperUser (userId) {
 }
 
 function getUserButtons (ctx, userData) {
-  let purchasedCurrent = userData.purchases.groups.regular.indexOf(`${ctx.globalSession.current.year}_${ctx.globalSession.current.month}`) > -1;
+  const currentPeriodInfo = getCurrentPeriod(ctx);
+  let purchasedCurrent = userData.purchases.groups.regular.indexOf(currentPeriodInfo.period) > -1;
   let notPurchasedPart = [];
   if (!purchasedCurrent) {
     notPurchasedPart = [
@@ -398,7 +431,7 @@ function getCommandParameter (ctx) {
   }*/
 
 module.exports = {
-
+  getCurrentPeriod,
   splitMenu,
   getUserMessage,
   getUserButtons,
@@ -419,6 +452,4 @@ module.exports = {
   createSmartMenu,
   createInteractiveMenu,
   messageRouter: require('./util/messageRouter')
-
-
 }
