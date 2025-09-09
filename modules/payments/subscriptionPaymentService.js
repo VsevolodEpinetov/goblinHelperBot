@@ -14,20 +14,9 @@ const { getCurrentMonthPeriod } = require('../users/subscriptionHelpers');
  */
 async function createSubscriptionInvoice(ctx, subscriptionType, userId) {
   try {
-    console.log('🚀 createSubscriptionInvoice called with:', { subscriptionType, userId, chatId: ctx.chat?.id });
-    
     const currentPeriod = getCurrentMonthPeriod();
     const price = subscriptionType === 'plus' ? (rpgConfig.prices.plusStars || process.env.PLUS_PRICE) : (rpgConfig.prices.regularStars || process.env.REGULAR_PRICE);
     const priceInStars = parseInt(price);
-    
-    console.log('🔍 Environment check:', { 
-      currentPeriod, 
-      price, 
-      priceInStars, 
-      REGULAR_PRICE: process.env.REGULAR_PRICE, 
-      PLUS_PRICE: process.env.PLUS_PRICE,
-      PAYMENT_TEST_MODE: process.env.PAYMENT_TEST_MODE
-    });
     
     if (!priceInStars || priceInStars <= 0) {
       throw new Error(`Invalid price configuration: ${price}`);
@@ -61,18 +50,6 @@ async function createSubscriptionInvoice(ctx, subscriptionType, userId) {
       }
     ];
 
-    console.log('🔍 Invoice parameters:', {
-      chatId: ctx.chat.id,
-      userId: userInfo.id,
-      userName: userName,
-      title: `"${title}"`,
-      titleLength: title ? title.length : 'undefined',
-      description: `"${description}"`,
-      payload: `"${payload}"`,
-      provider_token: `"${provider_token}"`,
-      currency: `"${currency}"`,
-      prices: prices
-    });
     
     // Validate required parameters
     if (!title || title.trim() === '') {
@@ -107,26 +84,13 @@ async function createSubscriptionInvoice(ctx, subscriptionType, userId) {
       // Add test mode parameters if enabled
       if (isTestMode) {
         invoiceParams.start_parameter = `test_${subscriptionType}_${currentPeriod}`;
-        console.log('🧪 Test mode enabled for payment');
-        console.log('🧪 Test mode parameters:', {
-          userId: userInfo.id,
-          userName: userName,
-          start_parameter: invoiceParams.start_parameter,
-          isTestMode: isTestMode,
-          PAYMENT_TEST_MODE: process.env.PAYMENT_TEST_MODE
-        });
+        console.log(`🧪 Test Payment: ${subscriptionType} subscription for user ${userInfo.id} (@${userInfo.username})`);
       } else {
-        console.log('💰 Production mode - real payment will be processed');
-        console.log('💰 Payment for user:', { userId: userInfo.id, userName: userName });
+        console.log(`💰 Payment Invoice: ${subscriptionType} subscription (${priceInStars} stars) for user ${userInfo.id} (@${userInfo.username})`);
       }
       
       // Use the correct Telegraf v4 method with object parameters
       invoiceMessage = await ctx.telegram.sendInvoice(ctx.chat.id, invoiceParams);
-      
-      console.log('✅ Invoice sent successfully:', invoiceMessage.message_id);
-      if (isTestMode) {
-        console.log('🧪 Test invoice created - payment will be simulated');
-      }
     } catch (invoiceError) {
       console.error('❌ Invoice creation failed:', invoiceError);
       console.error('❌ Invoice error details:', {
@@ -233,15 +197,20 @@ async function processSubscriptionPayment(ctx, paymentData) {
       .where('type', subscriptionType)
       .increment('counterPaid', 1);
 
-    // Loyalty: compute ΔS units with achievement discount applied first, then level discount placeholder (future)
+    // Apply loyalty XP gain with achievement discounts
     try {
       const baseUnits = getSubscriptionBaseUnits(subscriptionType);
       const hasY = await hasYearsOfService(Number(userId));
-      const mult = hasY ? getAchievementMultiplier(YEARS_OF_SERVICE) : 1.0; // 0.5 means 50% of price
+      const mult = hasY ? getAchievementMultiplier(YEARS_OF_SERVICE) : 1.0;
       const discountedUnits = baseUnits * mult;
-      // Level-based discounts could be applied here after fetching current level; omitted for now
       const deltaUnits = discountedUnits;
+      
       await applyXpGain(Number(userId), deltaUnits, 'spending_payment', { subscriptionType, period, description: 'Subscription payment' });
+      
+      // Log meaningful payment completion with XP info
+      const discount = hasY ? ((1 - mult) * 100) : 0;
+      console.log(`✅ Payment Complete: User ${userId} - ${subscriptionType} subscription, ${deltaUnits} XP units${hasY ? ` (${discount}% discount applied)` : ''}`);
+      
     } catch (xpErr) {
       console.error('⚠️ Loyalty XP apply error (non-fatal):', xpErr);
     }

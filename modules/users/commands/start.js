@@ -6,25 +6,13 @@ const { getUser, getAllUsers } = require('../../db/helpers');
 const { getUserMenu, createInvitationLink } = require('../menuSystem');
 const knex = require('../../db/knex');
 
-console.log('🔧 Loading start command handler...');
-
 // Команда /start
 const startCommand = Composer.command('start', async (ctx) => {
-  console.log('🎯 START command received!');
-  console.log('🎯 START command context:', {
-    message: ctx.message?.text,
-    from: ctx.from?.id,
-    chat: ctx.chat?.id
-  });
-  console.log('👤 User:', {
-    id: ctx.message?.from?.id,
-    username: ctx.message?.from?.username,
-    firstName: ctx.message?.from?.first_name
-  });
-  console.log('💬 Chat:', {
-    id: ctx.message?.chat?.id,
-    type: ctx.message?.chat?.type
-  });
+  const userId = ctx.message.from.id;
+  const username = ctx.message.from.username;
+  const firstName = ctx.message.from.first_name;
+  
+  console.log(`👤 /start: User ${userId} (@${username || 'no_username'}) ${firstName || 'Unknown'}`);
   
   util.log(ctx);
 
@@ -33,9 +21,8 @@ const startCommand = Composer.command('start', async (ctx) => {
     return;
   }
 
-  const userId = ctx.message.from.id;
   // Require Telegram username
-  if (!ctx.message.from.username || String(ctx.message.from.username).trim() === '') {
+  if (!username || String(username).trim() === '') {
     await ctx.replyWithHTML(t('messages.username_required'));
     return;
   }
@@ -44,19 +31,14 @@ const startCommand = Composer.command('start', async (ctx) => {
   const IS_CLOSED = false; //TODO: move to settings
 
   // Get user data from database
-  console.log('🔍 Fetching user data for ID:', userId);
   const userData = await getUser(userId);
-  console.log('📊 User data:', userData ? {
-    id: userData.id,
-    username: userData.username,
-    roles: userData.roles,
-    hasPurchases: !!userData.purchases
-  } : 'null');
-
-  console.log('🎭 Role analysis:');
-  console.log('  - User roles:', userData?.roles || []);
-  console.log('  - Expected roles for super user: [super]');
-  console.log('  - Expected roles for goblin/admin: [goblin, admin, adminPlus]');
+  
+  // Log meaningful user stats
+  if (userData) {
+    console.log(`📊 User Stats: ${userId} (@${username}) - Roles: [${userData.roles.join(', ')}], Months: ${userData.purchases.groups.regular.length + userData.purchases.groups.plus.length}, Kickstarters: ${userData.purchases.kickstarters.length}`);
+  } else {
+    console.log(`🆕 New User: ${userId} (@${username}) ${firstName} - No existing data`);
+  }
 
   // Special handling for new users (no userData)
   if (!userData) {
@@ -81,15 +63,12 @@ const startCommand = Composer.command('start', async (ctx) => {
   });
 });
 
-console.log('🔧 Start command handler created:', !!startCommand);
-
 // Test: Add a simple command to see if commands work at all
 const testCommand = Composer.command('test', async (ctx) => {
-  console.log('🧪 TEST command received!');
+  console.log(`🧪 /test: User ${ctx.from.id} (@${ctx.from.username || 'no_username'})`);
   await ctx.reply('Test command works!');
 });
 
 const combinedCommands = Composer.compose([startCommand, testCommand]);
-console.log('🔧 Combined commands created:', !!combinedCommands);
 
 module.exports = combinedCommands;

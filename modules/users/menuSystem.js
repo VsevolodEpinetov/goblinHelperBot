@@ -17,19 +17,14 @@ async function getUserMenu(ctx, userData) {
   const userId = ctx.from.id;
   const roles = userData?.roles || [];
   
-  console.log('🎭 getUserMenu called for user:', userId);
-  console.log('🎭 userData:', userData ? { id: userData.id, roles: userData.roles } : 'null');
-  console.log('🎭 roles:', roles);
-  
   // Check if user is super user - show admin menu
   if (roles.includes('super')) {
-    console.log('🎭 User is super, showing admin menu');
+    console.log(`🎭 Admin Menu: User ${userId} accessing admin panel`);
     return getSuperUserMenu(ctx, userData);
   }
   
   // Check if user is approved but hasn't joined the main group yet
   if (roles.includes('goblin') || roles.includes('admin') || roles.includes('adminPlus')) {
-    console.log('🎭 User is approved, checking if joined group');
     return await getApprovedUserMenu(ctx, userData);
   }
   
@@ -98,21 +93,16 @@ function getSuperUserMenu(ctx, userData) {
 async function getApprovedUserMenu(ctx, userData) {
   const userId = ctx.from.id;
   
-  console.log('🔍 getApprovedUserMenu called for user:', userId);
-  
   // Check if user has already joined the group (has a used invitation link)
   const hasJoinedGroup = await checkIfUserJoinedGroup(userId);
-  console.log('🔍 hasJoinedGroup:', hasJoinedGroup);
   
   if (hasJoinedGroup) {
     // User has already joined the group - show main menu
-    console.log('🔍 User has joined group, showing main menu');
     return getMainUserMenu(ctx, userData);
   }
   
   // User hasn't joined yet - show invitation link
   const existingLinkResult = await getUserInvitationLink(userId);
-  console.log('🔍 existingLinkResult:', existingLinkResult);
   
   if (existingLinkResult.success) {
     // User has an unused invitation link - show it
@@ -133,11 +123,10 @@ async function getApprovedUserMenu(ctx, userData) {
     };
   } else {
     // User doesn't have an invitation link - create one and show it
-    console.log('🔍 No existing link, creating new one...');
     const linkResult = await createInvitationLink(userId);
-    console.log('🔍 linkResult:', linkResult);
     
     if (linkResult.success) {
+      console.log(`🔗 Invitation Link: Created for user ${userId} (@${userData.username})`);
       return {
         message: `🎉 <b>Добро пожаловать в сообщество!</b>\n\n` +
                 `Ты одобрен и можешь присоединиться к основной группе.\n\n` +
@@ -155,8 +144,7 @@ async function getApprovedUserMenu(ctx, userData) {
       };
     } else {
       // If we can't create an invitation link, show main menu
-      console.error(`❌ Failed to create invitation link for user ${userId}:`, linkResult.error);
-      console.log('🔍 Falling back to main menu');
+      console.error(`❌ Invitation Link Failed: User ${userId} - ${linkResult.error}`);
       return getMainUserMenu(ctx, userData);
     }
   }
@@ -187,6 +175,9 @@ async function getMainUserMenu(ctx, userData) {
       message += `✨ <b>XP:</b> ${lvl.total_xp}` + (lvl.xp_to_next_level != null ? ` (до след.: ${lvl.xp_to_next_level})` : '') + `\n`;
       if (perks.length) message += `🎁 <b>Бонусы:</b> ${perks.join(', ')}\n\n`;
       else message += `\n`;
+      
+      // Log meaningful user interaction with XP info
+      console.log(`🎮 Main Menu: User ${userData.id} (@${userData.username}) - ${lvl.current_tier.toUpperCase()} ${lvl.current_level}, ${lvl.total_xp} XP`);
     }
   } catch {}
   
@@ -328,17 +319,36 @@ function getNewUserMenu(ctx, userData) {
 }
 
 /**
- * Check if user has already joined the group (has a used invitation link)
+ * Check if user has already joined the group (has a used invitation link OR is an existing customer)
  */
 async function checkIfUserJoinedGroup(userId) {
   try {
+    // Method 1: Check if user has used an invitation link
     const usedLink = await knex('invitationLinks')
       .where('userId', Number(userId))
       .whereNotNull('usedAt')
       .where('useCount', '>', 0)
       .first();
     
-    return !!usedLink;
+    if (usedLink) {
+      return true;
+    }
+    
+    // Method 2: Check if user is an existing customer (has purchased months)
+    // Existing customers with purchase history should go directly to main menu
+    const purchaseHistory = await knex('userGroups')
+      .where('userId', Number(userId))
+      .count('* as count')
+      .first();
+    
+    const hasPurchases = purchaseHistory && parseInt(purchaseHistory.count) > 0;
+    
+    if (hasPurchases) {
+      console.log(`🎯 Existing Customer: User ${userId} has ${purchaseHistory.count} purchased months - skipping invitation`);
+      return true;
+    }
+    
+    return false;
   } catch (error) {
     console.error('Error checking if user joined group:', error);
     return false;

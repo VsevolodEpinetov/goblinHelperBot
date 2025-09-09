@@ -28,10 +28,16 @@ async function createInvitationLink(userId, groupId = process.env.LOGS_GROUP_ID,
       username = `Group ${groupPeriod}_${groupType}`;
       linkName = `bot-made for ${groupPeriod}_${groupType}`;
     } else {
-      // User link
-      const userInfo = await bot.telegram.getChat(userId);
-      username = userInfo.username ? `@${userInfo.username}` : userInfo.first_name || `User ${userId}`;
-      linkName = `bot-made for ${username}`;
+      // User link - get user info from database instead of Telegram API
+      const { getUser } = require('./db/helpers');
+      const userData = await getUser(userId);
+      if (userData) {
+        username = userData.username !== 'not_set' ? `@${userData.username}` : userData.first_name || `User ${userId}`;
+        linkName = `bot-made for ${username}`;
+      } else {
+        username = `User ${userId}`;
+        linkName = `bot-made for ${username}`;
+      }
     }
     
     // Create invitation link using Telegram API with approval mode

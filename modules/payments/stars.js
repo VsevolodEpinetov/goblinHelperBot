@@ -71,13 +71,11 @@ composer.on('message', async (ctx, next) => {
     if (payload && typeof payload === 'string' && payload.trim().startsWith('{')) {
       const parsed = JSON.parse(payload);
       if (parsed && parsed.type === 'subscription') {
-        console.log('💰 stars.js: routing JSON subscription payment');
         const { processSubscriptionPayment } = require('./subscriptionPaymentService');
         await processSubscriptionPayment(ctx, sp);
         return; // prevent legacy handler
       }
       if (parsed && parsed.type === 'old_month') {
-        console.log('💰 stars.js: routing JSON old_month payment');
         const { processOldMonthPayment } = require('./oldMonthPaymentService');
         await processOldMonthPayment(ctx, sp);
         return; // prevent legacy handler
@@ -95,7 +93,7 @@ composer.on('message', async (ctx, next) => {
   try {
     await knex('subscriptions').insert({ userId, tier, period, status: 'active' });
   } catch (e) {
-    console.log('Failed to insert subscription', e);
+    console.error('❌ Subscription insert failed:', e.message);
   }
 
   try {
@@ -103,7 +101,7 @@ composer.on('message', async (ctx, next) => {
       .insert({ userId, period, type: tier === 'plus' ? 'plus' : 'regular' })
       .onConflict(['userId','period','type']).ignore();
   } catch (e) {
-    console.log('Failed to upsert userGroups', e);
+    console.error('❌ UserGroups upsert failed:', e.message);
   }
 
   try {
@@ -111,7 +109,7 @@ composer.on('message', async (ctx, next) => {
       .where({ period, type: tier === 'plus' ? 'plus' : 'regular' })
       .update({ counterPaid: knex.raw('COALESCE("counterPaid", 0) + 1') });
   } catch (e) {
-    console.log('Failed to increment months counterPaid', e);
+    console.error('❌ Month counter update failed:', e.message);
   }
 
   // Update user data in database
@@ -149,7 +147,7 @@ composer.on('message', async (ctx, next) => {
       await ctx.reply('Чат для текущего периода не настроен. Напиши администратору.');
     }
   } catch (e) {
-    console.log('Failed to issue invite link', e);
+    console.error('❌ Invite link creation failed:', e.message);
   }
 
   await ctx.replyWithHTML('Оплата получена! Доступ будет предоставлен автоматически. Используй /start.');

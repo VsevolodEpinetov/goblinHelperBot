@@ -2,14 +2,7 @@
 const { Telegraf, Scenes, session } = require('telegraf');
 require('dotenv').config();
 
-console.log('🚀 Starting bot initialization...');
-console.log('📋 Environment check:');
-console.log('  - TOKEN exists:', !!process.env.TOKEN);
-console.log('  - TOKEN length:', process.env.TOKEN ? process.env.TOKEN.length : 0);
-console.log('  - Database config exists:', !!process.env.PGHOST);
-console.log('  - PAYMENT_TEST_MODE:', process.env.PAYMENT_TEST_MODE);
-console.log('  - REGULAR_PRICE:', process.env.REGULAR_PRICE);
-console.log('  - PLUS_PRICE:', process.env.PLUS_PRICE);
+console.log('🚀 GoblinHelperBot starting...');
 
 const bot = new Telegraf(process.env.TOKEN)
 const SETTINGS = require('./settings.json')
@@ -62,25 +55,20 @@ bot.use(stage.middleware());
 // --------------------------------------------------------------------------
 // 3. Middleware (in order of execution)
 // --------------------------------------------------------------------------
-console.log('🔧 Loading middleware...');
+// Loading middleware
 
 // 3.1. Logging middleware (first - logs everything)
-console.log('📝 Loading logger middleware...');
 try {
   const logger = require('./modules/middleware/logger');
-  console.log('📝 Logger middleware loaded successfully:', !!logger);
   bot.use(logger);
-  console.log('📝 Logger middleware registered with bot');
 } catch (error) {
-  console.log('❌ Error loading logger middleware:', error);
+  console.error('❌ Failed to load logger middleware:', error);
 }
 
 // 3.2. Banned users middleware
-console.log('🚫 Loading banned middleware...');
 bot.use(require('./modules/middleware/banned'));
 
 // 3.3. User tracking middleware
-console.log('👤 Loading userTracker middleware...');
 bot.use(require('./modules/middleware/userTracker'));
 //#endregion
 
@@ -88,7 +76,7 @@ bot.use(require('./modules/middleware/userTracker'));
 // --------------------------------------------------------------------------
 // 4. Modules (command and action handlers)
 // --------------------------------------------------------------------------
-console.log('🔧 Loading modules...');
+// Loading modules
 
 // Temporarily commenting out other modules to test users module in isolation
 // Lots module removed - replaced with raids
@@ -99,32 +87,21 @@ console.log('🔧 Loading modules...');
 // console.log('📦 Loading indexator-creator module...');
 // bot.use(require('./modules/indexator-creator'));
 
-console.log('📦 Loading payments module...');
 bot.use(require('./modules/payments'));
-
-console.log('📦 Loading common module...');
 bot.use(require('./modules/common'));
 
-console.log('📦 Loading users module...');
-const usersModule = require('./modules/users');
-console.log('📦 Users module loaded:', !!usersModule);
-bot.use(usersModule);
-console.log('📦 Users module registered with bot');
+try {
+  bot.use(require('./modules/users'));
+} catch (error) {
+  console.error('❌ Error loading users module:', error);
+}
 
-console.log('📦 Loading raids module...');
 bot.use(require('./modules/raids'));
-
-console.log('📦 Loading admin module...');
 bot.use(require('./modules/admin'));
 
 // console.log('📦 Loading inviteLinksMenu...');
 // bot.use(require('./modules/admin/actions/users/inviteLinksMenu'));
 
-// Debug: Add a test handler to see if modules are being called
-bot.use(async (ctx, next) => {
-  console.log('🔧 Main bot: Processing update after all modules...');
-  return next();
-});
 //#endregion
 
 //#region Special Handlers
@@ -375,8 +352,7 @@ bot.catch((error, ctx) => {
 console.log('🚀 Launching bot...');
 bot.launch({ dropPendingUpdates: true })
   .then(() => {
-    console.log('✅ Bot launched successfully!');
-    console.log('🤖 Bot info:', bot.botInfo);
+    console.log(`✅ GoblinHelperBot is online! Username: @${bot.botInfo.username}`);
     // expose bot for RPG notifications
     globalThis.__bot = bot;
   })
