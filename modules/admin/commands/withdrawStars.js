@@ -1,15 +1,17 @@
 const { Composer } = require('telegraf');
+const { getUser } = require('../../db/helpers');
 const SETTINGS = require('../../../settings.json');
 
 module.exports = Composer.command('stars_withdraw', async (ctx) => {
-  // Check if user is authorized (admin)
-  const userId = ctx.from.id.toString();
-  if (userId !== SETTINGS.CHATS.EPINETOV && userId !== SETTINGS.CHATS.GLAVGOBLIN) {
-    console.log(`❌ stars_withdraw command rejected: user ${userId} is not authorized`);
+  // Check if user is super admin
+  const adminUser = await getUser(ctx.from.id);
+  if (!adminUser || !adminUser.roles || !adminUser.roles.includes('super')) {
+    console.log(`❌ stars_withdraw rejected: user ${ctx.from.id} is not super admin`);
     return;
   }
 
-  console.log(`✅ stars_withdraw command from authorized user ${userId}`);
+  const userId = ctx.from.id;
+  console.log(`✅ stars_withdraw command from super admin ${userId}`);
 
   try {
     const args = ctx.message.text.split(' ');

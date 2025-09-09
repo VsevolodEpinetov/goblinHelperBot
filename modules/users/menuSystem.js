@@ -101,6 +101,10 @@ function getSuperUserMenu(ctx, userData) {
       [
         Markup.button.callback('📋 Управление заявками', 'adminAllApplications'),
         Markup.button.callback('🔍 Поиск пользователя', 'admin_search_user')
+      ],
+      [
+        Markup.button.callback('💫 Баланс звёзд', 'adminStarsBalance'),
+        Markup.button.callback('💸 Вывод звёзд', 'adminStarsWithdraw')
       ]
     ]
   };

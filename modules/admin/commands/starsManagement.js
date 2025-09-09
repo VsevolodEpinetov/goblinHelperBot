@@ -1,16 +1,18 @@
 const { Composer, Markup } = require('telegraf');
+const { getUser } = require('../../db/helpers');
 const knex = require('../../db/knex');
 const SETTINGS = require('../../../settings.json');
 
-module.exports = Composer.command('stars', async (ctx) => {
-  // Check if user is authorized (admin)
-  const userId = ctx.from.id.toString();
-  if (userId !== SETTINGS.CHATS.EPINETOV && userId !== SETTINGS.CHATS.GLAVGOBLIN) {
-    console.log(`❌ stars command rejected: user ${userId} is not authorized`);
+const starsCommand = Composer.command('stars', async (ctx) => {
+  // Check if user is super admin
+  const adminUser = await getUser(ctx.from.id);
+  if (!adminUser || !adminUser.roles || !adminUser.roles.includes('super')) {
+    console.log(`❌ stars rejected: user ${ctx.from.id} is not super admin`);
     return;
   }
 
-  console.log(`✅ stars command from authorized user ${userId}`);
+  const userId = ctx.from.id;
+  console.log(`✅ stars command from super admin ${userId}`);
 
   try {
     // Get recent payments from database
@@ -200,7 +202,7 @@ const statsAction = Composer.action('detailedStarsStats', async (ctx) => {
 });
 
 module.exports = Composer.compose([
-  module.exports,
+  starsCommand,
   refreshAction,
   withdrawalAction,
   statsAction

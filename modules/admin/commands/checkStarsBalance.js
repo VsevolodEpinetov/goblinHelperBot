@@ -1,15 +1,16 @@
 const { Composer } = require('telegraf');
-const SETTINGS = require('../../../settings.json');
+const { getUser } = require('../../db/helpers');
 
 module.exports = Composer.command('stars_balance', async (ctx) => {
-  // Check if user is authorized (admin)
-  const userId = ctx.from.id.toString();
-  if (userId !== SETTINGS.CHATS.EPINETOV && userId !== SETTINGS.CHATS.GLAVGOBLIN) {
-    console.log(`❌ stars_balance command rejected: user ${userId} is not authorized`);
+  // Check if user is super admin
+  const adminUser = await getUser(ctx.from.id);
+  if (!adminUser || !adminUser.roles || !adminUser.roles.includes('super')) {
+    console.log(`❌ stars_balance rejected: user ${ctx.from.id} is not super admin`);
     return;
   }
 
-  console.log(`✅ stars_balance command from authorized user ${userId}`);
+  const userId = ctx.from.id;
+  console.log(`✅ stars_balance command from super admin ${userId}`);
 
   try {
     // Get bot's star balance using Telegram API
