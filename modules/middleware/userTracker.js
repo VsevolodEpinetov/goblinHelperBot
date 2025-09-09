@@ -15,22 +15,12 @@ const SETTINGS = require('../../settings.json');
 
 module.exports = async (ctx, next) => {
 	try {
-		console.log('🔄 UserTracker middleware: Processing context');
-		
 		// Get user ID from different context types
 		const userId = (ctx.from && ctx.from.id) || 
 					  (ctx.callbackQuery && ctx.callbackQuery.from && ctx.callbackQuery.from.id) ||
 					  (ctx.message && ctx.message.from && ctx.message.from.id);
 		
-		console.log('🔄 UserTracker middleware: User ID:', userId);
-		
-		if (DEBUG_MODE) {
-			console.log(`[userTracker] Processing context for user: ${userId}`);
-			console.log(`[userTracker] Context type:`, Object.keys(ctx).filter(key => ctx[key] && typeof ctx[key] === 'object'));
-		}
-		
 		if (!userId) {
-			console.log('🔄 UserTracker middleware: No userId, skipping');
 			return next();
 		}
 		
@@ -38,9 +28,6 @@ module.exports = async (ctx, next) => {
 		const now = Date.now();
 		const userLastUpdate = userRateLimit.get(userId);
 		if (userLastUpdate && (now - userLastUpdate) < RATE_LIMIT_TTL) {
-			if (DEBUG_MODE) {
-				console.log(`[userTracker] Rate limited for user ${userId}`);
-			}
 			return next();
 		}
 		
@@ -136,36 +123,26 @@ module.exports = async (ctx, next) => {
 				}
 			}
 		} else {
-			// User doesn't exist in database - don't create them automatically
-			// Only log the interaction for tracking purposes
-			if (DEBUG_MODE) {
-				console.log(`[userTracker] User ${userId} doesn't exist in database, skipping auto-creation`);
-			}
-			
-			// Log new user interaction (but don't create user)
-			const newUserLog = `🆕 New user interaction (not registered): ${telegramUser.username ? `@${telegramUser.username}` : telegramUser.first_name} (${userId})`;
-			try {
-				await ctx.telegram.sendMessage(SETTINGS.CHATS.LOGS, newUserLog);
-			} catch (e) {
-				console.log('Failed to send new user log:', e);
+			// User doesn't exist in database - only log new interactions for commands
+			if (ctx.message?.text?.startsWith('/') && ctx.chat?.type === 'private') {
+				const newUserLog = `🆕 New user: ${telegramUser.username ? `@${telegramUser.username}` : telegramUser.first_name} (${userId}) used ${ctx.message.text}`;
+				try {
+					await ctx.telegram.sendMessage(SETTINGS.CHATS.LOGS, newUserLog);
+				} catch (e) {
+					console.error('Failed to send new user log:', e.message);
+				}
 			}
 		}
 		
 	} catch (error) {
-		console.log('❌ Error in userTracker middleware:', error);
-		// Even if there's an error, we must call next() to continue the chain
+		console.error('❌ UserTracker middleware error:', error);
 	}
-	
-	console.log('🔄 UserTracker middleware: Completed, calling next()');
 	
 	// Always call next() to ensure the middleware chain continues
 	try {
-		const result = await next();
-		console.log('🔄 UserTracker middleware: next() returned:', typeof result);
-		return result;
+		return await next();
 	} catch (error) {
-		console.log('❌ Error calling next() in userTracker middleware:', error);
-		// Re-throw the error to maintain error propagation
+		console.error('❌ Error in userTracker next():', error);
 		throw error;
 	}
 };

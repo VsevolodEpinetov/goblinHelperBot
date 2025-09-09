@@ -2,15 +2,13 @@ const { Composer } = require('telegraf');
 const { getAllFilesFromFolder } = require('../util');
 const path = require('path');
 
-console.log('🔧 Loading users module...');
 
 const actions = getAllFilesFromFolder(path.join(__dirname, './actions'))
   .map(file => {
     try {
-      console.log('📄 Loading action file:', file);
       return require(file);
     } catch (error) {
-      console.log('❌ Error loading action file:', file, error.message);
+      console.error('❌ Failed to load action:', file, error.message);
       return null;
     }
   })
@@ -19,17 +17,14 @@ const actions = getAllFilesFromFolder(path.join(__dirname, './actions'))
 const commands = getAllFilesFromFolder(path.join(__dirname, './commands'))
   .map(file => {
     try {
-      console.log('📄 Loading command file:', file);
       return require(file);
     } catch (error) {
-      console.log('❌ Error loading command file:', file, error.message);
+      console.error('❌ Failed to load command:', file, error.message);
       return null;
     }
   })
   .filter(Boolean);  // Импортируем файлы
 
-console.log('📁 Users module - Actions loaded:', actions.length);
-console.log('📁 Users module - Commands loaded:', commands.length);
 
 // Import all new enhanced UX actions
 const enhancedActions = [
@@ -86,25 +81,13 @@ const enhancedActions = [
   require('./actions/closeRaid')
 ];
 
-console.log('📁 Users module - Enhanced actions loaded:', enhancedActions.length);
 
 // Debug: Add a catch-all handler to see if the module is being called
 const debugHandler = new Composer();
 debugHandler.use(async (ctx, next) => {
-  console.log('🔧 Users module: Processing update...');
-  console.log('🔧 Users module: Message text:', ctx.message?.text);
-  console.log('🔧 Users module: Is command:', ctx.message?.text?.startsWith('/'));
-  const result = await next();
-  console.log('🔧 Users module: next() returned:', result);
-  return result;
+  return await next();
 });
 
-// Debug: Add a final handler to see if next() is being called
-const finalHandler = new Composer();
-finalHandler.use(async (ctx, next) => {
-  console.log('🔧 Users module: Final handler - calling next()');
-  return next();
-});
 
 const composer = Composer.compose([
   debugHandler,
