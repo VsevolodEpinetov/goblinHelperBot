@@ -6,9 +6,11 @@ module.exports = Composer.action('addPlusToCurrentMonth', async (ctx) => {
   const userData = await getUser(ctx.callbackQuery.from.id);
   if (!userData) return;
 
-  const currentPeriod = `${ctx.globalSession.current.year}_${ctx.globalSession.current.month}`;
-  const hasRegular = userData.purchases.groups.regular.indexOf(currentPeriod) > -1;
-  const hasPlus = userData.purchases.groups.plus.indexOf(currentPeriod) > -1;
+  // Get current period safely  
+  const { getCurrentPeriod } = require('../menuSystem');
+  const currentPeriodInfo = getCurrentPeriod(ctx);
+  const hasRegular = userData.purchases.groups.regular.indexOf(currentPeriodInfo.period) > -1;
+  const hasPlus = userData.purchases.groups.plus.indexOf(currentPeriodInfo.period) > -1;
   
   if (!hasRegular) {
     await ctx.answerCbQuery('❌ Сначала нужно оплатить обычную подписку на текущий месяц!');
@@ -19,10 +21,23 @@ module.exports = Composer.action('addPlusToCurrentMonth', async (ctx) => {
     await ctx.answerCbQuery('✅ У вас уже есть ➕ подписка на текущий месяц!');
     return;
   }
+  
+  // Get discounted price
+  const { hasYearsOfService, getAchievementMultiplier, YEARS_OF_SERVICE } = require('../../loyalty/achievementsService');
+  const hasYears = await hasYearsOfService(Number(ctx.callbackQuery.from.id));
+  const achievementMultiplier = hasYears ? getAchievementMultiplier(YEARS_OF_SERVICE) : 1.0;
+  const discountPercent = hasYears ? Math.round((1 - achievementMultiplier) * 100) : 0;
+  
+  const basePlusPrice = parseInt(process.env.PLUS_PRICE || '1000');
+  const discountedPrice = Math.round(basePlusPrice * achievementMultiplier);
+  
+  const priceText = hasYears ? 
+    `💰 <b>Стоимость:</b> ~~${basePlusPrice}⭐~~ ${discountedPrice}⭐ (скидка ${discountPercent}%)\n\n` :
+    `💰 <b>Стоимость:</b> ${discountedPrice}⭐\n\n`;
 
   const plusMessage = `⭐ <b>ДОБАВЛЕНИЕ ➕ К ТЕКУЩЕМУ МЕСЯЦУ</b>\n\n` +
-    `📅 <b>Период:</b> ${ctx.globalSession.current.year}-${ctx.globalSession.current.month}\n` +
-    `💰 <b>Стоимость:</b> 500₽\n\n` +
+    `📅 <b>Период:</b> ${currentPeriodInfo.display}\n` +
+    priceText +
     `🎁 <b>Что дает ➕ подписка:</b>\n` +
     `• Ранний доступ к релизам\n` +
     `• Эксклюзивные материалы\n` +

@@ -15,11 +15,19 @@ const { getCurrentMonthPeriod } = require('../users/subscriptionHelpers');
 async function createSubscriptionInvoice(ctx, subscriptionType, userId) {
   try {
     const currentPeriod = getCurrentMonthPeriod();
-    const price = subscriptionType === 'plus' ? (rpgConfig.prices.plusStars || process.env.PLUS_PRICE) : (rpgConfig.prices.regularStars || process.env.REGULAR_PRICE);
-    const priceInStars = parseInt(price);
+    const basePrice = subscriptionType === 'plus' ? (rpgConfig.prices.plusStars || process.env.PLUS_PRICE) : (rpgConfig.prices.regularStars || process.env.REGULAR_PRICE);
+    const basePriceInStars = parseInt(basePrice);
+    
+    // Apply achievement discounts to the invoice price (not just XP calculation)
+    const hasYears = await hasYearsOfService(Number(userId));
+    const achievementMultiplier = hasYears ? getAchievementMultiplier(YEARS_OF_SERVICE) : 1.0;
+    const discountedPrice = Math.round(basePriceInStars * achievementMultiplier);
+    const discountPercent = hasYears ? Math.round((1 - achievementMultiplier) * 100) : 0;
+    
+    const priceInStars = discountedPrice;
     
     if (!priceInStars || priceInStars <= 0) {
-      throw new Error(`Invalid price configuration: ${price}`);
+      throw new Error(`Invalid price configuration: base ${basePrice}, discounted ${priceInStars}`);
     }
 
     // Get user info for description
@@ -31,7 +39,17 @@ async function createSubscriptionInvoice(ctx, subscriptionType, userId) {
     const labelShort = subscriptionType === 'plus' ? t('payments.subscription.plusLabel') : t('payments.subscription.regularLabel');
     const subscriptionLabel = subscriptionType === 'plus' ? '➕ Расширенная версия' : 'Обычная версия';
     const title = t('payments.invoices.subscription.title', { label: labelShort, period: currentPeriod });
-    const description = t('payments.invoices.subscription.description', { period: currentPeriod, userName, userId: userInfo.id, subscriptionLabel, price: priceInStars });
+    
+    // Create description with discount information
+    let description = `${subscriptionLabel} за ${currentPeriod}\n\n`;
+    description += `👤 Пользователь: ${userName} (${userInfo.id})\n`;
+    
+    if (hasYears && discountPercent > 0) {
+      description += `💰 Цена: ${basePriceInStars}⭐ → ${priceInStars}⭐\n`;
+      description += `🏆 Скидка "За выслугу лет": ${discountPercent}%`;
+    } else {
+      description += `💰 Цена: ${priceInStars}⭐`;
+    }
     const payload = JSON.stringify({
       type: 'subscription',
       subscriptionType,
@@ -42,13 +60,25 @@ async function createSubscriptionInvoice(ctx, subscriptionType, userId) {
     const provider_token = ''; // Empty for Telegram Stars
     const currency = 'XTR'; // Telegram Stars currency code
     const isTestMode = process.env.PAYMENT_TEST_MODE === 'true';
-    // Apply achievements and level discounts later at payment processing time; invoice shows base price
+    
+    // Create price label with discount info
+    const priceLabel = hasYears && discountPercent > 0 ? 
+      `${labelShort} (${discountPercent}% скидка)` : 
+      labelShort;
+    
     const prices = [
       {
-        label: t('payments.invoices.subscription.label', { labelShort }),
+        label: priceLabel,
         amount: priceInStars
       }
     ];
+    
+    // Log the discount application
+    if (hasYears && discountPercent > 0) {
+      console.log(`💰 Discount Applied: User ${userId} - ${subscriptionType} ${basePriceInStars}⭐ → ${priceInStars}⭐ (${discountPercent}% off)`);
+    } else {
+      console.log(`💰 Full Price: User ${userId} - ${subscriptionType} ${priceInStars}⭐ (no discounts)`);
+    }
 
     
     // Validate required parameters
@@ -154,19 +184,26 @@ async function processSubscriptionPayment(ctx, paymentData) {
 
     const { subscriptionType, userId, period } = payload;
 
-    // Verify payment amount
-    const expectedPrice = subscriptionType === 'plus' ? 
+    // Verify payment amount (should match the discounted price from invoice)
+    const basePrice = subscriptionType === 'plus' ? 
       parseInt(rpgConfig.prices.plusStars || process.env.PLUS_PRICE) : parseInt(rpgConfig.prices.regularStars || process.env.REGULAR_PRICE);
+    
+    // Calculate the expected discounted price (same logic as invoice creation)
+    const hasYears = await hasYearsOfService(Number(userId));
+    const achievementMultiplier = hasYears ? getAchievementMultiplier(YEARS_OF_SERVICE) : 1.0;
+    const expectedPrice = Math.round(basePrice * achievementMultiplier);
     
     // For Telegram Stars (XTR), amount is already in stars, not smallest currency unit
     if (paymentData.total_amount < expectedPrice) {
-      console.error('Payment amount too low:', {
+      console.error('Payment amount mismatch:', {
         expected: expectedPrice,
         received: paymentData.total_amount,
+        basePrice,
+        discountMultiplier: achievementMultiplier,
         subscriptionType,
         currency: paymentData.currency
       });
-      throw new Error('Payment amount too low');
+      throw new Error('Payment amount mismatch');
     }
 
     // Add user to the subscription group
@@ -197,19 +234,25 @@ async function processSubscriptionPayment(ctx, paymentData) {
       .where('type', subscriptionType)
       .increment('counterPaid', 1);
 
-    // Apply loyalty XP gain with achievement discounts
+    // Apply loyalty XP gain based on actual amount paid (discount already applied in invoice)
     try {
       const baseUnits = getSubscriptionBaseUnits(subscriptionType);
-      const hasY = await hasYearsOfService(Number(userId));
-      const mult = hasY ? getAchievementMultiplier(YEARS_OF_SERVICE) : 1.0;
-      const discountedUnits = baseUnits * mult;
-      const deltaUnits = discountedUnits;
+      // Since user already paid discounted price, apply the same discount to XP calculation
+      const xpMultiplier = hasYears ? getAchievementMultiplier(YEARS_OF_SERVICE) : 1.0;
+      const deltaUnits = baseUnits * xpMultiplier;
       
-      await applyXpGain(Number(userId), deltaUnits, 'spending_payment', { subscriptionType, period, description: 'Subscription payment' });
+      await applyXpGain(Number(userId), deltaUnits, 'spending_payment', { 
+        subscriptionType, 
+        period, 
+        description: 'Subscription payment',
+        actualPaid: paymentData.total_amount,
+        basePrice: basePrice,
+        discountApplied: hasYears
+      });
       
-      // Log meaningful payment completion with XP info
-      const discount = hasY ? ((1 - mult) * 100) : 0;
-      console.log(`✅ Payment Complete: User ${userId} - ${subscriptionType} subscription, ${deltaUnits} XP units${hasY ? ` (${discount}% discount applied)` : ''}`);
+      // Log meaningful payment completion
+      const discount = hasYears ? ((1 - xpMultiplier) * 100) : 0;
+      console.log(`✅ Payment Complete: User ${userId} - ${subscriptionType} subscription, paid ${paymentData.total_amount}⭐, earned ${deltaUnits} XP units${hasYears ? ` (${discount}% discount was applied)` : ''}`);
       
     } catch (xpErr) {
       console.error('⚠️ Loyalty XP apply error (non-fatal):', xpErr);

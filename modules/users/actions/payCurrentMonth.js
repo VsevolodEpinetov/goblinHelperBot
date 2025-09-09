@@ -30,22 +30,45 @@ module.exports = Composer.action('payCurrentMonth', async (ctx) => {
       return;
     }
 
-    // Get prices from environment
-    const regularPrice = process.env.REGULAR_PRICE || '100';
-    const plusPrice = process.env.PLUS_PRICE || '150';
+    // Get base prices and calculate discounts
+    const { hasYearsOfService, getAchievementMultiplier, YEARS_OF_SERVICE } = require('../../loyalty/achievementsService');
+    
+    const regularBasePrice = parseInt(process.env.REGULAR_PRICE || '100');
+    const plusBasePrice = parseInt(process.env.PLUS_PRICE || '150');
+    
+    // Apply achievement discounts
+    const hasYears = await hasYearsOfService(Number(userData.id));
+    const achievementMultiplier = hasYears ? getAchievementMultiplier(YEARS_OF_SERVICE) : 1.0;
+    const discountPercent = hasYears ? Math.round((1 - achievementMultiplier) * 100) : 0;
+    
+    const regularPrice = Math.round(regularBasePrice * achievementMultiplier);
+    const plusPrice = Math.round(plusBasePrice * achievementMultiplier);
+    
     const isTestMode = process.env.PAYMENT_TEST_MODE === 'true';
     
-    // Show payment options with direct payment buttons
+    // Show payment options with discounted prices
     const testModeText = isTestMode ? '\n\n🧪 <b>ТЕСТОВЫЙ РЕЖИМ</b> - Платежи будут симулированы' : '';
-    const paymentMessage = t('payments.subscription.choose') + `\n\n` +
-      t('payments.subscription.regular') + ` — ${regularPrice}⭐` + `\n` +
-      t('payments.subscription.plus') + ` — ${plusPrice}⭐` + `\n\n` +
-      t('messages.explain') + testModeText;
+    const discountText = hasYears ? `\n\n🏆 <b>Применена скидка "За выслугу лет": ${discountPercent}%</b>` : '';
+    
+    let paymentMessage = t('payments.subscription.choose') + `\n\n`;
+    
+    if (hasYears && discountPercent > 0) {
+      paymentMessage += `${t('payments.subscription.regular')} — ~~${regularBasePrice}⭐~~ ${regularPrice}⭐\n`;
+      paymentMessage += `${t('payments.subscription.plus')} — ~~${plusBasePrice}⭐~~ ${plusPrice}⭐\n`;
+    } else {
+      paymentMessage += `${t('payments.subscription.regular')} — ${regularPrice}⭐\n`;
+      paymentMessage += `${t('payments.subscription.plus')} — ${plusPrice}⭐\n`;
+    }
+    
+    paymentMessage += `\n` + t('messages.explain') + discountText + testModeText;
+
+    const regularLabel = hasYears ? `${t('payments.subscription.regularLabel')} (${regularPrice}⭐, -${discountPercent}%)` : `${t('payments.subscription.regularLabel')} (${regularPrice}⭐)`;
+    const plusLabel = hasYears ? `${t('payments.subscription.plusLabel')} (${plusPrice}⭐, -${discountPercent}%)` : `${t('payments.subscription.plusLabel')} (${plusPrice}⭐)`;
 
     const paymentKeyboard = [
       [
-        Markup.button.callback(`${t('payments.subscription.regularLabel')} (${regularPrice}⭐)`, 'payRegularMonth'),
-        Markup.button.callback(`${t('payments.subscription.plusLabel')} (${plusPrice}⭐)`, 'payPlusMonth')
+        Markup.button.callback(regularLabel, 'payRegularMonth'),
+        Markup.button.callback(plusLabel, 'payPlusMonth')
       ],
       [Markup.button.callback(t('messages.months.back'), 'refreshUserStatus')]
     ];

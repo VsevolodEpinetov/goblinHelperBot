@@ -14,44 +14,67 @@ function getCurrentPeriod () {
 
 composer.command('buy', async (ctx) => {
   if (ctx.message.chat.id < 0) return;
-  await ctx.replyWithHTML('Выбери подписку на месяц:', {
+  
+  // Get user data to check for discounts
+  const { getUser } = require('../db/helpers');
+  const { hasYearsOfService, getAchievementMultiplier, YEARS_OF_SERVICE } = require('../loyalty/achievementsService');
+  
+  const userData = await getUser(ctx.from.id);
+  if (!userData) {
+    await ctx.reply('❌ Пользователь не найден. Используйте /start');
+    return;
+  }
+  
+  // Get base prices
+  const regularBasePrice = parseInt(process.env.REGULAR_PRICE || '350');
+  const plusBasePrice = parseInt(process.env.PLUS_PRICE || '1000');
+  
+  // Apply achievement discounts
+  const hasYears = await hasYearsOfService(Number(ctx.from.id));
+  const achievementMultiplier = hasYears ? getAchievementMultiplier(YEARS_OF_SERVICE) : 1.0;
+  const discountPercent = hasYears ? Math.round((1 - achievementMultiplier) * 100) : 0;
+  
+  const regularPrice = Math.round(regularBasePrice * achievementMultiplier);
+  const plusPrice = Math.round(plusBasePrice * achievementMultiplier);
+  
+  // Create buttons with discounted prices
+  const regularLabel = hasYears ? `Обычная — ~~${regularBasePrice}⭐~~ ${regularPrice}⭐` : `Обычная — ${regularPrice}⭐`;
+  const plusLabel = hasYears ? `Плюс — ~~${plusBasePrice}⭐~~ ${plusPrice}⭐` : `Плюс — ${plusPrice}⭐`;
+  
+  const discountText = hasYears ? `\n\n🏆 Применена скидка "За выслугу лет": ${discountPercent}%` : '';
+  
+  await ctx.replyWithHTML(`Выбери подписку на месяц:${discountText}`, {
     ...Markup.inlineKeyboard([
-      [Markup.button.callback('Обычная — 350 ⭐️', 'stars_buy_regular')],
-      [Markup.button.callback('Плюс — 1000 ⭐️', 'stars_buy_plus')]
+      [Markup.button.callback(regularLabel, 'stars_buy_regular')],
+      [Markup.button.callback(plusLabel, 'stars_buy_plus')]
     ])
   })
 });
 
 composer.action('stars_buy_regular', async (ctx) => {
   try { await ctx.answerCbQuery(); } catch {}
-  const period = getCurrentPeriod();
-  const payload = `sub_regular_${period}`;
-  await ctx.telegram.sendInvoice(
-    ctx.from.id,
-    'Подписка (обычная)',
-    `1 месяц, период ${period}`,
-    payload,
-    '',
-    'XTR',
-    [{ label: 'Обычная', amount: 350 }],
-    { is_flexible: false }
-  );
+  
+  // Use the new subscription payment service with discounts
+  const { createSubscriptionInvoice } = require('./subscriptionPaymentService');
+  const invoiceResult = await createSubscriptionInvoice(ctx, 'regular', ctx.from.id);
+  
+  if (!invoiceResult.success) {
+    await ctx.reply('❌ Ошибка создания счета. Попробуйте позже.');
+    console.error('Invoice creation failed for regular subscription:', invoiceResult.error);
+  }
 });
 
 composer.action('stars_buy_plus', async (ctx) => {
   try { await ctx.answerCbQuery(); } catch {}
-  const period = getCurrentPeriod();
-  const payload = `sub_plus_${period}`;
-  await ctx.telegram.sendInvoice(
-    ctx.from.id,
-    'Подписка ПЛЮС',
-    `1 месяц, период ${period}`,
-    payload,
-    '',
-    'XTR',
-    [{ label: 'Плюс', amount: 1000 }],
-    { is_flexible: false }
-  );
+  
+  // Use the new subscription payment service with discounts
+  const { createSubscriptionInvoice } = require('./subscriptionPaymentService');
+  const invoiceResult = await createSubscriptionInvoice(ctx, 'plus', ctx.from.id);
+  
+  if (!invoiceResult.success) {
+    await ctx.reply('❌ Ошибка создания счета. Попробуйте позже.');
+    console.error('Invoice creation failed for plus subscription:', invoiceResult.error);
+  }
 });
 
 composer.on('pre_checkout_query', async (ctx) => {
