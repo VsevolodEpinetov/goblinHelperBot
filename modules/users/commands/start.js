@@ -26,7 +26,13 @@ const startCommand = Composer.command('start', async (ctx) => {
     await ctx.replyWithHTML(t('messages.username_required'));
     return;
   }
-  ctx.deleteMessage()
+  
+  // Try to delete the command message (non-critical)
+  try {
+    await ctx.deleteMessage();
+  } catch (deleteError) {
+    // Ignore delete errors - they're not critical
+  }
 
   const IS_CLOSED = false; //TODO: move to settings
 
@@ -42,25 +48,50 @@ const startCommand = Composer.command('start', async (ctx) => {
 
   // Special handling for new users (no userData)
   if (!userData) {
-    if (!IS_CLOSED) {
-      // Use the new comprehensive menu system for new users
-      const menu = await getUserMenu(ctx, userData);
-      await ctx.replyWithHTML(menu.message, {
-        ...Markup.inlineKeyboard(menu.keyboard)
-      });
-    } else {
-      await ctx.reply(t('start.closed'))
+    try {
+      if (!IS_CLOSED) {
+        // Use the new comprehensive menu system for new users
+        const menu = await getUserMenu(ctx, userData);
+        await ctx.replyWithHTML(menu.message, {
+          ...Markup.inlineKeyboard(menu.keyboard)
+        });
+        console.log(`✅ /start new user response sent to ${userId} (@${username})`);
+      } else {
+        await ctx.reply(t('start.closed'));
+        console.log(`✅ /start closed response sent to ${userId} (@${username})`);
+      }
+    } catch (error) {
+      console.error(`❌ /start new user failed for ${userId} (@${username}):`, error.message);
+      try {
+        await ctx.reply('❌ Произошла ошибка. Попробуйте позже.');
+      } catch (fallbackError) {
+        console.error('❌ New user fallback failed:', fallbackError.message);
+      }
     }
     return;
   }
   
   // Use the new comprehensive menu system for existing users
-  const menu = await getUserMenu(ctx, userData);
-  
-  // Show the appropriate menu based on user state
-  await ctx.replyWithHTML(menu.message, {
-    ...Markup.inlineKeyboard(menu.keyboard)
-  });
+  try {
+    const menu = await getUserMenu(ctx, userData);
+    
+    // Show the appropriate menu based on user state
+    await ctx.replyWithHTML(menu.message, {
+      ...Markup.inlineKeyboard(menu.keyboard)
+    });
+    
+    console.log(`✅ /start response sent to ${userId} (@${username})`);
+    
+  } catch (error) {
+    console.error(`❌ /start failed for ${userId} (@${username}):`, error.message);
+    
+    // Send a simple fallback response
+    try {
+      await ctx.reply('❌ Произошла ошибка. Попробуйте позже или обратитесь к администратору.');
+    } catch (fallbackError) {
+      console.error('❌ Even fallback response failed:', fallbackError.message);
+    }
+  }
 });
 
 // Test: Add a simple command to see if commands work at all
