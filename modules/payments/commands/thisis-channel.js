@@ -21,7 +21,39 @@ module.exports = Composer.on('channel_post', async (ctx) => {
     creates_join_request: true
   })
 
-  // Store invitation link in invitationLinks table (group link)
+  // Remove old invitation links for this period and type
+  const oldLinks = await knex('invitationLinks')
+    .where('groupPeriod', `${year}_${month}`)
+    .where('groupType', type)
+    .whereNull('userId') // Group links only
+    .select('id', 'telegramInviteLink');
+  
+  if (oldLinks.length > 0) {
+    console.log(`🗑️ Channel: Removing ${oldLinks.length} old invitation links for ${year}_${month} ${type}`);
+    
+    // Revoke old Telegram links (if possible)
+    for (const oldLink of oldLinks) {
+      try {
+        if (oldLink.telegramInviteLink) {
+          await ctx.telegram.revokeChatInviteLink(channelID, oldLink.telegramInviteLink);
+          console.log(`🚫 Channel: Revoked old Telegram link: ${oldLink.telegramInviteLink}`);
+        }
+      } catch (revokeError) {
+        console.log(`⚠️ Channel: Could not revoke old link: ${revokeError.message}`);
+      }
+    }
+    
+    // Delete old links from database
+    await knex('invitationLinks')
+      .where('groupPeriod', `${year}_${month}`)
+      .where('groupType', type)
+      .whereNull('userId')
+      .del();
+    
+    console.log(`✅ Channel: Deleted ${oldLinks.length} old invitation link records`);
+  }
+
+  // Store new invitation link in invitationLinks table (group link)
   await knex('invitationLinks').insert({
     userId: null, // Group link, not user-specific
     groupPeriod: `${year}_${month}`,
@@ -37,6 +69,8 @@ module.exports = Composer.on('channel_post', async (ctx) => {
     useCount: 0,
     createdAt: new Date()
   });
+  
+  console.log(`✅ Channel: Stored new invitation link for ${year}_${month} ${type}`);
 
   // Update month data in PostgreSQL (without link since it's now in invitationLinks)
   await updateMonth(`${year}_${month}`, type, {
