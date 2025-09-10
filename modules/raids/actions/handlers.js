@@ -2,20 +2,19 @@ const { Composer } = require('telegraf');
 
 const handlers = new Composer();
 
-// Debug all callback queries
+// Handle callback queries (only for raid-specific actions)
 handlers.on('callback_query', (ctx, next) => {
-  console.log('🔍 Raids handlers: Callback query received:', ctx.callbackQuery.data);
-  console.log('🔍 Raids handlers: Calling next()...');
-  return next();
+  // Only process raid-related callbacks, let others pass through
+  const data = ctx.callbackQuery.data;
+  if (data.startsWith('raid_') || data === 'raid_list') {
+    return next();
+  }
+  // Skip non-raid callbacks
+  return;
 });
 
 // Join raid action
-handlers.action(/^raid_join_(\d+)$/, (ctx) => {
-  console.log('🔍 Join action handler matched!', ctx.callbackQuery.data, ctx.match);
-  return require('./join')(ctx);
-});
-
-console.log('🔍 Raids handlers: Action handlers registered');
+handlers.action(/^raid_join_(\d+)$/, require('./join'));
 
 // Leave raid action
 handlers.action(/^raid_leave_(\d+)$/, require('./leave'));

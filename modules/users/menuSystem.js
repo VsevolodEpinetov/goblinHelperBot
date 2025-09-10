@@ -39,7 +39,6 @@ async function getUserMenu(ctx, userData) {
   
   // Check if user is super user - show admin menu
   if (roles.includes('super')) {
-    console.log(`🎭 Admin Menu: User ${userId} accessing admin panel`);
     return getSuperUserMenu(ctx, userData);
   }
   
@@ -214,8 +213,7 @@ async function getMainUserMenu(ctx, userData) {
         if (perks.length) message += `🎁 <b>Бонусы:</b> ${perks.join(', ')}\n\n`;
         else message += `\n`;
         
-        // Log meaningful user interaction with XP info
-        console.log(`🎮 Main Menu: User ${userData.id} (@${userData.username}) - ${tier} ${level}, ${xp} XP`);
+        // User menu generated with XP info
       } catch (benefitsError) {
         console.error('❌ Benefits config error:', benefitsError.message);
         message += `🏅 <b>RPG уровень:</b> ${lvl.current_tier || 'wood'} ${lvl.current_level || 1}\n\n`;

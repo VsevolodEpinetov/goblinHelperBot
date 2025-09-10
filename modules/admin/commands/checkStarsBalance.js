@@ -10,13 +10,13 @@ module.exports = Composer.command('stars_balance', async (ctx) => {
   }
 
   const userId = ctx.from.id;
-  console.log(`✅ stars_balance command from super admin ${userId}`);
+  // Stars balance command from super admin
 
   try {
     // Get bot's star balance using Telegram API
     const starTransactions = await ctx.telegram.getStarTransactions();
     
-    console.log('🌟 Star transactions response:', starTransactions);
+    // Star transactions retrieved
     
     let balanceMessage = `💫 <b>Bot Star Balance</b>\n\n`;
     

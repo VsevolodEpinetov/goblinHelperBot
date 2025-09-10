@@ -46,7 +46,7 @@ module.exports = Composer.on('chat_join_request', async (ctx) => {
       groupType = monthInfo.type;
       groupPeriod = `${monthInfo.year}_${monthInfo.month}`;
       
-      console.log(`📅 Found group info: ${groupType} for ${groupPeriod}`);
+      // Found group info
     }
     
     let hasAccess = false;

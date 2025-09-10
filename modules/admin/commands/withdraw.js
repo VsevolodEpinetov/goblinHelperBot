@@ -82,8 +82,7 @@ module.exports = Composer.command('withdraw', async (ctx) => {
 
     await ctx.replyWithHTML(withdrawMessage);
     
-    // Log the withdrawal request
-    console.log(`💸 Withdrawal requested: ${amount}⭐ by user ${userId}`);
+    // Withdrawal request processed
     
     // Send to logs chat
     try {
@@ -94,7 +93,7 @@ module.exports = Composer.command('withdraw', async (ctx) => {
       console.error('Failed to send withdrawal log:', logError.message);
     }
     
-    console.log(`✅ Withdrawal instructions sent to ${userId}`);
+    // Withdrawal instructions sent
 
   } catch (error) {
     console.error('❌ Error in withdraw command:', error);

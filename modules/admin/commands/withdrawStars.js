@@ -11,7 +11,7 @@ module.exports = Composer.command('stars_withdraw', async (ctx) => {
   }
 
   const userId = ctx.from.id;
-  console.log(`✅ stars_withdraw command from super admin ${userId}`);
+  // Stars withdraw command from super admin
 
   try {
     const args = ctx.message.text.split(' ');

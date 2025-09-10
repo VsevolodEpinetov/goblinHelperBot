@@ -12,7 +12,7 @@ const starsCommand = Composer.command('stars', async (ctx) => {
   }
 
   const userId = ctx.from.id;
-  console.log(`✅ stars command from super admin ${userId}`);
+  // Stars management command from super admin
 
   try {
     // Get recent payments from database

@@ -19,15 +19,10 @@ async function getOrCreateGroupInvitationLink(groupPeriod, groupType) {
       .where('telegramInviteLinkIsRevoked', false)
       .first();
 
-    console.log(`🔍 Found existing link:`, existingLink ? {
-      id: existingLink.id,
-      link: existingLink.telegramInviteLink,
-      usedAt: existingLink.usedAt,
-      revoked: existingLink.telegramInviteLinkIsRevoked
-    } : 'null');
+    // Found existing link
 
     if (existingLink && existingLink.telegramInviteLink) {
-      console.log(`✅ Returning existing link: ${existingLink.telegramInviteLink}`);
+      // Returning existing link
       return {
         success: true,
         link: existingLink.telegramInviteLink,
