@@ -14,7 +14,7 @@ module.exports = async (ctx, next) => {
 			.first();
 			
 		if (bannedRole) {
-			console.log(`🚫 Banned User Blocked: ${userId}`);
+			// Don't log here - let the clean logger handle it
 			return; // ignore banned users silently
 		}
 	} catch (error) {

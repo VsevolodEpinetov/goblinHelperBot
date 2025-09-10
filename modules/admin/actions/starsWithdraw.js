@@ -1,10 +1,9 @@
 const { Composer, Markup } = require('telegraf');
 const { getUser } = require('../../db/helpers');
 const knex = require('../../db/knex');
+const { logDenied } = require('../../util/logger');
 
 module.exports = Composer.action('adminStarsWithdraw', async (ctx) => {
-  console.log('💸 adminStarsWithdraw action started');
-  
   try { 
     await ctx.answerCbQuery(); 
   } catch (cbError) {
@@ -14,17 +13,14 @@ module.exports = Composer.action('adminStarsWithdraw', async (ctx) => {
   try {
     // Check if user is super admin
     const adminUser = await getUser(ctx.from.id);
-    console.log('💸 Admin user check:', adminUser ? { roles: adminUser.roles } : 'null');
     
     if (!adminUser || !adminUser.roles || !adminUser.roles.includes('super')) {
-      console.log('❌ adminStarsWithdraw rejected: insufficient permissions');
+      logDenied(ctx.from.id, ctx.from.username, 'adminStarsWithdraw', 'insufficient permissions');
       await ctx.editMessageText('❌ Недостаточно прав для вывода звёзд', {
         ...Markup.inlineKeyboard([[Markup.button.callback('🔙 Назад', 'adminMenu')]])
       });
       return;
     }
-
-    console.log('✅ Permission check passed for withdrawal');
 
     // Get current balance
     const totalEarnings = await knex('paymentTracking')
@@ -35,7 +31,6 @@ module.exports = Composer.action('adminStarsWithdraw', async (ctx) => {
       .first();
 
     const totalStars = parseInt(totalEarnings?.total || 0);
-    console.log('💸 Current balance:', totalStars);
     
     const withdrawalMessage = `💸 <b>Вывод звёзд</b>\n\n` +
       `💰 <b>Доступно:</b> ${totalStars}⭐\n\n` +
@@ -64,8 +59,6 @@ module.exports = Composer.action('adminStarsWithdraw', async (ctx) => {
     
     withdrawalMessage += `• Весь баланс: ${totalStars}⭐`;
 
-    console.log('💸 Sending withdrawal info...');
-
     await ctx.editMessageText(withdrawalMessage, {
       parse_mode: 'HTML',
       ...Markup.inlineKeyboard([
@@ -79,11 +72,8 @@ module.exports = Composer.action('adminStarsWithdraw', async (ctx) => {
       ])
     });
     
-    console.log('✅ adminStarsWithdraw response sent');
-    
   } catch (error) {
     console.error('❌ Error in adminStarsWithdraw:', error);
-    console.error('Full error:', error);
     
     try {
       await ctx.editMessageText(`❌ Ошибка получения информации о выводе: ${error.message}`, {

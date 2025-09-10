@@ -2,6 +2,7 @@ const { Composer, Markup } = require('telegraf');
 const { getUser } = require('../../db/helpers');
 const knex = require('../../db/knex');
 const SETTINGS = require('../../../settings.json');
+const { logDenied, logAdmin } = require('../../util/logger');
 
 // Check if user is authorized admin
 function isAuthorizedAdmin(userId) {
@@ -10,12 +11,10 @@ function isAuthorizedAdmin(userId) {
 
 // Fixed admin months action
 const adminMonthsAction = Composer.action(/^adminMonths$/g, async (ctx) => {
-  console.log('🔧 adminMonths action triggered');
-  
   try { await ctx.answerCbQuery(); } catch {}
   
   if (!isAuthorizedAdmin(ctx.from.id)) {
-    console.log(`❌ adminMonths rejected: user ${ctx.from.id} not authorized`);
+    logDenied(ctx.from.id, ctx.from.username, 'adminMonths', 'unauthorized');
     return;
   }
   
@@ -24,8 +23,6 @@ const adminMonthsAction = Composer.action(/^adminMonths$/g, async (ctx) => {
     const months = await knex('months')
       .select('period', 'type', 'chatId')
       .orderBy('period', 'desc');
-    
-    console.log(`🔧 Found ${months.length} months in database`);
     
     // Group by year
     const yearGroups = {};
@@ -59,8 +56,6 @@ const adminMonthsAction = Composer.action(/^adminMonths$/g, async (ctx) => {
       ...Markup.inlineKeyboard(keyboard)
     });
     
-    console.log('✅ adminMonths response sent');
-    
   } catch (error) {
     console.error('❌ Error in adminMonths:', error);
     await ctx.editMessageText('❌ Ошибка загрузки месяцев', {
@@ -71,12 +66,10 @@ const adminMonthsAction = Composer.action(/^adminMonths$/g, async (ctx) => {
 
 // Fixed admin participants action
 const adminParticipantsAction = Composer.action('adminParticipants', async (ctx) => {
-  console.log('🔧 adminParticipants action triggered');
-  
   try { await ctx.answerCbQuery(); } catch {}
   
   if (!isAuthorizedAdmin(ctx.from.id)) {
-    console.log(`❌ adminParticipants rejected: user ${ctx.from.id} not authorized`);
+    logDenied(ctx.from.id, ctx.from.username, 'adminParticipants', 'unauthorized');
     return;
   }
   
@@ -111,8 +104,6 @@ const adminParticipantsAction = Composer.action('adminParticipants', async (ctx)
       parse_mode: 'HTML',
       ...Markup.inlineKeyboard(keyboard)
     });
-    
-    console.log('✅ adminParticipants response sent');
     
   } catch (error) {
     console.error('❌ Error in adminParticipants:', error);

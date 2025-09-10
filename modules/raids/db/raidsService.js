@@ -344,7 +344,7 @@ class RaidsService {
           updated_at: knex.fn.now()
         });
       
-      console.log(`✅ Raid ${raidId} updated successfully`);
+      // Raid updated successfully
       return { success: true };
     } catch (error) {
       console.error('Error updating raid:', error);
@@ -364,7 +364,7 @@ class RaidsService {
           metadata: knex.raw('metadata || ?', [JSON.stringify({ messageIds })])
         });
       
-      console.log(`✅ Message IDs updated for raid ${raidId}`);
+      // Message IDs updated
       return { success: true };
     } catch (error) {
       console.error('Error updating raid message IDs:', error);

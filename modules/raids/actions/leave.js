@@ -54,7 +54,7 @@ async function updatePublicRaidMessage(ctx, raid) {
               reply_markup: keyboard.reply_markup
             }
           );
-          console.log(`✅ New update message sent for raid ${raid.id}: ${newMessage.message_id}`);
+          // New update message sent
         } else {
           // This is a single text message - edit it
           await ctx.telegram.editMessageText(
@@ -67,7 +67,7 @@ async function updatePublicRaidMessage(ctx, raid) {
               reply_markup: keyboard.reply_markup
             }
           );
-          console.log(`✅ Public message updated for raid ${raid.id}`);
+          // Public message updated
         }
       } catch (error) {
         console.log('❌ Could not update public raid message:', error.message);
@@ -82,7 +82,7 @@ async function updatePublicRaidMessage(ctx, raid) {
               reply_markup: keyboard.reply_markup
             }
           );
-          console.log(`✅ Fallback message sent for raid ${raid.id}: ${fallbackMessage.message_id}`);
+          // Fallback message sent
         } catch (fallbackError) {
           console.log('❌ Fallback message also failed:', fallbackError.message);
         }

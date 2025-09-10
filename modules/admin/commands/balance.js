@@ -1,16 +1,15 @@
 const { Composer } = require('telegraf');
 const knex = require('../../db/knex');
 const SETTINGS = require('../../../settings.json');
+const { logDenied } = require('../../util/logger');
 
 module.exports = Composer.command('balance', async (ctx) => {
   // Simple authorization check
   const userId = ctx.from.id.toString();
   if (userId !== SETTINGS.CHATS.EPINETOV && userId !== SETTINGS.CHATS.GLAVGOBLIN) {
-    console.log(`❌ balance rejected: user ${userId} not authorized`);
+    logDenied(ctx.from.id, ctx.from.username, '/balance', 'unauthorized');
     return;
   }
-
-  console.log(`✅ balance command from authorized user ${userId}`);
 
   try {
     // Get total earnings from completed payments
@@ -70,10 +69,11 @@ module.exports = Composer.command('balance', async (ctx) => {
     message += `• <code>/balance</code> - показать этот баланс\n`;
     message += `• <code>/withdraw &lt;сумма&gt;</code> - инструкция по выводу\n\n`;
     message += `🔧 <b>Вывод через @BotFather:</b>\n`;
-    message += `Bot Settings → Payments → Withdraw Stars`;
+    message += `1. @BotFather → <code>/mybots</code> → выбери бота\n`;
+    message += `2. Найди "Withdraw Earned Stars" или "💰"\n`;
+    message += `3. Используй команду <code>/withdraw [сумма]</code> для инструкций`;
 
     await ctx.replyWithHTML(message);
-    console.log(`✅ Balance response sent to ${userId}`);
 
   } catch (error) {
     console.error('❌ Error in balance command:', error);

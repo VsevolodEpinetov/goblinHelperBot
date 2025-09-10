@@ -1,10 +1,9 @@
 const { Composer, Markup } = require('telegraf');
 const { getUser } = require('../../db/helpers');
 const knex = require('../../db/knex');
+const { logDenied } = require('../../util/logger');
 
 module.exports = Composer.action('adminStarsBalance', async (ctx) => {
-  console.log('🌟 adminStarsBalance action started');
-  
   try { 
     await ctx.answerCbQuery(); 
   } catch (cbError) {
@@ -14,21 +13,16 @@ module.exports = Composer.action('adminStarsBalance', async (ctx) => {
   try {
     // Check if user is super admin
     const adminUser = await getUser(ctx.from.id);
-    console.log('🌟 Admin user check:', adminUser ? { roles: adminUser.roles } : 'null');
     
     if (!adminUser || !adminUser.roles || !adminUser.roles.includes('super')) {
-      console.log('❌ adminStarsBalance rejected: insufficient permissions');
+      logDenied(ctx.from.id, ctx.from.username, 'adminStarsBalance', 'insufficient permissions');
       await ctx.editMessageText('❌ Недостаточно прав для просмотра баланса звёзд', {
         ...Markup.inlineKeyboard([[Markup.button.callback('🔙 Назад', 'adminMenu')]])
       });
       return;
     }
 
-    console.log('✅ Permission check passed');
-
     // Get payment statistics from database
-    console.log('🌟 Querying payment statistics...');
-    
     const totalEarnings = await knex('paymentTracking')
       .where('type', 'subscription')
       .where('status', 'completed')
@@ -37,7 +31,6 @@ module.exports = Composer.action('adminStarsBalance', async (ctx) => {
       .first();
 
     const totalStars = parseInt(totalEarnings?.total || 0);
-    console.log('🌟 Total earnings:', totalStars);
 
     // Get recent payments
     const recentPayments = await knex('paymentTracking')
@@ -46,8 +39,6 @@ module.exports = Composer.action('adminStarsBalance', async (ctx) => {
       .select('subscriptionType', 'amount', 'completedAt')
       .orderBy('completedAt', 'desc')
       .limit(5);
-
-    console.log('🌟 Recent payments count:', recentPayments.length);
 
     // Build message
     let starsMessage = `💫 <b>Баланс звёзд бота</b>\n\n`;
@@ -67,8 +58,6 @@ module.exports = Composer.action('adminStarsBalance', async (ctx) => {
     
     starsMessage += `\n💡 <b>Вывод:</b> @BotFather → Bot Settings → Payments → Withdraw Stars`;
 
-    console.log('🌟 Sending response...');
-
     await ctx.editMessageText(starsMessage, {
       parse_mode: 'HTML',
       ...Markup.inlineKeyboard([
@@ -82,11 +71,8 @@ module.exports = Composer.action('adminStarsBalance', async (ctx) => {
       ])
     });
     
-    console.log('✅ adminStarsBalance response sent');
-    
   } catch (error) {
     console.error('❌ Error in adminStarsBalance:', error);
-    console.error('Full error:', error);
     
     try {
       await ctx.editMessageText(`❌ Ошибка получения баланса: ${error.message}`, {

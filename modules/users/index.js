@@ -82,32 +82,12 @@ const enhancedActions = [
 ];
 
 
-// Debug: Add a catch-all handler to see if the module is being called
-const debugHandler = new Composer();
-debugHandler.use(async (ctx, next) => {
-  return await next();
-});
-
-
 const composer = Composer.compose([
-  debugHandler,
   ...actions,
   ...commands,
   ...enhancedActions
 ]);
 
-console.log('📁 Users module - Total handlers:', actions.length + commands.length + enhancedActions.length);
-
-// Debug: Check if start command is loaded
-console.log('🔍 All commands loaded:', commands.length);
-console.log('🔍 Commands:', commands.map(cmd => cmd ? 'loaded' : 'null'));
-
-// Test if the command actually works
-if (commands.length > 0) {
-  console.log('🔍 First command type:', typeof commands[0]);
-  console.log('🔍 First command constructor:', commands[0]?.constructor?.name);
-}
-
-console.log('✅ Users module loaded successfully');
+// Users module loaded
 
 module.exports = composer;

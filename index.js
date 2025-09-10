@@ -2,7 +2,7 @@
 const { Telegraf, Scenes, session } = require('telegraf');
 require('dotenv').config();
 
-console.log('🚀 GoblinHelperBot starting...');
+// Bot starting...
 
 const bot = new Telegraf(process.env.TOKEN)
 const SETTINGS = require('./settings.json')
@@ -57,10 +57,10 @@ bot.use(stage.middleware());
 // --------------------------------------------------------------------------
 // Loading middleware
 
-// 3.1. Logging middleware (first - logs everything)
+// 3.1. Clean logging middleware (first - logs user interactions only)
 try {
-  const logger = require('./modules/middleware/logger');
-  bot.use(logger);
+  const cleanLogger = require('./modules/middleware/cleanLogger');
+  bot.use(cleanLogger);
 } catch (error) {
   console.error('❌ Failed to load logger middleware:', error);
 }
@@ -81,10 +81,7 @@ bot.use(require('./modules/middleware/userTracker'));
 // Temporarily commenting out other modules to test users module in isolation
 // Lots module removed - replaced with raids
 
-// console.log('📦 Loading polls module...');
 // bot.use(require('./modules/polls'));
-
-// console.log('📦 Loading indexator-creator module...');
 // bot.use(require('./modules/indexator-creator'));
 
 bot.use(require('./modules/payments'));
@@ -99,7 +96,6 @@ try {
 bot.use(require('./modules/raids'));
 bot.use(require('./modules/admin'));
 
-// console.log('📦 Loading inviteLinksMenu...');
 // bot.use(require('./modules/admin/actions/users/inviteLinksMenu'));
 
 //#endregion
@@ -349,10 +345,9 @@ bot.catch((error, ctx) => {
 // --------------------------------------------------------------------------
 // 7. Bot launch
 // --------------------------------------------------------------------------
-console.log('🚀 Launching bot...');
 bot.launch({ dropPendingUpdates: true })
   .then(() => {
-    console.log(`✅ GoblinHelperBot is online! Username: @${bot.botInfo.username}`);
+    console.log(`✅ Bot online: @${bot.botInfo.username}`);
     // expose bot for RPG notifications
     globalThis.__bot = bot;
   })
@@ -362,11 +357,9 @@ bot.launch({ dropPendingUpdates: true })
 
 // Enable graceful stop
 process.once('SIGINT', () => {
-  console.log('🛑 Received SIGINT, stopping bot...');
   bot.stop('SIGINT')
 })
 process.once('SIGTERM', () => {
-  console.log('🛑 Received SIGTERM, stopping bot...');
   bot.stop('SIGTERM')
 })
 //#endregion

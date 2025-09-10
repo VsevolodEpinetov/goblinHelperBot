@@ -82,7 +82,7 @@ async function postRaidAnnouncement(ctx, raid) {
       await require('../db/raidsService').updateRaidMessageIds(raid.id, [sentMessage.message_id]);
     }
     
-    console.log(`✅ Raid #${raid.id} posted to topic ${targetTopicId} in chat ${targetChatId}`);
+    // Raid posted successfully
     
   } catch (error) {
     console.error('Error posting raid announcement:', error);

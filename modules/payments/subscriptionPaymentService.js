@@ -252,7 +252,7 @@ async function processSubscriptionPayment(ctx, paymentData) {
       
       // Log meaningful payment completion
       const discount = hasYears ? ((1 - xpMultiplier) * 100) : 0;
-      console.log(`✅ Payment Complete: User ${userId} - ${subscriptionType} subscription, paid ${paymentData.total_amount}⭐, earned ${deltaUnits} XP units${hasYears ? ` (${discount}% discount was applied)` : ''}`);
+      // Payment completed successfully
       
     } catch (xpErr) {
       console.error('⚠️ Loyalty XP apply error (non-fatal):', xpErr);

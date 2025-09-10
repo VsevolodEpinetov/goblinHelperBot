@@ -1,16 +1,15 @@
 const { Composer } = require('telegraf');
 const knex = require('../../db/knex');
 const SETTINGS = require('../../../settings.json');
+const { logDenied, logAdmin } = require('../../util/logger');
 
 module.exports = Composer.command('withdraw', async (ctx) => {
   // Simple authorization check
   const userId = ctx.from.id.toString();
   if (userId !== SETTINGS.CHATS.EPINETOV && userId !== SETTINGS.CHATS.GLAVGOBLIN) {
-    console.log(`❌ withdraw rejected: user ${userId} not authorized`);
+    logDenied(ctx.from.id, ctx.from.username, '/withdraw', 'unauthorized');
     return;
   }
-
-  console.log(`✅ withdraw command from authorized user ${userId}`);
 
   try {
     const args = ctx.message.text.split(' ');
@@ -64,14 +63,14 @@ module.exports = Composer.command('withdraw', async (ctx) => {
     withdrawMessage += `💳 <b>Комиссия (~3%):</b> ${fee}⭐\n`;
     withdrawMessage += `✅ <b>К получению:</b> ${finalAmount}⭐\n\n`;
     
-    withdrawMessage += `🔧 <b>Пошаговая инструкция:</b>\n`;
+    withdrawMessage += `🔧 <b>Инструкция по выводу:</b>\n`;
     withdrawMessage += `1. Открой @BotFather\n`;
-    withdrawMessage += `2. Найди и выбери этого бота\n`;
-    withdrawMessage += `3. Bot Settings → Payments\n`;
-    withdrawMessage += `4. Withdraw Stars\n`;
+    withdrawMessage += `2. Напиши: <code>/mybots</code>\n`;
+    withdrawMessage += `3. Выбери этого бота из списка\n`;
+    withdrawMessage += `4. Найди опцию "Withdraw Earned Stars" или "💰"\n`;
     withdrawMessage += `5. Введи сумму: <code>${amount}</code>\n`;
-    withdrawMessage += `6. Выбери TON Wallet или другой кошелёк\n`;
-    withdrawMessage += `7. Подтверди операцию\n\n`;
+    withdrawMessage += `6. Подключи TON Wallet (если не подключён)\n`;
+    withdrawMessage += `7. Подтверди вывод\n\n`;
     
     withdrawMessage += `💡 <b>Важно:</b>\n`;
     withdrawMessage += `• Операция обычно мгновенная\n`;
