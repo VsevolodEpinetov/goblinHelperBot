@@ -264,7 +264,7 @@ class RaidsService {
     try {
       // First get the raid IDs
       let query = knex('raids as r')
-        .distinct('r.id')
+        .distinct('r.id', 'r.created_at')
         .leftJoin('raid_participants as p', 'r.id', 'p.raid_id')
         .where(function() {
           this.where('r.created_by', userId)
