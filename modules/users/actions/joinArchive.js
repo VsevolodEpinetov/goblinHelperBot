@@ -62,7 +62,7 @@ module.exports = Composer.action('joinArchive', async (ctx) => {
   
 
     const keyboard = [
-      [Markup.button.url('📚 Войти в архив', linkResult.link)]
+      [Markup.button.url('📚 Войти в архив', linkResult.link)],
       [Markup.button.callback('🚨 Дверь не открылась', 'linkNotWorking')],
       [Markup.button.callback('⬅️ Назад', 'refreshUserStatus')]
     ];
