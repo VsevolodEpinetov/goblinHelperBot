@@ -42,7 +42,7 @@ module.exports = Composer.command('stars_balance', async (ctx) => {
       
       // Add withdrawal information
       balanceMessage += `\n💡 <b>Как вывести звёзды:</b>\n`;
-      balanceMessage += `1. Используй команду /stars_withdraw <amount>\n`;
+      balanceMessage += `1. Используй команду /stars_withdraw &lt;amount&gt;\n`;
       balanceMessage += `2. Или переведи через @BotFather → Bot Settings → Payments → Withdraw Stars\n`;
       balanceMessage += `3. Минимальная сумма вывода: 1000⭐\n`;
       balanceMessage += `4. Комиссия Telegram: ~3%\n\n`;
