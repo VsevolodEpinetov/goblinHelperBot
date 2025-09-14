@@ -5,14 +5,6 @@ const knex = require('../../db/knex');
 
 const mod = new Composer();
 
-// Debug log for all oldMonths* callbacks
-mod.use(async (ctx, next) => {
-  if (ctx.callbackQuery && typeof ctx.callbackQuery.data === 'string' && ctx.callbackQuery.data.startsWith('oldMonths_')) {
-    console.log('🧭 oldMonths handler received:', ctx.callbackQuery.data);
-  }
-  return next();
-});
-
 function chunk(arr, size) {
   const out = [];
   for (let i = 0; i < arr.length; i += size) out.push(arr.slice(i, i + size));
@@ -81,7 +73,10 @@ mod.action(/^oldMonths_month_(\d{4}_\d{2})$/, async (ctx) => {
 
   const buttons = [];
   if (ownsRegular) buttons.push(Markup.button.callback('🔗 Войти (Обычный)', `oldMonths_join_${period}_regular`));
-  if (ownsPlus) buttons.push(Markup.button.callback('🔗 Войти (Расширенный)', `oldMonths_join_${period}_plus`));
+  if (ownsPlus) {
+    buttons.push(Markup.button.callback('🔗 Войти (Расширенный)', `oldMonths_join_${period}_plus`));
+    buttons.push(Markup.button.callback('🔗 Войти (Обычный)', `oldMonths_join_${period}_regular`));
+  }
   if (!ownsRegular && !ownsPlus) {
     // Show choices for Regular / Plus if available
     const monthsShape = await getMonths();
