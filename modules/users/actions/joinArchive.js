@@ -38,36 +38,72 @@ module.exports = Composer.action('joinArchive', async (ctx) => {
       return;
     }
 
-    // Try to get or create invitation link
-    const linkResult = await getOrCreateGroupInvitationLink(userGroup.groupPeriod, userGroup.groupType);
-    if (!linkResult.success) {
-      await ctx.editMessageText(
-        '❌ <b>Не удалось открыть дверь</b>\n\nПопробуй ещё раз позже.',
-        { parse_mode: 'HTML', ...Markup.inlineKeyboard([[Markup.button.callback('⬅️ Назад', 'refreshUserStatus')]]) }
-      );
-      return;
+    // Generate links based on subscription type
+    let links = [];
+    let messageText = '';
+    let keyboard = [];
+
+    if (subscriptionStatus.hasPlus) {
+      // User has plus subscription - generate both regular and plus links
+      const regularLinkResult = await getOrCreateGroupInvitationLink(userGroup.groupPeriod, 'regular');
+      const plusLinkResult = await getOrCreateGroupInvitationLink(userGroup.groupPeriod, 'plus');
+
+      // Check if both links were successful
+      if (!regularLinkResult.success || !plusLinkResult.success) {
+        await ctx.editMessageText(
+          '❌ <b>Не удалось открыть дверь</b>\n\nПопробуй ещё раз позже.',
+          { parse_mode: 'HTML', ...Markup.inlineKeyboard([[Markup.button.callback('⬅️ Назад', 'refreshUserStatus')]]) }
+        );
+        return;
+      }
+
+      // Compose message for plus user with both archives
+      messageText =
+        `📚 <b>Архив месяца</b>\n\n` +
+        `✅ Доступ открыт (расширенная версия).\n\n` +
+        `📅 <b>Период:</b> ${userGroup.groupPeriod}\n\n` +
+        `🎯 <b>Доступные архивы:</b>\n` +
+        `• 📦 Обычный сундук\n` +
+        `• ➕ Расширенный сундук\n\n` +
+        `📚 <b>Архивы готовы для тебя</b>`;
+
+      keyboard = [
+        [Markup.button.url('📦 Обычный архив', regularLinkResult.link)],
+        [Markup.button.url('➕ Расширенный архив', plusLinkResult.link)],
+        [Markup.button.callback('🚨 Дверь не открылась', 'linkNotWorking')],
+        [Markup.button.callback('⬅️ Назад', 'refreshUserStatus')]
+      ];
+    } else {
+      // User has only regular subscription
+      const linkResult = await getOrCreateGroupInvitationLink(userGroup.groupPeriod, userGroup.groupType);
+      if (!linkResult.success) {
+        await ctx.editMessageText(
+          '❌ <b>Не удалось открыть дверь</b>\n\nПопробуй ещё раз позже.',
+          { parse_mode: 'HTML', ...Markup.inlineKeyboard([[Markup.button.callback('⬅️ Назад', 'refreshUserStatus')]]) }
+        );
+        return;
+      }
+
+      // Compose message for regular user
+      const groupTypeText = userGroup.groupType === 'plus' ? 'Расширенный сундук' : 'Обычный сундук';
+      messageText =
+        `📚 <b>Архив месяца</b>\n\n` +
+        `✅ Доступ открыт.\n\n` +
+        `📅 <b>Период:</b> ${userGroup.groupPeriod}\n` +
+        `🔹 <b>Тип:</b> ${groupTypeText}\n\n` +
+        `🎯 <b>Внутри:</b>\n` +
+        `• STL-файлы месяца\n` +
+        `• Обновления и дополнения\n` +
+        `📚 <b>Архив готов для тебя</b>`;
+
+      keyboard = [
+        [Markup.button.url('📚 Войти в архив', linkResult.link)],
+        [Markup.button.callback('🚨 Дверь не открылась', 'linkNotWorking')],
+        [Markup.button.callback('⬅️ Назад', 'refreshUserStatus')]
+      ];
     }
 
-    // Compose message (это канал месяца, не «архив контента»)
-    const groupTypeText = userGroup.groupType === 'plus' ? 'Расширенный сундук' : 'Обычный сундук';
-    const openMessage =
-    `📚 <b>Архив месяца</b>\n\n` +
-    `✅ Доступ открыт.\n\n` +
-    `📅 <b>Период:</b> ${userGroup.groupPeriod}\n` +
-    `🔹 <b>Тип:</b> ${groupTypeText}\n\n` +
-    `🎯 <b>Внутри:</b>\n` +
-    `• STL-файлы месяца\n` +
-    `• Обновления и дополнения\n` +
-    `📚 <b>Архив готов для тебя</b>`;
-  
-
-    const keyboard = [
-      [Markup.button.url('📚 Войти в архив', linkResult.link)],
-      [Markup.button.callback('🚨 Дверь не открылась', 'linkNotWorking')],
-      [Markup.button.callback('⬅️ Назад', 'refreshUserStatus')]
-    ];
-
-    await ctx.editMessageText(openMessage, {
+    await ctx.editMessageText(messageText, {
       parse_mode: 'HTML',
       ...Markup.inlineKeyboard(keyboard)
     });
