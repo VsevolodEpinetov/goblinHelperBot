@@ -67,14 +67,38 @@ module.exports = Composer.on('chat_join_request', async (ctx) => {
       
       hasAccess = !!validInvitation;
     } else {
-      // For archive groups, check if user has paid subscription for this period and type
-      const subscription = await knex('userGroups')
-        .where('userId', Number(userId))
-        .where('period', groupPeriod)
-        .where('type', groupType)
-        .first();
+      // For archive groups, check if user has paid subscription for this period
+      // Users with 'plus' access can join both 'regular' and 'plus' groups
+      // Users with 'regular' access can only join 'regular' groups
       
-      hasAccess = !!subscription;
+      if (groupType === 'regular') {
+        // For regular groups, check if user has either regular or plus subscription
+        const subscription = await knex('userGroups')
+          .where('userId', Number(userId))
+          .where('period', groupPeriod)
+          .whereIn('type', ['regular', 'plus'])
+          .first();
+        
+        hasAccess = !!subscription;
+      } else if (groupType === 'plus') {
+        // For plus groups, only users with plus subscription can join
+        const subscription = await knex('userGroups')
+          .where('userId', Number(userId))
+          .where('period', groupPeriod)
+          .where('type', 'plus')
+          .first();
+        
+        hasAccess = !!subscription;
+      } else {
+        // For other group types, use original logic
+        const subscription = await knex('userGroups')
+          .where('userId', Number(userId))
+          .where('period', groupPeriod)
+          .where('type', groupType)
+          .first();
+        
+        hasAccess = !!subscription;
+      }
     }
     
     if (!hasAccess) {
@@ -89,7 +113,8 @@ module.exports = Composer.on('chat_join_request', async (ctx) => {
         const groupName = groupType === 'main' ? 'основную группу' : 
                          groupType === 'plus' ? 'плюс группу' : 'обычную группу';
         const reason = groupType === 'main' ? 'Нет действующего приглашения' : 
-                      'Нет оплаченной подписки на этот период';
+                      groupType === 'plus' ? 'Нет оплаченной плюс подписки на этот период' :
+                      'Нет оплаченной подписки (обычной или плюс) на этот период';
         
         await ctx.telegram.sendMessage(process.env.LOGS_GROUP_ID,
           `❌ <b>Отклонена попытка входа в ${groupName}</b>\n\n` +
@@ -157,7 +182,8 @@ module.exports = Composer.on('chat_join_request', async (ctx) => {
         const groupName = groupType === 'main' ? 'основную группу' : 
                          groupType === 'plus' ? 'плюс группу' : 'обычную группу';
         const accessReason = groupType === 'main' ? 'Одобрено по приглашению' : 
-                            'Одобрено по подписке';
+                            groupType === 'plus' ? 'Одобрено по плюс подписке' :
+                            'Одобрено по подписке (обычной или плюс)';
         
         await ctx.telegram.sendMessage(process.env.LOGS_GROUP_ID,
           `✅ <b>Пользователь присоединился к ${groupName}</b>\n\n` +
