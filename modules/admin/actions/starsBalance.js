@@ -22,28 +22,27 @@ module.exports = Composer.action('adminStarsBalance', async (ctx) => {
       return;
     }
 
-    // Get stars balance using Telegram API
-    const starsBalance = await ctx.telegram.getMyStarBalance();
-    console.log('Stars Balance API Response:', starsBalance);
-
-    // Get stars transactions using Telegram API
-    const starsTransactions = await ctx.telegram.getStarTransactions();
-    console.log('Stars Transactions API Response:', starsTransactions);
-
-    const totalStars = starsBalance?.star_count || 0;
-    const recentPayments = starsTransactions?.transactions || [];
+    // Get stars balance from database
+    const completedPayments = await knex('paymentTracking')
+      .where('status', 'completed')
+      .select('amount', 'createdAt', 'subscriptionType', 'userId');
+    
+    const totalStars = completedPayments.reduce((sum, payment) => sum + (payment.amount || 0), 0);
+    const recentPayments = completedPayments
+      .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+      .slice(0, 10);
 
     // Build message
     let starsMessage = `💫 <b>Баланс звёзд бота</b>\n\n`;
     starsMessage += `💰 <b>Общая выручка:</b> ${totalStars}⭐\n`;
-    starsMessage += `📊 <b>Всего платежей:</b> ${recentPayments.length > 0 ? 'есть данные' : 'нет данных'}\n\n`;
+    starsMessage += `📊 <b>Всего платежей:</b> ${completedPayments.length}\n\n`;
     
     if (recentPayments.length > 0) {
       starsMessage += `📝 <b>Последние транзакции:</b>\n`;
-      recentPayments.slice(0, 5).forEach((transaction, index) => {
-        const date = new Date(transaction.date * 1000).toLocaleDateString('ru-RU');
-        const amount = transaction.amount || 0;
-        const type = transaction.source === 'user' ? 'Покупка' : 'Другое';
+      recentPayments.slice(0, 5).forEach((payment, index) => {
+        const date = new Date(payment.createdAt).toLocaleDateString('ru-RU');
+        const amount = payment.amount || 0;
+        const type = payment.subscriptionType === 'plus' ? 'Плюс' : 'Обычная';
         starsMessage += `${index + 1}. ${amount}⭐ (${type}) - ${date}\n`;
       });
     } else {
