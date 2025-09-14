@@ -1,46 +1,66 @@
 const { Composer } = require('telegraf');
 const { getUser } = require('../../db/helpers');
 const knex = require('../../db/knex');
+const axios = require('axios');
 
-// Helper function to try getting data from Telegram API
-async function getTelegramApiData(ctx) {
+// Helper function to make direct HTTP requests to Telegram Bot API
+async function getTelegramApiData() {
   let apiMessage = '';
+  const botToken = process.env.TOKEN;
+  const baseUrl = `https://api.telegram.org/bot${botToken}`;
   
   try {
-    // Try to get star balance (if method exists)
-    if (typeof ctx.telegram.getMyStarBalance === 'function') {
-      const starsBalance = await ctx.telegram.getMyStarBalance();
-      apiMessage += `💰 <b>API Баланс:</b> ${starsBalance?.star_count || 'N/A'} ⭐\n`;
-    } else {
-      apiMessage += `❌ <b>getMyStarBalance:</b> Метод недоступен\n`;
+    // Try to get star balance via direct API call
+    try {
+      const response = await axios.get(`${baseUrl}/getMyStarBalance`);
+      if (response.data.ok) {
+        const starCount = response.data.result?.star_count || 0;
+        apiMessage += `💰 <b>API Баланс:</b> ${starCount} ⭐\n`;
+      } else {
+        apiMessage += `❌ <b>getMyStarBalance:</b> ${response.data.description || 'Unknown error'}\n`;
+      }
+    } catch (error) {
+      if (error.response?.data?.error_code === 400) {
+        apiMessage += `❌ <b>getMyStarBalance:</b> Метод недоступен (${error.response.data.description})\n`;
+      } else {
+        apiMessage += `❌ <b>getMyStarBalance:</b> ${error.message}\n`;
+      }
     }
   } catch (error) {
     apiMessage += `❌ <b>getMyStarBalance:</b> ${error.message}\n`;
   }
   
   try {
-    // Try to get star transactions (if method exists)
-    if (typeof ctx.telegram.getStarTransactions === 'function') {
-      const starsTransactions = await ctx.telegram.getStarTransactions();
-      const transactions = starsTransactions?.transactions || [];
-      apiMessage += `📊 <b>API Транзакции:</b> ${transactions.length}\n`;
-      
-      if (transactions.length > 0) {
-        let totalEarned = 0;
-        let totalSpent = 0;
-        transactions.forEach(tx => {
-          if (tx.amount > 0) {
-            totalEarned += tx.amount;
-          } else {
-            totalSpent += Math.abs(tx.amount);
-          }
-        });
-        apiMessage += `📈 <b>API Получено:</b> ${totalEarned} ⭐\n`;
-        apiMessage += `📉 <b>API Потрачено:</b> ${totalSpent} ⭐\n`;
-        apiMessage += `💵 <b>API Текущий баланс:</b> ${totalEarned - totalSpent} ⭐\n`;
+    // Try to get star transactions via direct API call
+    try {
+      const response = await axios.get(`${baseUrl}/getStarTransactions`);
+      if (response.data.ok) {
+        const transactions = response.data.result?.transactions || [];
+        apiMessage += `📊 <b>API Транзакции:</b> ${transactions.length}\n`;
+        
+        if (transactions.length > 0) {
+          let totalEarned = 0;
+          let totalSpent = 0;
+          transactions.forEach(tx => {
+            if (tx.amount > 0) {
+              totalEarned += tx.amount;
+            } else {
+              totalSpent += Math.abs(tx.amount);
+            }
+          });
+          apiMessage += `📈 <b>API Получено:</b> ${totalEarned} ⭐\n`;
+          apiMessage += `📉 <b>API Потрачено:</b> ${totalSpent} ⭐\n`;
+          apiMessage += `💵 <b>API Текущий баланс:</b> ${totalEarned - totalSpent} ⭐\n`;
+        }
+      } else {
+        apiMessage += `❌ <b>getStarTransactions:</b> ${response.data.description || 'Unknown error'}\n`;
       }
-    } else {
-      apiMessage += `❌ <b>getStarTransactions:</b> Метод недоступен\n`;
+    } catch (error) {
+      if (error.response?.data?.error_code === 400) {
+        apiMessage += `❌ <b>getStarTransactions:</b> Метод недоступен (${error.response.data.description})\n`;
+      } else {
+        apiMessage += `❌ <b>getStarTransactions:</b> ${error.message}\n`;
+      }
     }
   } catch (error) {
     apiMessage += `❌ <b>getStarTransactions:</b> ${error.message}\n`;
@@ -48,8 +68,13 @@ async function getTelegramApiData(ctx) {
   
   // Try to get bot info to verify API access
   try {
-    const botInfo = await ctx.telegram.getMe();
-    apiMessage += `🤖 <b>Bot Info:</b> @${botInfo.username} (${botInfo.first_name})\n`;
+    const response = await axios.get(`${baseUrl}/getMe`);
+    if (response.data.ok) {
+      const botInfo = response.data.result;
+      apiMessage += `🤖 <b>Bot Info:</b> @${botInfo.username} (${botInfo.first_name})\n`;
+    } else {
+      apiMessage += `❌ <b>Bot Info:</b> ${response.data.description || 'Unknown error'}\n`;
+    }
   } catch (error) {
     apiMessage += `❌ <b>Bot Info:</b> ${error.message}\n`;
   }
@@ -106,8 +131,8 @@ module.exports = Composer.command('stars_balance', async (ctx) => {
     balanceMessage += `🌐 <b>ДАННЫЕ ИЗ TELEGRAM API:</b>\n`;
     
     try {
-      // Try to get data from Telegram API (if methods exist)
-      const apiData = await getTelegramApiData(ctx);
+      // Try to get data from Telegram API via direct HTTP requests
+      const apiData = await getTelegramApiData();
       balanceMessage += apiData;
     } catch (apiError) {
       balanceMessage += `❌ <b>API недоступно:</b> ${apiError.message}\n`;
