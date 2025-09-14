@@ -2,22 +2,21 @@ const { Composer, Markup } = require("telegraf");
 const { getUser } = require('../../db/helpers');
 const { getUserCurrentGroup, requestLinkNotification } = require('../../archive/archiveService');
 const SETTINGS = require('../../../settings.json');
-const { t } = require('../../i18n');
 
 module.exports = Composer.action('linkNotWorking', async (ctx) => {
-  try { await ctx.answerCbQuery(t('messages.link_issue.sent')); } catch {}
+  try { await ctx.answerCbQuery('📧 Запрос отправлен администратору'); } catch {}
   
   try {
     const userData = await getUser(ctx.from.id);
     if (!userData) {
-      await ctx.editMessageText(t('messages.user_not_found'), { parse_mode: 'HTML', ...Markup.inlineKeyboard([[Markup.button.callback(t('messages.back'), 'refreshUserStatus')]]) });
+      await ctx.editMessageText('❌ <b>Лицо не найдено в хрониках</b>\n\nТвои данные исчезли в тумане. Попробуй снова позже.', { parse_mode: 'HTML', ...Markup.inlineKeyboard([[Markup.button.callback('🔙 Назад', 'refreshUserStatus')]]) });
       return;
     }
 
     // Get user's current group
     const userGroup = await getUserCurrentGroup(userData.id);
     if (!userGroup) {
-      await ctx.editMessageText(t('messages.try_again_later'), { parse_mode: 'HTML', ...Markup.inlineKeyboard([[Markup.button.callback(t('messages.back'), 'refreshUserStatus')]]) });
+      await ctx.editMessageText('❌ <b>Произошла ошибка</b>\n\nПопробуй ещё раз позже.', { parse_mode: 'HTML', ...Markup.inlineKeyboard([[Markup.button.callback('🔙 Назад', 'refreshUserStatus')]]) });
       return;
     }
 
@@ -37,7 +36,7 @@ module.exports = Composer.action('linkNotWorking', async (ctx) => {
 
     const adminKeyboard = [
       [Markup.button.callback(`🔗 Создать новую ссылку для ${userGroup.groupPeriod}_${userGroup.groupType}`, `createNewLink_${userGroup.groupPeriod}_${userGroup.groupType}`)],
-      [Markup.button.callback(t('archiveUI.viewRequests'), 'viewLinkRequests')]
+      [Markup.button.callback('📋 Просмотреть все запросы', 'viewLinkRequests')]
     ];
 
     try {
@@ -59,17 +58,17 @@ module.exports = Composer.action('linkNotWorking', async (ctx) => {
     }
 
     // Show confirmation to user
-    const confirmationMessage = t('messages.oldMonths.linkWillNotify', { period: userGroup.groupPeriod, type: userGroup.groupType });
+    const confirmationMessage = `✅ <b>Взнос получен!</b>\n\nДля ${userGroup.groupPeriod} (${userGroup.groupType}) пока нет живой ссылки. Мы известим тебя, когда админ откроет врата. Если через два дня — напомним ему пинком.`;
 
     await ctx.editMessageText(confirmationMessage, {
       parse_mode: 'HTML',
       ...Markup.inlineKeyboard([
-        [Markup.button.callback(t('messages.back'), 'refreshUserStatus')]
+        [Markup.button.callback('🔙 Назад', 'refreshUserStatus')]
       ])
     });
     
   } catch (error) {
     console.error('Error in linkNotWorking:', error);
-    await ctx.editMessageText(t('messages.try_again_later'), { parse_mode: 'HTML', ...Markup.inlineKeyboard([[Markup.button.callback(t('messages.back'), 'refreshUserStatus')]]) });
+    await ctx.editMessageText('❌ <b>Произошла ошибка</b>\n\nПопробуй ещё раз позже.', { parse_mode: 'HTML', ...Markup.inlineKeyboard([[Markup.button.callback('🔙 Назад', 'refreshUserStatus')]]) });
   }
 });

@@ -84,7 +84,7 @@ module.exports = Composer.action('applyYes', async (ctx) => {
         collections: [],
         balance: 0,
         releases: {},
-        ticketsSpent: 0
+        scrollsSpent: 0
       }
     };
 
@@ -101,7 +101,7 @@ module.exports = Composer.action('applyYes', async (ctx) => {
       await knex('users').insert(baseUser)
         .onConflict('id').merge(baseUser);
 
-      await knex('userPurchases').insert({ userId: Number(userId), balance: 0, ticketsSpent: 0 })
+      await knex('userPurchases').insert({ userId: Number(userId), balance: 0, scrollsSpent: 0 })
         .onConflict('userId').merge();
 
       await knex('applications').insert({

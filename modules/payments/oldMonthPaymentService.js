@@ -1,7 +1,6 @@
 const knex = require('../db/knex');
 const rpgConfig = require('../../configs/rpg');
 const SETTINGS = require('../../settings.json');
-const { t } = require('../i18n');
 
 async function createOldMonthInvoice(ctx, period, userId, monthType = 'regular') {
   try {
@@ -12,12 +11,12 @@ async function createOldMonthInvoice(ctx, period, userId, monthType = 'regular')
 
     const userInfo = ctx.from;
     const userName = userInfo.username ? `@${userInfo.username}` : (userInfo.first_name ? `${userInfo.first_name} ${userInfo.last_name || ''}`.trim() : `User ${userInfo.id}`);
-    const title = t('payments.invoices.oldMonth.title', { period, type: monthType });
-    const description = t('payments.invoices.oldMonth.description', { period, type: monthType, userName, userId: userInfo.id, price: priceInStars });
+    const title = `Старый месяц ${period} (${monthType})`;
+    const description = `Доступ к месяцу ${period} (${monthType})\n\nПокупатель: ${userName} (ID: ${userInfo.id})\nТип: Предыдущий месяц\nПериод: ${period}\nЦена: ${priceInStars} звёзд`;
     const payload = JSON.stringify({ type: 'old_month', period, monthType, userId: Number(userId), timestamp: Date.now() });
     const provider_token = '';
     const currency = 'XTR';
-    const prices = [{ label: t('payments.invoices.oldMonth.label', { period }), amount: priceInStars }];
+    const prices = [{ label: `Доступ к ${period}`, amount: priceInStars }];
 
     const invoiceParams = { title, description, payload, provider_token, currency, prices };
     const chatId = ctx.chat?.id || ctx.callbackQuery?.message?.chat?.id || ctx.from.id;
@@ -94,7 +93,7 @@ async function processOldMonthPayment(ctx, paymentData) {
       const { getOrCreateGroupInvitationLink } = require('../archive/archiveService');
       const linkResult = await getOrCreateGroupInvitationLink(period, monthType);
       if (linkResult?.success && linkResult.link) {
-        await ctx.replyWithHTML(t('payments.invoices.oldMonth.granted', { period, type: monthType, link: linkResult.link }));
+        await ctx.replyWithHTML(`🔓 <b>Доступ к ${period} (${monthType}) выдан</b>\n\n🔗 <b>Ссылка для вступления:</b>\n${linkResult.link}`);
       } else {
         console.error('⚠️ No group link available:', linkResult?.error);
       }
@@ -106,16 +105,16 @@ async function processOldMonthPayment(ctx, paymentData) {
         await requestLinkNotification(Number(userId), period, monthType);
       } catch {}
       try {
-        await ctx.replyWithHTML(t('payments.invoices.oldMonth.noLinkUser', { period, type: monthType }));
+        await ctx.replyWithHTML(`✅ <b>Оплата получена!</b>\n\nДоступ будет предоставлен автоматически. Для месяца <b>${period}</b> (${monthType}) пока нет активной ссылки.\nМы уведомим тебя, как только администратор создаст её. Если в течение двух дней ссылку не дадут — напомним админу пинком.`);
       } catch {}
       try {
         await ctx.telegram.sendMessage(
           SETTINGS.CHATS.EPINETOV,
-          t('payments.invoices.oldMonth.noLinkAdmin', { period, type: monthType, userId: ctx.from.id })
+          `⚠️ Нет ссылки для ${period} (${monthType}). Пользователь ${ctx.from.id} внёс взнос. Создайте ссылку.`
         );
         await ctx.telegram.sendMessage(
           SETTINGS.CHATS.GLAVGOBLIN,
-          t('payments.invoices.oldMonth.noLinkAdmin', { period, type: monthType, userId: ctx.from.id })
+          `⚠️ Нет ссылки для ${period} (${monthType}). Пользователь ${ctx.from.id} внёс взнос. Создайте ссылку.`
         );
       } catch {}
     }

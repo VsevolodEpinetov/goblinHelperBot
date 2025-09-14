@@ -1,5 +1,4 @@
 const knex = require('../db/knex');
-const { t } = require('../i18n');
 const { getSubscriptionBaseUnits, applyXpGain } = require('../loyalty/xpService');
 const { hasYearsOfService, getAchievementMultiplier, YEARS_OF_SERVICE } = require('../loyalty/achievementsService');
 const rpgConfig = require('../../configs/rpg');
@@ -36,9 +35,9 @@ async function createSubscriptionInvoice(ctx, subscriptionType, userId) {
                     (userInfo.first_name ? `${userInfo.first_name} ${userInfo.last_name || ''}`.trim() : `User ${userInfo.id}`);
     
     // Create invoice payload
-    const labelShort = subscriptionType === 'plus' ? t('payments.subscription.plusLabel') : t('payments.subscription.regularLabel');
+    const labelShort = subscriptionType === 'plus' ? 'Плюс' : 'Обычная';
     const subscriptionLabel = subscriptionType === 'plus' ? '➕ Расширенная версия' : 'Обычная версия';
-    const title = t('payments.invoices.subscription.title', { label: labelShort, period: currentPeriod });
+    const title = `Сундук ${labelShort} ${currentPeriod}`;
     
     // Create description with discount information
     let description = `${subscriptionLabel} за ${currentPeriod}\n\n`;
@@ -182,25 +181,34 @@ async function processSubscriptionPayment(ctx, paymentData) {
       throw new Error('Invalid payment type');
     }
 
-    const { subscriptionType, userId, period } = payload;
+    const { subscriptionType, userId, period, isUpgrade } = payload;
 
-    // Verify payment amount (should match the discounted price from invoice)
-    const basePrice = subscriptionType === 'plus' ? 
-      parseInt(rpgConfig.prices.plusStars || process.env.PLUS_PRICE) : parseInt(rpgConfig.prices.regularStars || process.env.REGULAR_PRICE);
-    
-    // Calculate the expected discounted price (same logic as invoice creation)
+    // Calculate expected price based on whether this is an upgrade or full payment
     const hasYears = await hasYearsOfService(Number(userId));
     const achievementMultiplier = hasYears ? getAchievementMultiplier(YEARS_OF_SERVICE) : 1.0;
-    const expectedPrice = Math.round(basePrice * achievementMultiplier);
+    
+    let expectedPrice;
+    if (isUpgrade) {
+      // For upgrades, calculate the difference between plus and regular
+      const regularBasePrice = parseInt(rpgConfig.prices.regularStars || process.env.REGULAR_PRICE);
+      const plusBasePrice = parseInt(rpgConfig.prices.plusStars || process.env.PLUS_PRICE);
+      const regularPrice = Math.round(regularBasePrice * achievementMultiplier);
+      const plusPrice = Math.round(plusBasePrice * achievementMultiplier);
+      expectedPrice = plusPrice - regularPrice;
+    } else {
+      // For full payments, use the full subscription price
+      const basePrice = subscriptionType === 'plus' ? 
+        parseInt(rpgConfig.prices.plusStars || process.env.PLUS_PRICE) : parseInt(rpgConfig.prices.regularStars || process.env.REGULAR_PRICE);
+      expectedPrice = Math.round(basePrice * achievementMultiplier);
+    }
     
     // For Telegram Stars (XTR), amount is already in stars, not smallest currency unit
     if (paymentData.total_amount < expectedPrice) {
       console.error('Payment amount mismatch:', {
         expected: expectedPrice,
         received: paymentData.total_amount,
-        basePrice,
-        discountMultiplier: achievementMultiplier,
         subscriptionType,
+        isUpgrade,
         currency: paymentData.currency
       });
       throw new Error('Payment amount mismatch');
@@ -236,22 +244,36 @@ async function processSubscriptionPayment(ctx, paymentData) {
 
     // Apply loyalty XP gain based on actual amount paid (discount already applied in invoice)
     try {
-      const baseUnits = getSubscriptionBaseUnits(subscriptionType);
-      // Since user already paid discounted price, apply the same discount to XP calculation
-      const xpMultiplier = hasYears ? getAchievementMultiplier(YEARS_OF_SERVICE) : 1.0;
-      const deltaUnits = baseUnits * xpMultiplier;
+      let deltaUnits;
+      let description;
+      
+      if (isUpgrade) {
+        // For upgrades, calculate XP based on the upgrade amount only
+        const regularBasePrice = parseInt(rpgConfig.prices.regularStars || process.env.REGULAR_PRICE);
+        const plusBasePrice = parseInt(rpgConfig.prices.plusStars || process.env.PLUS_PRICE);
+        const upgradeBasePrice = plusBasePrice - regularBasePrice;
+        const xpMultiplier = hasYears ? getAchievementMultiplier(YEARS_OF_SERVICE) : 1.0;
+        deltaUnits = upgradeBasePrice * xpMultiplier;
+        description = 'Subscription upgrade payment';
+      } else {
+        // For full payments, use the full subscription base units
+        const baseUnits = getSubscriptionBaseUnits(subscriptionType);
+        const xpMultiplier = hasYears ? getAchievementMultiplier(YEARS_OF_SERVICE) : 1.0;
+        deltaUnits = baseUnits * xpMultiplier;
+        description = 'Subscription payment';
+      }
       
       await applyXpGain(Number(userId), deltaUnits, 'spending_payment', { 
         subscriptionType, 
         period, 
-        description: 'Subscription payment',
+        description,
         actualPaid: paymentData.total_amount,
-        basePrice: basePrice,
+        isUpgrade,
         discountApplied: hasYears
       });
       
       // Log meaningful payment completion
-      const discount = hasYears ? ((1 - xpMultiplier) * 100) : 0;
+      const discount = hasYears ? ((1 - (hasYears ? getAchievementMultiplier(YEARS_OF_SERVICE) : 1.0)) * 100) : 0;
       // Payment completed successfully
       
     } catch (xpErr) {
@@ -294,8 +316,175 @@ async function getUserPaymentHistory(userId) {
   }
 }
 
+/**
+ * Create a Telegram invoice for subscription upgrade payment
+ * @param {Object} ctx - Telegraf context
+ * @param {string} subscriptionType - 'plus' (for upgrade)
+ * @param {number} userId - User ID
+ * @returns {Object} - { success: boolean, invoiceLink?: string, error?: string }
+ */
+async function createUpgradeInvoice(ctx, subscriptionType, userId) {
+  try {
+    const currentPeriod = getCurrentMonthPeriod();
+    const regularBasePrice = parseInt(rpgConfig.prices.regularStars || process.env.REGULAR_PRICE);
+    const plusBasePrice = parseInt(rpgConfig.prices.plusStars || process.env.PLUS_PRICE);
+    
+    // Apply achievement discounts
+    const hasYears = await hasYearsOfService(Number(userId));
+    const achievementMultiplier = hasYears ? getAchievementMultiplier(YEARS_OF_SERVICE) : 1.0;
+    const discountPercent = hasYears ? Math.round((1 - achievementMultiplier) * 100) : 0;
+    
+    const regularPrice = Math.round(regularBasePrice * achievementMultiplier);
+    const plusPrice = Math.round(plusBasePrice * achievementMultiplier);
+    
+    // Calculate upgrade price (difference between plus and regular)
+    const upgradePrice = plusPrice - regularPrice;
+    
+    if (!upgradePrice || upgradePrice <= 0) {
+      throw new Error(`Invalid upgrade price: regular ${regularPrice}, plus ${plusPrice}, upgrade ${upgradePrice}`);
+    }
+
+    // Get user info for description
+    const userInfo = ctx.from;
+    const userName = userInfo.username ? `@${userInfo.username}` : 
+                    (userInfo.first_name ? `${userInfo.first_name} ${userInfo.last_name || ''}`.trim() : `User ${userInfo.id}`);
+    
+    // Create invoice payload
+    const title = `Обновление до Плюс ${currentPeriod}`;
+    
+    // Create description with upgrade information
+    let description = `⬆️ Обновление до расширенной версии за ${currentPeriod}\n\n`;
+    description += `👤 Пользователь: ${userName} (${userInfo.id})\n`;
+    description += `💰 Обычная: ${regularPrice}⭐ (уже оплачено)\n`;
+    description += `💰 Плюс: ${plusPrice}⭐\n`;
+    description += `💎 Доплата: ${upgradePrice}⭐`;
+    
+    if (hasYears && discountPercent > 0) {
+      description += `\n🏆 Скидка "За выслугу лет": ${discountPercent}%`;
+    }
+    
+    const payload = JSON.stringify({
+      type: 'subscription',
+      subscriptionType,
+      userId: Number(userId),
+      period: currentPeriod,
+      isUpgrade: true,
+      timestamp: Date.now()
+    });
+    const provider_token = ''; // Empty for Telegram Stars
+    const currency = 'XTR'; // Telegram Stars currency code
+    const isTestMode = process.env.PAYMENT_TEST_MODE === 'true';
+    
+    // Create price label with upgrade info
+    const priceLabel = hasYears && discountPercent > 0 ? 
+      `Обновление (${discountPercent}% скидка)` : 
+      'Обновление';
+    
+    const prices = [
+      {
+        label: priceLabel,
+        amount: upgradePrice
+      }
+    ];
+    
+    // Log the upgrade invoice creation
+    if (hasYears && discountPercent > 0) {
+      console.log(`💰 Upgrade Invoice: User ${userId} - ${subscriptionType} upgrade ${upgradePrice} stars (${discountPercent}% off)`);
+    } else {
+      console.log(`💰 Upgrade Invoice: User ${userId} - ${subscriptionType} upgrade ${upgradePrice} stars (no discounts)`);
+    }
+
+    // Validate required parameters
+    if (!title || title.trim() === '') {
+      throw new Error('Title is required and cannot be empty');
+    }
+    if (!description || description.trim() === '') {
+      throw new Error('Description is required and cannot be empty');
+    }
+    if (!payload || payload.trim() === '') {
+      throw new Error('Payload is required and cannot be empty');
+    }
+    if (!currency || currency.trim() === '') {
+      throw new Error('Currency is required and cannot be empty');
+    }
+    if (!prices || !Array.isArray(prices) || prices.length === 0) {
+      throw new Error('Prices array is required and cannot be empty');
+    }
+
+    // Send invoice using correct Telegraf method
+    let invoiceMessage;
+    try {
+      // Prepare invoice parameters
+      const invoiceParams = {
+        title: title,
+        description: description,
+        payload: payload,
+        provider_token: provider_token,
+        currency: currency,
+        prices: prices
+      };
+      
+      // Add test mode parameters if enabled
+      if (isTestMode) {
+        invoiceParams.start_parameter = `test_upgrade_${subscriptionType}_${currentPeriod}`;
+        console.log(`🧪 Test Upgrade Payment: ${subscriptionType} upgrade for user ${userInfo.id} (@${userInfo.username})`);
+      } else {
+        console.log(`💰 Upgrade Payment Invoice: ${subscriptionType} upgrade (${upgradePrice} stars) for user ${userInfo.id} (@${userInfo.username})`);
+      }
+      
+      // Use the correct Telegraf v4 method with object parameters
+      invoiceMessage = await ctx.telegram.sendInvoice(ctx.chat.id, invoiceParams);
+    } catch (invoiceError) {
+      console.error('❌ Upgrade invoice creation failed:', invoiceError);
+      console.error('❌ Upgrade invoice error details:', {
+        message: invoiceError.message,
+        response: invoiceError.response,
+        parameters: {
+          chatId: ctx.chat.id,
+          title,
+          description,
+          payload,
+          provider_token,
+          currency,
+          prices,
+          isTestMode
+        }
+      });
+      throw invoiceError;
+    }
+
+    // Store payment record for tracking
+    await knex('paymentTracking').insert({
+      userId: Number(userId),
+      type: 'subscription',
+      subscriptionType,
+      period: currentPeriod,
+      amount: upgradePrice,
+      currency: 'XTR',
+      status: 'pending',
+      invoiceMessageId: invoiceMessage.message_id,
+      isUpgrade: true,
+      createdAt: new Date()
+    });
+
+    return {
+      success: true,
+      invoiceMessageId: invoiceMessage.message_id,
+      price: upgradePrice
+    };
+
+  } catch (error) {
+    console.error('Error creating upgrade invoice:', error);
+    return {
+      success: false,
+      error: error.message
+    };
+  }
+}
+
 module.exports = {
   createSubscriptionInvoice,
+  createUpgradeInvoice,
   processSubscriptionPayment,
   getUserPaymentHistory
 };

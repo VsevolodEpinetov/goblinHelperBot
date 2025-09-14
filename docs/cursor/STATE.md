@@ -135,7 +135,7 @@ const userSession = new RedisSession({
 - Данные домена хранятся в нормализованных таблицах, но middleware мапит их в прежние структуры `ctx.*`.
 - Основные таблицы (camelCase с кавычками):
   - `"users"(id, username, "firstName", "lastName")`
-  - `"userPurchases"("userId", balance, "ticketsSpent")`
+  - `"userPurchases"("userId", balance, "scrollsSpent")`
   - `"userRoles"("userId", role ENUM('admin','adminPlus','rejected'))`
   - `"userGroups"("userId", period 'YYYY_MM', type ENUM('regular','plus'))`
   - `"kickstarters"(id, name, creator, cost, "pledgeName", "pledgeCost", link)` + `"kickstarterPhotos"/"kickstarterFiles"`
@@ -145,7 +145,7 @@ const userSession = new RedisSession({
 
 ### Мост (bridge middleware)
 - Перед обработчиками: читает из БД и гидрирует:
-  - `ctx.users` → `{ list: { [userId]: { id, username, first_name, last_name, roles[], purchases{ balance, ticketsSpent, groups{regular[],plus[]}, kickstarters[] } } } }`
+  - `ctx.users` → `{ list: { [userId]: { id, username, first_name, last_name, roles[], purchases{ balance, scrollsSpent, groups{regular[],plus[]}, kickstarters[] } } } }`
   - `ctx.months` → `{ list: { [year]: { [month]: { regular{ id, link, counter{joined,paid}}, plus{…} } } } }`
   - `ctx.kickstarters` → `{ list: Array< { name, creator, cost, pledgeName, pledgeCost, photos[], files[], link } > }`
   - `ctx.settings` → объект (строковые значения из `settings` при необходимости)
@@ -163,7 +163,7 @@ const userSession = new RedisSession({
   roles: string[], // ['admin', 'adminPlus', 'rejected']
   purchases: {
     balance: number,
-    ticketsSpent: number,
+    scrollsSpent: number,
     groups: {
       regular: string[], // ['2024_01', '2024_02']
       plus: string[]     // ['2024_01', '2024_02']
@@ -305,7 +305,7 @@ if (messageText === 'reset') {
 1. Каждый пользователь имеет уникальный `id`
 2. `roles` всегда массив (пустой для обычных пользователей)
 3. `purchases.balance` >= 0
-4. `purchases.ticketsSpent` >= 0
+4. `purchases.scrollsSpent` >= 0
 5. `purchases.groups.regular` и `plus` содержат строки формата `YYYY_MM`
 
 ### Месяцы

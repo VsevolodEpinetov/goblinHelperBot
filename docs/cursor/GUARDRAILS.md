@@ -15,7 +15,7 @@
 - Redis как единственное хранилище данных
 
 ### Бизнес-логика
-- Формула расчета билетиков: `Math.floor(plus.length / 3) * 2 - ticketsSpent`
+- Формула расчета свитков: `Math.floor(plus.length / 3) * 2 - scrollsSpent`
 - Роли пользователей: `admin`, `adminPlus`, `rejected`
 - Формат месяцев: `YYYY_MM`
 - Специальные ID: EPINETOV, ALEKS, ANN, ARTYOM
@@ -24,7 +24,7 @@
 - Структура `ctx.users.list[userId]`
 - Структура `ctx.months.list[year][month]`
 - Структура `ctx.globalSession.current`
-- Функции `isAdmin()`, `isSuperUser()`, `getUserTickets()`
+- Функции `isAdmin()`, `isSuperUser()`, `getUserScrolls()`
 
 ## ✅ ЧТО МОЖНО МЕНЯТЬ
 
@@ -82,9 +82,9 @@ module.exports = Composer.command('example', async (ctx) => {
 });
 
 // ❌ ПЛОХО - изменяем существующую функцию
-function getUserTickets(ctx, userId) {
+function getUserScrolls(ctx, userId) {
   // Изменение формулы расчета
-  return Math.floor(plus.length / 2) * 3 - ticketsSpent; // НЕ ТРОГАТЬ!
+  return Math.floor(plus.length / 2) * 3 - scrollsSpent; // НЕ ТРОГАТЬ!
 }
 ```
 
@@ -120,7 +120,7 @@ function getUserTickets(ctx, userId) {
 ### НЕ ДЕЛАТЬ
 ```javascript
 // ❌ Изменение формулы билетиков
-const tickets = Math.floor(userData.purchases.groups.plus.length / 2) * 3;
+const scrolls = Math.floor(userData.purchases.groups.plus.length / 2) * 3;
 
 // ❌ Изменение структуры пользователя
 ctx.users.list[userId] = {

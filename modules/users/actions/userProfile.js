@@ -1,7 +1,6 @@
 const { Composer, Markup } = require("telegraf");
 const { getUser } = require('../../db/helpers');
 const knex = require('../../db/knex');
-const { t } = require('../../i18n');
 
 module.exports = Composer.action('userProfile', async (ctx) => {
   try { await ctx.answerCbQuery(); } catch {}
@@ -12,15 +11,19 @@ module.exports = Composer.action('userProfile', async (ctx) => {
     const userData = await getUser(userId);
     
     if (!userData) {
-      await ctx.editMessageText(t('messages.user_not_found'), {
-        parse_mode: 'HTML',
-        ...Markup.inlineKeyboard([[Markup.button.callback(t('messages.back'), 'refreshUserStatus')]])
-      });
+      await ctx.editMessageText(
+        '❌ <b>Лицо не найдено в хрониках</b>\n\n' +
+        'Твои следы растворились в тумане. Попробуй позже.',
+        {
+          parse_mode: 'HTML',
+          ...Markup.inlineKeyboard([[Markup.button.callback('🔙 Назад', 'refreshUserStatus')]])
+        }
+      );
       return;
     }
     
     const roles = userData.roles || [];
-    const roleText = roles.length > 0 ? roles.join(', ') : 'Нет ролей';
+    const roleText = roles.length > 0 ? roles.join(', ') : '—';
     
     const baseParams = {
       id: userData.id,
@@ -29,26 +32,33 @@ module.exports = Composer.action('userProfile', async (ctx) => {
       roles: roleText
     };
     
-    // Balance removed (no stars balance)
-
     // Loyalty section (RPG)
     try {
       const lvl = await knex('user_levels').where({ user_id: Number(userId) }).first();
       if (lvl) {
         const benefitsByTier = require('../../../configs/benefits');
         const perkList = benefitsByTier[lvl.current_tier] || [];
-        const perks = perkList.length ? `🎁 <b>Бонусы:</b> ${perkList.join(', ')}` : '';
-        const toNext = lvl.xp_to_next_level != null ? ` (до след. уровня: ${lvl.xp_to_next_level})` : '';
-        const message = t('profile.template', {
-          ...baseParams,
-          tier: String(lvl.current_tier || '').toUpperCase(),
-          level: lvl.current_level,
-          xp: lvl.total_xp,
-          toNext,
-          perks
-        });
+        const perks =
+          perkList.length ? `🗝 <b>Доступы:</b> ${perkList.join(', ')}` : '';
+        const toNext =
+          lvl.xp_to_next_level != null ? ` (до следующего уровня: ${lvl.xp_to_next_level})` : '';
+        
+        const message =
+          `👤 <b>Карточка гоблина</b>\n\n` +
+          `🆔 <b>ID:</b> <code>${baseParams.id}</code>\n` +
+          `📛 <b>Имя:</b> ${baseParams.firstName}\n` +
+          `🏷 <b>Username:</b> ${baseParams.username}\n` +
+          `🎭 <b>Роли:</b> ${baseParams.roles}\n\n` +
+          `🏅 <b>Ранг:</b> ${String(lvl.current_tier || '').toUpperCase()} ${lvl.current_level}\n` +
+          `✨ <b>Опыт:</b> ${lvl.total_xp}${toNext}\n` +
+          (perks ? `${perks}\n` : ``);
 
-        await ctx.editMessageText(message, { parse_mode: 'HTML', ...Markup.inlineKeyboard([[Markup.button.callback(t('messages.back'), 'refreshUserStatus')]]) });
+        await ctx.editMessageText(
+          message,
+          { parse_mode: 'HTML',
+            ...Markup.inlineKeyboard([[Markup.button.callback('🔙 Назад', 'refreshUserStatus')]])
+          }
+        );
         return;
       }
     } catch (e) {
@@ -56,18 +66,29 @@ module.exports = Composer.action('userProfile', async (ctx) => {
     }
 
     // Fallback without lvl
-    const message = t('profile.template', {
-      ...baseParams,
-      tier: 'WOOD',
-      level: 1,
-      xp: 0,
-      toNext: '',
-      perks: ''
-    });
-    await ctx.editMessageText(message, { parse_mode: 'HTML', ...Markup.inlineKeyboard([[Markup.button.callback(t('messages.back'), 'refreshUserStatus')]]) });
+    const message =
+      `👤 <b>Карточка гоблина</b>\n\n` +
+      `🆔 <b>ID:</b> <code>${baseParams.id}</code>\n` +
+      `📛 <b>Имя:</b> ${baseParams.firstName}\n` +
+      `🏷 <b>Username:</b> ${baseParams.username}\n` +
+      `🎭 <b>Роли:</b> ${baseParams.roles}\n\n` +
+      `🏅 <b>Ранг:</b> WOOD 1\n` +
+      `✨ <b>Опыт:</b> 0\n`;
+
+    await ctx.editMessageText(
+      message,
+      { parse_mode: 'HTML',
+        ...Markup.inlineKeyboard([[Markup.button.callback('🔙 Назад', 'refreshUserStatus')]])
+      }
+    );
     
   } catch (error) {
     console.error('Error in userProfile:', error);
-    await ctx.editMessageText(t('messages.try_again_later'), { parse_mode: 'HTML', ...Markup.inlineKeyboard([[Markup.button.callback(t('messages.back'), 'refreshUserStatus')]]) });
+    await ctx.editMessageText(
+      '❌ <b>Произошла ошибка</b>\n\nПопробуй ещё раз позже.',
+      { parse_mode: 'HTML',
+        ...Markup.inlineKeyboard([[Markup.button.callback('🔙 Назад', 'refreshUserStatus')]])
+      }
+    );
   }
 });

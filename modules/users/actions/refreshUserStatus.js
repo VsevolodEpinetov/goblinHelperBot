@@ -1,7 +1,6 @@
 const { Composer, Markup } = require("telegraf");
 const { getUser } = require('../../db/helpers');
 const { getUserMenu } = require('../menuSystem');
-const { t } = require('../../../modules/i18n');
 
 module.exports = Composer.action('refreshUserStatus', async (ctx) => {
   try { await ctx.answerCbQuery('✅ Статус обновлён!'); } catch {}
@@ -10,9 +9,9 @@ module.exports = Composer.action('refreshUserStatus', async (ctx) => {
     const userData = await getUser(ctx.from.id);
     
     if (!userData) { 
-      await ctx.editMessageText(t('messages.user_not_found'), { 
+      await ctx.editMessageText('❌ <b>Лицо не найдено в хрониках</b>\n\nТвои данные исчезли в тумане. Попробуй снова позже.', { 
         parse_mode: 'HTML', 
-        ...Markup.inlineKeyboard([[Markup.button.callback(t('messages.back'), 'refreshUserStatus')]]) 
+        ...Markup.inlineKeyboard([[Markup.button.callback('🔙 Назад', 'refreshUserStatus')]]) 
       }); 
       return; 
     }
@@ -38,6 +37,6 @@ module.exports = Composer.action('refreshUserStatus', async (ctx) => {
   } catch (error) {
     console.error('❌ Error in refreshUserStatus:', error);
     console.error('❌ Error stack:', error.stack);
-    await ctx.editMessageText(t('messages.try_again_later'), { parse_mode: 'HTML', ...Markup.inlineKeyboard([[Markup.button.callback(t('messages.back'), 'refreshUserStatus')]]) });
+    await ctx.editMessageText('❌ <b>Произошла ошибка</b>\n\nПопробуй ещё раз позже.', { parse_mode: 'HTML', ...Markup.inlineKeyboard([[Markup.button.callback('🔙 Назад', 'refreshUserStatus')]]) });
   }
 });

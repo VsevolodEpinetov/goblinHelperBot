@@ -8,7 +8,7 @@ module.exports = Composer.action(/^showKickstarterFromGoblin_/g, async (ctx) => 
   const projectData = ctx.kickstarters.list[projectID];
   const userId = ctx.callbackQuery.from.id;
   const userData = ctx.users.list[userId];
-  const tickets = (Math.floor(userData.purchases.groups.plus.length / 3) * 2 - userData.purchases.ticketsSpent) || 0;
+  const scrolls = (Math.floor(userData.purchases.groups.plus.length / 3) * 2 - userData.purchases.scrollsSpent) || 0;
 
   ctx.userSession.purchasing = {
     type: 'kickstarter',
@@ -22,11 +22,11 @@ module.exports = Composer.action(/^showKickstarterFromGoblin_/g, async (ctx) => 
     Markup.button.callback(t('kickstarters.single.buy'), `sendPayment`)
   ];
 
-  if (tickets > 0 && projectData.cost < 500) {
+  if (scrolls > 0 && projectData.cost < 500) {
     buttons = [
       [
         Markup.button.callback(t('kickstarters.single.buy'), `sendPayment`),
-        Markup.button.callback(t('kickstarters.single.buyForTicket'), `getKickstarterForTicket_${userId}_${projectID}`)
+        Markup.button.callback(t('kickstarters.single.buyForScroll'), `getKickstarterForScroll_${userId}_${projectID}`)
       ]
     ]
   }

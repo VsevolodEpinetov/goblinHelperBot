@@ -16,24 +16,24 @@ module.exports = Composer.action('userKickstarters', async (ctx) => {
     }
 
     const purchases = userData.purchases || {};
-    const tickets = Math.floor((purchases.groups?.plus?.length || 0) / 3) * 2 - (purchases.ticketsSpent || 0);
+    const scrolls = Math.floor((purchases.groups?.plus?.length || 0) / 3) * 2 - (purchases.scrollsSpent || 0);
     const purchasedKickstarters = purchases.kickstarters?.length || 0;
     const availableKickstarters = 5; // Example number
     
     const kickstarterMessage = `${t('kickstarters.menu.title')}\n\n` +
-      `${t('kickstarters.menu.abilities', { tickets, purchased: purchasedKickstarters, available: availableKickstarters })}\n\n` +
+      `${t('kickstarters.menu.abilities', { scrolls, purchased: purchasedKickstarters, available: availableKickstarters })}\n\n` +
       `${t('kickstarters.menu.how')}\n\n` +
       `${t('kickstarters.menu.whatIncluded')}\n\n` +
       `📊 <b>Рекомендации:</b>\n` +
-      `${tickets > 0 ? t('kickstarters.menu.recommend.canBuy') : t('kickstarters.menu.recommend.noTickets')}`;
+      `${scrolls > 0 ? t('kickstarters.menu.recommend.canBuy') : t('kickstarters.menu.recommend.noScrolls')}`;
 
     const kickstarterKeyboard = [];
     
-    // Primary actions based on available tickets
-    if (tickets > 0) {
+    // Primary actions based on available scrolls
+    if (scrolls > 0) {
       kickstarterKeyboard.push([
         Markup.button.callback(t('kickstarters.menu.buttons.buy'), 'browseKickstarters'),
-        Markup.button.callback(t('kickstarters.menu.buttons.useTicket'), 'useTicket')
+        Markup.button.callback(t('kickstarters.menu.buttons.useScroll'), 'useScroll')
       ]);
     } else {
       kickstarterKeyboard.push([

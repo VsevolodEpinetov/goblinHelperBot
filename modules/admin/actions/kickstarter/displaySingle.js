@@ -22,7 +22,7 @@ module.exports = Composer.action(/^showKickstarter_/g, async (ctx) => {
     return;
   }
   
-  const tickets = (Math.floor(userData.purchases.groups.plus.length / 3) * 2 - userData.purchases.ticketsSpent) || 0;
+  const scrolls = (Math.floor(userData.purchases.groups.plus.length / 3) * 2 - userData.purchases.scrollsSpent) || 0;
 
   ctx.userSession.purchasing = {
     type: 'kickstarter',
@@ -37,11 +37,11 @@ module.exports = Composer.action(/^showKickstarter_/g, async (ctx) => {
     Markup.button.callback('←', `searchResultKickstarter`),
   ];
 
-  if (tickets > 0 && projectData.cost < 500) {
+  if (scrolls > 0 && projectData.cost < 500) {
     buttons = [
       [
         Markup.button.callback('Купить', `sendPayment`),
-        Markup.button.callback(`Купить за 🎟`, `getKickstarterForTicket_${userId}_${projectID}`)
+        Markup.button.callback(`Купить за 📜`, `getKickstarterForScroll_${userId}_${projectID}`)
       ],
       [
         Markup.button.callback('←', `searchResultKickstarter`)

@@ -26,7 +26,7 @@ async function getUser(userId) {
 		roles: roles.map(r => r.role),
 		purchases: {
 			balance: purchases?.balance || 0,
-			ticketsSpent: purchases?.ticketsSpent || 0,
+			scrollsSpent: purchases?.scrollsSpent || 0,
 			groups: {
 				regular: regularGroups.map(g => g.period),
 				plus: plusGroups.map(g => g.period)
@@ -50,7 +50,7 @@ async function getAllUsers() {
 			roles: [],
 			purchases: { 
 				balance: 0, 
-				ticketsSpent: 0, 
+				scrollsSpent: 0, 
 				groups: { regular: [], plus: [] }, 
 				kickstarters: [], 
 				collections: [] 
@@ -60,7 +60,7 @@ async function getAllUsers() {
 
 	// Load additional data in parallel
 	const [purchases, roles, groups, kickstarters] = await Promise.all([
-		knex('userPurchases').select('userId', 'balance', 'ticketsSpent'),
+		knex('userPurchases').select('userId', 'balance', 'scrollsSpent'),
 		knex('userRoles').select('userId', 'role'),
 		knex('userGroups').select('userId', 'period', 'type'),
 		knex('userKickstarters').select('userId', 'kickstarterId')
@@ -70,7 +70,7 @@ async function getAllUsers() {
 	for (const p of purchases) {
 		if (usersShape.list[p.userId]) {
 			usersShape.list[p.userId].purchases.balance = p.balance || 0;
-			usersShape.list[p.userId].purchases.ticketsSpent = p.ticketsSpent || 0;
+			usersShape.list[p.userId].purchases.scrollsSpent = p.scrollsSpent || 0;
 		}
 	}
 
@@ -118,10 +118,10 @@ async function updateUser(userId, userData) {
 				.insert({
 					userId: userId,
 					balance: userData.purchases.balance || 0,
-					ticketsSpent: userData.purchases.ticketsSpent || 0
+					scrollsSpent: userData.purchases.scrollsSpent || 0
 				})
 				.onConflict('userId')
-				.merge(['balance', 'ticketsSpent']);
+				.merge(['balance', 'scrollsSpent']);
 
 			// Update roles (replace all)
 			await trx('userRoles').where('userId', userId).del();

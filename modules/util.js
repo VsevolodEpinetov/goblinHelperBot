@@ -62,7 +62,7 @@ function splitMenu (menu, rowSize = 5) {
 }
 
 function getUserMessage (ctx, userData) {
-  const tickets = Math.floor(userData.purchases.groups.plus.length / 3) * 2 - userData.purchases.ticketsSpent;
+  const scrolls = Math.floor(userData.purchases.groups.plus.length / 3) * 2 - userData.purchases.scrollsSpent;
   const currentPeriodInfo = getCurrentPeriod(ctx);
   let purchasedCurrent = userData.purchases.groups.regular.indexOf(currentPeriodInfo.period) > -1;
   let notPurchasedPart = '';
@@ -77,27 +77,27 @@ function getUserMessage (ctx, userData) {
           `🗓 <b>Текущий месяц: </b>${currentPeriodInfo.display}\n`+
           notPurchasedPart +
           `💰 <b>Баланс: </b>${userData.purchases.balance}₽\n` +
-          `🎟 <b>Билетики: </b>${tickets}\n\n`+
+          `📜 <b>Свитки: </b>${scrolls}\n\n`+
           `<i>Выбери один из пунктов меню</i>`;
 }
 
 // Enhanced UX Functions
 function createStatusCard(ctx, userData) {
-  const tickets = Math.floor(userData.purchases.groups.plus.length / 3) * 2 - userData.purchases.ticketsSpent;
+  const scrolls = Math.floor(userData.purchases.groups.plus.length / 3) * 2 - userData.purchases.scrollsSpent;
   const currentPeriodInfo = getCurrentPeriod(ctx);
   const hasRegular = userData.purchases.groups.regular.indexOf(currentPeriodInfo.period) > -1;
   const hasPlus = userData.purchases.groups.plus.indexOf(currentPeriodInfo.period) > -1;
   
   // Calculate trends and status
   const balanceTrend = userData.purchases.balance > 0 ? "💰" : "💸";
-  const ticketStatus = tickets > 0 ? "🎟" : "🎫";
+  const scrollStatus = scrolls > 0 ? "📜" : "📜";
   const monthStatus = hasRegular ? (hasPlus ? "✅" : "✅") : "⚠️";
   
   return `🎯 <b>СТАТУС АККАУНТА</b>\n\n` +
          `${monthStatus} <b>Текущий месяц:</b> ${currentPeriodInfo.display}\n` +
          `${hasRegular ? (hasPlus ? '✅ Оплачено с ➕' : '✅ Оплачено без ➕') : '⚠️ НЕ ОПЛАЧЕН'}\n\n` +
          `${balanceTrend} <b>Баланс:</b> ${userData.purchases.balance}₽\n` +
-         `${ticketStatus} <b>Билетики:</b> ${tickets}\n\n` +
+         `${scrollStatus} <b>Свитки:</b> ${scrolls}\n\n` +
          `📊 <b>Активные подписки:</b> ${userData.purchases.groups.regular.length}\n` +
          `⭐ <b>Плюс подписки:</b> ${userData.purchases.groups.plus.length}\n` +
          `🎁 <b>Кикстартеры:</b> ${userData.purchases.kickstarters.length}`;
@@ -107,7 +107,7 @@ function createSmartMenu(ctx, userData) {
   const currentPeriodInfo = getCurrentPeriod(ctx);
   const hasCurrentMonth = userData.purchases.groups.regular.indexOf(currentPeriodInfo.period) > -1;
   const hasPlus = userData.purchases.groups.plus.indexOf(currentPeriodInfo.period) > -1;
-  const tickets = Math.floor(userData.purchases.groups.plus.length / 3) * 2 - userData.purchases.ticketsSpent;
+  const scrolls = Math.floor(userData.purchases.groups.plus.length / 3) * 2 - userData.purchases.scrollsSpent;
   
   // Primary actions based on current status
   let primaryActions = [];
@@ -118,8 +118,8 @@ function createSmartMenu(ctx, userData) {
     primaryActions.push(['⭐ Добавить ➕ к месяцу', 'addPlusToCurrentMonth']);
   }
   
-  if (tickets > 0) {
-    primaryActions.push(['🎟 Использовать билетик', 'useTicket']);
+  if (scrolls > 0) {
+    primaryActions.push(['📜 Использовать свиток', 'useScroll']);
   }
   
   // Always available actions
@@ -127,7 +127,7 @@ function createSmartMenu(ctx, userData) {
     ['📅 Подписки', 'userMonths'],
     ['🚀 Кикстартеры', 'userKickstarters'],
     ['⚔️ Мои рейды', 'userRaids'],
-    ['💰 Баланс и билетики', 'userBalanceTickets'],
+    ['💰 Баланс и свитки', 'userBalanceScrolls'],
     ['📊 Статистика', 'userStats']
   ];
   
@@ -246,7 +246,7 @@ function getUserMenu (userId) {
     ],
     [
       Markup.button.callback(`Баланс`, `changeBalance_${userId}`),
-      Markup.button.callback(`Билетики`, `changeTicketsSpent_${userId}`)
+      Markup.button.callback(`Свитки`, `changeScrollsSpent_${userId}`)
     ],
     [
       Markup.button.callback(`Роли`, `changeUserRoles_${userId}`)
@@ -260,20 +260,20 @@ function getUserMenu (userId) {
   return buttons;
 }
 
-async function getUserTickets (ctx, userId) {
+async function getUserScrolls (ctx, userId) {
   const userData = await getUser(userId);
   if (!userData) return 0;
   
-  const tickets = Math.floor(userData.purchases.groups.plus.length / 3) * 2 - userData.purchases.ticketsSpent;
+  const scrolls = Math.floor(userData.purchases.groups.plus.length / 3) * 2 - userData.purchases.scrollsSpent;
 
-  return tickets;
+  return scrolls;
 }
 
 async function getUserDescription (ctx, userId) {
   const userData = await getUser(userId);
   if (!userData) return 'Пользователь не найден';
   
-  const tickets = await getUserTickets(ctx, userId);
+  const scrolls = await getUserScrolls(ctx, userId);
 
   const message = `Информация о пользователе\n` +
                   `\n` + 
@@ -282,7 +282,7 @@ async function getUserDescription (ctx, userId) {
                   `<b>Имя:</b> ${userData.first_name} ${userData.last_name}\n` + 
                   `\n` + 
                   `<b>Роли:</b> ${userData.roles.join(", ")}\n` + 
-                  `<b>Месяцы:</b> ${userData.purchases.groups.regular.length}+${userData.purchases.groups.plus.length}${userData.purchases.groups.plus.length > 0 ? ` (${tickets}🎟)` : ''}\n` + 
+                  `<b>Месяцы:</b> ${userData.purchases.groups.regular.length}+${userData.purchases.groups.plus.length}${userData.purchases.groups.plus.length > 0 ? ` (${scrolls}📜)` : ''}\n` + 
                   `<b>Кикстартеры:</b> ${userData.purchases.kickstarters.length}\n` + 
                   `<b>Коллекции:</b> ${userData.purchases.collections.length}\n` + 
                   `<b>Баланс:</b> ${userData.purchases.balance}`;
@@ -442,7 +442,7 @@ module.exports = {
   isSuperUser,
   getUserMenu,
   getUserDescription,
-  getUserTickets,
+  getUserScrolls,
   createStatusCard,
   createSmartMenu,
   createInteractiveMenu,

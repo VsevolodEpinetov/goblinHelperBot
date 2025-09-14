@@ -7,7 +7,7 @@ module.exports = Composer.action('userStats', async (ctx) => {
   const userData = await getUser(ctx.callbackQuery.from.id);
   if (!userData) return;
 
-  const tickets = Math.floor(userData.purchases.groups.plus.length / 3) * 2 - userData.purchases.ticketsSpent;
+  const scrolls = Math.floor(userData.purchases.groups.plus.length / 3) * 2 - userData.purchases.scrollsSpent;
   const totalMonths = userData.purchases.groups.regular.length + userData.purchases.groups.plus.length;
   const plusRatio = userData.purchases.groups.plus.length > 0 ? 
     Math.round((userData.purchases.groups.plus.length / totalMonths) * 100) : 0;
@@ -20,7 +20,7 @@ module.exports = Composer.action('userStats', async (ctx) => {
     `• <b>Обычные подписки:</b> ${userData.purchases.groups.regular.length}\n` +
     `• <b>➕ Подписки:</b> ${userData.purchases.groups.plus.length}\n` +
     `• <b>Процент ➕:</b> ${plusRatio}%\n\n` +
-    `🎟 <b>БИЛЕТИКИ:</b> ${tickets} (${Math.floor(userData.purchases.groups.plus.length / 3) * 2} заработано, ${userData.purchases.ticketsSpent} потрачено)\n\n` +
+    `📜 <b>СВИТКИ:</b> ${scrolls} (${Math.floor(userData.purchases.groups.plus.length / 3) * 2} заработано, ${userData.purchases.scrollsSpent} потрачено)\n\n` +
     `🚀 <b>АКТИВНОСТЬ:</b>\n` +
     `• <b>Кикстартеры:</b> ${userData.purchases.kickstarters.length}\n` +
     `• <b>Коллекции:</b> ${userData.purchases.collections.length}`;

@@ -1,6 +1,5 @@
 const { Composer, Markup } = require("telegraf");
 const util = require('../../util');
-const { t } = require('../../../modules/i18n');
 const db = require('../../../modules/db/pg');
 const knex = require('../../../modules/db/knex');
 const { safeCreatePage } = require('../../../modules/integrations/notion');
@@ -28,7 +27,7 @@ module.exports = Composer.action('applyYes', async (ctx) => {
       collections: [],
       balance: 0,
       releases: {},
-      ticketsSpent: 0
+      scrollsSpent: 0
     }
   };
 
@@ -46,7 +45,7 @@ module.exports = Composer.action('applyYes', async (ctx) => {
     await knex('users').insert(baseUser)
       .onConflict('id').merge(baseUser);
 
-    await knex('userPurchases').insert({ userId: Number(userId), balance: 0, ticketsSpent: 0 })
+    await knex('userPurchases').insert({ userId: Number(userId), balance: 0, scrollsSpent: 0 })
       .onConflict('userId').merge();
 
     await knex('applications').insert({
@@ -75,16 +74,16 @@ module.exports = Composer.action('applyYes', async (ctx) => {
     console.log('Notion create failed (skipped if not configured)', e.message || e);
   }
 
-  const adminMessage = `<b>${t('apply.admin.title')}</b>\n` +
-    `<b>${t('apply.admin.id')}:</b> ${userId}\n` +
-    `<b>${t('apply.admin.firstName')}:</b> ${ctx.callbackQuery.from.first_name}\n` +
-    `<b>${t('apply.admin.lastName')}:</b> ${ctx.callbackQuery.from.last_name || 'нет'}\n` +
-    `<b>${t('apply.admin.username')}:</b> ${ctx.callbackQuery.from.username || 'нет'}\n` +
-    `<b>${t('apply.admin.date')}:</b> ${new Date().toLocaleString()}`;
+  const adminMessage = `<b>Новый запрос на добавление:</b>\n` +
+    `<b>ID:</b> ${userId}\n` +
+    `<b>Имя:</b> ${ctx.callbackQuery.from.first_name}\n` +
+    `<b>Фамилия:</b> ${ctx.callbackQuery.from.last_name || 'нет'}\n` +
+    `<b>Username:</b> ${ctx.callbackQuery.from.username || 'нет'}\n` +
+    `<b>Дата:</b> ${new Date().toLocaleString()}`;
 
   const adminKeyboard = Markup.inlineKeyboard([
     [Markup.button.callback('✅ Approve → Interview', `apply_admin_firstapprove_${userId}`), Markup.button.callback('❌ Deny', `apply_admin_firstdeny_${userId}`)],
-    [Markup.button.callback(t('apply.admin.finish'), `deleteThisMessage`)]
+    [Markup.button.callback('Закончить', `deleteThisMessage`)]
   ]);
 
   // Send to EPINETOV
@@ -100,14 +99,14 @@ module.exports = Composer.action('applyYes', async (ctx) => {
   });
 
   try {
-    await ctx.editMessageText(t('apply.pending'), {
+    await ctx.editMessageText('⏳ Жди. Старейшины взвешивают твоё имя на весах. Вердикт будет вынесен.', {
       parse_mode: 'HTML',
       ...Markup.inlineKeyboard([
-        [Markup.button.callback(t('start.buttons.back'), 'guestStart')]
+        [Markup.button.callback('⬅️ Назад', 'guestStart')]
       ])
     });
   } catch {
     await ctx.deleteMessage(toRemove);
-    await ctx.replyWithHTML(t('apply.sent'));
+    await ctx.replyWithHTML('✅ <b>Запрос отправлен!</b>\n\nВаша заявка успешно создана и отправлена администрации на рассмотрение. Мы уведомим вас о решении.');
   }
 });

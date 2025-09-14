@@ -78,7 +78,7 @@ const stage = new Scenes.Stage([...lotsScenes, ...adminScenes, ...usersScenes]);
 - `removeYear.js` - удаление года
 - `users/changeBalance.js` - изменение баланса пользователя
 - `users/changeRoles.js` - изменение ролей пользователя
-- `users/changeTicketsSpent.js` - изменение потраченных билетиков
+- `users/changeScrollsSpent.js` - изменение потраченных свитков
 - `users/search.js` - поиск пользователя
 - `polls/addCore.js` - добавление Core опроса
 - `polls/addStudios.js` - добавление Studios опроса

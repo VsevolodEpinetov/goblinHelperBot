@@ -8,14 +8,13 @@ module.exports = async (ctx, next) => {
 		}
 		
 		// Check if user is banned with a direct, fast query
-		const bannedRole = await knex('userRoles')
+		const isBanned = await knex('userRoles')
 			.where('userId', userId)
 			.where('role', 'banned')
 			.first();
 			
-		if (bannedRole) {
-			// Don't log here - let the clean logger handle it
-			return; // ignore banned users silently
+		if (isBanned) {
+			return;
 		}
 	} catch (error) {
 		console.error('❌ Banned middleware error:', error);

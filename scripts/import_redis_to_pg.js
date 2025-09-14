@@ -124,10 +124,10 @@ function findLatestBackupDir(rootDir) {
 
 		const purchases = (u.purchases) || {};
 		const balance = purchases.balance || 0;
-		const ticketsSpent = purchases.ticketsSpent || 0;
+		const scrollsSpent = purchases.scrollsSpent || 0;
 		await client.query(
-			'INSERT INTO "userPurchases" ("userId", balance, "ticketsSpent") VALUES ($1,$2,$3) ON CONFLICT ("userId") DO UPDATE SET balance=EXCLUDED.balance, "ticketsSpent"=EXCLUDED."ticketsSpent"',
-			[userId, balance, ticketsSpent]
+			'INSERT INTO "userPurchases" ("userId", balance, "scrollsSpent") VALUES ($1,$2,$3) ON CONFLICT ("userId") DO UPDATE SET balance=EXCLUDED.balance, "scrollsSpent"=EXCLUDED."scrollsSpent"',
+			[userId, balance, scrollsSpent]
 		);
 		inserted.userPurchases++;
 
@@ -156,7 +156,7 @@ function findLatestBackupDir(rootDir) {
 		for (const ksIdRaw of userKs) {
 			const ksId = parseInt(ksIdRaw, 10);
 			if (!Number.isFinite(ksId)) continue;
-			await client.query('INSERT INTO "userKickstarters" ("userId", "kickstarterId", "acquiredBy") VALUES ($1,$2,$3) ON CONFLICT DO NOTHING', [userId, ksId, 'ticket']);
+			await client.query('INSERT INTO "userKickstarters" ("userId", "kickstarterId", "acquiredBy") VALUES ($1,$2,$3) ON CONFLICT DO NOTHING', [userId, ksId, 'scroll']);
 			inserted.userKickstarters++;
 		}
 	}

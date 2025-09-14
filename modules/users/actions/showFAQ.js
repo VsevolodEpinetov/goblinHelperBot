@@ -11,7 +11,7 @@ module.exports = Composer.action('showFAQ', async (ctx) => {
       Markup.button.callback(t('faq.menu.buttons.rpg'), 'faqRpg')
     ],
     [
-      Markup.button.callback(t('faq.menu.buttons.tickets'), 'faqTickets'),
+      Markup.button.callback(t('faq.menu.buttons.scrolls'), 'faqScrolls'),
       Markup.button.callback(t('faq.menu.buttons.kickstarters'), 'faqKickstarters')
     ],
     [

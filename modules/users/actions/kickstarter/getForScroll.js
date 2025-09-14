@@ -3,7 +3,7 @@ const { t } = require('../../../../modules/i18n');
 const util = require('../../../util');
 const SETTINGS = require('../../../../settings.json');
 
-module.exports = Composer.action(/^getKickstarterForTicket_/g, async (ctx) => {
+module.exports = Composer.action(/^getKickstarterForScroll_/g, async (ctx) => {
   try {
     await ctx.deleteMessage(ctx.callbackQuery.message.message_id);
   } catch (e) {
@@ -14,27 +14,27 @@ module.exports = Composer.action(/^getKickstarterForTicket_/g, async (ctx) => {
   const userId = ctx.callbackQuery.data.split('_')[1];
 
   const userData = ctx.users.list[userId];
-  const tickets = Math.floor(userData.purchases.groups.plus.length / 3) * 2 - userData.purchases.ticketsSpent;
+  const scrolls = Math.floor(userData.purchases.groups.plus.length / 3) * 2 - userData.purchases.scrollsSpent;
 
-  if (tickets > 0) {
+  if (scrolls > 0) {
     if (userData.purchases.kickstarters.indexOf(ksId) < 0) {
-      ctx.users.list[userId].purchases.ticketsSpent = ctx.users.list[userId].purchases.ticketsSpent + 1;
+      ctx.users.list[userId].purchases.scrollsSpent = ctx.users.list[userId].purchases.scrollsSpent + 1;
       ctx.users.list[userId].purchases.kickstarters.push(ksId);
-      await ctx.replyWithHTML(t('kickstarters.ticket.received'), {
+      await ctx.replyWithHTML(t('kickstarters.scroll.received'), {
         parse_mode: "HTML",
         ...Markup.inlineKeyboard([
           [
-            Markup.button.callback(t('kickstarters.ticket.goTo'), `userKickstarters`)
+            Markup.button.callback(t('kickstarters.scroll.goTo'), `userKickstarters`)
           ],
           [
             Markup.button.callback(t('buttons.homeIcon'), `userMenu`)
           ]
         ])
       })
-      await ctx.telegram.sendMessage(SETTINGS.CHATS.LOGS, `ℹ️ user ${userId} got kickstarter ${ksId} for a ticket. ${tickets - 1} remaining`);
+      await ctx.telegram.sendMessage(SETTINGS.CHATS.LOGS, `ℹ️ user ${userId} got kickstarter ${ksId} for a scroll. ${scrolls - 1} remaining`);
     }
   } else {
-    ctx.replyWithHTML(t('kickstarters.ticket.noneLeft'))
-    await ctx.telegram.sendMessage(SETTINGS.CHATS.LOGS, `⚠️ user ${userId} attempted got kickstarter ${ksId} for a ticket, but he got only ${tickets} left `)
+    ctx.replyWithHTML(t('kickstarters.scroll.noneLeft'))
+    await ctx.telegram.sendMessage(SETTINGS.CHATS.LOGS, `⚠️ user ${userId} attempted got kickstarter ${ksId} for a scroll, but he got only ${scrolls} left `)
   }
 });
