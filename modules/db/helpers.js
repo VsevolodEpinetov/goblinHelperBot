@@ -22,7 +22,7 @@ async function getUser(userId) {
 		id: user.id,
 		username: user.username || 'not_set',
 		first_name: user.firstName || 'not_set',
-		last_name: user.lastName || 'not_set',
+		last_name: user.lastName || '',
 		roles: roles.map(r => r.role),
 		purchases: {
 			balance: purchases?.balance || 0,
@@ -46,7 +46,7 @@ async function getAllUsers() {
 			id: user.id,
 			username: user.username || 'not_set',
 			first_name: user.firstName || 'not_set',
-			last_name: user.lastName || 'not_set',
+			last_name: user.lastName || '',
 			roles: [],
 			purchases: { 
 				balance: 0, 
