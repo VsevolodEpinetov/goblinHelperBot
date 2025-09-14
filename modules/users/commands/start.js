@@ -30,6 +30,4 @@ const startCommand = Composer.command('start', async (ctx) => {
   }
 });
 
-const combinedCommands = Composer.compose([startCommand, testCommand]);
-
-module.exports = combinedCommands;
+module.exports = startCommand;
