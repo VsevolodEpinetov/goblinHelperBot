@@ -22,23 +22,16 @@ module.exports = Composer.action('adminStarsBalance', async (ctx) => {
       return;
     }
 
-    // Get payment statistics from database
-    const totalEarnings = await knex('paymentTracking')
-      .where('type', 'subscription')
-      .where('status', 'completed')
-      .where('currency', 'XTR')
-      .sum('amount as total')
-      .first();
+    // Get stars balance using Telegram API
+    const starsBalance = await ctx.telegram.getMyStarBalance();
+    console.log('Stars Balance API Response:', starsBalance);
 
-    const totalStars = parseInt(totalEarnings?.total || 0);
+    // Get stars transactions using Telegram API
+    const starsTransactions = await ctx.telegram.getStarTransactions();
+    console.log('Stars Transactions API Response:', starsTransactions);
 
-    // Get recent payments
-    const recentPayments = await knex('paymentTracking')
-      .where('type', 'subscription')
-      .where('status', 'completed')
-      .select('subscriptionType', 'amount', 'completedAt')
-      .orderBy('completedAt', 'desc')
-      .limit(5);
+    const totalStars = starsBalance?.star_count || 0;
+    const recentPayments = starsTransactions?.transactions || [];
 
     // Build message
     let starsMessage = `💫 <b>Баланс звёзд бота</b>\n\n`;
@@ -46,14 +39,15 @@ module.exports = Composer.action('adminStarsBalance', async (ctx) => {
     starsMessage += `📊 <b>Всего платежей:</b> ${recentPayments.length > 0 ? 'есть данные' : 'нет данных'}\n\n`;
     
     if (recentPayments.length > 0) {
-      starsMessage += `📝 <b>Последние платежи:</b>\n`;
-      recentPayments.forEach((payment, index) => {
-        const date = new Date(payment.completedAt).toLocaleDateString('ru-RU');
-        const type = payment.subscriptionType === 'regular' ? 'Об' : 'Пл';
-        starsMessage += `${index + 1}. ${payment.amount}⭐ (${type}) - ${date}\n`;
+      starsMessage += `📝 <b>Последние транзакции:</b>\n`;
+      recentPayments.slice(0, 5).forEach((transaction, index) => {
+        const date = new Date(transaction.date * 1000).toLocaleDateString('ru-RU');
+        const amount = transaction.amount || 0;
+        const type = transaction.source === 'user' ? 'Покупка' : 'Другое';
+        starsMessage += `${index + 1}. ${amount}⭐ (${type}) - ${date}\n`;
       });
     } else {
-      starsMessage += `📝 <b>Платежи:</b> Данных пока нет\n`;
+      starsMessage += `📝 <b>Транзакции:</b> Данных пока нет\n`;
     }
     
     starsMessage += `\n💡 <b>Вывод:</b> @BotFather → Bot Settings → Payments → Withdraw Stars`;

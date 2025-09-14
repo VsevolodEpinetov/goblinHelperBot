@@ -7,15 +7,13 @@ function getSuperUserMenu(ctx, userData) {
   return {
     message: `👑 <b>Админ панель</b>\n\n` +
             `Добро пожаловать в админ панель!\n\n` +
-            `Выберите раздел для управления:`,
+            `Выберите раздел для управления and a really long message string to maximize the message width:`,
     keyboard: [
       [
         Markup.button.callback('Месяцы', 'adminMonths'),
-        Markup.button.callback('Месяцы Плюс', 'adminMonthsPlus')
       ],
       [
         Markup.button.callback('Кикстартеры', 'adminKickstarters'),
-        Markup.button.callback('Релизы', 'adminReleases')
       ],
       [
         Markup.button.callback('Люди', 'adminParticipants'),
