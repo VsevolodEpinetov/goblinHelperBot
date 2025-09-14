@@ -68,7 +68,7 @@ module.exports = Composer.action('payCurrentMonth', async (ctx) => {
 
     paymentMessage +=
       `\n🕯 Главгоблин шепчет: хочешь сокровищ — плати звёздами; хочешь уважения — соблюдай Законы логова.` +
-      discountText + testModeText;
+      discountText;
 
     const regularLabel = hasYears
       ? `Обычный (${regularPrice}⭐, -${discountPercent}%)`
