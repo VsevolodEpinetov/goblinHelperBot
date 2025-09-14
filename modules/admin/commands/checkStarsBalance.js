@@ -2,6 +2,61 @@ const { Composer } = require('telegraf');
 const { getUser } = require('../../db/helpers');
 const knex = require('../../db/knex');
 
+// Helper function to try getting data from Telegram API
+async function getTelegramApiData(ctx) {
+  let apiMessage = '';
+  
+  try {
+    // Try to get star balance (if method exists)
+    if (typeof ctx.telegram.getMyStarBalance === 'function') {
+      const starsBalance = await ctx.telegram.getMyStarBalance();
+      apiMessage += `💰 <b>API Баланс:</b> ${starsBalance?.star_count || 'N/A'} ⭐\n`;
+    } else {
+      apiMessage += `❌ <b>getMyStarBalance:</b> Метод недоступен\n`;
+    }
+  } catch (error) {
+    apiMessage += `❌ <b>getMyStarBalance:</b> ${error.message}\n`;
+  }
+  
+  try {
+    // Try to get star transactions (if method exists)
+    if (typeof ctx.telegram.getStarTransactions === 'function') {
+      const starsTransactions = await ctx.telegram.getStarTransactions();
+      const transactions = starsTransactions?.transactions || [];
+      apiMessage += `📊 <b>API Транзакции:</b> ${transactions.length}\n`;
+      
+      if (transactions.length > 0) {
+        let totalEarned = 0;
+        let totalSpent = 0;
+        transactions.forEach(tx => {
+          if (tx.amount > 0) {
+            totalEarned += tx.amount;
+          } else {
+            totalSpent += Math.abs(tx.amount);
+          }
+        });
+        apiMessage += `📈 <b>API Получено:</b> ${totalEarned} ⭐\n`;
+        apiMessage += `📉 <b>API Потрачено:</b> ${totalSpent} ⭐\n`;
+        apiMessage += `💵 <b>API Текущий баланс:</b> ${totalEarned - totalSpent} ⭐\n`;
+      }
+    } else {
+      apiMessage += `❌ <b>getStarTransactions:</b> Метод недоступен\n`;
+    }
+  } catch (error) {
+    apiMessage += `❌ <b>getStarTransactions:</b> ${error.message}\n`;
+  }
+  
+  // Try to get bot info to verify API access
+  try {
+    const botInfo = await ctx.telegram.getMe();
+    apiMessage += `🤖 <b>Bot Info:</b> @${botInfo.username} (${botInfo.first_name})\n`;
+  } catch (error) {
+    apiMessage += `❌ <b>Bot Info:</b> ${error.message}\n`;
+  }
+  
+  return apiMessage;
+}
+
 module.exports = Composer.command('stars_balance', async (ctx) => {
   // Check if user is super admin
   const adminUser = await getUser(ctx.from.id);
@@ -14,7 +69,11 @@ module.exports = Composer.command('stars_balance', async (ctx) => {
   // Stars balance command from super admin
 
   try {
-    // Get stars balance from database
+    let balanceMessage = `💫 <b>Bot Star Balance</b>\n\n`;
+    
+    // === DATABASE DATA ===
+    balanceMessage += `🗄️ <b>ДАННЫЕ ИЗ БАЗЫ ДАННЫХ:</b>\n`;
+    
     const completedPayments = await knex('paymentTracking')
       .where('status', 'completed')
       .select('amount', 'createdAt', 'subscriptionType', 'userId');
@@ -23,8 +82,6 @@ module.exports = Composer.command('stars_balance', async (ctx) => {
     const recentTransactions = completedPayments
       .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
       .slice(0, 5);
-    
-    let balanceMessage = `💫 <b>Bot Star Balance</b>\n\n`;
     
     if (completedPayments.length > 0) {
       balanceMessage += `💰 <b>Общая выручка:</b> ${totalEarned} ⭐\n`;
@@ -39,21 +96,35 @@ module.exports = Composer.command('stars_balance', async (ctx) => {
           balanceMessage += `${index + 1}. 💰 +${amount}⭐ (${type}) - ${date}\n`;
         });
       }
-      
-      // Add withdrawal information
-      balanceMessage += `\n💡 <b>Как вывести звёзды:</b>\n`;
-      balanceMessage += `1. Используй команду /stars_withdraw &lt;amount&gt;\n`;
-      balanceMessage += `2. Или переведи через @BotFather → Bot Settings → Payments → Withdraw Stars\n`;
-      balanceMessage += `3. Минимальная сумма вывода: 1000⭐\n`;
-      balanceMessage += `4. Комиссия Telegram: ~3%\n\n`;
-      balanceMessage += `💳 <b>Звёзды можно вывести на:</b>\n`;
-      balanceMessage += `• TON Wallet\n`;
-      balanceMessage += `• Другие поддерживаемые кошельки`;
-      
     } else {
-      balanceMessage += `❌ Нет данных о платежах\n`;
-      balanceMessage += `💡 Платежи будут отображаться здесь после их обработки`;
+      balanceMessage += `❌ Нет данных о платежах в БД\n`;
     }
+    
+    balanceMessage += `\n`;
+    
+    // === TELEGRAM API DATA ===
+    balanceMessage += `🌐 <b>ДАННЫЕ ИЗ TELEGRAM API:</b>\n`;
+    
+    try {
+      // Try to get data from Telegram API (if methods exist)
+      const apiData = await getTelegramApiData(ctx);
+      balanceMessage += apiData;
+    } catch (apiError) {
+      balanceMessage += `❌ <b>API недоступно:</b> ${apiError.message}\n`;
+      balanceMessage += `💡 Это нормально - API методы могут быть недоступны\n`;
+    }
+    
+    balanceMessage += `\n`;
+    
+    // === WITHDRAWAL INFO ===
+    balanceMessage += `💡 <b>Как вывести звёзды:</b>\n`;
+    balanceMessage += `1. Используй команду /stars_withdraw &lt;amount&gt;\n`;
+    balanceMessage += `2. Или переведи через @BotFather → Bot Settings → Payments → Withdraw Stars\n`;
+    balanceMessage += `3. Минимальная сумма вывода: 1000⭐\n`;
+    balanceMessage += `4. Комиссия Telegram: ~3%\n\n`;
+    balanceMessage += `💳 <b>Звёзды можно вывести на:</b>\n`;
+    balanceMessage += `• TON Wallet\n`;
+    balanceMessage += `• Другие поддерживаемые кошельки`;
 
     await ctx.reply(balanceMessage, { parse_mode: 'HTML' });
     
