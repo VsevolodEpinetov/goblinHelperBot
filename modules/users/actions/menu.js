@@ -7,16 +7,13 @@ const { getUser } = require('../../db/helpers');
 module.exports = Composer.action('userMenu', async (ctx) => {
   const userData = await getUser(ctx.callbackQuery.from.id);
   if (!userData) return;
-  const roles = userData.roles;
 
-  if (userData.roles.indexOf('goblin') > -1) {
-    // Use new enhanced UX system
-    const interactiveMenu = util.createInteractiveMenu(ctx, userData);
-    
-    await ctx.editMessageText(interactiveMenu.message, {
-      parse_mode: 'HTML',
-      ...Markup.inlineKeyboard(interactiveMenu.keyboard)
-    });
-    return;
-  }
+  // For all users, redirect to refreshUserStatus which handles all user types properly
+  const { getUserMenu } = require('../menuSystem');
+  const menu = await getUserMenu(ctx, userData);
+  
+  await ctx.editMessageText(menu.message, {
+    parse_mode: 'HTML',
+    ...Markup.inlineKeyboard(menu.keyboard)
+  });
 });
