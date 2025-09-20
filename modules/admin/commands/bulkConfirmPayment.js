@@ -1,6 +1,7 @@
 const { Composer } = require("telegraf");
 const SETTINGS = require('../../../settings.json');
 const { getUser, getAllUsers, updateUser, addUserToGroup, incrementMonthCounter } = require('../../db/helpers');
+const util = require('../../util');
 
 module.exports = Composer.command(['bulkconfirm', 'bc'], async (ctx) => {
   // Check if user is admin
@@ -86,9 +87,10 @@ module.exports = Composer.command(['bulkconfirm', 'bc'], async (ctx) => {
       ctx.expectedPayments[paymentKey].confirmedAt = Date.now();
 
       // Mark user as paid in the current group
-      const currentYear = ctx.globalSession.current.year;
-      const currentMonth = ctx.globalSession.current.month;
-      const currentPeriod = `${currentYear}_${currentMonth}`;
+      const currentPeriodInfo = util.getCurrentPeriod(ctx);
+      const currentYear = currentPeriodInfo.year;
+      const currentMonth = currentPeriodInfo.month;
+      const currentPeriod = currentPeriodInfo.period;
 
       // Add to user's purchases
       const user = await getUser(userId);

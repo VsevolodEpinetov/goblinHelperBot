@@ -10,10 +10,11 @@ module.exports = Composer.action(/^sendPayment/g, async (ctx) => {
     return;
   }
   if (ctx.callbackQuery.data.indexOf('currentMonth') > -1) {
+    const currentPeriod = util.getCurrentPeriod(ctx);
     ctx.userSession.purchasing = {
       type: 'group',
-      year: ctx.globalSession.current.year,
-      month: ctx.globalSession.current.month,
+      year: currentPeriod.year,
+      month: currentPeriod.month,
       userId: ctx.callbackQuery.from.id,
       isOld: false
     }
