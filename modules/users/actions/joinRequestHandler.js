@@ -1,6 +1,6 @@
 const { Composer } = require("telegraf");
 const knex = require('../../db/knex');
-const { findMonthByChatId } = require('../../db/helpers');
+const { findMonthByChatId, getUser } = require('../../db/helpers');
 
 /**
  * Get current month period in YYYY_MM format
@@ -51,7 +51,25 @@ module.exports = Composer.on('chat_join_request', async (ctx) => {
     
     let hasAccess = false;
     
-    if (groupType === 'main') {
+    // Check if user has admin roles that grant automatic access
+    const userData = await getUser(userId);
+    const userRoles = userData?.roles || [];
+    
+    // Admin role grants access to regular groups
+    if (userRoles.includes('admin') && groupType === 'regular') {
+      hasAccess = true;
+      console.log(`✅ User ${userId} has admin role, granting access to regular group`);
+    }
+    
+    // AdminPlus role grants access to plus groups
+    if (userRoles.includes('adminPlus') && groupType === 'plus') {
+      hasAccess = true;
+      console.log(`✅ User ${userId} has adminPlus role, granting access to plus group`);
+    }
+    
+    // If not an admin or admin doesn't have the right permissions, check normal access
+    if (!hasAccess) {
+      if (groupType === 'main') {
       // For main group, check if user has a valid invitation link
       const validInvitation = await knex('invitationLinks')
         .where('userId', Number(userId))
@@ -99,6 +117,7 @@ module.exports = Composer.on('chat_join_request', async (ctx) => {
         
         hasAccess = !!subscription;
       }
+    }
     }
     
     if (!hasAccess) {
@@ -181,9 +200,18 @@ module.exports = Composer.on('chat_join_request', async (ctx) => {
       try {
         const groupName = groupType === 'main' ? 'основную группу' : 
                          groupType === 'plus' ? 'плюс группу' : 'обычную группу';
-        const accessReason = groupType === 'main' ? 'Одобрено по приглашению' : 
-                            groupType === 'plus' ? 'Одобрено по плюс подписке' :
-                            'Одобрено по подписке (обычной или плюс)';
+        let accessReason;
+        if (userRoles.includes('admin') && groupType === 'regular') {
+          accessReason = 'Одобрено по правам администратора';
+        } else if (userRoles.includes('adminPlus') && groupType === 'plus') {
+          accessReason = 'Одобрено по правам администратора плюс';
+        } else if (groupType === 'main') {
+          accessReason = 'Одобрено по приглашению';
+        } else if (groupType === 'plus') {
+          accessReason = 'Одобрено по плюс подписке';
+        } else {
+          accessReason = 'Одобрено по подписке (обычной или плюс)';
+        }
         
         await ctx.telegram.sendMessage(process.env.LOGS_GROUP_ID,
           `✅ <b>Пользователь присоединился к ${groupName}</b>\n\n` +
