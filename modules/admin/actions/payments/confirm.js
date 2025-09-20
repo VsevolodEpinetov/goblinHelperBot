@@ -2,7 +2,7 @@ const { Composer, Markup } = require("telegraf");
 const util = require('../../../util');
 const SETTINGS = require('../../../../settings.json');
 const knex = require('../../../../modules/db/knex');
-const { getUser, updateUser, addUserToGroup, incrementMonthCounter, addUserKickstarter, getKickstarter, hasUserPurchasedKickstarter } = require('../../../db/helpers');
+const { getUser, updateUser, addUserToGroup, incrementMonthCounter, addUserKickstarter, getKickstarter, hasUserPurchasedKickstarter, hasUserPurchasedMonth } = require('../../../db/helpers');
 
 module.exports = Composer.action(/^confirmPayment_/g, async (ctx) => {
   const data = ctx.callbackQuery.data.split('_');

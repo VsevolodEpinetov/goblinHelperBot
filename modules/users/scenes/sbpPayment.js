@@ -50,8 +50,8 @@ sceneSbpPayment.on(['photo', 'document'], async (ctx) => {
         message += `текущую подписку\n\n<i>Ожидаемая стоимость: 600₽ / 1600₽</i>\n\n`
       }
       menu.push([
-        Markup.button.callback('Grant Regular', `confirmPayment_${userId}_group_${purchaseInfo.year}_${purchaseInfo.month}_regular`),
-        Markup.button.callback('Grant Plus', `confirmPayment_${userId}_group_${purchaseInfo.year}_${purchaseInfo.month}_plus`)
+        Markup.button.callback('Выдать обычную', `confirmPayment_${userId}_group_${purchaseInfo.year}_${purchaseInfo.month}_regular`),
+        Markup.button.callback('Выдать плюс', `confirmPayment_${userId}_group_${purchaseInfo.year}_${purchaseInfo.month}_plus`)
       ])
       break;
     case 'kickstarter':
