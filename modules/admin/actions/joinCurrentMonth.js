@@ -1,7 +1,7 @@
 const { Composer } = require('telegraf');
 const { getMonthChatId } = require('../../db/helpers');
 const { getCurrentPeriod } = require('../../users/menuSystem');
-const knex = require('../../db/knex');
+const { createInvitationLink } = require('../../invitationService');
 
 module.exports = Composer.action('join_current_month', async (ctx) => {
   try {
@@ -19,29 +19,25 @@ module.exports = Composer.action('join_current_month', async (ctx) => {
       return;
     }
     
-    // Create invitation link for admin
-    const inviteLink = await ctx.createChatInviteLink({
-      chat_id: chatId,
-      name: `Admin invitation ${ctx.callbackQuery.from.id}`,
-      creates_join_request: true,
-      member_limit: 1
-    });
+    // Create invitation link using the existing service
+    const linkResult = await createInvitationLink(
+      ctx.callbackQuery.from.id,
+      chatId,
+      currentPeriod,
+      'regular'
+    );
     
-    // Log the invitation creation
-    await knex('invitationLinks').insert({
-      userId: ctx.callbackQuery.from.id,
-      groupPeriod: currentPeriod,
-      groupType: 'regular',
-      telegramInviteLink: inviteLink.invite_link,
-      createdAt: knex.fn.now()
-    });
+    if (!linkResult.success) {
+      await ctx.reply('❌ Не удалось создать приглашение');
+      return;
+    }
     
     // Send invitation to admin
     await ctx.telegram.sendMessage(
       ctx.callbackQuery.from.id, 
       `🧭 <b>Приглашение в текущий месяц</b>\n\n` +
       `📅 Период: ${year}-${month}\n` +
-      `🔗 Ссылка для вступления: ${inviteLink.invite_link}`,
+      `🔗 Ссылка для вступления: ${linkResult.inviteLink}`,
       { parse_mode: 'HTML' }
     );
     
