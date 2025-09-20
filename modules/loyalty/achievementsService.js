@@ -22,9 +22,13 @@ async function grantAchievement(adminUserId, targetUserId, achievementType, achi
 
   // Notify RPG topic if configured
   try {
-    if (notifications.rpgTopicId) {
+    if (notifications.rpgTopicId && notifications.mainGroupId) {
       const title = (achievementsConfig[achievementType]?.title) || achievementType;
-      await globalThis.__bot?.telegram.sendMessage(Number(notifications.rpgTopicId), `🏆 Пользователь ${targetUserId} получил достижение: ${title}`);
+      await globalThis.__bot?.telegram.sendMessage(
+        notifications.mainGroupId, 
+        `🏆 Пользователь ${targetUserId} получил достижение: ${title}`,
+        { message_thread_id: notifications.rpgTopicId }
+      );
     }
   } catch {}
 

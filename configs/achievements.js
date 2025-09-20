@@ -8,8 +8,8 @@ module.exports = {
     appliesTo: ['subscription']
   },
   sbp_payment: {
-    title: 'СБП Плательщик',
-    description: 'Доступ к оплате через СБП',
+    title: '🕯 Знаток людских банков',
+    description: 'Гоблины доверили тебе платить людскими путями',
     multiplier: 1.0,
     appliesTo: ['payment_method']
   }
