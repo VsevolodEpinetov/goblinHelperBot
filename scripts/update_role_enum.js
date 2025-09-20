@@ -55,7 +55,7 @@ async function updateRoleEnum() {
     }
     
     // Define the roles we need
-    const neededRoles = ['user', 'goblin', 'polls', 'admin', 'adminPlus', 'super', 'rejected', 'banned'];
+    const neededRoles = ['user', 'goblin', 'polls', 'adminPolls', 'admin', 'adminPlus', 'super', 'rejected', 'banned', 'prereg', 'pending', 'preapproved', 'selfbanned'];
     
     console.log('\n📝 Roles we need:');
     neededRoles.forEach(role => {

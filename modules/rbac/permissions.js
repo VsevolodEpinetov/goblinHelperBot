@@ -65,6 +65,25 @@ const PERMISSIONS = {
     'admin:reports:*': false
   },
 
+  // Admin Polls (can manage polls with admin access)
+  adminPolls: {
+    // Inherit user permissions
+    ...USER_PERMISSIONS,
+    
+    // Poll management permissions
+    'admin:polls:create': true,
+    'admin:polls:edit': true,
+    'admin:polls:delete': true,
+    'admin:polls:launch': true,
+    'admin:polls:results': true,
+    
+    // Limited admin access
+    'admin:users:*': false,
+    'admin:content:*': false,
+    'admin:payments:*': false,
+    'admin:reports:*': false
+  },
+
   // Regular admin
   admin: {
     // Inherit user permissions
