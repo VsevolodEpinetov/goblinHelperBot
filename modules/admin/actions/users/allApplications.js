@@ -326,31 +326,38 @@ const searchMessageHandler = Composer.hears(/^[0-9@a-zA-Z_]+$/, async (ctx, next
     // Check if it's a numeric ID
     if (/^\d+$/.test(searchQuery)) {
       users = await knex('users')
-        .leftJoin('userRoles', 'users.id', 'userRoles.userId')
-        .where('users.id', searchQuery)
-        .select(
-          'users.id',
-          'users.username', 
-          'users.firstName',
-          'users.lastName',
-          knex.raw('ARRAY_AGG("userRoles".role) FILTER (WHERE "userRoles".role IS NOT NULL) as roles')
-        )
-        .groupBy('users.id', 'users.username', 'users.firstName', 'users.lastName');
+        .select('id', 'username', 'firstName', 'lastName')
+        .where('id', searchQuery);
     } else {
       // Search by username (with or without @)
       const cleanUsername = searchQuery.replace('@', '');
       users = await knex('users')
-        .leftJoin('userRoles', 'users.id', 'userRoles.userId')
-        .where('users.username', 'ilike', `%${cleanUsername}%`)
-        .select(
-          'users.id',
-          'users.username', 
-          'users.firstName',
-          'users.lastName',
-          knex.raw('ARRAY_AGG("userRoles".role) FILTER (WHERE "userRoles".role IS NOT NULL) as roles')
-        )
-        .groupBy('users.id', 'users.username', 'users.firstName', 'users.lastName')
+        .select('id', 'username', 'firstName', 'lastName')
+        .where('username', 'ilike', `%${cleanUsername}%`)
         .limit(10);
+    }
+
+    // Get roles for found users
+    if (users.length > 0) {
+      const userIds = users.map(u => u.id);
+      const roles = await knex('userRoles')
+        .select('userId', 'role')
+        .whereIn('userId', userIds);
+
+      // Group roles by userId
+      const rolesByUser = {};
+      for (const role of roles) {
+        if (!rolesByUser[role.userId]) {
+          rolesByUser[role.userId] = [];
+        }
+        rolesByUser[role.userId].push(role.role);
+      }
+
+      // Add roles to users
+      users = users.map(user => ({
+        ...user,
+        roles: rolesByUser[user.id] || []
+      }));
     }
 
     if (users.length === 0) {
@@ -367,11 +374,8 @@ const searchMessageHandler = Composer.hears(/^[0-9@a-zA-Z_]+$/, async (ctx, next
       return;
     }
 
-    // Ensure roles are arrays and filter out null values
-    const processedUsers = users.map(user => ({
-      ...user,
-      roles: Array.isArray(user.roles) ? user.roles.filter(role => role !== null) : []
-    }));
+    // Roles are already properly loaded as arrays from userRoles table
+    const processedUsers = users;
 
     let message = `🔍 <b>Результаты поиска: "${searchQuery}"</b>\n\n`;
     message += `Найдено: <b>${processedUsers.length}</b> пользователей\n\n`;
