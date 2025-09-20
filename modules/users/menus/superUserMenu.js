@@ -5,27 +5,24 @@ const { Markup } = require("telegraf");
  */
 function getSuperUserMenu(ctx, userData) {
   return {
-    message: `👑 <b>Админ панель</b>\n\n` +
-            `Добро пожаловать в админ панель!\n\n` +
-            `Выберите раздел для управления and a really long message string to maximize the message width:`,
+    message: `👑 <b>Супер админ панель</b>\n\n` +
+            `Добро пожаловать в панель управления!\n\n` +
+            `Выберите раздел для управления:`,
     keyboard: [
       [
-        Markup.button.callback('Месяцы', 'adminMonths'),
+        Markup.button.callback('📅 Месяцы', 'adminMonths'),
+        Markup.button.callback('🚀 Кикстартеры', 'adminKickstarters')
       ],
       [
-        Markup.button.callback('Кикстартеры', 'adminKickstarters'),
+        Markup.button.callback('👥 Пользователи', 'super_users_menu'),
+        Markup.button.callback('🗳️ Голосования', 'adminPolls')
       ],
       [
-        Markup.button.callback('Люди', 'adminParticipants'),
-        Markup.button.callback('Голосования', 'adminPolls'),
+        Markup.button.callback('💳 Платежи', 'adminPayments'),
+        Markup.button.callback('📢 Напоминания', 'adminRemind')
       ],
       [
-        Markup.button.callback('📋 Управление заявками', 'adminAllApplications'),
-        Markup.button.callback('🔍 Поиск пользователя', 'admin_search_user')
-      ],
-      [
-        Markup.button.callback('💫 Баланс звёзд', 'adminStarsBalance'),
-        Markup.button.callback('💸 Вывод звёзд', 'adminStarsWithdraw')
+        Markup.button.callback('🏆 Достижения', 'adminAchievements')
       ]
     ]
   };

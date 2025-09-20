@@ -51,7 +51,9 @@ changeRoles.on('text', async (ctx) => {
 
   await ctx.deleteMessage(ctx.message.message_id);
   await ctx.deleteMessage(ctx.session.toRemove);
-  ctx.replyWithHTML(message + ' ' + getUserDescription(ctx, userId), {
+  
+  const userDescription = await getUserDescription(ctx, userId);
+  ctx.replyWithHTML(message + ' ' + userDescription, {
     ...Markup.inlineKeyboard(getUserMenu(userId))
   })
   ctx.scene.leave();
