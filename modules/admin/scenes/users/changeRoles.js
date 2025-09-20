@@ -6,10 +6,25 @@ const { getUser, updateUser } = require('../../../db/helpers');
 const changeRoles = new Scenes.BaseScene('ADMIN_SCENE_CHANGE_USER_ROLES');
 
 changeRoles.enter(async (ctx) => {
-  await ctx.replyWithHTML(`Пришли <b>название роли</b>, которую ты хочешь добавить. Если хочешь удалить роль, то начни название с '-'`).then(nctx => {
-    ctx.session.toRemove = nctx.message_id;
-    ctx.session.chatID = nctx.chat.id;
+  const msg = `Пришли <b>название роли</b>, которую ты хочешь добавить.\nЕсли хочешь удалить роль, начни с '-' (например, -goblin).`;
+  const nctx = await ctx.replyWithHTML(msg, {
+    ...Markup.inlineKeyboard([
+      [Markup.button.callback('❌ Отмена', 'cancel_change_roles')]
+    ])
   });
+  ctx.session.toRemove = nctx.message_id;
+  ctx.session.chatID = nctx.chat.id;
+});
+
+changeRoles.action('cancel_change_roles', async (ctx) => {
+  try { await ctx.answerCbQuery(); } catch {}
+  try { if (ctx.session?.toRemove) await ctx.deleteMessage(ctx.session.toRemove); } catch {}
+  await ctx.replyWithHTML('Отменено', {
+    ...Markup.inlineKeyboard([
+      [Markup.button.callback('🔙 Назад к управлению', `admin_manage_user_${ctx.userSession?.userId || ''}`)]
+    ])
+  });
+  return ctx.scene.leave();
 });
 
 changeRoles.on('text', async (ctx) => {
@@ -49,13 +64,14 @@ changeRoles.on('text', async (ctx) => {
     }
   }
 
-  await ctx.deleteMessage(ctx.message.message_id);
-  await ctx.deleteMessage(ctx.session.toRemove);
-  
-  const userDescription = await getUserDescription(ctx, userId);
-  ctx.replyWithHTML(message + ' ' + userDescription, {
-    ...Markup.inlineKeyboard(getUserMenu(userId))
-  })
+  try { await ctx.deleteMessage(ctx.message.message_id); } catch {}
+  try { await ctx.deleteMessage(ctx.session.toRemove); } catch {}
+
+  await ctx.replyWithHTML(message, {
+    ...Markup.inlineKeyboard([
+      [Markup.button.callback('🔙 Назад к управлению', `admin_manage_user_${userId}`)]
+    ])
+  });
   ctx.scene.leave();
 });
 

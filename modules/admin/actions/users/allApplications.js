@@ -4,6 +4,13 @@ const knex = require('../../../../modules/db/knex');
 const SETTINGS = require('../../../../settings.json');
 const { getUser } = require('../../../db/helpers');
 
+// Determine highest role among approved roles
+function getHighestRole(roles) {
+  if (!Array.isArray(roles)) return null;
+  const order = ['super', 'adminPlus', 'admin', 'goblin'];
+  return order.find(r => roles.includes(r)) || null;
+}
+
 // Main handler for all applications view
 const allApplicationsHandler = Composer.action('adminAllApplications', async (ctx) => {
   console.log('🎯 adminAllApplications action triggered!');
@@ -108,7 +115,8 @@ const allApplicationsHandler = Composer.action('adminAllApplications', async (ct
         statusText = 'Отклонен';
       } else if (user.roles.some(role => ['goblin', 'admin', 'adminPlus', 'super'].includes(role))) {
         statusEmoji = '🎉';
-        statusText = 'Полностью одобрен';
+        const top = getHighestRole(user.roles);
+        statusText = top ? top : 'Полностью одобрен';
       } else {
         statusEmoji = '🔍';
         statusText = user.roles.join(', ');
@@ -524,30 +532,46 @@ const userManagementHandler = Composer.action(/^admin_manage_user_(\d+)$/g, asyn
       statusText = 'Отклонен';
     } else if (processedUser.roles.some(role => ['goblin', 'admin', 'adminPlus', 'super'].includes(role))) {
       statusEmoji = '🎉';
-      statusText = 'Полностью одобрен';
+      const top = getHighestRole(processedUser.roles);
+      statusText = top ? top : 'Полностью одобрен';
     } else {
       statusEmoji = '🔍';
       statusText = processedUser.roles.join(', ');
     }
 
+    // Load extended stats
     let message = `👤 <b>Управление пользователем</b>\n\n`;
     message += `${statusEmoji} <b>${firstName} ${lastName}</b> (${username})\n`;
     message += `ID: <code>${processedUser.id}</code>\n`;
     message += `Статус: ${statusText}\n`;
-    message += `Роли: ${processedUser.roles && processedUser.roles.length > 0 ? processedUser.roles.join(', ') : 'Нет ролей'}\n\n`;
-    message += `Выберите действие:`;
+    message += `Роли: ${processedUser.roles && processedUser.roles.length > 0 ? processedUser.roles.join(', ') : 'Нет ролей'}\n`;
+
+    try {
+      const full = await getUser(Number(userId));
+      const reg = full?.purchases?.groups?.regular?.length || 0;
+      const plus = full?.purchases?.groups?.plus?.length || 0;
+      message += `Месяцы: ${reg}+${plus}\n`;
+    } catch {}
+    try {
+      const lvl = await knex('user_levels').where({ user_id: Number(userId) }).first();
+      if (lvl) {
+        message += `XP: ${lvl.total_xp || 0} | Уровень: ${lvl.current_tier?.toUpperCase?.() || 'N/A'} ${lvl.current_level || 0}\n`;
+      }
+    } catch {}
+
+    message += `\nВыберите действие:`;
 
     const keyboard = [];
 
     // Add action buttons based on current status
-    if (!processedUser.roles || processedUser.roles.length === 0) {
-      // Pending user - can approve or reject
+    if (!processedUser.roles || processedUser.roles.length === 0 || processedUser.roles.includes('pending') || processedUser.roles.includes('prereg') || processedUser.roles.includes('preapproved')) {
+      // Not fully approved
       keyboard.push([
         Markup.button.callback('✅ Одобрить', `admin_approve_user_${userId}`),
-        Markup.button.callback('❌ Отклонить', `admin_reject_user_${userId}`)
+        Markup.button.callback('⭐ Супер одобрить', `admin_super_approve_user_${userId}`)
       ]);
       keyboard.push([
-        Markup.button.callback('⭐ Супер одобрить', `admin_super_approve_user_${userId}`)
+        Markup.button.callback('🚫 Забанить', `admin_ban_user_${userId}`)
       ]);
     } else if (processedUser.roles.includes('preapproved')) {
       // Preapproved user - can super approve or downgrade
@@ -562,18 +586,23 @@ const userManagementHandler = Composer.action(/^admin_manage_user_(\d+)$/g, asyn
         Markup.button.callback('⭐ Супер одобрить', `admin_super_approve_user_${userId}`)
       ]);
     } else if (processedUser.roles.some(role => ['goblin', 'admin', 'adminPlus', 'super'].includes(role))) {
-      // Already fully approved - can downgrade or ban
+      // Approved user menu
       keyboard.push([
-        Markup.button.callback('⬇️ Понизить статус', `admin_downgrade_user_${userId}`),
+        Markup.button.callback('📜 История', `admin_user_history_${userId}`),
+        Markup.button.callback('🗓️ Месяцы', `showUserMonths_${userId}`)
+      ]);
+      keyboard.push([
+        Markup.button.callback('🚀 Кикстартеры', `admin_user_kickstarters_${userId}`),
+        Markup.button.callback('👤 Роли', `admin_change_roles_${userId}`)
+      ]);
+      keyboard.push([
+        Markup.button.callback('✨ Настроить XP', `admin_user_adjust_xp_${userId}`),
+        Markup.button.callback('🏆 Достижения', `admin_user_achievements_${userId}`)
+      ]);
+      keyboard.push([
         Markup.button.callback('🚫 Забанить', `admin_ban_user_${userId}`)
       ]);
     }
-
-    // Always show role management and delete options
-    keyboard.push([
-      Markup.button.callback('👤 Управление ролями', `admin_change_roles_${userId}`),
-      Markup.button.callback('🗑️ Удалить (DEBUG)', `admin_delete_user_${userId}`)
-    ]);
 
     keyboard.push([
       Markup.button.callback('🔙 Назад к поиску', 'admin_search_user')

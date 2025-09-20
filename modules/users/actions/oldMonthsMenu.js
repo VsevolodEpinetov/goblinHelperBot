@@ -213,3 +213,4 @@ mod.action(/^oldMonths_buy_(\d{4}_\d{2})$/, async (ctx) => {
 });
 
 module.exports = mod;
+module.exports = mod;

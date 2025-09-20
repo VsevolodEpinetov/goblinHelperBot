@@ -5,24 +5,20 @@ const { Markup } = require("telegraf");
  */
 function getSuperUserMenu(ctx, userData) {
   return {
-    message: `👑 <b>Супер админ панель</b>\n\n` +
-            `Добро пожаловать в панель управления!\n\n` +
-            `Выберите раздел для управления:`,
+    message: `👑 <b>Админ панель</b>\n\n` +
+            `Выберите раздел:`,
     keyboard: [
       [
-        Markup.button.callback('📅 Месяцы', 'adminMonths'),
-        Markup.button.callback('🚀 Кикстартеры', 'adminKickstarters')
+        Markup.button.callback('Месяцы', 'adminMonths'),
+        Markup.button.callback('Кикстартеры', 'adminKickstarters')
       ],
       [
-        Markup.button.callback('👥 Пользователи', 'super_users_menu'),
-        Markup.button.callback('🗳️ Голосования', 'adminPolls')
+        Markup.button.callback('Люди', 'adminParticipants'),
+        Markup.button.callback('Управление голосованиями', 'adminPolls')
       ],
       [
-        Markup.button.callback('💳 Платежи', 'adminPayments'),
-        Markup.button.callback('📢 Напоминания', 'adminRemind')
-      ],
-      [
-        Markup.button.callback('🏆 Достижения', 'adminAchievements')
+        Markup.button.callback('Платежи', 'adminPayments'),
+        Markup.button.callback('🔔 Напомнить', 'adminRemind')
       ]
     ]
   };

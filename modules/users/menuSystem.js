@@ -43,7 +43,23 @@ async function getUserMenu(ctx, userData) {
     return getSuperUserMenu(ctx, userData);
   }
   
-  if (roles.includes('goblin') || roles.includes('admin') || roles.includes('adminPlus')) {
+  // Admin-based menu for admins (admin, adminPlus, adminPolls)
+  if (roles.includes('admin') || roles.includes('adminPlus') || roles.includes('adminPolls')) {
+    const keyboard = [];
+    let message = '⚙️ <b>Панель старейшин</b>\n\nВыберите действие:';
+    keyboard.push([Markup.button.callback('🧭 Присоединиться к текущему месяцу', 'join_current_month')]);
+    keyboard.push([Markup.button.callback('📚 Старые месяцы', 'old_months')]);
+    if (roles.includes('adminPlus')) {
+      keyboard.push([Markup.button.callback('🧭 Присоединиться к текущему PLUS', 'join_current_plus')]);
+    }
+    if (roles.includes('adminPolls') || roles.includes('polls')) {
+      keyboard.push([Markup.button.callback('🗳️ Голосования', 'adminPolls')]);
+    }
+    keyboard.push([Markup.button.callback('👤 Открыть пользовательское меню', 'refreshUserStatus')]);
+    return { message, keyboard };
+  }
+
+  if (roles.includes('goblin')) {
     return await getApprovedUserMenu(ctx, userData);
   }
   

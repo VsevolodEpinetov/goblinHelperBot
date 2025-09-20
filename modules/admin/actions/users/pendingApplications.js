@@ -57,11 +57,8 @@ module.exports = Composer.action('adminPendingApplications', async (ctx) => {
     }
 
     // Add navigation buttons
-    keyboard.push([
-      Markup.button.callback('🔄 Обновить', 'adminPendingApplications'),
-      Markup.button.callback('📊 Все заявки', 'adminAllApplications')
-    ]);
-    keyboard.push([Markup.button.callback('🔙 Назад', 'adminMenu')]);
+    keyboard.push([Markup.button.callback('🔄 Обновить', 'adminPendingApplications')]);
+    keyboard.push([Markup.button.callback('🔙 Назад', 'adminParticipants')]);
 
     await ctx.editMessageText(message, {
       parse_mode: 'HTML',
@@ -77,7 +74,7 @@ module.exports = Composer.action('adminPendingApplications', async (ctx) => {
     await ctx.editMessageText(errorMessage, {
       parse_mode: 'HTML',
       ...Markup.inlineKeyboard([
-        [Markup.button.callback('🔙 Назад', 'adminMenu')]
+        [Markup.button.callback('🔙 Назад', 'adminParticipants')]
       ])
     });
   }

@@ -1,6 +1,6 @@
 const { Composer, Markup } = require('telegraf');
 const util = require('../../util');
-const { getUser, updateUser } = require('../../db/helpers');
+const { getUser } = require('../../db/helpers');
 const { getUserMenu } = require('../menuSystem');
 const knex = require('../../db/knex');
 
@@ -18,36 +18,7 @@ const startCommand = Composer.command('start', async (ctx) => {
     return;
   }
 
-  let userData = await getUser(userId);
-  
-  // If user doesn't exist, create them
-  if (!userData) {
-    console.log(`👤 Creating new user: ${userId} (@${username})`);
-    
-    const newUserData = {
-      id: userId,
-      username: username || 'not_set',
-      first_name: ctx.message.from.first_name || 'not_set',
-      last_name: ctx.message.from.last_name || '',
-      dateAdded: new Date().toISOString(),
-      roles: [],
-      purchases: {
-        kickstarters: [],
-        groups: {
-          regular: [],
-          plus: [],
-          special: []
-        },
-        collections: [],
-        balance: 0,
-        releases: {},
-        scrollsSpent: 0
-      }
-    };
-
-    await updateUser(userId, newUserData);
-    userData = newUserData;
-  }
+  const userData = await getUser(userId);
   
   try {
     const menu = await getUserMenu(ctx, userData);

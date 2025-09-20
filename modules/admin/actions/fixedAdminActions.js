@@ -64,7 +64,7 @@ const adminMonthsAction = Composer.action(/^adminMonths$/g, async (ctx) => {
   }
 });
 
-// Fixed admin participants action
+// Fixed admin participants action (Users hub)
 const adminParticipantsAction = Composer.action('adminParticipants', async (ctx) => {
   try { await ctx.answerCbQuery(); } catch {}
   
@@ -79,21 +79,22 @@ const adminParticipantsAction = Composer.action('adminParticipants', async (ctx)
     const goblinUsers = await knex('userRoles').where('role', 'goblin').count('* as count').first();
     const adminUsers = await knex('userRoles').whereIn('role', ['admin', 'adminPlus', 'super']).count('* as count').first();
     
-    let message = `👥 <b>Управление участниками</b>\n\n`;
+    let message = `👥 <b>Люди</b>\n\n`;
     message += `📊 <b>Статистика:</b>\n`;
     message += `• Всего пользователей: ${totalUsers.count}\n`;
     message += `• Гоблины: ${goblinUsers.count}\n`;
-    message += `• Админы: ${adminUsers.count}\n\n`;
+    message += `• Админы: ${adminUsers.count}\n`;
+    // Extra stats (pending, preapproved, rejected)
+    const pending = await knex('userRoles').where('role', 'pending').count('* as count').first();
+    const preapproved = await knex('userRoles').where('role', 'preapproved').count('* as count').first();
+    const rejected = await knex('userRoles').where('role', 'rejected').count('* as count').first();
+    message += `• Заявки: ${pending.count} / Предодобрено: ${preapproved.count} / Отклонено: ${rejected.count}\n\n`;
     message += `Выберите действие:`;
     
     const keyboard = [
       [
-        Markup.button.callback('📋 Все заявки', 'adminAllApplications'),
+        Markup.button.callback('📥 Новые заявки', 'adminPendingApplications'),
         Markup.button.callback('🔍 Поиск', 'admin_search_user')
-      ],
-      [
-        Markup.button.callback('👑 Управление ролями', 'adminRoleManagement'),
-        Markup.button.callback('📊 Статистика', 'adminUserStats')
       ],
       [
         Markup.button.callback('🔙 Назад', 'adminMenu')
@@ -113,7 +114,53 @@ const adminParticipantsAction = Composer.action('adminParticipants', async (ctx)
   }
 });
 
+// Payments hub (minimal wiring to existing actions)
+const adminPaymentsAction = Composer.action('adminPayments', async (ctx) => {
+  try { await ctx.answerCbQuery(); } catch {}
+  
+  if (!isAuthorizedAdmin(ctx.from.id)) {
+    logDenied(ctx.from.id, ctx.from.username, 'adminPayments', 'unauthorized');
+    return;
+  }
+  
+  const message = '💳 <b>Платежи</b>\n\nВыберите действие:';
+  const keyboard = [
+    [
+      Markup.button.callback('💫 Баланс звёзд', 'adminStarsBalance'),
+      Markup.button.callback('💸 Вывод звёзд', 'adminStarsWithdraw')
+    ],
+    [Markup.button.callback('🔙 Назад', 'adminMenu')]
+  ];
+  
+  await ctx.editMessageText(message, {
+    parse_mode: 'HTML',
+    ...Markup.inlineKeyboard(keyboard)
+  });
+});
+
+// Achievements hub (placeholder)
+const adminAchievementsAction = Composer.action('adminAchievements', async (ctx) => {
+  try { await ctx.answerCbQuery(); } catch {}
+  
+  if (!isAuthorizedAdmin(ctx.from.id)) {
+    logDenied(ctx.from.id, ctx.from.username, 'adminAchievements', 'unauthorized');
+    return;
+  }
+  
+  const message = '🏆 <b>Достижения</b>\n\nУправление достижениями.';
+  const keyboard = [
+    [Markup.button.callback('🔙 Назад', 'adminMenu')]
+  ];
+  
+  await ctx.editMessageText(message, {
+    parse_mode: 'HTML',
+    ...Markup.inlineKeyboard(keyboard)
+  });
+});
+
 module.exports = Composer.compose([
   adminMonthsAction,
-  adminParticipantsAction
+  adminParticipantsAction,
+  adminPaymentsAction,
+  adminAchievementsAction
 ]);

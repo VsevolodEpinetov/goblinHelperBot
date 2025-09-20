@@ -11,7 +11,7 @@ const actions = getAllFilesFromFolder(path.join(__dirname, './actions'))
       return null;
     }
   })
-  .filter(Boolean);
+  .filter((m) => typeof m === 'function');
 
 const commands = getAllFilesFromFolder(path.join(__dirname, './commands'))
   .map(file => {
@@ -22,7 +22,7 @@ const commands = getAllFilesFromFolder(path.join(__dirname, './commands'))
       return null;
     }
   })
-  .filter(Boolean);
+  .filter((m) => typeof m === 'function');
 
 module.exports = Composer.compose([
   ...actions,
