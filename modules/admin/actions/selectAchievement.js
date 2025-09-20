@@ -67,7 +67,9 @@ const selectAchievement = Composer.action(/^selectAchievement_/, async (ctx) => 
   } catch {}
 
   try {
-    const [_, achievementType, userId] = ctx.callbackQuery.data.split('_');
+    const parts = ctx.callbackQuery.data.split('_');
+    const userId = parts[parts.length - 1]; // Last part is always user ID
+    const achievementType = parts.slice(1, -1).join('_'); // Everything between first and last is achievement type
     const achievementConfig = achievementsConfig[achievementType];
 
     if (!achievementConfig) {
@@ -160,7 +162,9 @@ const revokeAchievementHandler = Composer.action(/^revokeAchievement_/, async (c
   } catch {}
 
   try {
-    const [_, achievementType, userId] = ctx.callbackQuery.data.split('_');
+    const parts = ctx.callbackQuery.data.split('_');
+    const userId = parts[parts.length - 1]; // Last part is always user ID
+    const achievementType = parts.slice(1, -1).join('_'); // Everything between first and last is achievement type
     const achievementConfig = achievementsConfig[achievementType];
 
     if (!achievementConfig) {
