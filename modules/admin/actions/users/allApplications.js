@@ -13,19 +13,32 @@ const allApplicationsHandler = Composer.action('adminAllApplications', async (ct
   try { await ctx.answerCbQuery(); } catch {}
   
   try {
-    // Get all users with their roles
-    const allUsers = await knex('users')
-      .leftJoin('userRoles', 'users.id', 'userRoles.userId')
-      .select(
-        'users.id',
-        'users.username', 
-        'users.firstName',
-        'users.lastName',
-        knex.raw('ARRAY_AGG("userRoles".role) FILTER (WHERE "userRoles".role IS NOT NULL) as roles')
-      )
-      .groupBy('users.id', 'users.username', 'users.firstName', 'users.lastName')
-      .orderBy('users.id', 'desc')
+    // Get all users
+    const users = await knex('users')
+      .select('id', 'username', 'firstName', 'lastName')
+      .orderBy('id', 'desc')
       .limit(50); // Limit to prevent message overflow
+
+    // Get all roles for these users
+    const userIds = users.map(u => u.id);
+    const roles = await knex('userRoles')
+      .select('userId', 'role')
+      .whereIn('userId', userIds);
+
+    // Group roles by userId
+    const rolesByUser = {};
+    for (const role of roles) {
+      if (!rolesByUser[role.userId]) {
+        rolesByUser[role.userId] = [];
+      }
+      rolesByUser[role.userId].push(role.role);
+    }
+
+    // Combine users with their roles
+    const allUsers = users.map(user => ({
+      ...user,
+      roles: rolesByUser[user.id] || []
+    }));
 
     if (allUsers.length === 0) {
       await ctx.editMessageText(
@@ -41,11 +54,8 @@ const allApplicationsHandler = Composer.action('adminAllApplications', async (ct
       return;
     }
 
-    // Ensure roles are arrays and filter out null values
-    const processedUsers = allUsers.map(user => ({
-      ...user,
-      roles: Array.isArray(user.roles) ? user.roles.filter(role => role !== null) : []
-    }));
+    // Roles are already properly loaded as arrays from userRoles table
+    const processedUsers = allUsers;
 
     // Group users by status based on their roles
     const statusGroups = {

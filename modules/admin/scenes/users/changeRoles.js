@@ -28,12 +28,10 @@ changeRoles.on('text', async (ctx) => {
   if (isRemoving) {
     roleName = ctx.message.text.split('-')[1];
     if (userData.roles.indexOf(roleName) > -1) {
+      // Remove role using updateUser (which handles userRoles table)
       userData.roles = userData.roles.filter(role => role !== roleName);
+      await updateUser(userId, userData);
       message = `Роль ${roleName} успешно удалена`
-      try {
-        const knex = require('../../../../modules/db/knex');
-        await knex('userRoles').where({ userId: Number(userId), role: roleName }).del();
-      } catch (e) { console.log('Failed to delete user role via Knex', e); }
       await ctx.telegram.sendMessage(SETTINGS.CHATS.LOGS, `❌ ${ctx.message.from.id} REMOVED role ${roleName} from ${userId}`)
     } else {
       message = `Роль ${roleName} не найдена`
@@ -41,14 +39,11 @@ changeRoles.on('text', async (ctx) => {
   } else {
     roleName = ctx.message.text;
     if (userData.roles.indexOf(roleName) < 0) {
+      // Add role using updateUser (which handles userRoles table)
       userData.roles.push(roleName);
       await updateUser(userId, userData);
       message = `Роль ${roleName} успешно добавлена`
-      try {
-        const knex = require('../../../../modules/db/knex');
-        await knex('userRoles').insert({ userId: Number(userId), role: roleName }).onConflict(['userId','role']).ignore();
-      } catch (e) { console.log('Failed to insert user role via Knex', e); }
-      await ctx.telegram.sendMessage(SETTINGS.CHATS.LOGS, ` ${ctx.message.from.id} ADDED role ${roleName} to ${userId}`)
+      await ctx.telegram.sendMessage(SETTINGS.CHATS.LOGS, `✅ ${ctx.message.from.id} ADDED role ${roleName} to ${userId}`)
     } else {
       message = `⚠️ Роль ${roleName} уже есть у этого пользователя`
     }
