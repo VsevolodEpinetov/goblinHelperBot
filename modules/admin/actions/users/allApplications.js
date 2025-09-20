@@ -445,6 +445,21 @@ const searchMessageHandler = Composer.hears(/^[0-9@a-zA-Z_]+$/, async (ctx, next
 });
 
 // Handle user management interface
+// Handler for role management
+const changeRolesHandler = Composer.action(/^admin_change_roles_(\d+)$/g, async (ctx) => {
+  const userId = ctx.callbackQuery.data.split('_')[3];
+  console.log('🎯 admin_change_roles action triggered!');
+  console.log('🎯 User ID for role management:', userId);
+  
+  try { await ctx.answerCbQuery(); } catch {}
+  
+  // Set the user ID in session for the scene
+  ctx.userSession = { userId: userId };
+  
+  // Enter the change roles scene
+  await ctx.scene.enter('ADMIN_SCENE_CHANGE_USER_ROLES');
+});
+
 const userManagementHandler = Composer.action(/^admin_manage_user_(\d+)$/g, async (ctx) => {
   const userId = ctx.callbackQuery.data.split('_')[3];
   console.log('🎯 admin_manage_user action triggered!');
@@ -554,9 +569,9 @@ const userManagementHandler = Composer.action(/^admin_manage_user_(\d+)$/g, asyn
       ]);
     }
 
-    // Always show ban and delete options
+    // Always show role management and delete options
     keyboard.push([
-      Markup.button.callback('🚫 Забанить', `admin_ban_user_${userId}`),
+      Markup.button.callback('👤 Управление ролями', `admin_change_roles_${userId}`),
       Markup.button.callback('🗑️ Удалить (DEBUG)', `admin_delete_user_${userId}`)
     ]);
 
@@ -855,6 +870,7 @@ module.exports = Composer.compose([
   filterHandler,
   searchHandler,
   searchMessageHandler,
+  changeRolesHandler,
   userManagementHandler,
   userActionHandler
 ]);
