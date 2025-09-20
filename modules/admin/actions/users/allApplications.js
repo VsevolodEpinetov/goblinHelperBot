@@ -2,6 +2,7 @@ const { Composer, Markup } = require("telegraf");
 const { t } = require('../../../../modules/i18n');
 const knex = require('../../../../modules/db/knex');
 const SETTINGS = require('../../../../settings.json');
+const { getUser, updateUser } = require('../../../db/helpers');
 
 // Main handler for all applications view
 const allApplicationsHandler = Composer.action('adminAllApplications', async (ctx) => {
@@ -624,6 +625,16 @@ const userActionHandler = Composer.action(/^admin_(approve|reject|super_approve|
         await knex('userRoles').where('userId', Number(userId)).where('role', 'rejected').del();
         await knex('userRoles').insert({ userId: Number(userId), role: 'preapproved' }).onConflict(['userId', 'role']).ignore();
         
+        // Update user data in memory
+        const userDataApprove = await getUser(userId);
+        if (userDataApprove) {
+          userDataApprove.roles = userDataApprove.roles.filter(role => role !== 'rejected');
+          if (userDataApprove.roles.indexOf('preapproved') < 0) {
+            userDataApprove.roles.push('preapproved');
+          }
+          await updateUser(userId, userDataApprove);
+        }
+        
         // Generate natural code phrase
         const codePhrase = `гоблин-${userId.toString().slice(-4)}`;
         
@@ -661,6 +672,13 @@ const userActionHandler = Composer.action(/^admin_(approve|reject|super_approve|
         await knex('userRoles').where('userId', Number(userId)).del();
         await knex('userRoles').insert({ userId: Number(userId), role: 'rejected' });
         
+        // Update user data in memory
+        const userDataReject = await getUser(userId);
+        if (userDataReject) {
+          userDataReject.roles = ['rejected'];
+          await updateUser(userId, userDataReject);
+        }
+        
         // Send rejection message to user
         try {
           await ctx.telegram.sendMessage(userId, 
@@ -694,6 +712,13 @@ const userActionHandler = Composer.action(/^admin_(approve|reject|super_approve|
         await knex('userRoles').where('userId', Number(userId)).del();
         await knex('userRoles').insert({ userId: Number(userId), role: 'goblin' });
         
+        // Update user data in memory
+        const userData = await getUser(userId);
+        if (userData) {
+          userData.roles = ['goblin']; // Set only goblin role
+          await updateUser(userId, userData);
+        }
+        
         // Send super approval message to user
         try {
           await ctx.telegram.sendMessage(userId, 
@@ -725,6 +750,15 @@ const userActionHandler = Composer.action(/^admin_(approve|reject|super_approve|
       case 'ban':
         // Add banned role
         await knex('userRoles').insert({ userId: Number(userId), role: 'banned' }).onConflict(['userId', 'role']).ignore();
+        
+        // Update user data in memory
+        const userDataBan = await getUser(userId);
+        if (userDataBan) {
+          if (userDataBan.roles.indexOf('banned') < 0) {
+            userDataBan.roles.push('banned');
+          }
+          await updateUser(userId, userDataBan);
+        }
         
         // Send ban message to user
         try {
