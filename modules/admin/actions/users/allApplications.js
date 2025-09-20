@@ -455,16 +455,8 @@ const userManagementHandler = Composer.action(/^admin_manage_user_(\d+)$/g, asyn
   try {
     // Get user details
     const user = await knex('users')
-      .leftJoin('userRoles', 'users.id', 'userRoles.userId')
-      .where('users.id', userId)
-      .select(
-        'users.id',
-        'users.username', 
-        'users.firstName',
-        'users.lastName',
-        knex.raw('ARRAY_AGG("userRoles".role) FILTER (WHERE "userRoles".role IS NOT NULL) as roles')
-      )
-      .groupBy('users.id', 'users.username', 'users.firstName', 'users.lastName')
+      .select('id', 'username', 'firstName', 'lastName')
+      .where('id', userId)
       .first();
 
     if (!user) {
@@ -481,18 +473,17 @@ const userManagementHandler = Composer.action(/^admin_manage_user_(\d+)$/g, asyn
       return;
     }
 
-    // Ensure roles are arrays and filter out null values
-    console.log('🔍 Raw user data from DB:', user);
-    console.log('🔍 user.roles type:', typeof user.roles);
-    console.log('🔍 user.roles value:', user.roles);
-    console.log('🔍 Array.isArray(user.roles):', Array.isArray(user.roles));
-    
+    // Get user roles
+    const roles = await knex('userRoles')
+      .select('role')
+      .where('userId', userId);
+
     const processedUser = {
       ...user,
-      roles: Array.isArray(user.roles) ? user.roles.filter(role => role !== null) : []
+      roles: roles.map(r => r.role)
     };
     
-    console.log('🔍 Processed user roles:', processedUser.roles);
+    console.log('🔍 User data loaded:', processedUser);
 
     const firstName = processedUser.firstName || 'Unknown';
     const lastName = processedUser.lastName || '';
