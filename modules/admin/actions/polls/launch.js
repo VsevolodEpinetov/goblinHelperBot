@@ -1,9 +1,16 @@
 const { Composer, Markup } = require("telegraf");
 const util = require('../../../util');
 const SETTINGS = require('../../../../settings.json');
-const { getSetting } = require('../../../db/helpers');
+const { getSetting, getUser } = require('../../../db/helpers');
+const { hasPermission } = require('../../../rbac');
 
 module.exports = Composer.action('adminPollsStart', async (ctx) => {
+  // Check permissions using new RBAC system
+  const userData = await getUser(ctx.callbackQuery.from.id);
+  if (!userData || !hasPermission(userData.roles, 'admin:polls:launch')) {
+    await ctx.answerCbQuery('❌ У вас нет прав для запуска голосований');
+    return;
+  }
   // Get polls chat settings from PostgreSQL
   const pollsChat = await getSetting('chats.polls');
   if (!pollsChat) {

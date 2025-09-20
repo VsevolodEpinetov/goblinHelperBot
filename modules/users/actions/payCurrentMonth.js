@@ -39,13 +39,15 @@ module.exports = Composer.action('payCurrentMonth', async (ctx) => {
     }
 
     // Get base prices and calculate discounts
-    const { hasYearsOfService, getAchievementMultiplier, YEARS_OF_SERVICE } = require('../../loyalty/achievementsService');
+    const { hasAchievement, getAchievementMultiplier, YEARS_OF_SERVICE } = require('../../loyalty/achievementsService');
+    const SBP_PAYMENT = 'sbp_payment';
 
-    const regularBasePrice = parseInt(process.env.REGULAR_PRICE || '100');
-    const plusBasePrice = parseInt(process.env.PLUS_PRICE || '150');
+    const regularBasePrice = parseInt(process.env.REGULAR_PRICE);
+    const plusBasePrice = parseInt(process.env.PLUS_PRICE);
 
     // Apply achievement discounts
-    const hasYears = await hasYearsOfService(Number(userData.id));
+    const hasYears = await hasAchievement(Number(userData.id), YEARS_OF_SERVICE);
+    const hasSbpPayment = await hasAchievement(Number(userData.id), SBP_PAYMENT);
     const achievementMultiplier = hasYears ? getAchievementMultiplier(YEARS_OF_SERVICE) : 1.0;
     const discountPercent = hasYears ? Math.round((1 - achievementMultiplier) * 100) : 0;
 
@@ -81,9 +83,15 @@ module.exports = Composer.action('payCurrentMonth', async (ctx) => {
       [
         Markup.button.callback(regularLabel, 'payRegularMonth'),
         Markup.button.callback(plusLabel, 'payPlusMonth')
-      ],
-      [Markup.button.callback('⬅️ Назад', 'refreshUserStatus')]
+      ]
     ];
+
+    // Add SBP payment option if user has the achievement
+    if (hasSbpPayment) {
+      paymentKeyboard.push([Markup.button.callback('🏦 СБП', 'paySbpMonth')]);
+    }
+
+    paymentKeyboard.push([Markup.button.callback('⬅️ Назад', 'refreshUserStatus')]);
 
     await ctx.editMessageText(paymentMessage, {
       parse_mode: 'HTML',

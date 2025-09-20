@@ -249,6 +249,9 @@ function getUserMenu (userId) {
       Markup.button.callback(`Свитки`, `changeScrollsSpent_${userId}`)
     ],
     [
+      Markup.button.callback(`🏆 Выдать достижение`, `grantAchievement_${userId}`)
+    ],
+    [
       Markup.button.callback(`Роли`, `changeUserRoles_${userId}`)
     ],
     [
@@ -382,12 +385,21 @@ function getRandomInt (min, max) {
 }
 
 function isAdmin (telegramUserID) {
-  const isAnAdmin = telegramUserID == SETTINGS.CHATS.EPINETOV ||
+  // Legacy function - now uses role-based system
+  // For backward compatibility, still check hardcoded IDs first
+  const isHardcodedAdmin = telegramUserID == SETTINGS.CHATS.EPINETOV ||
     telegramUserID == SETTINGS.CHATS.GLAVGOBLIN ||
     telegramUserID == SETTINGS.CHATS.ALEKS ||
     telegramUserID == SETTINGS.CHATS.ARTYOM;
 
-  return isAnAdmin;
+  if (isHardcodedAdmin) {
+    return true;
+  }
+
+  // Check if user has any admin role using the new RBAC system
+  // Note: This is a synchronous check, so we can't use async getUser here
+  // For proper role checking, use hasPermission(userRoles, 'admin:users:view') instead
+  return false;
 }
 
 

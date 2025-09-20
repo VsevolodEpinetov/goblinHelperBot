@@ -45,9 +45,9 @@ async function revokeAchievement(adminUserId, targetUserId, achievementType) {
   return { success: true };
 }
 
-async function hasYearsOfService(userId) {
+async function hasAchievement(userId, achievementType) {
   const row = await knex('user_achievements')
-    .where({ user_id: Number(userId), achievement_type: YEARS_OF_SERVICE })
+    .where({ user_id: Number(userId), achievement_type: achievementType })
     .first();
   return !!row;
 }
@@ -61,7 +61,7 @@ function getAchievementMultiplier(achievementType) {
 module.exports = {
   grantAchievement,
   revokeAchievement,
-  hasYearsOfService,
+  hasAchievement,
   getAchievementMultiplier,
   YEARS_OF_SERVICE
 };

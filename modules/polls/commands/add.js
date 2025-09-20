@@ -1,12 +1,16 @@
 const { Composer } = require("telegraf");
 const SETTINGS = require('../../../settings.json')
 const util = require('../../util')
+const { hasPermission } = require('../../rbac')
+const { getUser } = require('../../db/helpers')
 
 module.exports = Composer.command('add', async (ctx) => {
   util.log(ctx)
 
-  if (!util.isAdmin(ctx.message.from.id)) { 
-    return; 
+  // Check permissions using new RBAC system
+  const userData = await getUser(ctx.message.from.id);
+  if (!userData || !hasPermission(userData.roles, 'admin:polls:create')) {
+    return;
   }
 
   const messageText = ctx.message.text;

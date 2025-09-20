@@ -52,6 +52,7 @@ const enhancedActions = [
   require('./actions/payCurrentMonth'),
   require('./actions/payRegularMonth'),
   require('./actions/payPlusMonth'),
+  require('./actions/paySbpMonth'),
   require('./actions/paymentSuccess'),
   require('./actions/joinArchive'),
   require('./actions/linkNotWorking'),

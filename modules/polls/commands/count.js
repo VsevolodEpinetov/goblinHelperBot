@@ -1,13 +1,16 @@
 const { Composer } = require("telegraf");
 const SETTINGS = require('../../../settings.json')
 const util = require('../../util')
+const { hasPermission } = require('../../rbac')
+const { getUser } = require('../../db/helpers')
 
 module.exports = Composer.command('count', async (ctx) => {
   util.log(ctx)
-  const isAnAdmin = ctx.message.from.id == SETTINGS.CHATS.EPINETOV || ctx.message.from.id == SETTINGS.CHATS.GLAVGOBLIN || ctx.message.from.id == SETTINGS.CHATS.ALEKS || ctx.message.from.id == SETTINGS.CHATS.ARTYOM;
-
-  if (!isAnAdmin) { 
-    return; 
+  
+  // Check permissions using new RBAC system
+  const userData = await getUser(ctx.message.from.id);
+  if (!userData || !hasPermission(userData.roles, 'admin:polls:results')) {
+    return;
   }
 
   if (!ctx.message.reply_to_message) {

@@ -1,8 +1,17 @@
 const { Composer, Markup } = require("telegraf");
 const util = require('../../../util');
 const SETTINGS = require('../../../../settings.json');
+const { hasPermission } = require('../../../rbac');
+const { getUser } = require('../../../db/helpers');
 
 module.exports = Composer.action('adminPolls', async (ctx) => {
+  // Check permissions using new RBAC system
+  const userData = await getUser(ctx.callbackQuery.from.id);
+  if (!userData || !hasPermission(userData.roles, 'admin:polls:create')) {
+    await ctx.answerCbQuery('❌ У вас нет прав для работы с голосованиями');
+    return;
+  }
+
   if (!ctx.polls.studios) ctx.polls.studios = [];
   if (!ctx.polls.core) ctx.polls.core = [];
   const userId = ctx.callbackQuery.from.id;

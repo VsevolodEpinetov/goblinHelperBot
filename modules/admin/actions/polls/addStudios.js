@@ -1,8 +1,16 @@
 const { Composer, Markup } = require("telegraf");
 const util = require('../../../util');
 const SETTINGS = require('../../../../settings.json');
+const { hasPermission } = require('../../../rbac');
+const { getUser } = require('../../../db/helpers');
 
 module.exports = Composer.action('adminPollsStudiosAdd', async (ctx) => {
+  // Check permissions using new RBAC system
+  const userData = await getUser(ctx.callbackQuery.from.id);
+  if (!userData || !hasPermission(userData.roles, 'admin:polls:edit')) {
+    await ctx.answerCbQuery('❌ У вас нет прав для редактирования добавленных студий');
+    return;
+  }
   try {
     await ctx.deleteMessage(ctx.callbackQuery.message.message_id);
   } catch (e) {
