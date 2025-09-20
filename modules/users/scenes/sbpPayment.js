@@ -1,6 +1,7 @@
 const { Scenes, Markup } = require("telegraf");
 const SETTINGS = require('../../../settings.json')
 const { getUser } = require('../../db/helpers');
+const util = require('../../util');
 
 const sceneSbpPayment = new Scenes.BaseScene('SBP_PAYMENT');
 

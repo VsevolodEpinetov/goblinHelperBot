@@ -4,8 +4,10 @@ const SETTINGS = require('../../../../settings.json');
 const { getAllUsers } = require('../../../db/helpers');
 
 module.exports = Composer.action('adminRemind', async (ctx) => {
-  const currentYear = ctx.globalSession.current.year, currentMonth = ctx.globalSession.current.month;
-  const current = `${currentYear}_${currentMonth}`
+  const currentPeriodInfo = util.getCurrentPeriod(ctx);
+  const currentYear = currentPeriodInfo.year;
+  const currentMonth = currentPeriodInfo.month;
+  const current = currentPeriodInfo.period;
   let counter = 0, failed = 0;
   let usernames = [], failedUsernames = [];
 

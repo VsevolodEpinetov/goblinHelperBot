@@ -1,6 +1,7 @@
 const { Composer, Markup } = require("telegraf");
 const { getUser } = require('../../db/helpers');
 const { getUserSubscriptionStatus, getCurrentMonthPeriod } = require('../subscriptionHelpers');
+const util = require('../../util');
 
 module.exports = Composer.action('paySbpMonth', async (ctx) => {
   try { await ctx.answerCbQuery(); } catch {}
@@ -21,7 +22,7 @@ module.exports = Composer.action('paySbpMonth', async (ctx) => {
 
     // Check current subscription status
     const subscriptionStatus = await getUserSubscriptionStatus(userData.id);
-    const currentPeriod = getCurrentMonthPeriod();
+    const currentPeriod = util.getCurrentPeriod(ctx);
 
     if (subscriptionStatus.status !== 'unpaid') {
       // User already has a subscription
@@ -40,8 +41,8 @@ module.exports = Composer.action('paySbpMonth', async (ctx) => {
     // Set up purchasing session for SBP payment
     ctx.userSession.purchasing = {
       type: 'group',
-      year: ctx.globalSession.current.year,
-      month: ctx.globalSession.current.month,
+      year: currentPeriod.year,
+      month: currentPeriod.month,
       userId: ctx.from.id,
       isOld: false
     };

@@ -13,20 +13,8 @@ const {
 } = require('./menus');
 
 function getCurrentPeriod(ctx) {
-  try {
-    if (ctx.globalSession?.current?.year && ctx.globalSession?.current?.month) {
-      return `${ctx.globalSession.current.year}_${ctx.globalSession.current.month}`;
-    }
-  } catch (error) {
-    console.error('❌ Global session access error:', error.message);
-  }
-  
-  // Fallback to current date
-  const now = new Date();
-  const year = now.getFullYear();
-  const month = String(now.getMonth() + 1).padStart(2, '0');
-  console.log(`⚠️  Using fallback period: ${year}_${month}`);
-  return `${year}_${month}`;
+  const util = require('../../util');
+  return util.getCurrentPeriod(ctx).period;
 }
 
 /**

@@ -1,12 +1,12 @@
 const { Composer } = require('telegraf');
 const db = require('../../../../modules/db/pg');
+const util = require('../../../util');
 
 module.exports = Composer.action(/^resendInvite_\d+$/g, async (ctx) => {
 	await ctx.answerCbQuery().catch(() => {});
 	const userId = ctx.callbackQuery.data.split('_')[1];
-	const current = ctx.globalSession && ctx.globalSession.current;
-	if (!current) return ctx.reply('Текущий период не определён');
-	const period = `${current.year}_${current.month}`;
+	const currentPeriodInfo = util.getCurrentPeriod(ctx);
+	const period = currentPeriodInfo.period;
 	const type = 'regular';
 	try {
 		const r = await db.query('SELECT period, type, "chatId" FROM "months" WHERE period=$1 AND type IN (\'regular\',\'plus\')', [period]);

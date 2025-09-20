@@ -13,20 +13,7 @@ const colors = require('./colors.js');
  * Safe function to get current period with fallback
  */
 function getCurrentPeriod(ctx) {
-  try {
-    if (ctx?.globalSession?.current?.year && ctx?.globalSession?.current?.month) {
-      return {
-        period: `${ctx.globalSession.current.year}_${ctx.globalSession.current.month}`,
-        year: ctx.globalSession.current.year,
-        month: ctx.globalSession.current.month,
-        display: `${ctx.globalSession.current.year}-${ctx.globalSession.current.month}`
-      };
-    }
-  } catch (error) {
-    console.error('❌ Global session access error in util:', error.message);
-  }
-  
-  // Fallback to current date
+  // Always calculate from current date - no more relying on globalSession!
   const now = new Date();
   const year = now.getFullYear();
   const month = String(now.getMonth() + 1).padStart(2, '0');

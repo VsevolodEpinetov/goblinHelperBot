@@ -7,7 +7,8 @@ module.exports = Composer.action('userMonths', async (ctx) => {
   const userData = await getUser(ctx.callbackQuery.from.id);
   if (!userData) return;
 
-  const currentPeriod = `${ctx.globalSession.current.year}_${ctx.globalSession.current.month}`;
+  const currentPeriodInfo = util.getCurrentPeriod(ctx);
+  const currentPeriod = currentPeriodInfo.period;
   const hasCurrentMonth = userData.purchases.groups.regular.indexOf(currentPeriod) > -1;
   const hasCurrentPlus = userData.purchases.groups.plus.indexOf(currentPeriod) > -1;
   
@@ -18,8 +19,8 @@ module.exports = Composer.action('userMonths', async (ctx) => {
   
   const intro = t('messages.months.title');
   const status = t('messages.months.status', {
-    year: ctx.globalSession.current.year,
-    month: ctx.globalSession.current.month,
+    year: currentPeriodInfo.year,
+    month: currentPeriodInfo.month,
     regular: hasCurrentMonth ? '✅ Активна' : '❌ Нет',
     plus: hasCurrentPlus ? '✅ Активна' : '❌ Нет'
   });

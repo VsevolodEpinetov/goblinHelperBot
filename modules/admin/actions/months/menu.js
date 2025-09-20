@@ -11,12 +11,6 @@ module.exports = Composer.action(/^adminMonths/g, async (ctx) => {
   }
 
   if (!ctx.months.list) ctx.months.list = {};
-  if (!ctx.globalSession.current) {
-    ctx.globalSession.current = {
-      month: '',
-      year: ''
-    }
-  }
 
   let menu = [];
 
@@ -81,7 +75,6 @@ module.exports = Composer.action(/^adminMonths/g, async (ctx) => {
       if (info.regular.id) regularGroupInfo = await ctx.getChat(info.regular.id)
       if (info.plus.id) plusGroupInfo = await ctx.getChat(info.plus.id)
 
-      const isCurrent = ctx.globalSession.current.year == year && ctx.globalSession.current.month == month;
 
       await ctx.editMessageText(`Данные за ${year}-${month}:\n\nСсылка на обычную группу: ${info.regular.link || 'not set'}\nСтатус: ${regularGroupInfo ? `✅` : '❌'}\nПодтверждено участников: ${info.regular.counter.joined}/${info.regular.counter.paid}\n\nСсылка на плюсовую группу: ${info.plus.link || 'not set'}\nСтатус: ${plusGroupInfo ? `✅` : '❌'}\nПодтверждено участников: ${info.plus.counter.paid}/${info.plus.counter.joined}`, {
         parse_mode: 'HTML',
@@ -89,9 +82,6 @@ module.exports = Composer.action(/^adminMonths/g, async (ctx) => {
           [
             Markup.button.callback('Ссылка на обычную', `adminAddLink_${year}_${month}`),
             Markup.button.callback('Ссылка на плюсовую', `adminAddLinkPlus_${year}_${month}`)
-          ],
-          [
-            Markup.button.callback(`${isCurrent ? `✅ Текущий` : `Сделать текущим`}`, `adminSelectCurrent_${year}_${month}`)
           ],
           [
             Markup.button.callback('←', `adminMonths_show_${year}`),
