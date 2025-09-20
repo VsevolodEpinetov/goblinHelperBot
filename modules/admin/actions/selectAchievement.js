@@ -6,7 +6,7 @@ const notifications = require('../../../configs/notifications');
 const knex = require('../../db/knex');
 
 // Handler for admin_user_achievements_* callback - shows achievement management menu
-module.exports = Composer.action(/^admin_user_achievements_\d+$/g, async (ctx) => {
+const adminUserAchievements = Composer.action(/^admin_user_achievements_\d+$/g, async (ctx) => {
   try { await ctx.answerCbQuery(); } catch {}
   
   const userId = ctx.callbackQuery.data.split('_').pop();
@@ -61,7 +61,7 @@ module.exports = Composer.action(/^admin_user_achievements_\d+$/g, async (ctx) =
 });
 
 // Handler for granting achievements
-module.exports = Composer.action(/^selectAchievement_/, async (ctx) => {
+const selectAchievement = Composer.action(/^selectAchievement_/, async (ctx) => {
   try { 
     await ctx.answerCbQuery(); 
   } catch {}
@@ -154,7 +154,7 @@ module.exports = Composer.action(/^selectAchievement_/, async (ctx) => {
 });
 
 // Handler for revoking achievements
-module.exports = Composer.action(/^revokeAchievement_/, async (ctx) => {
+const revokeAchievementHandler = Composer.action(/^revokeAchievement_/, async (ctx) => {
   try { 
     await ctx.answerCbQuery(); 
   } catch {}
@@ -234,3 +234,10 @@ function formatUserAchievements(achievements) {
     return `• ${title}`;
   }).join('\n');
 }
+
+// Export all handlers composed together
+module.exports = Composer.compose([
+  adminUserAchievements,
+  selectAchievement,
+  revokeAchievementHandler
+]);
