@@ -11,7 +11,7 @@ const promoCommands = Composer.compose([
   Composer.command('promo', async (ctx) => {
   // Simple authorization check
   const userId = ctx.from.id.toString();
-  if (userId !== SETTINGS.CHATS.EPINETOV && userId !== SETTINGS.CHATS.GLAVGOBLIN) {
+  if (userId !== SETTINGS.CHATS.EPINETOV) {
     logDenied(ctx.from.id, ctx.from.username, '/promo', 'unauthorized');
     return;
   }
@@ -59,8 +59,8 @@ const promoCommands = Composer.compose([
   Composer.command('promo_upload', async (ctx) => {
     console.log('🔍 promo_upload command triggered by:', ctx.from.id, ctx.from.username);
     const userId = ctx.from.id.toString();
-    if (userId !== SETTINGS.CHATS.EPINETOV && userId !== SETTINGS.CHATS.GLAVGOBLIN) {
-      console.log('❌ Unauthorized user:', userId, 'Expected:', SETTINGS.CHATS.EPINETOV, 'or', SETTINGS.CHATS.GLAVGOBLIN);
+    if (userId !== SETTINGS.CHATS.EPINETOV) {
+      console.log('❌ Unauthorized user:', userId, 'Expected:', SETTINGS.CHATS.EPINETOV);
       logDenied(ctx.from.id, ctx.from.username, '/promo_upload', 'unauthorized');
       return;
     }
@@ -78,8 +78,8 @@ const promoCommands = Composer.compose([
   Composer.command('promo_add', async (ctx) => {
   console.log('🔍 promo_add command triggered by:', ctx.from.id, ctx.from.username);
   const userId = ctx.from.id.toString();
-  if (userId !== SETTINGS.CHATS.EPINETOV && userId !== SETTINGS.CHATS.GLAVGOBLIN) {
-    console.log('❌ Unauthorized user:', userId, 'Expected:', SETTINGS.CHATS.EPINETOV, 'or', SETTINGS.CHATS.GLAVGOBLIN);
+  if (userId !== SETTINGS.CHATS.EPINETOV) {
+    console.log('❌ Unauthorized user:', userId, 'Expected:', SETTINGS.CHATS.EPINETOV);
     logDenied(ctx.from.id, ctx.from.username, '/promo_add', 'unauthorized');
     return;
   }
@@ -167,7 +167,7 @@ const promoCommands = Composer.compose([
   // List all promo files command
   Composer.command('promo_list', async (ctx) => {
   const userId = ctx.from.id.toString();
-  if (userId !== SETTINGS.CHATS.EPINETOV && userId !== SETTINGS.CHATS.GLAVGOBLIN) {
+  if (userId !== SETTINGS.CHATS.EPINETOV) {
     logDenied(ctx.from.id, ctx.from.username, '/promo_list', 'unauthorized');
     return;
   }
@@ -211,7 +211,7 @@ const promoCommands = Composer.compose([
   // Toggle promo file status command
   Composer.command('promo_toggle', async (ctx) => {
   const userId = ctx.from.id.toString();
-  if (userId !== SETTINGS.CHATS.EPINETOV && userId !== SETTINGS.CHATS.GLAVGOBLIN) {
+  if (userId !== SETTINGS.CHATS.EPINETOV) {
     logDenied(ctx.from.id, ctx.from.username, '/promo_toggle', 'unauthorized');
     return;
   }
@@ -255,7 +255,7 @@ const promoCommands = Composer.compose([
   // Test random promo file command
   Composer.command('promo_test', async (ctx) => {
   const userId = ctx.from.id.toString();
-  if (userId !== SETTINGS.CHATS.EPINETOV && userId !== SETTINGS.CHATS.GLAVGOBLIN) {
+  if (userId !== SETTINGS.CHATS.EPINETOV) {
     logDenied(ctx.from.id, ctx.from.username, '/promo_test', 'unauthorized');
     return;
   }

@@ -17,15 +17,25 @@ async function getRandomPromoFile(userId) {
     // Get files that user hasn't used in the last 48 hours
     const cooldownThreshold = new Date(Date.now() - (COOLDOWN_HOURS * 60 * 60 * 1000));
     
-    const availableFiles = await knex('promo_files')
-      .leftJoin('user_promo_usage', function() {
-        this.on('promo_files.id', '=', 'user_promo_usage.promo_file_id')
-          .andOn('user_promo_usage.user_id', '=', knex.raw('?', [userId]))
-          .andOn('user_promo_usage.used_at', '>', cooldownThreshold);
-      })
-      .where('promo_files.is_active', true)
-      .whereNull('user_promo_usage.id')
-      .select('promo_files.*');
+    // First, get all active promo files
+    const allFiles = await knex('promo_files')
+      .where('is_active', true)
+      .select('*');
+
+    if (allFiles.length === 0) {
+      return null;
+    }
+
+    // Get files that user has used recently (within cooldown)
+    const recentlyUsedFiles = await knex('user_promo_usage')
+      .where('user_id', userId)
+      .where('used_at', '>', cooldownThreshold)
+      .select('promo_file_id');
+
+    const usedFileIds = recentlyUsedFiles.map(usage => usage.promo_file_id);
+    
+    // Filter out recently used files
+    const availableFiles = allFiles.filter(file => !usedFileIds.includes(file.id));
 
     if (availableFiles.length === 0) {
       return null;

@@ -7,6 +7,13 @@ const promoUploadScene = new Scenes.BaseScene('promoUpload');
 
 // Scene entry point
 promoUploadScene.enter(async (ctx) => {
+  // Authorization check
+  const userId = ctx.from.id.toString();
+  if (userId !== SETTINGS.CHATS.EPINETOV) {
+    await ctx.reply('❌ У вас нет прав для использования этой функции.');
+    return ctx.scene.leave();
+  }
+
   ctx.session.promoFiles = [];
   
   await ctx.reply(
