@@ -152,10 +152,6 @@ requestsScene.on('text', async (ctx) => {
       ]);
     }
 
-    keyboard.push([
-      Markup.button.callback('🔙 Назад', 'adminMenu')
-    ]);
-
     await ctx.replyWithHTML(message, {
       parse_mode: 'HTML',
       ...Markup.inlineKeyboard(keyboard)
