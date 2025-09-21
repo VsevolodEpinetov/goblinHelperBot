@@ -8,9 +8,6 @@ function getRejectedUserMenu(ctx, userData) {
     message: '❌ <b>Заявка отклонена</b>\n\n' +
 'Совет посмотрел на тебя и расхохотался. Нет тебе дороги в логово.\n\n' +
 'Иди к эльфам — там тебя, может, и приголубят.',
-    keyboard: [
-      [Markup.button.callback('❓ Помощь', 'userHelp')]
-    ]
   };
 }
 
