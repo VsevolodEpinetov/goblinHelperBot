@@ -1,32 +1,8 @@
-const { Composer } = require('telegraf');
-const { getAllFilesFromFolder } = require('../util');
-const path = require('path');
+// Promo module - exports the service
+// Actions are handled in modules/users/actions/getPromoFile.js
+// Commands are handled in modules/admin/commands/promoManagement.js
 
-// Load all promo actions
-const actions = getAllFilesFromFolder(path.join(__dirname, './actions'))
-  .map(file => {
-    try {
-      return require(file);
-    } catch (error) {
-      console.error('❌ Failed to load promo action:', file, error.message);
-      return null;
-    }
-  })
-  .filter((m) => typeof m === 'function');
-
-// Load all promo commands
-const commands = getAllFilesFromFolder(path.join(__dirname, './commands'))
-  .map(file => {
-    try {
-      return require(file);
-    } catch (error) {
-      console.error('❌ Failed to load promo command:', file, error.message);
-      return null;
-    }
-  })
-  .filter((m) => typeof m === 'function');
-
-module.exports = Composer.compose([
-  ...actions,
-  ...commands
-]);
+module.exports = {
+  // Export the promo service for use by other modules
+  promoService: require('./promoService')
+};
