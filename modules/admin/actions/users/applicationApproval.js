@@ -5,8 +5,11 @@ const { getUser, updateUser } = require('../../../db/helpers');
 const { hasPermission } = require('../../../rbac');
 const SETTINGS = require('../../../../settings.json');
 
+// Create a composer that combines all application approval actions
+const applicationApprovalComposer = new Composer();
+
 // Handle Accept application (first step - interview approval)
-module.exports = Composer.action(/^apply_admin_accept_\d+$/g, async (ctx) => {
+applicationApprovalComposer.action(/^apply_admin_accept_\d+$/g, async (ctx) => {
   const userId = ctx.callbackQuery.data.split('_').pop();
   try { await ctx.answerCbQuery(); } catch {}
   
@@ -52,7 +55,7 @@ module.exports = Composer.action(/^apply_admin_accept_\d+$/g, async (ctx) => {
 });
 
 // Handle Deny application
-module.exports = Composer.action(/^apply_admin_deny_\d+$/g, async (ctx) => {
+applicationApprovalComposer.action(/^apply_admin_deny_\d+$/g, async (ctx) => {
   const userId = ctx.callbackQuery.data.split('_').pop();
   try { await ctx.answerCbQuery(); } catch {}
   
@@ -110,7 +113,7 @@ module.exports = Composer.action(/^apply_admin_deny_\d+$/g, async (ctx) => {
 });
 
 // Handle final approval after interview
-module.exports = Composer.action(/^admin_final_approve_\d+$/g, async (ctx) => {
+applicationApprovalComposer.action(/^admin_final_approve_\d+$/g, async (ctx) => {
   const userId = ctx.callbackQuery.data.split('_').pop();
   try { await ctx.answerCbQuery(); } catch {}
   
@@ -179,7 +182,7 @@ module.exports = Composer.action(/^admin_final_approve_\d+$/g, async (ctx) => {
 });
 
 // Handle final denial after interview (ban the user)
-module.exports = Composer.action(/^admin_final_deny_\d+$/g, async (ctx) => {
+applicationApprovalComposer.action(/^admin_final_deny_\d+$/g, async (ctx) => {
   const userId = ctx.callbackQuery.data.split('_').pop();
   try { await ctx.answerCbQuery(); } catch {}
   
@@ -236,3 +239,6 @@ module.exports = Composer.action(/^admin_final_deny_\d+$/g, async (ctx) => {
     await ctx.replyWithHTML('❌ Error in final denial');
   }
 });
+
+// Export the combined composer
+module.exports = applicationApprovalComposer;
