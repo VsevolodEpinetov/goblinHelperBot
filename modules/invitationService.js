@@ -12,11 +12,11 @@ const bot = new Telegraf(process.env.TOKEN);
 /**
  * Create a new invitation link for a user or group
  * @param {number} userId - User ID (0 for group links)
- * @param {string} groupId - Group ID (optional, defaults to LOGS_GROUP_ID)
+ * @param {string} groupId - Group ID (optional, defaults to MAIN_GROUP_ID)
  * @param {string} groupPeriod - Group period for group links (optional)
  * @param {string} groupType - Group type for group links (optional)
  */
-async function createInvitationLink(userId, groupId = process.env.LOGS_GROUP_ID, groupPeriod = null, groupType = null) {
+async function createInvitationLink(userId, groupId = process.env.MAIN_GROUP_ID, groupPeriod = null, groupType = null) {
   try {
     console.log(`🔗 Creating invitation link for user ${userId} to group ${groupId}`);
     
@@ -115,7 +115,7 @@ async function revokeInvitationLink(userId) {
     // Try to revoke the link (this might not work if it's already used)
     try {
       await bot.telegram.revokeChatInviteLink(
-        existingLink.groupType === 'main' ? process.env.MAIN_GROUP_ID : process.env.LOGS_GROUP_ID,
+        existingLink.groupType === 'main' ? process.env.MAIN_GROUP_ID : process.env.MAIN_GROUP_ID,
         existingLink.groupPeriod
       );
     } catch (revokeError) {
