@@ -41,14 +41,19 @@ async function createInvitationLink(userId, groupId = process.env.LOGS_GROUP_ID,
     }
     
     // Create invitation link using Telegram API with approval mode
+    // For group links (monthly archives), use longer expiration (90 days)
+    // For user links, use shorter expiration (7 days)
+    const isGroupLink = userId === null || userId === 0;
+    const expirationDays = isGroupLink ? 90 : 7; // 90 days for group links, 7 days for user links
+    
     const inviteLink = await bot.telegram.createChatInviteLink(groupId, {
       name: linkName,
-      expire_date: Math.floor(Date.now() / 1000) + (7 * 24 * 60 * 60), // 7 days from now
+      expire_date: Math.floor(Date.now() / 1000) + (expirationDays * 24 * 60 * 60),
       creates_join_request: true // Enable approval mode - requires admin approval
       // Note: member_limit can't be used with creates_join_request
     });
     
-    console.log(`✅ Created invitation link: ${inviteLink.invite_link}`);
+    console.log(`✅ Created invitation link (expires in ${expirationDays} days): ${inviteLink.invite_link}`);
     
     // Determine group type
     let finalGroupType;

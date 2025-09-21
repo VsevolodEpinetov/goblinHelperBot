@@ -19,16 +19,28 @@ async function getOrCreateGroupInvitationLink(groupPeriod, groupType) {
       .where('telegramInviteLinkIsRevoked', false)
       .first();
 
-    // Found existing link
-
+    // Check if existing link is still valid (not expired)
     if (existingLink && existingLink.telegramInviteLink) {
-      // Returning existing link
-      return {
-        success: true,
-        link: existingLink.telegramInviteLink,
-        linkId: existingLink.id,
-        isNew: false
-      };
+      const now = new Date();
+      const isExpired = existingLink.telegramInviteLinkExpireDate && 
+                       existingLink.telegramInviteLinkExpireDate < now;
+      
+      if (!isExpired) {
+        // Returning existing valid link
+        console.log(`✅ Using existing valid link for ${groupPeriod}_${groupType}`);
+        return {
+          success: true,
+          link: existingLink.telegramInviteLink,
+          linkId: existingLink.id,
+          isNew: false
+        };
+      } else {
+        // Link is expired, mark it as used and create a new one
+        console.log(`⚠️ Existing link for ${groupPeriod}_${groupType} is expired, creating new one`);
+        await knex('invitationLinks')
+          .where('id', existingLink.id)
+          .update({ usedAt: new Date() });
+      }
     }
 
     // No existing link, need to create one
