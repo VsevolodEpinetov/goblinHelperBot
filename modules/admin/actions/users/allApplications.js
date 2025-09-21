@@ -734,10 +734,9 @@ const userActionHandler = Composer.action(/^admin_(approve|reject|super_approve|
         // Send rejection message to user
         try {
           await ctx.telegram.sendMessage(userId, 
-            '❌ <b>Заявка отклонена</b>\n\n' +
-            'К сожалению, твоя заявка на участие в сообществе была отклонена.\n\n' +
-            'Если у тебя есть вопросы, можешь обратиться к администрации.\n\n' +
-            'Спасибо за понимание.',
+'❌ <b>Заявка отклонена</b>\n\n' +
+'Совет посмотрел на тебя и расхохотался. Нет тебе дороги в логово.\n\n' +
+'Иди к эльфам — там тебя, может, и приголубят.',
             {
               parse_mode: 'HTML'
             }

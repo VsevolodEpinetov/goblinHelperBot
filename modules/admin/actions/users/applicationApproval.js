@@ -84,8 +84,9 @@ module.exports = Composer.action(/^apply_admin_deny_\d+$/g, async (ctx) => {
 
     // Send message to user
     await ctx.telegram.sendMessage(Number(userId), 
-      '❌ <b>К сожалению, ваша заявка отклонена.</b>\n\n' +
-      'Спасибо за интерес к нашему сообществу.', 
+'❌ <b>Заявка отклонена</b>\n\n' +
+'Совет посмотрел на тебя и расхохотался. Нет тебе дороги в логово.\n\n' +
+'Иди к эльфам — там тебя, может, и приголубят.',
       { parse_mode: 'HTML' }
     );
 
