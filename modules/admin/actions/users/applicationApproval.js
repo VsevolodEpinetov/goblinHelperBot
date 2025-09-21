@@ -8,8 +8,10 @@ const SETTINGS = require('../../../../settings.json');
 // Create a composer that combines all application approval actions
 const applicationApprovalComposer = new Composer();
 
+console.log('🔥 Application approval composer created');
+
 // Handle Accept application (first step - interview approval)
-applicationApprovalComposer.action(/^apply_admin_accept_\d+$/g, async (ctx) => {
+applicationApprovalComposer.action(/^apply_admin_accept_\d+$/, async (ctx) => {
   const userId = ctx.callbackQuery.data.split('_').pop();
   try { await ctx.answerCbQuery(); } catch {}
   
@@ -55,18 +57,34 @@ applicationApprovalComposer.action(/^apply_admin_accept_\d+$/g, async (ctx) => {
 });
 
 // Handle Deny application
-applicationApprovalComposer.action(/^apply_admin_deny_\d+$/g, async (ctx) => {
+console.log('🔥 Registering deny action handler');
+applicationApprovalComposer.action(/^apply_admin_deny_\d+$/, async (ctx) => {
+  console.log('🔥 DENY ACTION TRIGGERED!', ctx.callbackQuery.data);
   const userId = ctx.callbackQuery.data.split('_').pop();
   try { await ctx.answerCbQuery(); } catch {}
   
   // Check permissions
   const userData = await getUser(ctx.callbackQuery.from.id);
+  console.log('🔥 User data:', userData);
+  console.log('🔥 User roles:', userData?.roles);
   if (!userData || !hasPermission(userData.roles, 'admin:applications:deny')) {
+    console.log('🔥 Permission denied');
     await ctx.reply('❌ У вас нет прав для отклонения заявок');
     return;
   }
+  console.log('🔥 Permission granted, proceeding with denial');
   
   try {
+    // Get application data first
+    const application = await knex('applications')
+      .where({ userId: Number(userId) })
+      .first();
+
+    if (!application) {
+      await ctx.reply('❌ Заявка не найдена');
+      return;
+    }
+
     // Update application status
     await knex('applications')
       .where({ userId: Number(userId) })
@@ -77,11 +95,11 @@ applicationApprovalComposer.action(/^apply_admin_deny_\d+$/g, async (ctx) => {
       .onConflict(['userId','role']).ignore();
 
     // Update user data
-    const userData = await getUser(userId);
-    if (userData) {
-      if (userData.roles.indexOf('rejected') < 0) {
-        userData.roles.push('rejected');
-        await updateUser(userId, userData);
+    const targetUserData = await getUser(userId);
+    if (targetUserData) {
+      if (targetUserData.roles.indexOf('rejected') < 0) {
+        targetUserData.roles.push('rejected');
+        await updateUser(userId, targetUserData);
       }
     }
 
@@ -93,12 +111,21 @@ applicationApprovalComposer.action(/^apply_admin_deny_\d+$/g, async (ctx) => {
       { parse_mode: 'HTML' }
     );
 
-    // Update admin message to show denied
+    // Delete the admin message
     try {
-      await ctx.editMessageReplyMarkup({ 
-        inline_keyboard: [[{ text: '❌ Denied', callback_data: 'deleteThisMessage' }]] 
-      });
-    } catch {}
+      await ctx.deleteMessage();
+    } catch (error) {
+      console.log('Failed to delete message:', error);
+    }
+
+    // Send notification to requests group
+    await ctx.telegram.sendMessage(process.env.REQUESTS_GROUP_ID, 
+      `❌ <b>Заявка отклонена</b>\n\n` +
+      `👤 Пользователь: ${application.firstName || 'Unknown'} (ID: ${userId})\n` +
+      `📅 Время: ${new Date().toLocaleString('ru-RU')}\n` +
+      `👨‍💼 Отклонил: @${ctx.callbackQuery.from.username || 'Unknown'}`,
+      { parse_mode: 'HTML' }
+    );
 
     // Log the denial
     await ctx.telegram.sendMessage(SETTINGS.CHATS.LOGS, 
@@ -113,7 +140,7 @@ applicationApprovalComposer.action(/^apply_admin_deny_\d+$/g, async (ctx) => {
 });
 
 // Handle final approval after interview
-applicationApprovalComposer.action(/^admin_final_approve_\d+$/g, async (ctx) => {
+applicationApprovalComposer.action(/^admin_final_approve_\d+$/, async (ctx) => {
   const userId = ctx.callbackQuery.data.split('_').pop();
   try { await ctx.answerCbQuery(); } catch {}
   
@@ -182,7 +209,7 @@ applicationApprovalComposer.action(/^admin_final_approve_\d+$/g, async (ctx) => 
 });
 
 // Handle final denial after interview (ban the user)
-applicationApprovalComposer.action(/^admin_final_deny_\d+$/g, async (ctx) => {
+applicationApprovalComposer.action(/^admin_final_deny_\d+$/, async (ctx) => {
   const userId = ctx.callbackQuery.data.split('_').pop();
   try { await ctx.answerCbQuery(); } catch {}
   
