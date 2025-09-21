@@ -63,14 +63,7 @@ applicationApprovalComposer.action(/^apply_protector_allow_\d+$/, async (ctx) =>
   }
 });
 
-// Handle Deny application
-console.log('🔥 Registering deny action handler');
-const denyRegex = /^apply_protector_deny_\d+$/;
-console.log('🔥 Deny regex:', denyRegex);
-console.log('🔥 Testing regex with apply_protector_deny_7058039189:', denyRegex.test('apply_protector_deny_7058039189'));
-
-applicationApprovalComposer.action(denyRegex, async (ctx) => {
-  console.log('🔥 DENY ACTION TRIGGERED!', ctx.callbackQuery.data);
+applicationApprovalComposer.action(/^apply_protector_deny_\d+$/, async (ctx) => {
   const userId = ctx.callbackQuery.data.split('_').pop();
   try { await ctx.answerCbQuery(); } catch {}
   

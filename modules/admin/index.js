@@ -11,7 +11,7 @@ const actions = getAllFilesFromFolder(path.join(__dirname, './actions'))
       return null;
     }
   })
-  .filter((m) => typeof m === 'function');
+  .filter((m) => typeof m === 'function' || (m && typeof m === 'object' && m.constructor && m.constructor.name === 'Composer'));
 
 const commands = getAllFilesFromFolder(path.join(__dirname, './commands'))
   .map(file => {
