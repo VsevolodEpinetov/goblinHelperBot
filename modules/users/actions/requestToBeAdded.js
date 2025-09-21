@@ -6,7 +6,7 @@ const { safeCreatePage } = require('../../../modules/integrations/notion');
 const SETTINGS = require('../../../settings.json');
 const { updateUser } = require('../../db/helpers');
 
-module.exports = Composer.action('applyYes', async (ctx) => {
+module.exports = Composer.action('requestToBeAdded', async (ctx) => {
   const userId = ctx.callbackQuery.from.id;
   const toRemove = ctx.callbackQuery.message.message_id;
 
