@@ -10,6 +10,12 @@ const applicationApprovalComposer = new Composer();
 
 console.log('🔥 Application approval composer created');
 
+// Add a simple test action to see if ANY action works
+applicationApprovalComposer.action('test_simple_action', async (ctx) => {
+  console.log('🔥 SIMPLE TEST ACTION WORKED!');
+  await ctx.answerCbQuery('Test works!');
+});
+
 
 // Handle Accept application (first step - interview approval)
 applicationApprovalComposer.action(/^apply_protector_allow_\d+$/, async (ctx) => {
@@ -270,6 +276,12 @@ applicationApprovalComposer.action(/^admin_final_deny_\d+$/, async (ctx) => {
     console.error('Error in final denial:', error);
     await ctx.replyWithHTML('❌ Error in final denial');
   }
+});
+
+// Catch-all action to see if any action is being handled (at the end)
+applicationApprovalComposer.action(/.*/, async (ctx) => {
+  console.log('🔥 CATCH-ALL ACTION TRIGGERED!', ctx.callbackQuery.data);
+  await ctx.answerCbQuery('Catch-all triggered!');
 });
 
 // Export the combined composer
