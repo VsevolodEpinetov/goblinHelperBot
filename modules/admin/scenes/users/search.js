@@ -4,6 +4,13 @@ const SETTINGS = require('../../../../settings.json')
 const searchUser = new Scenes.BaseScene('SCENE_SEARCH_USER');
 
 searchUser.enter(async (ctx) => {
+  // Check if this is being used in EPINETOV's DMs - if not, exit immediately
+  if (ctx.chat.id.toString() !== SETTINGS.CHATS.EPINETOV) {
+    await ctx.reply('❌ Поиск пользователей доступен только в личных сообщениях с администратором');
+    await ctx.scene.leave();
+    return;
+  }
+
   await ctx.replyWithHTML(`Пришли <b>строку</b>`).then(nctx => {
     ctx.session.toRemove = nctx.message_id;
     ctx.session.chatID = nctx.chat.id;
@@ -11,6 +18,12 @@ searchUser.enter(async (ctx) => {
 });
 
 searchUser.on('text', async (ctx) => {
+  // Check if this is being used in EPINETOV's DMs - if not, exit immediately
+  if (ctx.chat.id.toString() !== SETTINGS.CHATS.EPINETOV) {
+    await ctx.scene.leave();
+    return;
+  }
+
   const searchString = ctx.message.text.toLowerCase();
   if (ctx.message.text.length < 3) {
     await ctx.replyWithHTML(`Минимум 3 символа. Пришли новую <b>строку</b>`).then(nctx => {

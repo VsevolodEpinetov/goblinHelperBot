@@ -9,7 +9,8 @@ requestsScene.enter(async (ctx) => {
   await ctx.replyWithHTML(
     '📋 <b>Управление заявками</b>\n\n' +
     'Введите код заявки в формате <code>гоблин-XXXX</code> для поиска и управления заявкой.\n\n' +
-    'Пример: <code>гоблин-1234</code>',
+    'Пример: <code>гоблин-1234</code>\n\n' +
+    '⏰ <i>Режим поиска активен. Введите код или нажмите "Отмена" для выхода.</i>',
     {
       parse_mode: 'HTML',
       ...Markup.inlineKeyboard([
@@ -19,6 +20,10 @@ requestsScene.enter(async (ctx) => {
   ).then(nctx => {
     ctx.session.toRemove = nctx.message_id;
     ctx.session.chatID = nctx.chat.id;
+    // Set a timeout to automatically exit the scene after 5 minutes of inactivity
+    ctx.session.requestsTimeout = setTimeout(() => {
+      ctx.scene.leave();
+    }, 5 * 60 * 1000); // 5 minutes
   });
 });
 
@@ -28,17 +33,21 @@ requestsScene.on('text', async (ctx) => {
   // Check if input matches the expected format (гоблин-XXXX)
   const codeMatch = input.match(/^гоблин-(\d+)$/);
   if (!codeMatch) {
-    await ctx.replyWithHTML(
-      '❌ <b>Неверный формат кода</b>\n\n' +
-      'Пожалуйста, введите код в формате <code>гоблин-XXXX</code>\n' +
-      'Пример: <code>гоблин-1234</code>',
-      {
-        parse_mode: 'HTML',
-        ...Markup.inlineKeyboard([
-          [Markup.button.callback('❌ Отмена', 'adminMenu')]
-        ])
-      }
-    );
+    // Only respond if the input starts with "гоблин-" (case insensitive)
+    if (input.toLowerCase().startsWith('гоблин-')) {
+      await ctx.replyWithHTML(
+        '❌ <b>Неверный формат кода</b>\n\n' +
+        'Пожалуйста, введите код в формате <code>гоблин-XXXX</code>\n' +
+        'Пример: <code>гоблин-1234</code>',
+        {
+          parse_mode: 'HTML',
+          ...Markup.inlineKeyboard([
+            [Markup.button.callback('❌ Отмена', 'adminMenu')]
+          ])
+        }
+      );
+    }
+    // Silently ignore all other text
     return;
   }
 
@@ -150,6 +159,13 @@ requestsScene.on('text', async (ctx) => {
       ...Markup.inlineKeyboard(keyboard)
     });
 
+    // Clear timeout and exit scene after successful lookup
+    if (ctx.session.requestsTimeout) {
+      clearTimeout(ctx.session.requestsTimeout);
+      delete ctx.session.requestsTimeout;
+    }
+    await ctx.scene.leave();
+
   } catch (error) {
     console.error('Error in requests scene:', error);
     await ctx.replyWithHTML(
@@ -168,6 +184,14 @@ requestsScene.on('text', async (ctx) => {
 // Handle noop action (for disabled buttons)
 requestsScene.action('noop', async (ctx) => {
   await ctx.answerCbQuery('Эта кнопка неактивна');
+});
+
+// Clean up timeout when scene leaves
+requestsScene.leave(async (ctx) => {
+  if (ctx.session.requestsTimeout) {
+    clearTimeout(ctx.session.requestsTimeout);
+    delete ctx.session.requestsTimeout;
+  }
 });
 
 module.exports = requestsScene;
