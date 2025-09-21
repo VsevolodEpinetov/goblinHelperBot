@@ -35,6 +35,13 @@ applicationApprovalComposer.action(/^apply_protector_allow_\d+$/, async (ctx) =>
       .where({ userId: Number(userId) })
       .update({ status: 'interview', updatedAt: knex.fn.now() });
 
+    // Replace user roles with preapproved role
+    const targetUserData = await getUser(userId);
+    if (targetUserData) {
+      targetUserData.roles = ['preapproved']; // Replace all roles with just preapproved
+      await updateUser(userId, targetUserData);
+    }
+
     // Send message to user about interview
     await ctx.telegram.sendMessage(Number(userId), 
       '⚖️ <b>Старейшины кивнули!</b>\n\n' +
@@ -94,17 +101,11 @@ applicationApprovalComposer.action(/^apply_protector_deny_\d+$/, async (ctx) => 
       .where({ userId: Number(userId) })
       .update({ status: 'rejected', updatedAt: knex.fn.now() });
 
-    // Add rejected role to user
-    await knex('userRoles').insert({ userId: Number(userId), role: 'rejected' })
-      .onConflict(['userId','role']).ignore();
-
-    // Update user data
+    // Replace user roles with rejected role
     const targetUserData = await getUser(userId);
     if (targetUserData) {
-      if (targetUserData.roles.indexOf('rejected') < 0) {
-        targetUserData.roles.push('rejected');
-        await updateUser(userId, targetUserData);
-      }
+      targetUserData.roles = ['rejected']; // Replace all roles with just rejected
+      await updateUser(userId, targetUserData);
     }
 
     // Send message to user
@@ -161,17 +162,11 @@ applicationApprovalComposer.action(/^admin_final_approve_\d+$/, async (ctx) => {
       .where({ userId: Number(userId) })
       .update({ status: 'approved', updatedAt: knex.fn.now() });
 
-    // Add goblin role to user
-    await knex('userRoles').insert({ userId: Number(userId), role: 'goblin' })
-      .onConflict(['userId','role']).ignore();
-
-    // Update user data
+    // Replace user roles with goblin role
     const userData = await getUser(userId);
     if (userData) {
-      if (userData.roles.indexOf('goblin') < 0) {
-        userData.roles.push('goblin');
-        await updateUser(userId, userData);
-      }
+      userData.roles = ['goblin']; // Replace all roles with just goblin
+      await updateUser(userId, userData);
     }
 
     // Send payment offer to user
@@ -230,17 +225,11 @@ applicationApprovalComposer.action(/^admin_final_deny_\d+$/, async (ctx) => {
       .where({ userId: Number(userId) })
       .update({ status: 'rejected', updatedAt: knex.fn.now() });
 
-    // Add banned role to user
-    await knex('userRoles').insert({ userId: Number(userId), role: 'banned' })
-      .onConflict(['userId','role']).ignore();
-
-    // Update user data
+    // Replace user roles with banned role
     const userData = await getUser(userId);
     if (userData) {
-      if (userData.roles.indexOf('banned') < 0) {
-        userData.roles.push('banned');
-        await updateUser(userId, userData);
-      }
+      userData.roles = ['banned']; // Replace all roles with just banned
+      await updateUser(userId, userData);
     }
 
     // Send rejection message to user

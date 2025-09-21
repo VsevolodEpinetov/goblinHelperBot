@@ -94,25 +94,34 @@ requestsScene.on('text', async (ctx) => {
     const username = user.username ? `@${user.username}` : 'Нет username';
     const fullName = `${firstName} ${lastName}`.trim();
     
+    // Determine status based on user roles (not application.status)
     let statusText = 'Новый пользователь';
-    switch (application.status) {
-      case 'pending':
-        statusText = '⏳ Ожидает рассмотрения';
-        break;
-      case 'interview':
-        statusText = '⚖️ Проходит собеседование';
-        break;
-      case 'approved':
-        statusText = '✅ Одобрено';
-        break;
-      case 'rejected':
-        statusText = '❌ Отклонено';
-        break;
-      default:
-        statusText = `📋 ${application.status}`;
+    let statusEmoji = '❓';
+    
+    if (!roles || roles.length === 0) {
+      statusEmoji = '⏳';
+      statusText = 'Ожидает рассмотрения';
+    } else if (roles.includes('prereg')) {
+      statusEmoji = '📝';
+      statusText = 'Предварительная регистрация';
+    } else if (roles.includes('pending')) {
+      statusEmoji = '⏳';
+      statusText = 'Ожидает рассмотрения';
+    } else if (roles.includes('preapproved')) {
+      statusEmoji = '✅';
+      statusText = 'Принят к собеседованию';
+    } else if (roles.includes('rejected')) {
+      statusEmoji = '❌';
+      statusText = 'Отклонено';
+    } else if (roles.some(role => ['goblin', 'admin', 'adminPlus', 'super'].includes(role))) {
+      statusEmoji = '🎉';
+      statusText = 'Полностью одобрен';
+    } else {
+      statusEmoji = '🔍';
+      statusText = roles.join(', ');
     }
 
-    // Check if user has any roles
+    // Add roles information
     if (roles.length > 0) {
       statusText += `\nРоли: ${roles.join(', ')}`;
     }
@@ -122,27 +131,27 @@ requestsScene.on('text', async (ctx) => {
       `👤 <b>Имя:</b> ${fullName}\n` +
       `📱 <b>Username:</b> ${username}\n` +
       `📅 <b>Дата регистрации:</b> ${new Date(user.createdAt || Date.now()).toLocaleDateString('ru-RU')}\n` +
-      `📊 <b>Статус заявки:</b> ${statusText}\n` +
+      `📊 <b>Статус заявки:</b> ${statusEmoji} ${statusText}\n` +
       `🔑 <b>Код:</b> <code>гоблин-${actualUserId.toString().slice(-4)}</code>`;
 
-    // Create action buttons based on current status
+    // Create action buttons based on user roles (not application.status)
     const keyboard = [];
     
-    if (application.status === 'pending') {
+    if (!roles || roles.length === 0 || roles.includes('pending')) {
       keyboard.push([
         Markup.button.callback('✅ Одобрить → Собеседование', `apply_protector_allow_${actualUserId}`),
         Markup.button.callback('❌ Отклонить', `apply_protector_deny_${actualUserId}`)
       ]);
-    } else if (application.status === 'interview') {
+    } else if (roles.includes('preapproved')) {
       keyboard.push([
         Markup.button.callback('🔥 Финальное одобрение', `admin_final_approve_${actualUserId}`),
         Markup.button.callback('💀 Финальное отклонение', `admin_final_deny_${actualUserId}`)
       ]);
-    } else if (application.status === 'approved') {
+    } else if (roles.some(role => ['goblin', 'admin', 'adminPlus', 'super'].includes(role))) {
       keyboard.push([
         Markup.button.callback('✅ Заявка уже одобрена', 'noop')
       ]);
-    } else if (application.status === 'rejected') {
+    } else if (roles.includes('rejected')) {
       keyboard.push([
         Markup.button.callback('❌ Заявка уже отклонена', 'noop')
       ]);
