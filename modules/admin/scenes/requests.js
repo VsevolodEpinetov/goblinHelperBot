@@ -54,10 +54,12 @@ requestsScene.on('text', async (ctx) => {
   const userId = codeMatch[1];
   
   try {
-    // Look up application by user ID only
-    const application = await knex('applications')
-      .where('userId', Number(userId))
-      .first();
+    // Look up application by user ID ending with the last 4 digits
+    const applications = await knex('applications')
+      .whereRaw('CAST("userId" AS TEXT) LIKE ?', [`%${userId}`])
+      .orderBy('createdAt', 'desc');
+    
+    const application = applications[0]; // Get the most recent one
 
     if (!application) {
       await ctx.replyWithHTML(
@@ -73,14 +75,15 @@ requestsScene.on('text', async (ctx) => {
       return;
     }
 
-    // Get user info
+    // Get user info using the actual userId from the application
+    const actualUserId = application.userId;
     const user = await knex('users')
-      .where('id', Number(userId))
+      .where('id', actualUserId)
       .first();
 
     // Get user roles
     const userRoles = await knex('userRoles')
-      .where('userId', Number(userId))
+      .where('userId', actualUserId)
       .select('role');
 
     const roles = userRoles.map(r => r.role);
@@ -120,20 +123,20 @@ requestsScene.on('text', async (ctx) => {
       `📱 <b>Username:</b> ${username}\n` +
       `📅 <b>Дата регистрации:</b> ${new Date(user.createdAt || Date.now()).toLocaleDateString('ru-RU')}\n` +
       `📊 <b>Статус заявки:</b> ${statusText}\n` +
-      `🔑 <b>Код:</b> <code>гоблин-${userId.toString().slice(-4)}</code>`;
+      `🔑 <b>Код:</b> <code>гоблин-${actualUserId.toString().slice(-4)}</code>`;
 
     // Create action buttons based on current status
     const keyboard = [];
     
     if (application.status === 'pending') {
       keyboard.push([
-        Markup.button.callback('✅ Одобрить → Собеседование', `apply_admin_accept_${userId}`),
-        Markup.button.callback('❌ Отклонить', `apply_admin_deny_${userId}`)
+        Markup.button.callback('✅ Одобрить → Собеседование', `apply_admin_accept_${actualUserId}`),
+        Markup.button.callback('❌ Отклонить', `apply_admin_deny_${actualUserId}`)
       ]);
     } else if (application.status === 'interview') {
       keyboard.push([
-        Markup.button.callback('🔥 Финальное одобрение', `admin_final_approve_${userId}`),
-        Markup.button.callback('💀 Финальное отклонение', `admin_final_deny_${userId}`)
+        Markup.button.callback('🔥 Финальное одобрение', `admin_final_approve_${actualUserId}`),
+        Markup.button.callback('💀 Финальное отклонение', `admin_final_deny_${actualUserId}`)
       ]);
     } else if (application.status === 'approved') {
       keyboard.push([
