@@ -65,6 +65,10 @@ async function hasAchievement(userId, achievementType) {
   return !!row;
 }
 
+async function hasYearsOfService(userId) {
+  return await hasAchievement(userId, YEARS_OF_SERVICE);
+}
+
 function getAchievementMultiplier(achievementType) {
   const def = achievementsConfig[achievementType];
   if (!def) return 1.0;
@@ -75,6 +79,7 @@ module.exports = {
   grantAchievement,
   revokeAchievement,
   hasAchievement,
+  hasYearsOfService,
   getAchievementMultiplier,
   YEARS_OF_SERVICE
 };
