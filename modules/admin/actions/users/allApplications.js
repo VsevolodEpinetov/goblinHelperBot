@@ -530,6 +530,9 @@ const userManagementHandler = Composer.action(/^admin_manage_user_(\d+)$/g, asyn
     } else if (processedUser.roles.includes('rejected')) {
       statusEmoji = '❌';
       statusText = 'Отклонен';
+    } else if (processedUser.roles.includes('selfbanned')) {
+      statusEmoji = '🚫';
+      statusText = 'Самоисключен';
     } else if (processedUser.roles.some(role => ['goblin', 'admin', 'adminPlus', 'super'].includes(role))) {
       statusEmoji = '🎉';
       const top = getHighestRole(processedUser.roles);
@@ -584,6 +587,18 @@ const userManagementHandler = Composer.action(/^admin_manage_user_(\d+)$/g, asyn
       keyboard.push([
         Markup.button.callback('✅ Одобрить', `admin_approve_user_${userId}`),
         Markup.button.callback('⭐ Супер одобрить', `admin_super_approve_user_${userId}`)
+      ]);
+    } else if (processedUser.roles.includes('selfbanned')) {
+      // Self-banned user - can approve or super approve
+      keyboard.push([
+        Markup.button.callback('✅ Одобрить', `admin_approve_user_${userId}`),
+        Markup.button.callback('⭐ Супер одобрить', `admin_super_approve_user_${userId}`)
+      ]);
+      keyboard.push([
+        Markup.button.callback('👤 Роли', `admin_change_roles_${userId}`)
+      ]);
+      keyboard.push([
+        Markup.button.callback('🚫 Забанить', `admin_ban_user_${userId}`)
       ]);
     } else if (processedUser.roles.some(role => ['goblin', 'admin', 'adminPlus', 'super'].includes(role))) {
       // Approved user menu
