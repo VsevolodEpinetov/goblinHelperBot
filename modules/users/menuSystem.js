@@ -32,7 +32,7 @@ async function getUserMenu(ctx, userData) {
     return getSuperUserMenu(ctx, userData);
   }
   
-  // Admin-based menu for admins (admin, adminPlus, adminPolls, protector)
+  // Admin-based menu for admins (admin, adminPlus, adminPolls)
   if (roles.includes('admin') || roles.includes('adminPlus') || roles.includes('adminPolls')) {
     const keyboard = [];
     let message = '⚙️ <b>Панель старейшин</b>\n\nВыберите действие:';
@@ -52,7 +52,7 @@ async function getUserMenu(ctx, userData) {
     return { message, keyboard };
   }
 
-  if (roles.includes('goblin')) {
+  if (roles.includes('goblin') || roles.includes('protector')) {
     return await getApprovedUserMenu(ctx, userData);
   }
   

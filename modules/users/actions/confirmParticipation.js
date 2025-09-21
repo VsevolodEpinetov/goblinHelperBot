@@ -34,7 +34,7 @@ module.exports = Composer.action('confirmParticipation', async (ctx) => {
         `📅 <b>Дата:</b> ${new Date().toLocaleString('ru-RU')}\n\n` +
         t('applyFlow.confirm.statusPending');
       
-      await ctx.telegram.sendMessage(SETTINGS.CHATS.LOGS, notificationMessage, {
+      await ctx.telegram.sendMessage(process.env.REQUESTS_GROUP_ID, notificationMessage, {
         parse_mode: 'HTML',
         ...Markup.inlineKeyboard([
           [
@@ -50,7 +50,7 @@ module.exports = Composer.action('confirmParticipation', async (ctx) => {
         ])
       });
     } catch (error) {
-      console.error('Failed to send notification to logs group:', error);
+      console.error('Failed to send notification to requests group:', error);
     }
     
     // Show success message without buttons

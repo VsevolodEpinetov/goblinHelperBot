@@ -8,6 +8,7 @@ const { getUserSubscriptionStatus, getSubscriptionStatusMessage } = require('../
 async function getMainUserMenu(ctx, userData) {
   const roles = userData.roles || [];
   const isAdmin = roles.includes('admin') || roles.includes('adminPlus');
+  const isProtector = roles.includes('protector');
   
   // Get subscription status with error handling
   let subscriptionStatus;
@@ -99,6 +100,14 @@ async function getMainUserMenu(ctx, userData) {
   if (isAdmin) {
     keyboard.push([
       Markup.button.callback('⚙️ Панель старейшин', 'adminMenu')
+    ]);
+  }
+  
+  // Protector actions (request management)
+  if (isProtector) {
+    keyboard.push([
+      Markup.button.callback('📋 Заявки на вступление', 'adminPendingApplications'),
+      Markup.button.callback('🔍 Поиск заявки', 'searchRequest')
     ]);
   }
   
