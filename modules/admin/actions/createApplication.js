@@ -39,13 +39,15 @@ module.exports = Composer.action(/^create_application_\d+$/g, async (ctx) => {
       return;
     }
 
-    // Create application
+    // Create application with invitation code
+    const invitationCode = `гоблин-${userId.toString().slice(-4)}`;
     await knex('applications').insert({
       userId: Number(userId),
       username: user.username || null,
       firstName: user.firstName || null,
       lastName: user.lastName || null,
       status: 'pending',
+      invitationCode: invitationCode,
       createdAt: new Date(),
       updatedAt: new Date()
     });
@@ -63,7 +65,8 @@ module.exports = Composer.action(/^create_application_\d+$/g, async (ctx) => {
 
     // Log the application creation
     await ctx.telegram.sendMessage(process.env.REQUESTS_GROUP_ID, 
-      `📋 Заявка создана для пользователя ${user.firstName || 'Unknown'} (ID: ${userId})`, 
+      `📋 Заявка создана для пользователя ${user.firstName || 'Unknown'} (ID: ${userId})\n` +
+      `🔑 Код: <code>${invitationCode}</code>`, 
       { parse_mode: 'HTML' }
     );
 

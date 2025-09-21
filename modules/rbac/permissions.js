@@ -212,6 +212,16 @@ const PERMISSIONS = {
     'admin:payments:remind': true,
     'admin:payments:refund': true,
     
+    // Request management
+    'admin:requests:view': true,
+    'admin:requests:approve': true,
+    'admin:requests:deny': true,
+    'admin:requests:manage': true,
+    'admin:applications:view': true,
+    'admin:applications:approve': true,
+    'admin:applications:deny': true,
+    'admin:applications:manage': true,
+    
     // Polls management
     'admin:polls:*': true,
     

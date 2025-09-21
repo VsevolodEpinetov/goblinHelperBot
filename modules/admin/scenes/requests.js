@@ -54,15 +54,15 @@ requestsScene.on('text', async (ctx) => {
   const userId = codeMatch[1];
   
   try {
-    // Look up user by ID
-    const user = await knex('users')
-      .where('id', Number(userId))
+    // Look up application by user ID only
+    const application = await knex('applications')
+      .where('userId', Number(userId))
       .first();
 
-    if (!user) {
+    if (!application) {
       await ctx.replyWithHTML(
-        '❌ <b>Пользователь не найден</b>\n\n' +
-        'Проверьте правильность введенного кода.',
+        '❌ <b>Заявка не найдена</b>\n\n' +
+        'Проверьте правильность введенного кода. Поиск работает только по заявкам.',
         {
           parse_mode: 'HTML',
           ...Markup.inlineKeyboard([
@@ -73,17 +73,17 @@ requestsScene.on('text', async (ctx) => {
       return;
     }
 
+    // Get user info
+    const user = await knex('users')
+      .where('id', Number(userId))
+      .first();
+
     // Get user roles
     const userRoles = await knex('userRoles')
       .where('userId', Number(userId))
       .select('role');
 
     const roles = userRoles.map(r => r.role);
-
-    // Get application status if exists
-    const application = await knex('applications')
-      .where('userId', Number(userId))
-      .first();
 
     // Format user info
     const firstName = user.firstName || 'Не указано';
@@ -92,23 +92,21 @@ requestsScene.on('text', async (ctx) => {
     const fullName = `${firstName} ${lastName}`.trim();
     
     let statusText = 'Новый пользователь';
-    if (application) {
-      switch (application.status) {
-        case 'pending':
-          statusText = '⏳ Ожидает рассмотрения';
-          break;
-        case 'interview':
-          statusText = '⚖️ Проходит собеседование';
-          break;
-        case 'approved':
-          statusText = '✅ Одобрено';
-          break;
-        case 'rejected':
-          statusText = '❌ Отклонено';
-          break;
-        default:
-          statusText = `📋 ${application.status}`;
-      }
+    switch (application.status) {
+      case 'pending':
+        statusText = '⏳ Ожидает рассмотрения';
+        break;
+      case 'interview':
+        statusText = '⚖️ Проходит собеседование';
+        break;
+      case 'approved':
+        statusText = '✅ Одобрено';
+        break;
+      case 'rejected':
+        statusText = '❌ Отклонено';
+        break;
+      default:
+        statusText = `📋 ${application.status}`;
     }
 
     // Check if user has any roles
@@ -116,37 +114,38 @@ requestsScene.on('text', async (ctx) => {
       statusText += `\nРоли: ${roles.join(', ')}`;
     }
 
-    const message = `👤 <b>Информация о пользователе</b>\n\n` +
+    const message = `👤 <b>Информация о заявке</b>\n\n` +
       `🆔 <b>ID:</b> ${user.id}\n` +
       `👤 <b>Имя:</b> ${fullName}\n` +
       `📱 <b>Username:</b> ${username}\n` +
       `📅 <b>Дата регистрации:</b> ${new Date(user.createdAt || Date.now()).toLocaleDateString('ru-RU')}\n` +
-      `📊 <b>Статус:</b> ${statusText}`;
+      `📊 <b>Статус заявки:</b> ${statusText}\n` +
+      `🔑 <b>Код:</b> <code>гоблин-${userId.toString().slice(-4)}</code>`;
 
     // Create action buttons based on current status
     const keyboard = [];
     
-    if (application && application.status === 'pending') {
+    if (application.status === 'pending') {
       keyboard.push([
         Markup.button.callback('✅ Одобрить → Собеседование', `apply_admin_accept_${userId}`),
         Markup.button.callback('❌ Отклонить', `apply_admin_deny_${userId}`)
       ]);
-    } else if (application && application.status === 'interview') {
+    } else if (application.status === 'interview') {
       keyboard.push([
         Markup.button.callback('🔥 Финальное одобрение', `admin_final_approve_${userId}`),
         Markup.button.callback('💀 Финальное отклонение', `admin_final_deny_${userId}`)
       ]);
-    } else if (application && application.status === 'approved') {
+    } else if (application.status === 'approved') {
       keyboard.push([
         Markup.button.callback('✅ Заявка уже одобрена', 'noop')
       ]);
-    } else if (application && application.status === 'rejected') {
+    } else if (application.status === 'rejected') {
       keyboard.push([
         Markup.button.callback('❌ Заявка уже отклонена', 'noop')
       ]);
     } else {
       keyboard.push([
-        Markup.button.callback('📋 Создать заявку', `create_application_${userId}`)
+        Markup.button.callback('📋 Неизвестный статус заявки', 'noop')
       ]);
     }
 
