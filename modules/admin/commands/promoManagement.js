@@ -3,6 +3,7 @@ const knex = require('../../db/knex');
 const SETTINGS = require('../../../settings.json');
 const { logDenied } = require('../../util/logger');
 const promoService = require('../../promo/promoService');
+const promoUploadScene = require('../scenes/promoUpload');
 
 console.log('📁 promoManagement.js loaded');
 
@@ -38,11 +39,13 @@ const promoCommands = Composer.compose([
     
     message += `\n💡 <b>Команды:</b>\n`;
     message += `• <code>/promo</code> - показать статистику\n`;
-    message += `• <code>/promo_add</code> - добавить документ (ответом на сообщение)\n`;
+    message += `• <code>/promo_upload</code> - загрузить несколько файлов (сцена)\n`;
+    message += `• <code>/promo_add</code> - добавить один документ (ответом на сообщение)\n`;
     message += `• <code>/promo_list</code> - показать все файлы\n`;
     message += `• <code>/promo_toggle &lt;id&gt;</code> - переключить статус файла\n`;
     message += `• <code>/promo_test</code> - протестировать случайный файл\n\n`;
-    message += `📄 <b>Поддерживаются только документы</b>`;
+    message += `📄 <b>Поддерживаются только документы</b>\n`;
+    message += `🚀 <b>Рекомендуется:</b> используйте /promo_upload для загрузки нескольких файлов`;
 
     await ctx.replyWithHTML(message);
 
@@ -50,6 +53,25 @@ const promoCommands = Composer.compose([
     console.error('❌ Error in promo command:', error);
     await ctx.reply(`❌ Ошибка получения статистики: ${error.message}`);
   }
+  }),
+
+  // Start promo upload scene
+  Composer.command('promo_upload', async (ctx) => {
+    console.log('🔍 promo_upload command triggered by:', ctx.from.id, ctx.from.username);
+    const userId = ctx.from.id.toString();
+    if (userId !== SETTINGS.CHATS.EPINETOV && userId !== SETTINGS.CHATS.GLAVGOBLIN) {
+      console.log('❌ Unauthorized user:', userId, 'Expected:', SETTINGS.CHATS.EPINETOV, 'or', SETTINGS.CHATS.GLAVGOBLIN);
+      logDenied(ctx.from.id, ctx.from.username, '/promo_upload', 'unauthorized');
+      return;
+    }
+    console.log('✅ User authorized, starting promo upload scene');
+
+    try {
+      await ctx.scene.enter('promoUpload');
+    } catch (error) {
+      console.error('❌ Error starting promo upload scene:', error);
+      await ctx.reply('❌ Ошибка запуска сцены загрузки. Попробуйте ещё раз.');
+    }
   }),
 
   // Add promo file command
@@ -81,7 +103,12 @@ const promoCommands = Composer.compose([
         fileSize: message.document.file_size
       });
     } else if (message.media_group_id) {
-      // Handle media group (album)
+      // Handle media group (album) - get all messages in the group
+      console.log('📁 Processing media group:', message.media_group_id);
+      
+      // For now, just process the current message
+      // In a real implementation, you'd need to query the database or use a different approach
+      // to get all messages in the media group
       await ctx.reply('❌ Медиа-группы (альбомы) не поддерживаются. Добавляй файлы по одному.');
       return;
     } else {
