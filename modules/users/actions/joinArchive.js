@@ -70,12 +70,11 @@ module.exports = Composer.action('joinArchive', async (ctx) => {
       keyboard = [
         [Markup.button.url('📦 Обычный архив', regularLinkResult.link)],
         [Markup.button.url('➕ Расширенный архив', plusLinkResult.link)],
-        [Markup.button.callback('⬅️ Назад', 'refreshUserStatus')],
-        [Markup.button.callback('-', 'dummy')],
-        [Markup.button.callback('-', 'dummy')],
         [Markup.button.callback('-', 'dummy')],
         [Markup.button.callback('🚨 Обычный не работает', `linkNotWorking_${userGroup.groupPeriod}_regular`)],
         [Markup.button.callback('🚨 Плюс не работает', `linkNotWorking_${userGroup.groupPeriod}_plus`)]
+        [Markup.button.callback('-', 'dummy')],
+        [Markup.button.callback('⬅️ Назад', 'refreshUserStatus')],
       ];
     } else {
       // User has only regular subscription
@@ -102,11 +101,10 @@ module.exports = Composer.action('joinArchive', async (ctx) => {
 
       keyboard = [
         [Markup.button.url('📚 Войти в архив', linkResult.link)],
-        [Markup.button.callback('⬅️ Назад', 'refreshUserStatus')],
-        [Markup.button.callback('-', 'dummy')],
-        [Markup.button.callback('-', 'dummy')],
         [Markup.button.callback('-', 'dummy')],
         [Markup.button.callback('🚨 Дверь не открылась', `linkNotWorking_${userGroup.groupPeriod}_${userGroup.groupType}`)]
+        [Markup.button.callback('-', 'dummy')],
+        [Markup.button.callback('⬅️ Назад', 'refreshUserStatus')],
       ];
     }
 
