@@ -23,6 +23,7 @@
     "form-data": "^4.0.0",
     "knex": "^3.1.0",
     "pg": "^8.13.1",
+    "redis": "^4.7.1",
     "telegraf": "^4.16.3",
     "telegraf-session-redis-upd": "^5.1.4",
     "telegraf-throttler": "^0.6.0",
