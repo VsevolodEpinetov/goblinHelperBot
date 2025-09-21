@@ -54,29 +54,43 @@ requestsScene.on('text', async (ctx) => {
   const userId = codeMatch[1];
   
   try {
-    // Look up application by user ID ending with the last 4 digits
-    const applications = await knex('applications')
+    // First try to look up application by user ID ending with the last 4 digits
+    let applications = await knex('applications')
       .whereRaw('CAST("userId" AS TEXT) LIKE ?', [`%${userId}`])
       .orderBy('createdAt', 'desc');
     
-    const application = applications[0]; // Get the most recent one
+    let application = applications[0]; // Get the most recent one
+    let actualUserId = null;
 
-    if (!application) {
-      await ctx.replyWithHTML(
-        '❌ <b>Заявка не найдена</b>\n\n' +
-        'Проверьте правильность введенного кода. Поиск работает только по заявкам.',
-        {
-          parse_mode: 'HTML',
-          ...Markup.inlineKeyboard([
-            [Markup.button.callback('🔙 Назад', 'adminMenu')]
-          ])
-        }
-      );
-      return;
+    if (application) {
+      // Found in applications table
+      actualUserId = application.userId;
+    } else {
+      // Not found in applications table, try to find user directly by ID ending
+      const users = await knex('users')
+        .whereRaw('CAST("id" AS TEXT) LIKE ?', [`%${userId}`])
+        .orderBy('id', 'desc');
+      
+      const foundUser = users[0]; // Get the most recent one
+      
+      if (!foundUser) {
+        await ctx.replyWithHTML(
+          '❌ <b>Заявка не найдена</b>\n\n' +
+          'Проверьте правильность введенного кода. Поиск работает только по заявкам.',
+          {
+            parse_mode: 'HTML',
+            ...Markup.inlineKeyboard([
+              [Markup.button.callback('🔙 Назад', 'adminMenu')]
+            ])
+          }
+        );
+        return;
+      }
+      
+      actualUserId = foundUser.id;
     }
 
-    // Get user info using the actual userId from the application
-    const actualUserId = application.userId;
+    // Get user info using the actual userId
     const user = await knex('users')
       .where('id', actualUserId)
       .first();
