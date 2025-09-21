@@ -68,6 +68,7 @@ bot.use(require('./modules/common'));
 
 bot.use(require('./modules/admin'));
 bot.use(require('./modules/users'));
+bot.use(require('./modules/promo'));
 
 bot.use(require('./modules/payments'));
 bot.use(require('./modules/raids'));

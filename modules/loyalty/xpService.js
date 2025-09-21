@@ -2,6 +2,7 @@ const knex = require('../db/knex');
 const rpgConfig = require('../../configs/rpg');
 const notifications = require('../../configs/notifications');
 const benefitsConfig = require('../../configs/benefits');
+const { getUser } = require('../db/helpers');
 
 // Constants per loyalty.md
 const BASE_REGULAR_UNITS = rpgConfig.baseUnits.regular;
@@ -11,6 +12,22 @@ const XP_A = rpgConfig.xp.A;
 const XP_B = rpgConfig.xp.B;
 
 const TIERS = rpgConfig.tiers;
+
+// Tier display information similar to achievements
+const TIER_DISPLAY_INFO = {
+  'wood': { name: '🪵 Wood', emoji: '🪵', description: 'Начальный уровень' },
+  'bronze': { name: '🥉 Bronze', emoji: '🥉', description: 'Базовое мастерство' },
+  'silver': { name: '🥈 Silver', emoji: '🥈', description: 'Растущая сила' },
+  'gold': { name: '🥇 Gold', emoji: '🥇', description: 'Элитный статус' },
+  'platinum': { name: '💎 Platinum', emoji: '💎', description: 'Премиум уровень' },
+  'diamond': { name: '💠 Diamond', emoji: '💠', description: 'Легендарный статус' },
+  'mithril': { name: '⚔️ Mithril', emoji: '⚔️', description: 'Мастерский уровень' },
+  'legend': { name: '👑 Legend', emoji: '👑', description: 'Верховное мастерство' }
+};
+
+function getTierDisplayInfo(tier) {
+  return TIER_DISPLAY_INFO[tier] || TIER_DISPLAY_INFO.wood;
+}
 
 function computeXpFromSpending(totalUnits) {
   if (!totalUnits || totalUnits <= 0) return 0;
@@ -80,13 +97,35 @@ async function applyXpGain(userId, deltaUnits, source, metadata = {}) {
     }
   });
 
-  // Notify RPG topic on level up
-  try {
-    const topicId = notifications.rpgTopicId;
-    if (topicId && (level !== row.current_level || tier !== row.current_tier)) {
-      await globalThis.__bot?.telegram.sendMessage(topicId, `⬆️ Пользователь ${userId} повысил уровень: ${tier.toUpperCase()} ${level}`);
+  // Send RPG level up notification to main group with RPG topic
+  if (level !== row.current_level || tier !== row.current_tier) {
+    try {
+      // Get user data for notification
+      const userData = await getUser(Number(userId));
+      if (userData && notifications.rpgTopicId && notifications.mainGroupId) {
+        // Create tagged message for RPG topic
+        const username = userData.username ? `@${userData.username}` : userData.first_name || `ID: ${userId}`;
+        const tierInfo = getTierDisplayInfo(tier);
+        const rpgMessage = 
+          `⬆️ <b>Новый уровень!</b>\n\n` +
+          `${username} достиг нового уровня:\n\n` +
+          `🎖️ <b>${tierInfo.name} ${level}</b>\n` +
+          `${tierInfo.description}\n\n` +
+          `🕯 Главгоблин гордится твоими успехами!`;
+        
+        await globalThis.__bot?.telegram.sendMessage(
+          notifications.mainGroupId,
+          rpgMessage, 
+          { 
+            parse_mode: 'HTML',
+            message_thread_id: notifications.rpgTopicId
+          }
+        );
+      }
+    } catch (error) {
+      console.error('Failed to send RPG level up notification:', error);
     }
-  } catch {}
+  }
 
   return { deltaXp, newTotalXp, tier, level };
 }
@@ -128,6 +167,36 @@ module.exports = {
         });
       }
     });
+
+    // Send RPG level up notification to main group with RPG topic
+    if (level !== row.current_level || tier !== row.current_tier) {
+      try {
+        // Get user data for notification
+        const userData = await getUser(Number(userId));
+        if (userData && notifications.rpgTopicId && notifications.mainGroupId) {
+          // Create tagged message for RPG topic
+          const username = userData.username ? `@${userData.username}` : userData.first_name || `ID: ${userId}`;
+          const tierInfo = getTierDisplayInfo(tier);
+          const rpgMessage = 
+            `⬆️ <b>Новый уровень!</b>\n\n` +
+            `${username} достиг нового уровня:\n\n` +
+            `🎖️ <b>${tierInfo.name} ${level}</b>\n` +
+            `${tierInfo.description}\n\n` +
+            `🕯 Главгоблин гордится твоими успехами!`;
+          
+          await globalThis.__bot?.telegram.sendMessage(
+            notifications.mainGroupId,
+            rpgMessage, 
+            { 
+              parse_mode: 'HTML',
+              message_thread_id: notifications.rpgTopicId
+            }
+          );
+        }
+      } catch (error) {
+        console.error('Failed to send RPG level up notification:', error);
+      }
+    }
 
     return { deltaXp: Number(deltaXp), newTotalXp, tier, level };
   },

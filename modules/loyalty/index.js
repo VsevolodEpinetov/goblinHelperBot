@@ -6,6 +6,8 @@
 
 const knex = require('../db/knex');
 const rpgConfig = require('../../configs/rpg');
+const notifications = require('../../configs/notifications');
+const { getUser } = require('../db/helpers');
 
 // Use RPG tiers as the level system
 const TIERS = rpgConfig.tiers;
@@ -53,10 +55,42 @@ async function setUserLevel(userId, level) {
       return { success: false, message: 'Invalid tier' };
     }
     
+    // Get current level to check if it's a level up
+    const currentLoyalty = await knex('userLoyalty').where('userId', userId).first();
+    const isLevelUp = !currentLoyalty || currentLoyalty.level !== level;
+    
     await knex('userLoyalty')
       .insert({ userId, level })
       .onConflict('userId')
       .merge({ level, updatedAt: knex.fn.now() });
+    
+    // Send RPG level notification if this is a level up
+    if (isLevelUp) {
+      try {
+        const userData = await getUser(Number(userId));
+        if (userData && notifications.rpgTopicId && notifications.mainGroupId) {
+          const username = userData.username ? `@${userData.username}` : userData.first_name || `ID: ${userId}`;
+          const tierInfo = TIER_INFO[level];
+          const rpgMessage = 
+            `⬆️ <b>Новый уровень!</b>\n\n` +
+            `${username} достиг нового уровня:\n\n` +
+            `🎖️ <b>${tierInfo.name}</b>\n` +
+            `${tierInfo.description}\n\n` +
+            `🕯 Главгоблин гордится твоими успехами!`;
+          
+          await globalThis.__bot?.telegram.sendMessage(
+            notifications.mainGroupId,
+            rpgMessage, 
+            { 
+              parse_mode: 'HTML',
+              message_thread_id: notifications.rpgTopicId
+            }
+          );
+        }
+      } catch (error) {
+        console.error('Failed to send RPG level up notification:', error);
+      }
+    }
     
     return { success: true, level };
   } catch (error) {
