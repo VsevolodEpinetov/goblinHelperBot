@@ -12,10 +12,16 @@ module.exports = Composer.action('confirmGroupJoin', async (ctx) => {
     
     if (!markResult.success) {
       console.error('Failed to mark invitation as used:', markResult.error);
+      await ctx.reply('❌ Произошла ошибка. Попробуйте позже.');
+      return;
     }
     
-    // No message editing needed - user manually confirmed they joined
+    // Send confirmation message
+    await ctx.reply('🍻 <b>Добро пожаловать, гоблин!</b>\n\nТеперь ты один из нас. В будущем используй /start для доступа к меню.', {
+      parse_mode: 'HTML'
+    });
   } catch (error) {
     console.error('Error in confirmGroupJoin:', error);
+    await ctx.reply('❌ Произошла ошибка. Попробуйте позже.');
   }
 });
