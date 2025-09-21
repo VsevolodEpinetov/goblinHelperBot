@@ -139,7 +139,7 @@ requestsScene.on('text', async (ctx) => {
     
     if (!roles || roles.length === 0 || roles.includes('pending')) {
       keyboard.push([
-        Markup.button.callback('✅ Одобрить → Собеседование', `apply_protector_allow_${actualUserId}`),
+        Markup.button.callback('✅ Одобрить', `apply_protector_allow_${actualUserId}`),
         Markup.button.callback('❌ Отклонить', `apply_protector_deny_${actualUserId}`)
       ]);
     } else if (roles.includes('preapproved')) {
