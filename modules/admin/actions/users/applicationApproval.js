@@ -8,15 +8,6 @@ const SETTINGS = require('../../../../settings.json');
 // Create a composer that combines all application approval actions
 const applicationApprovalComposer = new Composer();
 
-console.log('🔥 Application approval composer created');
-
-// Add a simple test action to see if ANY action works
-applicationApprovalComposer.action('test_simple_action', async (ctx) => {
-  console.log('🔥 SIMPLE TEST ACTION WORKED!');
-  await ctx.answerCbQuery('Test works!');
-});
-
-
 // Handle Accept application (first step - interview approval)
 applicationApprovalComposer.action(/^apply_protector_allow_\d+$/, async (ctx) => {
   const userId = ctx.callbackQuery.data.split('_').pop();
@@ -30,43 +21,42 @@ applicationApprovalComposer.action(/^apply_protector_allow_\d+$/, async (ctx) =>
   }
   
   try {
-    // Update application status to interview
+    // Update application status to approved
     await knex('applications')
       .where({ userId: Number(userId) })
-      .update({ status: 'interview', updatedAt: knex.fn.now() });
+      .update({ status: 'approved', updatedAt: knex.fn.now() });
 
-    // Replace user roles with preapproved role
+    // Replace user roles with goblin role
     const targetUserData = await getUser(userId);
     if (targetUserData) {
-      targetUserData.roles = ['preapproved']; // Replace all roles with just preapproved
+      targetUserData.roles = ['goblin']; // Replace all roles with just goblin
       await updateUser(userId, targetUserData);
     }
 
-    // Send message to user about interview
+    // Send message to user about goblin role assignment
     await ctx.telegram.sendMessage(Number(userId), 
       '⚖️ <b>Старейшины кивнули!</b>\n\n' +
-      'Ты допущен к собеседованию.\n\n' +
-      'Напиши сюда 👉 @lalaal (человек из совета),\n' +
-      'и обговори все условия.', 
+      'Ты принят в логово гоблинов!\n\n' +
+      'Добро пожаловать, новый гоблин! 🎉', 
       { parse_mode: 'HTML' }
     );
 
-    // Update admin message to show interview approved
+    // Update admin message to show application approved
     try {
       await ctx.editMessageReplyMarkup({ 
-        inline_keyboard: [[{ text: '✅ Interview Approved', callback_data: 'deleteThisMessage' }]] 
+        inline_keyboard: [[{ text: '✅ Goblin Approved', callback_data: 'deleteThisMessage' }]] 
       });
     } catch {}
 
-    // Log the interview approval
+    // Log the goblin approval
     await ctx.telegram.sendMessage(SETTINGS.CHATS.LOGS, 
-      `⚖️ Interview approved for user ${userId}`, 
+      `⚖️ Goblin approved for user ${userId}`, 
       { parse_mode: 'HTML' }
     );
 
   } catch (error) {
-    console.error('Error in interview approval:', error);
-    await ctx.replyWithHTML('❌ Error approving interview');
+    console.error('Error in goblin approval:', error);
+    await ctx.replyWithHTML('❌ Error approving goblin');
   }
 });
 
@@ -76,14 +66,10 @@ applicationApprovalComposer.action(/^apply_protector_deny_\d+$/, async (ctx) => 
   
   // Check permissions
   const userData = await getUser(ctx.callbackQuery.from.id);
-  console.log('🔥 User data:', userData);
-  console.log('🔥 User roles:', userData?.roles);
   if (!userData || !hasPermission(userData.roles, 'admin:applications:deny')) {
-    console.log('🔥 Permission denied');
     await ctx.reply('❌ У вас нет прав для отклонения заявок');
     return;
   }
-  console.log('🔥 Permission granted, proceeding with denial');
   
   try {
     // Get application data first
