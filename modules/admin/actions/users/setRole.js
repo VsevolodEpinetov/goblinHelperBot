@@ -7,8 +7,11 @@ const { notion, databaseId, safeUpdatePage } = require('../../../../modules/inte
 const SETTINGS = require('../../../../settings.json');
 const { getUser, updateUser } = require('../../../db/helpers');
 
+// Create a composer that combines all role actions
+const setRoleComposer = new Composer();
+
 // Обработчики ролей
-module.exports = Composer.action(/^setRole_[a-zA-Z]+_[0-9]+/g, async (ctx) => {
+setRoleComposer.action(/^setRole_[a-zA-Z]+_[0-9]+/, async (ctx) => {
   const userId = ctx.callbackQuery.data.split('_')[2];
   const roleName = ctx.callbackQuery.data.split('_')[1];
 
@@ -71,7 +74,7 @@ module.exports = Composer.action(/^setRole_[a-zA-Z]+_[0-9]+/g, async (ctx) => {
 });
 
 // Admin two-step approval flow
-module.exports = Composer.action(/^apply_admin_firstapprove_\d+$/g, async (ctx) => {
+setRoleComposer.action(/^apply_admin_firstapprove_\d+$/, async (ctx) => {
   const userId = ctx.callbackQuery.data.split('_').pop();
   try { await ctx.answerCbQuery(); } catch {}
   await ctx.telegram.sendMessage(Number(userId), t('apply.firstApproved', { councilContact: '@username' }));
@@ -80,7 +83,7 @@ module.exports = Composer.action(/^apply_admin_firstapprove_\d+$/g, async (ctx) 
   } catch {}
 });
 
-module.exports = Composer.action(/^apply_admin_firstdeny_\d+$/g, async (ctx) => {
+setRoleComposer.action(/^apply_admin_firstdeny_\d+$/, async (ctx) => {
   const userId = ctx.callbackQuery.data.split('_').pop();
   try { await ctx.answerCbQuery(); } catch {}
   await ctx.telegram.sendMessage(Number(userId), t('apply.finalDenied'));
@@ -90,7 +93,7 @@ module.exports = Composer.action(/^apply_admin_firstdeny_\d+$/g, async (ctx) => 
   } catch {}
 });
 
-module.exports = Composer.action(/^apply_admin_finalapprove_\d+$/g, async (ctx) => {
+setRoleComposer.action(/^apply_admin_finalapprove_\d+$/, async (ctx) => {
   const userId = ctx.callbackQuery.data.split('_').pop();
   try { await ctx.answerCbQuery(); } catch {}
   await ctx.telegram.sendMessage(Number(userId), t('apply.finalApproved'), {
@@ -107,7 +110,7 @@ module.exports = Composer.action(/^apply_admin_finalapprove_\d+$/g, async (ctx) 
   } catch {}
 });
 
-module.exports = Composer.action(/^apply_admin_finaldeny_\d+$/g, async (ctx) => {
+setRoleComposer.action(/^apply_admin_finaldeny_\d+$/, async (ctx) => {
   const userId = ctx.callbackQuery.data.split('_').pop();
   try { await ctx.answerCbQuery(); } catch {}
   await ctx.telegram.sendMessage(Number(userId), t('apply.finalDenied'));
@@ -116,3 +119,6 @@ module.exports = Composer.action(/^apply_admin_finaldeny_\d+$/g, async (ctx) => 
     await knex('userRoles').insert({ userId: Number(userId), role: 'banned' }).onConflict(['userId','role']).ignore();
   } catch {}
 });
+
+// Export the combined composer
+module.exports = setRoleComposer;
