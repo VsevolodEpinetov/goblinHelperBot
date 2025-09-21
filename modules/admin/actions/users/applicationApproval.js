@@ -278,11 +278,7 @@ applicationApprovalComposer.action(/^admin_final_deny_\d+$/, async (ctx) => {
   }
 });
 
-// Catch-all action to see if any action is being handled (at the end)
-applicationApprovalComposer.action(/.*/, async (ctx) => {
-  console.log('🔥 CATCH-ALL ACTION TRIGGERED!', ctx.callbackQuery.data);
-  await ctx.answerCbQuery('Catch-all triggered!');
-});
+// Catch-all action removed - it was intercepting specific action handlers
 
 // Export the combined composer
 module.exports = applicationApprovalComposer;
