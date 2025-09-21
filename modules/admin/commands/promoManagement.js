@@ -4,7 +4,10 @@ const SETTINGS = require('../../../settings.json');
 const { logDenied } = require('../../util/logger');
 const promoService = require('../../promo/promoService');
 
-module.exports = Composer.command('promo', async (ctx) => {
+console.log('📁 promoManagement.js loaded');
+
+const promoCommands = Composer.compose([
+  Composer.command('promo', async (ctx) => {
   // Simple authorization check
   const userId = ctx.from.id.toString();
   if (userId !== SETTINGS.CHATS.EPINETOV && userId !== SETTINGS.CHATS.GLAVGOBLIN) {
@@ -47,15 +50,18 @@ module.exports = Composer.command('promo', async (ctx) => {
     console.error('❌ Error in promo command:', error);
     await ctx.reply(`❌ Ошибка получения статистики: ${error.message}`);
   }
-});
+  }),
 
-// Add promo file command
-Composer.command('promo_add', async (ctx) => {
+  // Add promo file command
+  Composer.command('promo_add', async (ctx) => {
+  console.log('🔍 promo_add command triggered by:', ctx.from.id, ctx.from.username);
   const userId = ctx.from.id.toString();
   if (userId !== SETTINGS.CHATS.EPINETOV && userId !== SETTINGS.CHATS.GLAVGOBLIN) {
+    console.log('❌ Unauthorized user:', userId, 'Expected:', SETTINGS.CHATS.EPINETOV, 'or', SETTINGS.CHATS.GLAVGOBLIN);
     logDenied(ctx.from.id, ctx.from.username, '/promo_add', 'unauthorized');
     return;
   }
+  console.log('✅ User authorized, proceeding with promo_add');
 
   try {
     if (!ctx.message.reply_to_message) {
@@ -129,10 +135,10 @@ Composer.command('promo_add', async (ctx) => {
     console.error('❌ Error in promo_add command:', error);
     await ctx.reply(`❌ Ошибка добавления файлов: ${error.message}`);
   }
-});
+  }),
 
-// List all promo files command
-Composer.command('promo_list', async (ctx) => {
+  // List all promo files command
+  Composer.command('promo_list', async (ctx) => {
   const userId = ctx.from.id.toString();
   if (userId !== SETTINGS.CHATS.EPINETOV && userId !== SETTINGS.CHATS.GLAVGOBLIN) {
     logDenied(ctx.from.id, ctx.from.username, '/promo_list', 'unauthorized');
@@ -173,10 +179,10 @@ Composer.command('promo_list', async (ctx) => {
     console.error('❌ Error in promo_list command:', error);
     await ctx.reply(`❌ Ошибка получения списка: ${error.message}`);
   }
-});
+  }),
 
-// Toggle promo file status command
-Composer.command('promo_toggle', async (ctx) => {
+  // Toggle promo file status command
+  Composer.command('promo_toggle', async (ctx) => {
   const userId = ctx.from.id.toString();
   if (userId !== SETTINGS.CHATS.EPINETOV && userId !== SETTINGS.CHATS.GLAVGOBLIN) {
     logDenied(ctx.from.id, ctx.from.username, '/promo_toggle', 'unauthorized');
@@ -217,10 +223,10 @@ Composer.command('promo_toggle', async (ctx) => {
     console.error('❌ Error in promo_toggle command:', error);
     await ctx.reply(`❌ Ошибка изменения статуса: ${error.message}`);
   }
-});
+  }),
 
-// Test random promo file command
-Composer.command('promo_test', async (ctx) => {
+  // Test random promo file command
+  Composer.command('promo_test', async (ctx) => {
   const userId = ctx.from.id.toString();
   if (userId !== SETTINGS.CHATS.EPINETOV && userId !== SETTINGS.CHATS.GLAVGOBLIN) {
     logDenied(ctx.from.id, ctx.from.username, '/promo_test', 'unauthorized');
@@ -245,4 +251,7 @@ Composer.command('promo_test', async (ctx) => {
     console.error('❌ Error in promo_test command:', error);
     await ctx.reply(`❌ Ошибка тестирования: ${error.message}`);
   }
-});
+  })
+]);
+
+module.exports = promoCommands;
