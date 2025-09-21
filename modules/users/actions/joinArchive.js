@@ -70,8 +70,12 @@ module.exports = Composer.action('joinArchive', async (ctx) => {
       keyboard = [
         [Markup.button.url('📦 Обычный архив', regularLinkResult.link)],
         [Markup.button.url('➕ Расширенный архив', plusLinkResult.link)],
-        [Markup.button.callback('🚨 Дверь не открылась', 'linkNotWorking')],
-        [Markup.button.callback('⬅️ Назад', 'refreshUserStatus')]
+        [Markup.button.callback('⬅️ Назад', 'refreshUserStatus')],
+        [Markup.button.callback('-', 'dummy')],
+        [Markup.button.callback('-', 'dummy')],
+        [Markup.button.callback('-', 'dummy')],
+        [Markup.button.callback('🚨 Обычный не работает', `linkNotWorking_${userGroup.groupPeriod}_regular`)],
+        [Markup.button.callback('🚨 Плюс не работает', `linkNotWorking_${userGroup.groupPeriod}_plus`)]
       ];
     } else {
       // User has only regular subscription
@@ -85,7 +89,7 @@ module.exports = Composer.action('joinArchive', async (ctx) => {
       }
 
       // Compose message for regular user
-      const groupTypeText = userGroup.groupType === 'plus' ? 'Расширенный сундук' : 'Обычный сундук';
+      const groupTypeText = userGroup.groupType === 'plus' ? 'Расширенный архив' : 'Обычный архив';
       messageText =
         `📚 <b>Архив месяца</b>\n\n` +
         `✅ Доступ открыт.\n\n` +
@@ -98,8 +102,11 @@ module.exports = Composer.action('joinArchive', async (ctx) => {
 
       keyboard = [
         [Markup.button.url('📚 Войти в архив', linkResult.link)],
-        [Markup.button.callback('🚨 Дверь не открылась', 'linkNotWorking')],
-        [Markup.button.callback('⬅️ Назад', 'refreshUserStatus')]
+        [Markup.button.callback('⬅️ Назад', 'refreshUserStatus')],
+        [Markup.button.callback('-', 'dummy')],
+        [Markup.button.callback('-', 'dummy')],
+        [Markup.button.callback('-', 'dummy')],
+        [Markup.button.callback('🚨 Дверь не открылась', `linkNotWorking_${userGroup.groupPeriod}_${userGroup.groupType}`)]
       ];
     }
 

@@ -72,9 +72,12 @@ mod.action(/^oldMonths_month_(\d{4}_\d{2})$/, async (ctx) => {
   message += `🕯 Слова Главгоблина: знания — за звёзды, уважение — за послушание.`;
 
   const buttons = [];
-  if (ownsRegular) buttons.push(Markup.button.callback('🔗 Войти (Обычный)', `oldMonths_join_${period}_regular`));
   if (ownsPlus) {
+    // User has plus subscription - show both buttons
     buttons.push(Markup.button.callback('🔗 Войти (Расширенный)', `oldMonths_join_${period}_plus`));
+    buttons.push(Markup.button.callback('🔗 Войти (Обычный)', `oldMonths_join_${period}_regular`));
+  } else if (ownsRegular) {
+    // User has only regular subscription - show only regular button
     buttons.push(Markup.button.callback('🔗 Войти (Обычный)', `oldMonths_join_${period}_regular`));
   }
   if (!ownsRegular && !ownsPlus) {
