@@ -171,6 +171,24 @@ async function getPollsAdminUsers() {
 }
 
 /**
+ * Get users with protector permissions
+ * @returns {Promise<number[]>} - Array of protector user IDs
+ */
+async function getProtectorUsers() {
+  try {
+    const protectorRoles = ['protector', 'admin', 'adminPlus', 'super'];
+    const users = await knex('userRoles')
+      .whereIn('role', protectorRoles)
+      .select('userId');
+    
+    return users.map(u => u.userId);
+  } catch (error) {
+    console.error('Error getting protector users:', error);
+    return [];
+  }
+}
+
+/**
  * Promote a user to admin role
  * @param {number} userId - User ID to promote
  * @param {string} adminType - Type of admin ('admin', 'adminPlus', 'super')
@@ -241,6 +259,11 @@ function getRoleHierarchy() {
       description: 'Polls administrator',
       inherits: ['user']
     },
+    protector: {
+      level: 3,
+      description: 'Protector - can manage requests and applications',
+      inherits: ['user']
+    },
     admin: {
       level: 4,
       description: 'Regular administrator',
@@ -268,6 +291,7 @@ module.exports = {
   getUsersWithRole,
   getAdminUsers,
   getPollsAdminUsers,
+  getProtectorUsers,
   promoteToAdmin,
   demoteAdmin,
   getRoleHierarchy

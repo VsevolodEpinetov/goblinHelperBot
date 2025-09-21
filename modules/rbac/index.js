@@ -35,6 +35,7 @@ module.exports = {
   getUsersWithRole: roleManager.getUsersWithRole,
   getAdminUsers: roleManager.getAdminUsers,
   getPollsAdminUsers: roleManager.getPollsAdminUsers,
+  getProtectorUsers: roleManager.getProtectorUsers,
   promoteToAdmin: roleManager.promoteToAdmin,
   demoteAdmin: roleManager.demoteAdmin,
   getRoleHierarchy: roleManager.getRoleHierarchy

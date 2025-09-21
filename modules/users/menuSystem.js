@@ -32,7 +32,7 @@ async function getUserMenu(ctx, userData) {
     return getSuperUserMenu(ctx, userData);
   }
   
-  // Admin-based menu for admins (admin, adminPlus, adminPolls)
+  // Admin-based menu for admins (admin, adminPlus, adminPolls, protector)
   if (roles.includes('admin') || roles.includes('adminPlus') || roles.includes('adminPolls')) {
     const keyboard = [];
     let message = '⚙️ <b>Панель старейшин</b>\n\nВыберите действие:';
@@ -43,6 +43,10 @@ async function getUserMenu(ctx, userData) {
     }
     if (roles.includes('adminPolls') || roles.includes('polls')) {
       keyboard.push([Markup.button.callback('🗳️ Голосования', 'adminPolls')]);
+    }
+    if (roles.includes('protector') || roles.includes('admin') || roles.includes('adminPlus')) {
+      keyboard.push([Markup.button.callback('📋 Заявки на вступление', 'adminPendingApplications')]);
+      keyboard.push([Markup.button.callback('🔍 Поиск заявки', 'searchRequest')]);
     }
     keyboard.push([Markup.button.callback('👤 Открыть пользовательское меню', 'refreshUserStatus')]);
     return { message, keyboard };

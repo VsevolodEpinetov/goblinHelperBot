@@ -124,7 +124,7 @@ module.exports = Composer.action('applyYes', async (ctx) => {
       date: new Date().toLocaleString('ru-RU')
     });
     
-    await ctx.telegram.sendMessage(SETTINGS.CHATS.LOGS, adminMessage, { 
+    await ctx.telegram.sendMessage(process.env.REQUESTS_GROUP_ID, adminMessage, { 
       parse_mode: 'HTML',
       ...Markup.inlineKeyboard([
         [

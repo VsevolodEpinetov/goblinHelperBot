@@ -2,12 +2,20 @@ const { Composer, Markup } = require("telegraf");
 const { t } = require('../../../../modules/i18n');
 const knex = require('../../../../modules/db/knex');
 const { getUser, updateUser } = require('../../../db/helpers');
+const { hasPermission } = require('../../../rbac');
 const SETTINGS = require('../../../../settings.json');
 
 // Handle Accept application (first step - interview approval)
 module.exports = Composer.action(/^apply_admin_accept_\d+$/g, async (ctx) => {
   const userId = ctx.callbackQuery.data.split('_').pop();
   try { await ctx.answerCbQuery(); } catch {}
+  
+  // Check permissions
+  const userData = await getUser(ctx.callbackQuery.from.id);
+  if (!userData || !hasPermission(userData.roles, 'admin:applications:approve')) {
+    await ctx.reply('❌ У вас нет прав для одобрения заявок');
+    return;
+  }
   
   try {
     // Update application status to interview
@@ -47,6 +55,13 @@ module.exports = Composer.action(/^apply_admin_accept_\d+$/g, async (ctx) => {
 module.exports = Composer.action(/^apply_admin_deny_\d+$/g, async (ctx) => {
   const userId = ctx.callbackQuery.data.split('_').pop();
   try { await ctx.answerCbQuery(); } catch {}
+  
+  // Check permissions
+  const userData = await getUser(ctx.callbackQuery.from.id);
+  if (!userData || !hasPermission(userData.roles, 'admin:applications:deny')) {
+    await ctx.reply('❌ У вас нет прав для отклонения заявок');
+    return;
+  }
   
   try {
     // Update application status
@@ -97,6 +112,13 @@ module.exports = Composer.action(/^apply_admin_deny_\d+$/g, async (ctx) => {
 module.exports = Composer.action(/^admin_final_approve_\d+$/g, async (ctx) => {
   const userId = ctx.callbackQuery.data.split('_').pop();
   try { await ctx.answerCbQuery(); } catch {}
+  
+  // Check permissions
+  const userData = await getUser(ctx.callbackQuery.from.id);
+  if (!userData || !hasPermission(userData.roles, 'admin:applications:approve')) {
+    await ctx.reply('❌ У вас нет прав для финального одобрения заявок');
+    return;
+  }
   
   try {
     // Update application status to approved
@@ -159,6 +181,13 @@ module.exports = Composer.action(/^admin_final_approve_\d+$/g, async (ctx) => {
 module.exports = Composer.action(/^admin_final_deny_\d+$/g, async (ctx) => {
   const userId = ctx.callbackQuery.data.split('_').pop();
   try { await ctx.answerCbQuery(); } catch {}
+  
+  // Check permissions
+  const userData = await getUser(ctx.callbackQuery.from.id);
+  if (!userData || !hasPermission(userData.roles, 'admin:applications:deny')) {
+    await ctx.reply('❌ У вас нет прав для финального отклонения заявок');
+    return;
+  }
   
   try {
     // Update application status to rejected

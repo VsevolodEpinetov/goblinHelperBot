@@ -698,9 +698,10 @@ const userActionHandler = Composer.action(/^admin_(approve|reject|super_approve|
         try {
           await ctx.telegram.sendMessage(userId, 
             '✅ <b>Заявка принята к рассмотрению</b>\n\n' +
-            `Твоя заявка была принята к рассмотрению. Для прохождения собеседования свяжись с ${process.env.TEST_ADMIN_USERNAME || '@test'} и используй кодовую фразу:\n\n` +
-            `<code>${codePhrase}</code>\n\n` +
-            'После собеседования будет принято окончательное решение о твоем участии в сообществе.',
+'Ты прошёл первый круг. Теперь тебя ждёт собеседование.\n\n' +
+'Напиши @EvgenMol и прошепчи кодовую фразу:\n' +
+`<code>${codePhrase}</code>\n\n` +
+'Совет решит, достоин ли ты логова. Ответ будет окончательным.',
             {
               parse_mode: 'HTML'
             }

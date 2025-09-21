@@ -86,14 +86,8 @@ module.exports = Composer.action('applyYes', async (ctx) => {
     [Markup.button.callback('Закончить', `deleteThisMessage`)]
   ]);
 
-  // Send to EPINETOV
-  await ctx.telegram.sendMessage(SETTINGS.CHATS.EPINETOV, adminMessage, {
-    parse_mode: 'HTML',
-    ...adminKeyboard
-  });
-
-  // Send to GLAVGOBLIN
-  await ctx.telegram.sendMessage(SETTINGS.CHATS.GLAVGOBLIN, adminMessage, {
+  // Send to REQUESTS_GROUP_ID only
+  await ctx.telegram.sendMessage(process.env.REQUESTS_GROUP_ID, adminMessage, {
     parse_mode: 'HTML',
     ...adminKeyboard
   });

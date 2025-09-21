@@ -65,6 +65,31 @@ const PERMISSIONS = {
     'admin:reports:*': false
   },
 
+  // Protector role (can manage requests and applications)
+  protector: {
+    // Inherit user permissions
+    ...USER_PERMISSIONS,
+    
+    // Request management permissions
+    'admin:requests:view': true,
+    'admin:requests:approve': true,
+    'admin:requests:deny': true,
+    'admin:requests:manage': true,
+    'admin:applications:view': true,
+    'admin:applications:approve': true,
+    'admin:applications:deny': true,
+    'admin:applications:manage': true,
+    
+    // Limited admin access - no other admin functions
+    'admin:users:*': false,
+    'admin:content:*': false,
+    'admin:payments:*': false,
+    'admin:reports:*': false,
+    'admin:polls:*': false,
+    'admin:super:*': false,
+    'admin:system:*': false
+  },
+
   // Admin Polls (can manage polls with admin access)
   adminPolls: {
     // Inherit user permissions
