@@ -46,7 +46,7 @@ console.log(`Password: ${config.password ? '[SET]' : '[NOT SET]'}`);
 console.log(`Export Directory: ${exportDir}`);
 console.log('');
 
-// Create Redis client
+// Create Redis client (Redis v2.x API)
 const client = redis.createClient({
   host: config.host,
   port: config.port,
@@ -82,19 +82,12 @@ client.on('connect', () => {
 // Helper function to get all keys matching a pattern
 async function getAllKeys(pattern = '*') {
   return new Promise((resolve, reject) => {
-    const keys = [];
-    const stream = client.scanStream({ match: pattern, count: 100 });
-    
-    stream.on('data', (resultKeys) => {
-      keys.push(...resultKeys);
-    });
-    
-    stream.on('end', () => {
-      resolve(keys);
-    });
-    
-    stream.on('error', (err) => {
-      reject(err);
+    client.keys(pattern, (err, keys) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(keys);
+      }
     });
   });
 }
@@ -286,9 +279,9 @@ async function main() {
   try {
     console.log('Starting Redis data export...\n');
     
-    // Connect to Redis
+    // Connect to Redis (Redis v2.x API)
     await new Promise((resolve, reject) => {
-      client.on('ready', resolve);
+      client.on('connect', resolve);
       client.on('error', reject);
     });
     
