@@ -1,5 +1,4 @@
 const { Composer, Markup } = require("telegraf");
-const { t } = require('../../../modules/i18n');
 const knex = require('../../db/knex');
 const { getUser } = require('../../db/helpers');
 
@@ -32,13 +31,16 @@ module.exports = Composer.action('readyToParticipate', async (ctx) => {
     
     // Step 4: Process explanation
     await ctx.editMessageText(
-      t('messages.participation.text'),
+      '🎯 <b>РЕШАЮЩИЙ МОМЕНТ</b>\n\n' +
+'Ты стоишь у входа в логово. Дальше — только вперёд.\n' +
+'Если откажешься сейчас — дороги обратно не будет.\n\n' +
+'Готов идти дальше?',
       {
         parse_mode: 'HTML',
         ...Markup.inlineKeyboard([
           [
-            Markup.button.callback(t('messages.participation.yes'), 'confirmParticipation'),
-            Markup.button.callback(t('messages.participation.cancel'), 'cancelParticipation')
+            Markup.button.callback("✅ Да, готов!", 'confirmParticipation'),
+            Markup.button.callback("❌ Передумал", 'cancelParticipation')
           ]
         ])
       }
@@ -47,11 +49,11 @@ module.exports = Composer.action('readyToParticipate', async (ctx) => {
   } catch (error) {
     console.error('Error in readyToParticipate:', error);
     await ctx.editMessageText(
-      t('messages.try_again_later'),
+      "❌ <b>Произошла ошибка</b>\n\nПопробуй ещё раз позже.",
       {
         parse_mode: 'HTML',
         ...Markup.inlineKeyboard([
-          [Markup.button.callback(t('messages.participation.startOver'), 'whatIsIt')]
+          [Markup.button.callback("🔙 Начать сначала", 'whatIsIt')]
         ])
       }
     );

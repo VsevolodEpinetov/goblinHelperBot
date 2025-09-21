@@ -102,7 +102,7 @@ module.exports = Composer.action('applyYes', async (ctx) => {
     await ctx.editMessageText('⏳ Жди. Старейшины взвешивают твоё имя на весах. Вердикт будет вынесен.', {
       parse_mode: 'HTML',
       ...Markup.inlineKeyboard([
-        [Markup.button.callback('⬅️ Назад', 'guestStart')]
+        [Markup.button.callback('⬅️ Назад', 'whatIsIt')]
       ])
     });
   } catch {

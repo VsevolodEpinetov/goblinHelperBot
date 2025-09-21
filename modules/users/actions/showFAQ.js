@@ -1,26 +1,25 @@
 const { Composer, Markup } = require("telegraf");
 const util = require('../../util');
-const { t } = require('../../../modules/i18n');
 
 module.exports = Composer.action('showFAQ', async (ctx) => {
-  const faqMessage = `${t('faq.menu.title')}\n\n${t('faq.menu.prompt')}`;
+  const faqMessage = `❓ <b>Частые вопросы</b>\n\nВыбери свиток, что тревожит твою душу:`;
 
   const faqKeyboard = [
     [
-      Markup.button.callback(t('faq.menu.buttons.subscriptions'), 'faqSubscriptions'),
-      Markup.button.callback(t('faq.menu.buttons.rpg'), 'faqRpg')
+      Markup.button.callback("📅 Подписки", 'faqSubscriptions'),
+      Markup.button.callback("🎮 RPG и уровни", 'faqRpg')
     ],
     [
-      Markup.button.callback(t('faq.menu.buttons.scrolls'), 'faqScrolls'),
-      Markup.button.callback(t('faq.menu.buttons.kickstarters'), 'faqKickstarters')
+      Markup.button.callback("📜 Свитки", 'faqScrolls'),
+      Markup.button.callback("🚀 Кикстартеры", 'faqKickstarters')
     ],
     [
-      Markup.button.callback(t('faq.menu.buttons.access'), 'faqAccess'),
-      Markup.button.callback(t('faq.menu.buttons.technical'), 'faqTechnical')
+      Markup.button.callback("🔐 Доступ и безопасность", 'faqAccess'),
+      Markup.button.callback("⚙️ Технические вопросы", 'faqTechnical')
     ],
     [
-      Markup.button.callback(t('faq.menu.buttons.back'), 'contactSupport'),
-      Markup.button.callback(t('faq.menu.buttons.home'), 'guestStart')
+      Markup.button.callback("🔙 Назад", 'contactSupport'),
+      Markup.button.callback("🏠 В начало", 'whatIsIt')
     ]
   ];
 

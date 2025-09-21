@@ -41,7 +41,6 @@ const enhancedActionPaths = [
   './actions/startApplication',
   './actions/applicationQuestions',
   './actions/showRules',
-  './actions/showWhatIs',
   './actions/whatIsIt',
   './actions/readyToParticipate',
   './actions/confirmParticipation',

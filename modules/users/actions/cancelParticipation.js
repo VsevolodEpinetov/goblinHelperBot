@@ -1,5 +1,4 @@
 const { Composer, Markup } = require("telegraf");
-const { t } = require('../../../modules/i18n');
 const knex = require('../../db/knex');
 
 module.exports = Composer.action('cancelParticipation', async (ctx) => {
@@ -19,18 +18,20 @@ module.exports = Composer.action('cancelParticipation', async (ctx) => {
     
     // Show cancellation message
     await ctx.editMessageText(
-      t('applyFlow.cancel.success'),
+      '💀 <b>Ты отвернулся от совета</b>\n\n' +
+'Двери захлопнулись. Пути назад нет.\n\n' +
+'Гоблины не любят трусов. Второго шанса не будет.',
       { parse_mode: 'HTML' }
     );
     
   } catch (error) {
     console.error('Error in cancelParticipation:', error);
     await ctx.editMessageText(
-      t('applyFlow.cancel.error'),
+      "❌ <b>Произошла ошибка</b>\n\nПопробуй ещё раз позже.",
       {
         parse_mode: 'HTML',
         ...Markup.inlineKeyboard([
-          [Markup.button.callback(t('applyFlow.cancel.startOver'), 'whatIsIt')]
+          [Markup.button.callback("🔙 Начать сначала", 'whatIsIt')]
         ])
       }
     );
