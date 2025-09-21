@@ -290,6 +290,12 @@ const filterHandler = Composer.action(/^admin_filter_(prereg|pending|rejected|ap
 
 // Handle user search
 const searchHandler = Composer.action('admin_search_user', async (ctx) => {
+  // CRITICAL SECURITY FIX: Only allow search in admin DMs
+  if (ctx.chat.id.toString() !== SETTINGS.CHATS.EPINETOV) {
+    await ctx.answerCbQuery('❌ Поиск пользователей доступен только в личных сообщениях с администратором');
+    return;
+  }
+  
   console.log('🎯 admin_search_user action triggered!');
   console.log('🎯 Callback data:', ctx.callbackQuery?.data);
   console.log('🎯 User ID:', ctx.from?.id);
@@ -315,6 +321,11 @@ const searchHandler = Composer.action('admin_search_user', async (ctx) => {
 
 // Handle search results (this will be triggered by a message handler)
 const searchMessageHandler = Composer.hears(/^[0-9@a-zA-Z_]+$/, async (ctx, next) => {
+  // CRITICAL SECURITY FIX: Only allow search in admin DMs
+  if (ctx.chat.id.toString() !== SETTINGS.CHATS.EPINETOV) {
+    return next();
+  }
+  
   // Skip if it's a command (starts with /)
   if (ctx.message.text.startsWith('/')) {
     return next();
