@@ -56,11 +56,11 @@ module.exports = Composer.action('adminPendingApplications', async (ctx) => {
       keyboard.push([
         Markup.button.callback(
           `✅ Принять ${firstName}`,
-          `apply_admin_accept_${user.id}`
+          `apply_protector_allow_${user.id}`
         ),
         Markup.button.callback(
           `❌ Отклонить ${firstName}`,
-          `apply_admin_deny_${user.id}`
+          `apply_protector_deny_${user.id}`
         )
       ]);
     }

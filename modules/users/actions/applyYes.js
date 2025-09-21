@@ -128,8 +128,8 @@ module.exports = Composer.action('applyYes', async (ctx) => {
       parse_mode: 'HTML',
       ...Markup.inlineKeyboard([
         [
-          Markup.button.callback('✅ Accept', `apply_admin_accept_${userId}`),
-          Markup.button.callback('❌ Deny', `apply_admin_deny_${userId}`)
+          Markup.button.callback('✅ Accept', `apply_protector_allow_${userId}`),
+          Markup.button.callback('❌ Deny', `apply_protector_deny_${userId}`)
         ]
       ])
     });

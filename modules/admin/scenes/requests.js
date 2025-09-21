@@ -130,8 +130,8 @@ requestsScene.on('text', async (ctx) => {
     
     if (application.status === 'pending') {
       keyboard.push([
-        Markup.button.callback('✅ Одобрить → Собеседование', `apply_admin_accept_${actualUserId}`),
-        Markup.button.callback('❌ Отклонить', `apply_admin_deny_${actualUserId}`)
+        Markup.button.callback('✅ Одобрить → Собеседование', `apply_protector_allow_${actualUserId}`),
+        Markup.button.callback('❌ Отклонить', `apply_protector_deny_${actualUserId}`)
       ]);
     } else if (application.status === 'interview') {
       keyboard.push([

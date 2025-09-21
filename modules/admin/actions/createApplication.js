@@ -57,8 +57,8 @@ module.exports = Composer.action(/^create_application_\d+$/g, async (ctx) => {
       inline_keyboard: [
         [
           { text: '✅ Заявка создана', callback_data: 'noop' },
-          { text: '✅ Одобрить → Собеседование', callback_data: `apply_admin_accept_${userId}` },
-          { text: '❌ Отклонить', callback_data: `apply_admin_deny_${userId}` }
+          { text: '✅ Одобрить → Собеседование', callback_data: `apply_protector_allow_${userId}` },
+          { text: '❌ Отклонить', callback_data: `apply_protector_deny_${userId}` }
         ]
       ]
     });

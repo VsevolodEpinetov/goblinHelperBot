@@ -82,7 +82,7 @@ module.exports = Composer.action('applyYes', async (ctx) => {
     `<b>Дата:</b> ${new Date().toLocaleString()}`;
 
   const adminKeyboard = Markup.inlineKeyboard([
-    [Markup.button.callback('✅ Approve → Interview', `apply_admin_firstapprove_${userId}`), Markup.button.callback('❌ Deny', `apply_admin_firstdeny_${userId}`)],
+    [Markup.button.callback('✅ Approve → Interview', `apply_protector_allow_${userId}`), Markup.button.callback('❌ Deny', `apply_protector_deny_${userId}`)],
     [Markup.button.callback('Закончить', `deleteThisMessage`)]
   ]);
 
