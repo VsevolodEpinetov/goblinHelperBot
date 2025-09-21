@@ -8,7 +8,11 @@ module.exports = Composer.action(/^finishAdminPayment_/g, async (ctx) => {
   // Remove messages from EPINETOV
   if (ctx.globalSession.toRemove[SETTINGS.CHATS.EPINETOV] && ctx.globalSession.toRemove[SETTINGS.CHATS.EPINETOV][paymentId]) {
     ctx.globalSession.toRemove[SETTINGS.CHATS.EPINETOV][paymentId].forEach(async messageId => {
-      await ctx.deleteMessage(messageId);
+      try {
+        await ctx.telegram.deleteMessage(SETTINGS.CHATS.EPINETOV, messageId);
+      } catch (error) {
+        console.log(`Failed to delete message ${messageId} from EPINETOV:`, error.message);
+      }
     })
     ctx.globalSession.toRemove[SETTINGS.CHATS.EPINETOV][paymentId] = null;
   }
@@ -16,7 +20,11 @@ module.exports = Composer.action(/^finishAdminPayment_/g, async (ctx) => {
   // Remove messages from GLAVGOBLIN
   if (ctx.globalSession.toRemove[SETTINGS.CHATS.GLAVGOBLIN] && ctx.globalSession.toRemove[SETTINGS.CHATS.GLAVGOBLIN][paymentId]) {
     ctx.globalSession.toRemove[SETTINGS.CHATS.GLAVGOBLIN][paymentId].forEach(async messageId => {
-      await ctx.deleteMessage(messageId);
+      try {
+        await ctx.telegram.deleteMessage(SETTINGS.CHATS.GLAVGOBLIN, messageId);
+      } catch (error) {
+        console.log(`Failed to delete message ${messageId} from GLAVGOBLIN:`, error.message);
+      }
     })
     ctx.globalSession.toRemove[SETTINGS.CHATS.GLAVGOBLIN][paymentId] = null;
   }
