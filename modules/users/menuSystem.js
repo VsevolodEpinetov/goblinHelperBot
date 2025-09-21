@@ -13,7 +13,7 @@ const {
 } = require('./menus');
 
 function getCurrentPeriod(ctx) {
-  const util = require('../../util');
+  const util = require('../util');
   return util.getCurrentPeriod(ctx).period;
 }
 

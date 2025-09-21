@@ -570,7 +570,7 @@ const userManagementHandler = Composer.action(/^admin_manage_user_(\d+)$/g, asyn
     if (!processedUser.roles || processedUser.roles.length === 0 || processedUser.roles.includes('pending') || processedUser.roles.includes('prereg') || processedUser.roles.includes('preapproved')) {
       // Not fully approved
       keyboard.push([
-        Markup.button.callback('✅ Одобрить', `admin_approve_user_${userId}`),
+        Markup.button.callback('✅ Преодобрить', `admin_approve_user_${userId}`),
         Markup.button.callback('⭐ Супер одобрить', `admin_super_approve_user_${userId}`)
       ]);
       keyboard.push([
@@ -585,13 +585,13 @@ const userManagementHandler = Composer.action(/^admin_manage_user_(\d+)$/g, asyn
     } else if (processedUser.roles.includes('rejected')) {
       // Rejected user - can approve or super approve
       keyboard.push([
-        Markup.button.callback('✅ Одобрить', `admin_approve_user_${userId}`),
+        Markup.button.callback('✅ Преодобрить', `admin_approve_user_${userId}`),
         Markup.button.callback('⭐ Супер одобрить', `admin_super_approve_user_${userId}`)
       ]);
     } else if (processedUser.roles.includes('selfbanned')) {
       // Self-banned user - can approve or super approve
       keyboard.push([
-        Markup.button.callback('✅ Одобрить', `admin_approve_user_${userId}`),
+        Markup.button.callback('✅ Преодобрить', `admin_approve_user_${userId}`),
         Markup.button.callback('⭐ Супер одобрить', `admin_super_approve_user_${userId}`)
       ]);
       keyboard.push([
