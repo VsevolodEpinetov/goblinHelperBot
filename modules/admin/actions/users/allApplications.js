@@ -716,10 +716,7 @@ const userActionHandler = Composer.action(/^admin_(approve|reject|super_approve|
           `Кодовая фраза: <code>${codePhrase}</code>\n\n` +
           `📨 Уведомление отправлено пользователю`,
           {
-            parse_mode: 'HTML',
-            ...Markup.inlineKeyboard([
-              [Markup.button.callback('🔙 Назад к управлению', `admin_manage_user_${userId}`)]
-            ])
+            parse_mode: 'HTML'
           }
         );
         break;
@@ -751,9 +748,6 @@ const userActionHandler = Composer.action(/^admin_(approve|reject|super_approve|
           `📨 Уведомление отправлено пользователю`,
           {
             parse_mode: 'HTML',
-            ...Markup.inlineKeyboard([
-              [Markup.button.callback('🔙 Назад к управлению', `admin_manage_user_${userId}`)]
-            ])
           }
         );
         break;
@@ -786,10 +780,7 @@ const userActionHandler = Composer.action(/^admin_(approve|reject|super_approve|
           `${firstName} (${username}) получил роль "goblin"\n\n` +
           `📨 Уведомление отправлено пользователю`,
           {
-            parse_mode: 'HTML',
-            ...Markup.inlineKeyboard([
-              [Markup.button.callback('🔙 Назад к управлению', `admin_manage_user_${userId}`)]
-            ])
+            parse_mode: 'HTML'
           }
         );
         break;
@@ -820,10 +811,7 @@ const userActionHandler = Composer.action(/^admin_(approve|reject|super_approve|
           `${firstName} (${username}) получил роль "banned"\n\n` +
           `📨 Уведомление отправлено пользователю`,
           {
-            parse_mode: 'HTML',
-            ...Markup.inlineKeyboard([
-              [Markup.button.callback('🔙 Назад к управлению', `admin_manage_user_${userId}`)]
-            ])
+            parse_mode: 'HTML'
           }
         );
         break;
@@ -885,10 +873,7 @@ const userActionHandler = Composer.action(/^admin_(approve|reject|super_approve|
           `⬇️ <b>Статус понижен</b>\n\n` +
           `${firstName} (${username}) возвращен в статус "ожидает рассмотрения"`,
           {
-            parse_mode: 'HTML',
-            ...Markup.inlineKeyboard([
-              [Markup.button.callback('🔙 Назад к управлению', `admin_manage_user_${userId}`)]
-            ])
+            parse_mode: 'HTML'
           }
         );
         break;

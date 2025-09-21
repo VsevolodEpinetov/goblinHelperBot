@@ -43,9 +43,6 @@ module.exports = Composer.action('confirmParticipation', async (ctx) => {
           ],
           [
             Markup.button.callback(t('applyFlow.confirm.superApprove'), `admin_super_approve_user_${userId}`)
-          ],
-          [
-            Markup.button.callback(t('applyFlow.confirm.manage'), `admin_manage_user_${userId}`)
           ]
         ])
       });
