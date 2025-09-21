@@ -44,7 +44,7 @@ applicationApprovalComposer.action(/^apply_protector_allow_\d+$/, async (ctx) =>
     // Update admin message to show application approved
     try {
       await ctx.editMessageReplyMarkup({ 
-        inline_keyboard: [[{ text: '✅ Goblin Approved', callback_data: 'deleteThisMessage' }]] 
+        inline_keyboard: [[{ text: '✅ Goblin Approved', callback_data: 'dummy' }]] 
       });
     } catch {}
 
@@ -177,7 +177,7 @@ applicationApprovalComposer.action(/^admin_final_approve_\d+$/, async (ctx) => {
     // Update admin message to show final approved
     try {
       await ctx.editMessageReplyMarkup({ 
-        inline_keyboard: [[{ text: '✅ Final Approved', callback_data: 'deleteThisMessage' }]] 
+        inline_keyboard: [[{ text: '✅ Final Approved', callback_data: 'dummy' }]] 
       });
     } catch {}
 
