@@ -1,6 +1,5 @@
-const { Composer, Markup } = require("telegraf");
-const { getUserMenu } = require('../menuSystem');
-const { t } = require('../../../modules/i18n');
+const { Composer } = require("telegraf");
+const { markInvitationUsed } = require('../menuSystem');
 
 module.exports = Composer.action('confirmGroupJoin', async (ctx) => {
   try { await ctx.answerCbQuery(); } catch {}
@@ -8,19 +7,15 @@ module.exports = Composer.action('confirmGroupJoin', async (ctx) => {
   const userId = ctx.from.id;
   
   try {
-    // Check if user has actually joined the group (link is marked as used)
-    const { getUser } = require('../../db/helpers');
-    const userData = await getUser(userId);
-    const menu = await getUserMenu(ctx, userData);
-
-    // If the user has joined, they'll see the main menu
-    // If not, they'll see the invitation link again
-    await ctx.editMessageText(menu.message, {
-      parse_mode: 'HTML',
-      ...Markup.inlineKeyboard(menu.keyboard)
-    });
+    // Mark the invitation as used since user confirms they joined
+    const markResult = await markInvitationUsed(userId);
+    
+    if (!markResult.success) {
+      console.error('Failed to mark invitation as used:', markResult.error);
+    }
+    
+    // No message editing needed - user manually confirmed they joined
   } catch (error) {
     console.error('Error in confirmGroupJoin:', error);
-    await ctx.editMessageText(t('messages.try_again_later'), { parse_mode: 'HTML', ...Markup.inlineKeyboard([[Markup.button.callback(t('buttons.help'), 'userHelp')]]) });
   }
 });
