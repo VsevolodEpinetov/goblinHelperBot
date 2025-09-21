@@ -1,0 +1,35 @@
+{
+  "export_timestamp": "2025-09-21T06:31:03.485Z",
+  "redis_config": {
+    "host": "localhost",
+    "port": 6379,
+    "db": 0
+  },
+  "export_directory": "/opt/projects/goblin-bot/backups/redis_export_2025-09-21T06-31-03",
+  "summary": {
+    "users": {
+      "key_count": 92,
+      "total_size_bytes": 75324
+    },
+    "months": {
+      "key_count": 1,
+      "total_size_bytes": 6667
+    },
+    "kickstarters": {
+      "key_count": 1,
+      "total_size_bytes": 104163
+    },
+    "settings": {
+      "key_count": 1,
+      "total_size_bytes": 142
+    },
+    "sessions": {
+      "key_count": 3,
+      "total_size_bytes": 407654
+    },
+    "other": {
+      "key_count": 1,
+      "total_size_bytes": 3354
+    }
+  }
+}

@@ -1,0 +1,645 @@
+{
+  "months": {
+    "type": "string",
+    "data": {
+      "list": {
+        "2023": {
+          "10": {
+            "regular": {
+              "link": "",
+              "id": "",
+              "counter": {
+                "paid": 1,
+                "joined": 0
+              }
+            },
+            "plus": {
+              "link": "",
+              "id": "",
+              "counter": {
+                "paid": 0,
+                "joined": 0
+              }
+            }
+          },
+          "11": {
+            "regular": {
+              "link": "",
+              "id": "",
+              "counter": {
+                "paid": 1,
+                "joined": 0
+              }
+            },
+            "plus": {
+              "link": "",
+              "id": "",
+              "counter": {
+                "paid": 21,
+                "joined": 0
+              }
+            }
+          },
+          "12": {
+            "regular": {
+              "link": "",
+              "id": "",
+              "counter": {
+                "paid": 1,
+                "joined": 0
+              }
+            },
+            "plus": {
+              "link": "",
+              "id": "",
+              "counter": {
+                "paid": 21,
+                "joined": 0
+              }
+            }
+          },
+          "02": {
+            "regular": {
+              "link": "",
+              "id": "",
+              "counter": {
+                "paid": 1,
+                "joined": 0
+              }
+            },
+            "plus": {
+              "link": "",
+              "id": "",
+              "counter": {
+                "paid": 0,
+                "joined": 0
+              }
+            }
+          },
+          "03": {
+            "regular": {
+              "link": "",
+              "id": "",
+              "counter": {
+                "paid": 1,
+                "joined": 0
+              }
+            },
+            "plus": {
+              "link": "",
+              "id": "",
+              "counter": {
+                "paid": 0,
+                "joined": 0
+              }
+            }
+          },
+          "04": {
+            "regular": {
+              "link": "https://t.me/+5prH3kbn-9M3ZWUy",
+              "id": -1001544748883,
+              "counter": {
+                "paid": 1,
+                "joined": 0
+              }
+            },
+            "plus": {
+              "link": "",
+              "id": "",
+              "counter": {
+                "paid": 0,
+                "joined": 0
+              }
+            }
+          },
+          "05": {
+            "regular": {
+              "link": "",
+              "id": "",
+              "counter": {
+                "paid": 1,
+                "joined": 0
+              }
+            },
+            "plus": {
+              "link": "",
+              "id": "",
+              "counter": {
+                "paid": 0,
+                "joined": 0
+              }
+            }
+          },
+          "06": {
+            "regular": {
+              "link": "",
+              "id": "",
+              "counter": {
+                "paid": 1,
+                "joined": 0
+              }
+            },
+            "plus": {
+              "link": "",
+              "id": "",
+              "counter": {
+                "paid": 0,
+                "joined": 0
+              }
+            }
+          },
+          "07": {
+            "regular": {
+              "link": "",
+              "id": "",
+              "counter": {
+                "paid": 1,
+                "joined": 0
+              }
+            },
+            "plus": {
+              "link": "",
+              "id": "",
+              "counter": {
+                "paid": 0,
+                "joined": 0
+              }
+            }
+          },
+          "08": {
+            "regular": {
+              "link": "",
+              "id": "",
+              "counter": {
+                "paid": 1,
+                "joined": 0
+              }
+            },
+            "plus": {
+              "link": "",
+              "id": "",
+              "counter": {
+                "paid": 0,
+                "joined": 0
+              }
+            }
+          },
+          "09": {
+            "regular": {
+              "link": "",
+              "id": "",
+              "counter": {
+                "paid": 1,
+                "joined": 0
+              }
+            },
+            "plus": {
+              "link": "",
+              "id": "",
+              "counter": {
+                "paid": 0,
+                "joined": 0
+              }
+            }
+          }
+        },
+        "2024": {
+          "10": {
+            "regular": {
+              "link": "https://t.me/+gLOH8PtGTqczNjdi",
+              "id": -1002407677292,
+              "counter": {
+                "paid": 70,
+                "joined": 77
+              }
+            },
+            "plus": {
+              "link": "https://t.me/+AOY2-EHZsVdmZjdi",
+              "id": -1002301089011,
+              "counter": {
+                "paid": 26,
+                "joined": 27
+              }
+            }
+          },
+          "11": {
+            "regular": {
+              "link": "https://t.me/+1wP4KxuPk980Y2Yy",
+              "id": -1002397995930,
+              "counter": {
+                "paid": 74,
+                "joined": 78
+              }
+            },
+            "plus": {
+              "link": "https://t.me/+DhvwtLJGM44wNzQy",
+              "id": -1002301197318,
+              "counter": {
+                "paid": 30,
+                "joined": 28
+              }
+            }
+          },
+          "12": {
+            "regular": {
+              "link": "https://t.me/+tBRH94eE43EwMzNi",
+              "id": -1002435725198,
+              "counter": {
+                "paid": 72,
+                "joined": 78
+              }
+            },
+            "plus": {
+              "link": "https://t.me/+g2yBGXlfxuE1OTY6",
+              "id": -1002366550930,
+              "counter": {
+                "paid": 27,
+                "joined": 28
+              }
+            }
+          },
+          "01": {
+            "regular": {
+              "link": "https://t.me/+vaIgzC1ch_FkNTEy",
+              "id": -1002031188673,
+              "counter": {
+                "paid": 1,
+                "joined": 0
+              }
+            },
+            "plus": {
+              "link": "https://t.me/+XOccLZss8iBjNzNi",
+              "id": -1002040427757,
+              "counter": {
+                "paid": 21,
+                "joined": 0
+              }
+            }
+          },
+          "02": {
+            "regular": {
+              "link": "https://t.me/+fJ-CMEGxn4pmZmYy",
+              "id": -1002122829244,
+              "counter": {
+                "paid": 1,
+                "joined": 0
+              }
+            },
+            "plus": {
+              "link": "https://t.me/+wbdVNf70Ch40ZTY6",
+              "id": -1002079764336,
+              "counter": {
+                "paid": 17,
+                "joined": 0
+              }
+            }
+          },
+          "03": {
+            "regular": {
+              "link": "https://t.me/+r9z-g3usrGdkODk6",
+              "id": -1002025432825,
+              "counter": {
+                "paid": 1,
+                "joined": 0
+              }
+            },
+            "plus": {
+              "link": "https://t.me/+vo8R0n2rfX84YTdi",
+              "id": -1002097335189,
+              "counter": {
+                "paid": 23,
+                "joined": 0
+              }
+            }
+          },
+          "04": {
+            "regular": {
+              "link": "https://t.me/+axKHkj9L96pmMDVi",
+              "id": -1002022890293,
+              "counter": {
+                "paid": 1,
+                "joined": 0
+              }
+            },
+            "plus": {
+              "link": "https://t.me/+oxxZTC69MNs1OTIy",
+              "id": -1001991050210,
+              "counter": {
+                "paid": 25,
+                "joined": 0
+              }
+            }
+          },
+          "05": {
+            "regular": {
+              "link": "https://t.me/+9VmrLgaWUKZjNTdi",
+              "id": -1002016431228,
+              "counter": {
+                "paid": 1,
+                "joined": 0
+              }
+            },
+            "plus": {
+              "link": "https://t.me/+tsVCawoQfCVkZDUy",
+              "id": -1002033464201,
+              "counter": {
+                "paid": 25,
+                "joined": 0
+              }
+            }
+          },
+          "06": {
+            "regular": {
+              "link": "https://t.me/+4mG-A68oaDRjYzNi",
+              "id": -1002150358708,
+              "counter": {
+                "paid": 2,
+                "joined": 0
+              }
+            },
+            "plus": {
+              "link": "https://t.me/+i3tG6pOvAOA3Yzli",
+              "id": -1002215522454,
+              "counter": {
+                "paid": 25,
+                "joined": 0
+              }
+            }
+          },
+          "07": {
+            "regular": {
+              "link": "https://t.me/+zjpy3-rNa7oyZjAy",
+              "id": -1002218775527,
+              "counter": {
+                "paid": 1,
+                "joined": 0
+              }
+            },
+            "plus": {
+              "link": "https://t.me/+XS8RNBmAIiY1NmMy",
+              "id": -1002190556691,
+              "counter": {
+                "paid": 27,
+                "joined": 0
+              }
+            }
+          },
+          "08": {
+            "regular": {
+              "link": "https://t.me/+1R0JlmOpPoU0MjU6",
+              "id": -1002187602178,
+              "counter": {
+                "paid": 1,
+                "joined": 0
+              }
+            },
+            "plus": {
+              "link": "https://t.me/+eiVHAGIY7HIzMmY6",
+              "id": -1002202894152,
+              "counter": {
+                "paid": 27,
+                "joined": 0
+              }
+            }
+          },
+          "09": {
+            "regular": {
+              "link": "https://t.me/+xWr_rB612TBlNGUy",
+              "id": -1002222694177,
+              "counter": {
+                "paid": 3,
+                "joined": 0
+              }
+            },
+            "plus": {
+              "link": "https://t.me/+MTJY8vESM042NzBi",
+              "id": -1002438032821,
+              "counter": {
+                "paid": 23,
+                "joined": 0
+              }
+            }
+          }
+        },
+        "2025": {
+          "10": {
+            "regular": {
+              "link": "https://t.me/+LNix0wOgV944ZmVi",
+              "id": -1002387829723,
+              "counter": {
+                "paid": 3,
+                "joined": 2
+              }
+            },
+            "plus": {
+              "link": "https://t.me/+6u_jKO9-1VE1YzY6",
+              "id": -1002394930551,
+              "counter": {
+                "paid": 1,
+                "joined": 0
+              }
+            }
+          },
+          "11": {
+            "regular": {
+              "link": "https://t.me/+3oSEkmjSsNA2ZmE6",
+              "id": -1002328806791,
+              "counter": {
+                "paid": 3,
+                "joined": 2
+              }
+            },
+            "plus": {
+              "link": "https://t.me/+dnuUSc7geB40NTUy",
+              "id": -1002213889981,
+              "counter": {
+                "paid": 1,
+                "joined": 0
+              }
+            }
+          },
+          "12": {
+            "regular": {
+              "link": "https://t.me/+Fw-EuOE_E9NjNWNi",
+              "id": -1002378995721,
+              "counter": {
+                "paid": 3,
+                "joined": 2
+              }
+            },
+            "plus": {
+              "link": "https://t.me/+UmDZUJ5pB9RjNWJi",
+              "id": -1002339591602,
+              "counter": {
+                "paid": 1,
+                "joined": 0
+              }
+            }
+          },
+          "01": {
+            "regular": {
+              "link": "https://t.me/+jPPv7ogbSfo4OWYy",
+              "id": -1002499679562,
+              "counter": {
+                "paid": 72,
+                "joined": 76
+              }
+            },
+            "plus": {
+              "link": "https://t.me/+2KGADTAx7gE1MTRi",
+              "id": -1002361734884,
+              "counter": {
+                "paid": 26,
+                "joined": 26
+              }
+            }
+          },
+          "02": {
+            "regular": {
+              "link": "https://t.me/+AkMb3mlrqyk4MWJi",
+              "id": -1002475846080,
+              "counter": {
+                "paid": 71,
+                "joined": 73
+              }
+            },
+            "plus": {
+              "link": "https://t.me/+M9Dkj_qE_ZkxNzIy",
+              "id": -1002424993303,
+              "counter": {
+                "paid": 28,
+                "joined": 26
+              }
+            }
+          },
+          "03": {
+            "regular": {
+              "link": "https://t.me/+65ZUqlqwz-s3NThi",
+              "id": -1002384574557,
+              "counter": {
+                "paid": 70,
+                "joined": 73
+              }
+            },
+            "plus": {
+              "link": "https://t.me/+HY1PTbEED0s1YTRi",
+              "id": -1002291425457,
+              "counter": {
+                "paid": 28,
+                "joined": 27
+              }
+            }
+          },
+          "04": {
+            "regular": {
+              "link": "https://t.me/+xFePXKgCNPkyYzAy",
+              "id": -1002217558358,
+              "counter": {
+                "paid": 71,
+                "joined": 72
+              }
+            },
+            "plus": {
+              "link": "https://t.me/+BbSTRaDr11UzODRi",
+              "id": -1002297089595,
+              "counter": {
+                "paid": 27,
+                "joined": 26
+              }
+            }
+          },
+          "05": {
+            "regular": {
+              "link": "https://t.me/+k7TNJr7fyt43OGNi",
+              "id": -1002463701037,
+              "counter": {
+                "paid": 70,
+                "joined": 72
+              }
+            },
+            "plus": {
+              "link": "https://t.me/+tpt7-b8-El9iZWYy",
+              "id": -1002335164221,
+              "counter": {
+                "paid": 25,
+                "joined": 24
+              }
+            }
+          },
+          "06": {
+            "regular": {
+              "link": "https://t.me/+u_53S6hI9sBmODIy",
+              "id": -1002807371632,
+              "counter": {
+                "paid": 69,
+                "joined": 101
+              }
+            },
+            "plus": {
+              "link": "https://t.me/+S_m5IyQZ-FU0YjMy",
+              "id": -1002196624595,
+              "counter": {
+                "paid": 25,
+                "joined": 24
+              }
+            }
+          },
+          "07": {
+            "regular": {
+              "link": "https://t.me/+raLBbs3orpdiYjQ6",
+              "id": -1002808175757,
+              "counter": {
+                "paid": 66,
+                "joined": 89
+              }
+            },
+            "plus": {
+              "link": "https://t.me/+W4Y_n7fZy1sxYTEy",
+              "id": -1002472275225,
+              "counter": {
+                "paid": 23,
+                "joined": 24
+              }
+            }
+          },
+          "08": {
+            "regular": {
+              "link": "https://t.me/+9gODKkrQIk1kNDY8",
+              "id": -1002861857675,
+              "counter": {
+                "paid": 61,
+                "joined": 63
+              }
+            },
+            "plus": {
+              "link": "https://t.me/+59T18ey92wkyM2Y6",
+              "id": -1002285370838,
+              "counter": {
+                "paid": 22,
+                "joined": 22
+              }
+            }
+          },
+          "09": {
+            "regular": {
+              "link": "https://t.me/+4DZnTuKyjp8zZjQ6",
+              "id": -1002286145167,
+              "counter": {
+                "paid": 3,
+                "joined": 2
+              }
+            },
+            "plus": {
+              "link": "https://t.me/+d7a-71n1Nl5mMTUy",
+              "id": -1002438032821,
+              "counter": {
+                "paid": 1,
+                "joined": 1
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

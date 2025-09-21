@@ -1,0 +1,3441 @@
+{
+  "kickstarters": {
+    "type": "string",
+    "data": {
+      "list": [
+        {
+          "name": "Rangers",
+          "creator": "Rafael Moreno Dominguez (STL Miniatures)",
+          "link": "https://www.kickstarter.com/projects/stlminiatures/3d-printable-rangers-stl",
+          "files": [
+            "BQACAgEAAxkBAAIRjGb3BPqMvsTuTMlboUI4DYJ2KvoLAAIgBAAC63tpRoDva44cXP66NgQ",
+            "BQACAgEAAxkBAAIRjWb3BPodfolme2FEBwVdjr6KcaeLAAIhBAAC63tpRgkCA9_lajtPNgQ",
+            "BQACAgEAAxkBAAIRjmb3BPo43bN3uOZorN2YAjythLOZAAIiBAAC63tpRngoBGTrAAFbdzYE",
+            "BQACAgEAAxkBAAIRj2b3BPpjmcZp0SZsa1E8geJtnF7tAAIkBAAC63tpRhMVkC2gmeg0NgQ",
+            "BQACAgEAAxkBAAIRkGb3BPp6dDEysdaVBmFNnu2Nld8FAAInBAAC63tpRiQI2e6UwcAFNgQ",
+            "BQACAgEAAxkBAAIRkWb3BPrcCtKiy_S0iMBYFISlhs0hAAIpBAAC63tpRu-HGF6Sw-lfNgQ",
+            "BQACAgEAAxkBAAIRkmb3BPrEaQ0h6Gi3s6cfEpyvvXHXAAIqBAAC63tpRte9vNAMWDlzNgQ",
+            "BQACAgEAAxkBAAIRk2b3BPojC3u6YInn6Q54RKd4nFNUAAIsBAAC63tpRnwwr5yHhFAZNgQ",
+            "BQACAgEAAxkBAAIRlGb3BPrvZYNtnzxD8BRk4MYybxDDAAItBAAC63tpRpPKcAzd1Hk_NgQ",
+            "BQACAgEAAxkBAAIRlWb3BPo5dhnz99p_gzHtLnxOWWhVAAIuBAAC63tpRo_xmi-j-4d2NgQ"
+          ],
+          "pledgeCost": "50",
+          "cost": "330",
+          "tags": [
+            "dnd",
+            "heroes",
+            "miniatures",
+            "sla",
+            "bits",
+            "terrain"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAIRi2b3BOENf5dZL-H2dOaD4QHx6yuMAAKF6jEb10rBS3RgbCkb5vRwAQADAgADeQADNgQ"
+          ],
+          "pledgeName": "Rangers STL"
+        },
+        {
+          "name": "Great Folks",
+          "creator": "GreatGrimoire",
+          "link": "https://www.myminifactory.com/frontier/great-folks-2930",
+          "files": [
+            "BQACAgQAAxkBAAIRuGb3CrUFruPYNEx5Y-cYMmEr7S2WAAJsFAACPZOpU3IVtyyvOtiDNgQ",
+            "BQACAgQAAxkBAAIRuWb3CrWrDICBwPJY8biDqWOXP4MHAAJuFAACPZOpUx8W9mEV0HoYNgQ",
+            "BQACAgQAAxkBAAIRumb3CrWP8kRp56wJEe-g6XuqOPjTAAJ0FAACPZOpUxwT5mIPCQ3xNgQ"
+          ],
+          "pledgeCost": "29",
+          "cost": "200",
+          "tags": [
+            "dnd",
+            "townfolk",
+            "npc",
+            "miniatures",
+            "sla"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAIRt2b3CqrrZzWkBfq-wjZflz7UcC9NAAKs6jEb10rBS3iq4sPI_RoZAQADAgADeQADNgQ"
+          ],
+          "pledgeName": "Alchemist"
+        },
+        {
+          "name": "Cards Dice Pixels",
+          "creator": "Snee",
+          "link": "https://www.kickstarter.com/projects/snee/cards-dice-pixels",
+          "files": [
+            "BQACAgQAAxkBAAITlGb4drk2_KtzlCu2KX_gjZ_gLuDQAAIIFwAC2NkBUlfQ06XVyFw3NgQ",
+            "BQACAgQAAxkBAAITlWb4drlv6JFbs3EpTqTzSlCW2S4fAAIKFwAC2NkBUofqQpeWvhVFNgQ"
+          ],
+          "pledgeCost": "24",
+          "cost": "110",
+          "tags": [
+            "deck",
+            "box",
+            "dice",
+            "holders"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAITk2b4dpjxfJbJ_Zr7lo5jwS7jXRFoAALR6DEbGhjAS5P9Z7UBTWEoAQADAgADeQADNgQ"
+          ],
+          "pledgeName": "All in!"
+        },
+        {
+          "name": "Grimworld battle for Underholme",
+          "creator": "Dakka.Fantasy",
+          "link": "https://www.dakkadakka.store/grimworld-battle-for-underholme",
+          "files": [
+            "BQACAgQAAxkBAAITomb4eJNqqjGssTBKsK3fzZmJiWzCAAJjFwACV6XpUWMhTxQHPheXNgQ",
+            "BQACAgQAAxkBAAITo2b4eJMMa2JGY62QSaOyFCn_kDj7AAJkFwACV6XpUTSqxDamjwrkNgQ",
+            "BQACAgQAAxkBAAITpGb4eJNubcg9ON3RaDuU0PAywmD3AAJlFwACV6XpUb4q2i_NpeMQNgQ",
+            "BQACAgQAAxkBAAITpWb4eJOUtY4s2kOMwdfw75Mj_3n5AAL-EAAC1zm5UnXYQD8G2F04NgQ"
+          ],
+          "pledgeCost": "60",
+          "cost": "130",
+          "tags": [
+            "dwarf",
+            "bits",
+            "miniature",
+            "dnd",
+            "sla"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAITnmb4eHTRdXIlRyFkb4LFtnjfQAnzAALU6DEbGhjAS5g_daN1wTn4AQADAgADeAADNgQ",
+            "AgACAgIAAxkBAAITn2b4eHS-4diq5gN51yThGXyiLmdkAALV6DEbGhjAS6GgQvl68x6BAQADAgADeAADNgQ",
+            "AgACAgIAAxkBAAIToGb4eHT3JwG0LL6WZa5BwRi23CtfAALW6DEbGhjASx4HBDTtgsziAQADAgADeAADNgQ",
+            "AgACAgIAAxkBAAIToWb4eHQOMNks6bFMYnIB26cwUznqAALX6DEbGhjAS9nbVIVRzqXsAQADAgADeQADNgQ"
+          ],
+          "pledgeName": "Special"
+        },
+        {
+          "name": "Deathly Draft - Fantasy Football Teams",
+          "creator": "BigChildCreatives",
+          "link": "https://www.myminifactory.com/frontier/deathly-draft-2817",
+          "files": [
+            "BQACAgEAAxkBAAITu2b4e6ggTcY_gLevz4i_CPQ9MlUsAALBBAACRgABUEXbYNShq1RC_TYE",
+            "BQACAgEAAxkBAAITvGb4e6iBNeZkVf7uAqH2MDN-JWq6AALDBAACRgABUEWdER-rvdjDCjYE",
+            "BQACAgEAAxkBAAITvWb4e6ipfVzZMtPcVXRvlgJJ7SdAAALEBAACRgABUEXVlPEP4Jdz1zYE"
+          ],
+          "pledgeCost": "35",
+          "cost": "80",
+          "tags": [
+            "football",
+            "miniatures"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAITuGb4eyCLCBGHlnBQ-MZDWFhth8emAALg6DEbGhjAS1hmmXROpH6lAQADAgADeAADNgQ",
+            "AgACAgIAAxkBAAITuWb4eyDjgB62wRsyAAH4qwH6u8-VuAAC4egxGxoYwEvM5cHVqDg64QEAAwIAA3gAAzYE",
+            "AgACAgIAAxkBAAITumb4eyBm1qMLdkY2s9r7-8J02_yoAALi6DEbGhjASzEYndkt_lXbAQADAgADeAADNgQ"
+          ],
+          "pledgeName": "Triple threat!"
+        },
+        {
+          "name": "Pharaoh's Legacy: Last Dynasty",
+          "creator": "Crab Miniatures",
+          "link": "https://www.kickstarter.com/projects/crabminiatures/pharaohs-legacy-last-dynasty",
+          "files": [
+            "BQACAgEAAxkBAAIT0Wb4g44ddPQ6MYbDEVJZRwIyksGPAAKWBAACk2_YRoO-gXuIYIk4NgQ",
+            "BQACAgEAAxkBAAIT0mb4g45b3ZiavlKgSnQhmyIftlOFAAKYBAACk2_YRl_XFhyrGetpNgQ",
+            "BQACAgEAAxkBAAIT02b4g45FAAHrfkxwcS7WZcsKfD2yHQACmQQAApNv2EayC0XK-4PymDYE",
+            "BQACAgEAAxkBAAIT1Gb4g47rgwjMsylKri5YPPrIEDaaAAKcBAACk2_YRsXEjHViIVcnNgQ",
+            "BQACAgEAAxkBAAIT1Wb4g46G5x3ZnFcjR3bmtGxY-JRTAAKdBAACk2_YRn3qjOFVoTiuNgQ",
+            "BQACAgEAAxkBAAIT1mb4g44SiWKEslkYtaTcXfb7JYwMAAKfBAACk2_YRqqsapQVQxBnNgQ",
+            "BQACAgEAAxkBAAIT12b4g44cLO6Oo0N_x76LOP0hqH88AAKkBAACk2_YRn4G4oF2L45uNgQ",
+            "BQACAgEAAxkBAAIT2Gb4g473-0-WstXzzzp4Kbd76t3tAAKlBAACk2_YRoxrxtBG7uewNgQ"
+          ],
+          "pledgeCost": "97",
+          "cost": "180",
+          "tags": [
+            "miniatures",
+            "mummy",
+            "sphynx"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAITzWb4g3zZTqQmmqJWB7L282Y3b8llAAIg6TEbGhjAS7kHQ-GxFb5CAQADAgADeAADNgQ",
+            "AgACAgIAAxkBAAITzmb4g3z_VKkAAebXpSjyMZKLGs8VbgACIekxGxoYwEs4JHdUwM8jMAEAAwIAA3gAAzYE",
+            "AgACAgIAAxkBAAITz2b4g3zNMvGlJ6zJfSPAnaU7RTycAAIi6TEbGhjASwSCfBVJDltOAQADAgADeAADNgQ",
+            "AgACAgIAAxkBAAIT0Gb4g3ziq_a1N7zonQWtUPo6UxOyAAIj6TEbGhjAS5Zm-UuQHIOfAQADAgADeAADNgQ"
+          ],
+          "pledgeName": "ALL IN!"
+        },
+        {
+          "name": "The Rag Elves",
+          "creator": "Nomad Sculpts",
+          "link": "https://www.kickstarter.com/projects/382730535/the-rag-elves",
+          "files": [
+            "BQACAgEAAxkBAAIT8Gb4pJSbty0-VnWX1zuNPncEM879AAKeAwACyOFRRgfsdBTi42LjNgQ"
+          ],
+          "pledgeCost": "16",
+          "cost": "130",
+          "tags": [
+            "elf"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAIT7mb4pH1R3oLgS-voJ_yu11taP5XkAAJG6TEbGhjASxbfrGRCqKKoAQADAgADeQADNgQ",
+            "AgACAgIAAxkBAAIT72b4pH32jKiGmA0jXswdlQegQ8xPAAJH6TEbGhjAS_4aB_WaZ_3dAQADAgADeQADNgQ"
+          ],
+          "pledgeName": "Rag Elves Core"
+        },
+        {
+          "name": "DUNGEON BLOCKS The Medieval Town Vol.2",
+          "creator": "DungeonBlocks",
+          "link": "https://www.myminifactory.com/frontier/dungeon-blocks-the-medieval-town-vol-2-2916",
+          "files": [
+            "BQACAgQAAxkBAAIT_Gb4pevfRXeHrH2kPJ9jMj-braTeAAKaFQACijnJUWyohsWznAABETYE",
+            "BQACAgQAAxkBAAIT_Wb4peusbN82ng_8UCgMQ-S4NBZnAAKbFQACijnJUTmFYVVboD3HNgQ",
+            "BQACAgQAAxkBAAIT_mb4pesGeEg0OTRZNJNr4u8GDQpgAAKcFQACijnJUbVAJCCtX8hBNgQ",
+            "BQACAgQAAxkBAAIT_2b4peu3uax7m1h8g0dpiVL2adEUAAKdFQACijnJUc6mBPW5IxxnNgQ",
+            "BQACAgQAAxkBAAIUAAFm-KXrG7qPt9L-nEKF7qzV936lTgACnhUAAoo5yVE8CFzs1Wuw6zYE"
+          ],
+          "pledgeCost": "95",
+          "cost": "150",
+          "tags": [
+            "bits",
+            "block",
+            "town",
+            "dnd",
+            "medieval"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAIT-Wb4pc6Zk2jwmNjOakKoMBQRyF6IAAJJ6TEbGhjASzqPzbvdJfN1AQADAgADeQADNgQ",
+            "AgACAgIAAxkBAAIT-mb4pc74DV9KbnXZbBBnYX1FFdzJAAJK6TEbGhjAS7E7HNAwXjwIAQADAgADeQADNgQ",
+            "AgACAgIAAxkBAAIT-2b4pc5YlIBTbNYqY7EeqF70MngkAAJL6TEbGhjAS3EBaFcAAfuWrQEAAwIAA3kAAzYE"
+          ],
+          "pledgeName": "ALL-IN Medieval Town 1+2"
+        },
+        {
+          "name": "Nippon Saga",
+          "creator": "Iain Lovecraft",
+          "link": "https://www.kickstarter.com/projects/iain-lovecraft/nippon-saga",
+          "files": [
+            "BQACAgUAAxkBAAIUDmb4p_pPus_KNExuZWMu5t3RyPMIAAL5CwACXXmBVuOCp5YBFc_9NgQ",
+            "BQACAgUAAxkBAAIUD2b4p_oHGhGO-Un0tzniyc8IzmHeAAL8CwACXXmBVkqf3whBsKMWNgQ",
+            "BQACAgUAAxkBAAIUEGb4p_pQvbGwJ1yNxomjg9VZunP4AALfFAAC_GtgV5Ehhjh6nI6QNgQ",
+            "BQACAgUAAxkBAAIUEWb4p_ol8ReoAYwVEgUqYu2UFWwBAALjFAAC_GtgV790oHenhxHMNgQ",
+            "BQACAgUAAxkBAAIUEmb4p_r-v24gYx8TIMxFePsu3FNPAALkFAAC_GtgVxbuiXkUz2_fNgQ",
+            "BQACAgUAAxkBAAIUE2b4p_ozgvTcVjoERuzn0RV3QQz3AAIbEAAC-Pi5VI8-d7bkK1qrNgQ",
+            "BQACAgUAAxkBAAIUFGb4p_pZvcxdeAcfjbgfruVJyoZXAAL1EgACnWjBVWwUYdsoeIiiNgQ"
+          ],
+          "pledgeCost": "66",
+          "cost": "250",
+          "tags": [
+            "japan",
+            "ronin",
+            "miniatures",
+            "bits",
+            "blocks"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAIUCWb4p-bvNPdJYkfpxxUUNesW-12PAAJN6TEbGhjAS7d6UE_daPXyAQADAgADeQADNgQ",
+            "AgACAgIAAxkBAAIUCmb4p-YzPlhtBtflRdTrSfhMK7pEAAJO6TEbGhjAS_gbx2O4bOhqAQADAgADeQADNgQ",
+            "AgACAgIAAxkBAAIUC2b4p-ZVB-MWDe_YBkXwFIrXmQSGAAJP6TEbGhjAS5RhjA413e53AQADAgADeQADNgQ",
+            "AgACAgIAAxkBAAIUDGb4p-bkUdz-oM6jeo_VI_YZVwz6AAJQ6TEbGhjAS4w8dEUxs2ZlAQADAgADeQADNgQ",
+            "AgACAgIAAxkBAAIUDWb4p-YRrn-Kd58YJq60EZSc8A9eAAJR6TEbGhjAS8qcMTTpjgG7AQADAgADeQADNgQ"
+          ],
+          "pledgeName": "All In"
+        },
+        {
+          "name": "3D Printable Coins | Tabletop Game Accessories Vol.2",
+          "creator": "Unchained Games",
+          "link": "https://www.kickstarter.com/projects/unchainedgames/3d-printable-coins-tabletop-game-accessories-vol2",
+          "files": [
+            "BQACAgQAAxkBAAIUHmb4r7Hc_EN3EeyBh6QGTe_I-S9sAAKOGAACqq0JUOO6CgMSdCA2NgQ",
+            "BQACAgQAAxkBAAIUH2b4r7EcCqaT4EhOUsUfKX-zbyM6AAKRGAACqq0JUCGTUGR6JupYNgQ",
+            "BQACAgQAAxkBAAIUIGb4r7FXcDjK9jsslHZm9yv7S-znAAKSGAACqq0JUK8GYyleGEywNgQ",
+            "BQACAgQAAxkBAAIUIWb4r7HtFnV3u0xqYASwWS1NX-nwAAKWGAACqq0JUAJK5yEZwTbSNgQ",
+            "BQACAgQAAxkBAAIUImb4r7FngdUmP5YaJRRAR0TVv5a2AAKcGAACqq0JUH5pkQnz7ROgNgQ"
+          ],
+          "pledgeCost": "73",
+          "cost": "130",
+          "tags": [
+            "coin"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAIUHWb4r5rxJvOoktMyB9_xq3YMziHEAAJa6TEbGhjAS0LZsOSPxHcCAQADAgADeQADNgQ"
+          ],
+          "pledgeName": "ALL Coins Vol.1 & 2"
+        },
+        {
+          "name": "Dark Charm III: The Diorama & The Barbarian",
+          "creator": "level 50 miniatures",
+          "link": "https://www.kickstarter.com/projects/level50miniatures/dark-charm-iii-the-diorama-and-the-barbarian",
+          "files": [
+            "BQACAgEAAxkBAAIULWb4vyej7m9TFEZjKOjZqW6BST2MAAICBQACJb4IRWrBiiSZoQRZNgQ",
+            "BQACAgEAAxkBAAIULmb4vydERJhIxNO6AAFINQm7BbN7YgACAwUAAiW-CEXCijEQg1VvdDYE"
+          ],
+          "pledgeCost": "27",
+          "cost": "160",
+          "tags": [
+            "diorama",
+            "barbarian",
+            "knight"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAIUK2b4vxQqF3QGA856V7d-AUMfmzM-AAJh6TEbGhjAS6U-IdW5mvTrAQADAgADeAADNgQ",
+            "AgACAgIAAxkBAAIULGb4vxR0O20NkcjmcWfIrzy8d-LRAAJi6TEbGhjAS0Oae0qUoJ0AAQEAAwIAA3gAAzYE"
+          ],
+          "pledgeName": "Dark3: The Diorama & The Barbarian"
+        },
+        {
+          "name": "Arkham horror",
+          "creator": "Loot studios",
+          "link": "https://app.lootstudios.com/arkham-horror/",
+          "files": [
+            "BQACAgQAAxkBAAIUbmb5wm2sEnsvp0gRjNQzZn1R3Lf6AAJ2EQAC55vxUVqDuBKGgQ1dNgQ",
+            "BQACAgQAAxkBAAIUb2b5wm2FimHYuenc894VvakrJe9RAALjEQAC55vxUSmDYyxW4-oGNgQ",
+            "BQACAgQAAxkBAAIUcGb5wm3I2QABXc37t6Nt01u6K25fIwAC6BEAAueb8VGSDKUjzmbbkTYE",
+            "BQACAgQAAxkBAAIUcWb5wm2S9Uzio5J4XfDS1Zkd02tjAAL8EQAC55vxUdXRkIuth9mYNgQ",
+            "BQACAgQAAxkBAAIUcmb5wm334K1Z-Hepa6N3KcO8_WjiAAILEgAC55vxUVqdyOCvNCYfNgQ",
+            "BQACAgQAAxkBAAIUc2b5wm0h0O1Cy8uUx2RnFOQ2mc1mAAKZFgAC55vpUQchfaR9zwuONgQ",
+            "BQACAgQAAxkBAAIUdGb5wm3sKQAB3BY2k2ZvckvsS1r-cwACnRYAAueb6VGe3WJ2TA5lUzYE",
+            "BQACAgQAAxkBAAIUdWb5wm2w4wuvjoVY9FyCQPxsjn7MAAKeFgAC55vpUV4Z41Ef0_CaNgQ",
+            "BQACAgQAAxkBAAIUdmb5wm12TakVdTdE_-WqqBDdvDMEAAKgFgAC55vpUegsVcsrbxIeNgQ",
+            "BQACAgQAAxkBAAIUd2b5wm1hTfP9arca2T3AkjTEFO7mAAKhFgAC55vpUTtTu-Q1jBa7NgQ",
+            "BQACAgQAAxkBAAIUeGb5wm0M2789vJMif1f7pFNaj07CAAJTFgAC55vpUfMPBHbzUt1MNgQ",
+            "BQACAgQAAxkBAAIUeWb5wm1pE9lgOFMOwkxonHx-q2MXAAJYFgAC55vpUXj8rYW5I4WuNgQ",
+            "BQACAgQAAxkBAAIUemb5wm0RVwr85EUTx8g4W34wXhhLAAJZFgAC55vpUatrokltdaYbNgQ",
+            "BQACAgQAAxkBAAIUe2b5wm2j1Sc5EKlYmC6vWJgqhHDnAAJaFgAC55vpUR4wn8NycyatNgQ",
+            "BQACAgQAAxkBAAIUfGb5wm3lCLYSmgLHVloyMIdOQDMAA1sWAALnm-lRbr_XTTqtfoU2BA",
+            "BQACAgQAAxkBAAIUfWb5wm2vpUuLw0nQgrbI0HobxlyQAAJcFgAC55vpUdHF3cWFeri7NgQ",
+            "BQACAgQAAxkBAAIUfmb5wm1E1eDQDUWjP_6UwzPcRFnHAAJjFgAC55vpUTczXyDxEEVrNgQ",
+            "BQACAgQAAxkBAAIUf2b5wm3JNgwpqo-utTsFrwMgfezqAAJQFgAC55vpUUSsTyWG3bhdNgQ",
+            "BQACAgQAAxkBAAIUgGb5wm0sBLkw7gpUDoQJXMxh6ciZAAJRFgAC55vpUQEqJ81YMofQNgQ"
+          ],
+          "pledgeCost": "90",
+          "cost": "550",
+          "tags": [
+            "horror",
+            "miniatures",
+            "arkham"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAIUbWb5wl20uygGTX5mC6wXqq73LByJAAK04zEbXo3QS-UaI9fN6sdqAQADAgADeQADNgQ"
+          ],
+          "pledgeName": "All in"
+        },
+        {
+          "name": "Stormcrow City - The Silent District",
+          "creator": "Davy Penasse",
+          "link": "https://www.kickstarter.com/projects/stormcrowmansion/stormcrow-city-the-silent-district",
+          "files": [
+            "BQACAgEAAxkBAAIV0Wb6840aAquIT4wxSTsBj37VqwPfAALyAwACG4QRRlIRPdMcvAdfNgQ",
+            "BQACAgEAAxkBAAIV0mb6843CHT03-10OmpL9XGHAPMBHAAKgAwACDaIZRCBat1AAAQWWrDYE",
+            "BQACAgEAAxkBAAIV02b6842s1nk2JX5NeK77C4U2GHAMAAKhAwACDaIZRFJhvsgg2o1ENgQ",
+            "BQACAgEAAxkBAAIV1Gb6841pegcQEbFaHNohfiWdcWUxAALXAwACvPCBRPBMavUKcnN7NgQ",
+            "BQACAgEAAxkBAAIV1Wb6841KZ6rB3uBi1OLP1VGKk_RaAALYAwACvPCBRPdBjTQc_zOaNgQ",
+            "BQACAgEAAxkBAAIV1mb6840WfF1xqDyqShhZcukbTPEeAALZAwACvPCBROxT63FChsPoNgQ",
+            "BQACAgEAAxkBAAIV12b68427Z-583NOqjW8GUJN9RcGQAALaAwACvPCBRDS96PbLsQIeNgQ",
+            "BQACAgEAAxkBAAIV2Gb6843qAlBrJ-D0XmlyfxsYA_PgAALbAwACvPCBRFz_IDLKoqNtNgQ",
+            "BQACAgEAAxkBAAIV2Wb68437AnlH1OoiZQIYMHAPW6taAALcAwACvPCBRIm3doHEFaQSNgQ",
+            "BQACAgEAAxkBAAIV2mb6843oJlpTU3-3KvNNqkuKgkk-AAInBAACumagRBujyyLDYdHkNgQ",
+            "BQACAgEAAxkBAAIV22b684328iXXY3O9Ptv9lxwtiCC4AAKlAwACzfIAAUXwSH0FITnxSDYE",
+            "BQACAgEAAxkBAAIV3Gb6840v7QsggoLUbWUn1kjWqqN_AAKmAwACzfIAAUXFoJBQcX08ejYE",
+            "BQACAgEAAxkBAAIV3Wb6840XFCVAJj2u9ygpm_Y2dlvVAAL4AwACOrEpRQIpKvq0SPa6NgQ",
+            "BQACAgEAAxkBAAIV3mb6840qWdfarU6iiKnTeyxFy4KDAAL6AwACOrEpRSJ146N0IZV7NgQ"
+          ],
+          "pledgeCost": "78",
+          "cost": "200",
+          "tags": [
+            "city",
+            "terrain",
+            "miniatures"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAIVzWb683wxE7NOJEkAAUbx_n97yB_KbwACEOoxG16N2Et8m-IvPAjq8gEAAwIAA3gAAzYE",
+            "AgACAgIAAxkBAAIVzmb683zOO9wiMVSPZchv1sA9t9oqAAIS6jEbXo3YS-gW6jAK7_DOAQADAgADeQADNgQ",
+            "AgACAgIAAxkBAAIVz2b683yUXaNQLCNMCa5jQeD6qPPtAAIT6jEbXo3YSxVr81O22IQdAQADAgADeQADNgQ",
+            "AgACAgIAAxkBAAIV0Gb683wpEQhrP7UqnhiriVDVYjw0AAIR6jEbXo3YS0kDnjePQcVkAQADAgADeAADNgQ"
+          ],
+          "pledgeName": "Stormcrow Collection"
+        },
+        {
+          "name": "Epic Sector : Sanctuary",
+          "creator": "FabricatorsLair",
+          "link": "https://www.myminifactory.com/frontier/epic-sector-sanctuary-2715",
+          "files": [
+            "BQACAgQAAxkBAAIV6mb69Ivgk4gO3XEkOyvmrPcV6WPIAAJgGQACFcdIUN5y2qlQ75hYNgQ",
+            "BQACAgQAAxkBAAIV62b69IuiRmArwbwTIXsUp1LD28KBAAJhGQACFcdIUG1PU9EhzciUNgQ",
+            "BQACAgQAAxkBAAIV7Gb69IuZ8exOwcL6UHy0TvgRRczJAAJiGQACFcdIUHMxWeN7dDH0NgQ",
+            "BQACAgQAAxkBAAIV7Wb69Iu6jPSzt9MZ_swLB_exV0a1AAJjGQACFcdIUKzlQMcLPAlXNgQ"
+          ],
+          "pledgeCost": "105",
+          "cost": "300",
+          "tags": [
+            "city",
+            "miniatures",
+            "bits"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAIV52b69Gnp_uyd3jAnWHiO-pDcmRcSAAIa6jEbXo3YS6rU1C28nF95AQADAgADeAADNgQ",
+            "AgACAgIAAxkBAAIV6Gb69Gnu7bCOjE2wOMDFNn-fPH8hAAIb6jEbXo3YSx-xkgkt7zJrAQADAgADeQADNgQ",
+            "AgACAgIAAxkBAAIV6Wb69GliFDB8Lt1FY2vnbA35WqUbAAIc6jEbXo3YS-6LSiSnVWKHAQADAgADeQADNgQ"
+          ],
+          "pledgeName": "Epic Sector : Sanctuary & Gothic Sector : Templaris & Gothic Sector : Forge of Pavonis Pack - Personnal Use"
+        },
+        {
+          "name": "Divide et Impera 12th Century Wargaming STL FILES",
+          "creator": "Styriwar",
+          "link": "https://www.kickstarter.com/projects/styriwar/divide-et-impera-12th-century-wargaming-stl-files",
+          "files": [
+            "BQACAgEAAxkBAAIWA2b69mwtPKxp--O3s7t0XAXPMVqnAAIoBAAC_EJJRkSpvLbCfn7eNgQ",
+            "BQACAgEAAxkBAAIWBGb69mxwz-xm-geF8t-Iz1CCiKASAAIpBAAC_EJJRmQ5voX8s4aYNgQ",
+            "BQACAgEAAxkBAAIWBWb69mx1wHGxHl7G7WtlIV18mKnrAAI6BAAC_EJJRiziCJzl5QABzDYE",
+            "BQACAgEAAxkBAAIWBmb69mx9kMYe29Qc5xeUQHzlLFPqAAI_BAAC_EJJRk51bWRuqVnJNgQ",
+            "BQACAgQAAxkBAAIWB2b69mxIOFa0-IbIUoyDP0dxk6X9AAI2FwACJMPJU9ra_Naz07x9NgQ",
+            "BQACAgQAAxkBAAIWCGb69myzz51YrT9lWGYzeHcD8FFbAAI3FwACJMPJUzb78EvLpVI-NgQ",
+            "BQACAgQAAxkBAAIWCWb69mxnvhZdHGYNn2bNCH0meen7AAI4FwACJMPJUzR0mfu8HYgKNgQ",
+            "BQACAgQAAxkBAAIWCmb69mx2UdHn4TPTie6tqPoAAa36rQACORcAAiTDyVP9nKaeif2tnzYE"
+          ],
+          "pledgeCost": "65",
+          "cost": "400",
+          "tags": [
+            "cavalry",
+            "miniatures",
+            "soldier",
+            "knight",
+            "peasant"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAIWAWb69k8R7YBNnfyNG3xaAyZlAo8KAAIr6jEbXo3YS96CnGadNwE9AQADAgADeAADNgQ",
+            "AgACAgIAAxkBAAIWAmb69k9lpAzQvqQ2SRU5g-CWy76_AAIs6jEbXo3YSzZhbYUcmPN7AQADAgADeAADNgQ"
+          ],
+          "pledgeName": "\"The Baron\" Standard Pledge"
+        },
+        {
+          "name": "LOSTHOLLOW",
+          "creator": "Forgotten Loot",
+          "link": "https://www.kickstarter.com/projects/forgottenloot/losthollow/description",
+          "files": [
+            "BQACAgEAAxkBAAIWFmb6910u0QdPUTGX7lAb9WGkJpymAAJ9AwACTlAgRZz52EgPNe3ZNgQ",
+            "BQACAgEAAxkBAAIWF2b69119hf6eZ61MpRhVF5E5OLWWAAJ-AwACTlAgRSLgcO4Xd_ifNgQ"
+          ],
+          "pledgeCost": "73",
+          "cost": "520",
+          "tags": [
+            "castle",
+            "city",
+            "miniatures"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAIWE2b69yIwrcdoAAEF6ttzHqSco0zTSQACL-oxG16N2Es0fhdGXjr4zQEAAwIAA3gAAzYE",
+            "AgACAgIAAxkBAAIWFGb69yLSP0_nfFORXRsQKWfp0RVaAAIw6jEbXo3YS9Ex-Hpy0CikAQADAgADeAADNgQ",
+            "AgACAgIAAxkBAAIWFWb69yLjo4_s9TQILTI2FQ18FjgcAAIx6jEbXo3YS9nolRP-P3NGAQADAgADeAADNgQ"
+          ],
+          "pledgeName": "LOSTHOLLOW+SUNRISE CASTLE"
+        },
+        {
+          "name": "Legends of Aetheron: Lyra SteelHeart",
+          "creator": "Alessandro Di Cesare",
+          "link": "https://www.kickstarter.com/projects/alex920a/legends-of-aetheron-lyra-steelheart",
+          "files": [
+            "BQACAgIAAxkBAAIW0Gb8Xmc_9gG7oLmoA6G3-dcitYYBAAJAVwACFaahSSuSl7UJPks5NgQ",
+            "BQACAgIAAxkBAAIW0Wb8Xme8m1VESRgfMY4IyN4o6f6ZAALlUQACQ925SenVtl8-G0P7NgQ"
+          ],
+          "pledgeCost": "10",
+          "cost": "90",
+          "tags": [
+            "miniatures",
+            "statue"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAIWz2b8XkuERK-4iMHAoKlltnRPHRRGAAIf6TEbgYDgSy8gqFiJ7ofMAQADAgADeAADNgQ"
+          ],
+          "pledgeName": "Lyra Steelheart"
+        },
+        {
+          "name": "Legion of the Red Serpent Pt.1: Desert Spears (Regular Release)",
+          "creator": "forgemasterstudios",
+          "link": "https://www.myminifactory.com/frontier/legion-of-the-red-serpent-pt-1-desert-spears-regular-release-1429",
+          "files": [
+            "BQACAgQAAxkBAAIW22b8YA8I_egwQP5P1k75mQHesK0MAALwDwACNZGwUXePEWi-cjYrNgQ"
+          ],
+          "pledgeCost": "70",
+          "cost": "300",
+          "tags": [
+            "miniatures",
+            "army"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAIW2mb8X_u-T3uH8D1RXeS1oHZg0CjlAAIn6TEbgYDgS285oIZ2vPiLAQADAgADeQADNgQ"
+          ],
+          "pledgeName": "LoRS Pt1: Core"
+        },
+        {
+          "name": "Legion of the Red Serpent Pt. 1.5: Desert Storm",
+          "creator": "forgemasterstudios",
+          "link": "https://www.myminifactory.com/frontier/legion-of-the-red-serpent-pt-1-5-desert-storm-2665",
+          "files": [
+            "BQACAgQAAxkBAAIW5Wb8YJTxpG_5cwLpe3Qqj2cZvjrHAAIeFgACarqJUSXqrSm5dsC2NgQ",
+            "BQACAgQAAxkBAAIW5mb8YJQz5xIQEX3DOWUYnxQ81XpHAAIfFgACarqJUXNBV3im7Io8NgQ"
+          ],
+          "pledgeCost": "40",
+          "cost": "300",
+          "tags": [
+            "miniatures",
+            "army"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAIW5Gb8YINxt4vs2G4hlZUDXSRmpjo6AAIo6TEbgYDgS_kkQz7CnaKLAQADAgADeQADNgQ"
+          ],
+          "pledgeName": "Desert Storm Core"
+        },
+        {
+          "name": "The Roaring Lions",
+          "creator": "BavariaMiniatures",
+          "link": "https://www.kickstarter.com/projects/bavariaminiatures/the-roaring-lions",
+          "files": [
+            "BQACAgQAAxkBAAIW82b8Ya015NEToXuIF-KALsF9XzzvAAKdFAACp4GAUW5zVFU07vVcNgQ"
+          ],
+          "pledgeCost": "55",
+          "cost": "130",
+          "tags": [
+            "miniatures",
+            "army",
+            "historical",
+            "bavaria"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAIW72b8YYPiy5YIV5ELufbOsXm-qkxmAAI26TEbgYDgS8U1AAFtgNJD9QEAAwIAA3gAAzYE",
+            "AgACAgIAAxkBAAIW8Gb8YYPMPlwJYAABpUFWAXmf7t5lcAACOOkxG4GA4EsnvaK80kbOBAEAAwIAA3gAAzYE",
+            "AgACAgIAAxkBAAIW8Wb8YYOx4oThJM-efhAKh5ZWzmYCAAI36TEbgYDgS0qPWCDzgkXuAQADAgADeAADNgQ",
+            "AgACAgIAAxkBAAIW8mb8YYPY-S2WE6bKzl3VDVaZ9y0IAAI56TEbgYDgS_bdeoMFvi3ZAQADAgADeAADNgQ"
+          ],
+          "pledgeName": "Kickstarter Digital Files - STLs & more"
+        },
+        {
+          "name": "Enchanting Realms IV",
+          "creator": "Haito",
+          "link": "https://www.kickstarter.com/projects/haito/enchanting-realms-iv",
+          "files": [
+            "BQACAgIAAxkBAAIYjGcAAY6LREmnjnPXBlKP96n5IiyeZQACXFUAAnnLOEm_0bRhp1Rx8TYE",
+            "BQACAgIAAxkBAAIYjWcAAY6LZUQr6ddh92usVrxuMTQsMAACYVUAAnnLOElXi5jdG0lbGDYE"
+          ],
+          "pledgeCost": "28",
+          "cost": "130",
+          "tags": [
+            "miniature",
+            "dnd"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAIYi2cAAY51clR7LBF8bsYzKBwV7cb8sQACQ-UxG4usAAFIotBJO16nDFgBAAMCAAN5AAM2BA"
+          ],
+          "pledgeName": "Enchanting Realms VI"
+        },
+        {
+          "name": "Epic Fantasy Packs: Volume 1",
+          "creator": "Epic Miniatures",
+          "link": "https://www.myminifactory.com/frontier/epic-fantasy-packs-volume-1-2775",
+          "files": [
+            "BQACAgIAAxkBAAIhY2cRoBoEZ6B_bxqf3rTW7X_h4l1KAAJeUQACsOOBSYDzoBknKa1wNgQ",
+            "BQACAgIAAxkBAAIhZGcRoBp2o5V6TnvLXKQKqOz8FOI4AAJiUQACsOOBSaNZHX1iZfo0NgQ",
+            "BQACAgIAAxkBAAIhZWcRoBr8xiT5LwpiAnqH8BgaFPbdAAJrUQACsOOBScPQjt6GruIXNgQ",
+            "BQACAgIAAxkBAAIhZmcRoBo1L-CXwTo8pQKaO8RpbolRAAJtUQACsOOBSd6VzbqqY_8tNgQ",
+            "BQACAgIAAxkBAAIhZ2cRoBr640HDfQ7reVVidPth8-3lAAJxUQACsOOBSXNrXB_NXlH-NgQ",
+            "BQACAgIAAxkBAAIhaGcRoBqu6l-Cym6OIlIHsbkDtXXQAAJ2UQACsOOBSXtu4sy6YWHnNgQ",
+            "BQACAgIAAxkBAAIhaWcRoBqJzM7We964PDgoRdf7ywJwAAJ4UQACsOOBSQaI4ymSrQteNgQ",
+            "BQACAgIAAxkBAAIhamcRoBprOYdc_t3vVGmNWVP70PbWAAJ5UQACsOOBSRhQ5AU3Y1QcNgQ",
+            "BQACAgIAAxkBAAIha2cRoBroAAG-iKv6FK7g-1ozAAGzM9wAAnpRAAKw44FJPnnBEgkk3-42BA",
+            "BQACAgIAAxkBAAIhbGcRoBrPQwGsFeOJbVM-TiBF9LMKAAKDUQACsOOBSbMXxDu4UcfANgQ",
+            "BQACAgIAAxkBAAIhbWcRoBqiw7cBDdA98za0OlDxd83ZAAKIUQACsOOBSVe66x7YPqfdNgQ",
+            "BQACAgIAAxkBAAIhbmcRoBqhq_SKLnJoQEfRHylBMbPSAAKMUQACsOOBSVC5nWJXTG61NgQ"
+          ],
+          "pledgeCost": "80",
+          "cost": "625",
+          "tags": [
+            "dnd",
+            "heroe",
+            "monster",
+            "undead",
+            "big",
+            "terrain",
+            "scatter",
+            "orc",
+            "hobgoblin",
+            "zombie",
+            "villager",
+            "animalfolk",
+            "miniature",
+            "sla",
+            "npc",
+            "prop",
+            "fdm"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAIhXWcRn-2tRWl18VYcXdhmM4QxYlnAAAJ75DEb_aORSGL0_kGdELKbAQADAgADeQADNgQ",
+            "AgACAgIAAxkBAAIhXmcRoAo-fL7p-7M4MSuTbIi6SeyNAAJ85DEb_aORSHb4wtzH9njpAQADAgADeAADNgQ",
+            "AgACAgIAAxkBAAIhX2cRoApMzE_XPvkRQj04LuUQRuIJAAJ95DEb_aORSOglcXGZQIJHAQADAgADeAADNgQ",
+            "AgACAgIAAxkBAAIhYGcRoAowAj44EjRWXWEdtaRD9-KnAAJ-5DEb_aORSL134fuurEMrAQADAgADeAADNgQ",
+            "AgACAgIAAxkBAAIhYWcRoAoR5bxoScUwjQ3hZmtZA8D9AAJ_5DEb_aORSC8x3Cp6HNEKAQADAgADeAADNgQ",
+            "AgACAgIAAxkBAAIhYmcRoArn_nhztZLb6iGuJ_SQeqGiAAKA5DEb_aORSB1Uwe0TlJEUAQADAgADeAADNgQ"
+          ],
+          "pledgeName": "Epic All-In"
+        },
+        {
+          "name": "Terrain Essentials IV: Interiors 2",
+          "creator": "CastnPlay",
+          "link": "https://www.myminifactory.com/frontier/terrain-essentials-iv-interiors-2-2555",
+          "files": [
+            "BQACAgIAAxkBAAIhfGcRoMoEL21yHhYVUvPpR3yfoyC4AAIqSwACRSB4SILgnX3sjvLKNgQ",
+            "BQACAgIAAxkBAAIhfWcRoMo86H70q1eDITWF4kM-LzvXAAJASwACRSB4SL3f6J8L7xK4NgQ",
+            "BQACAgIAAxkBAAIhfmcRoMo3Y2T1hEVOpcvz75kenHbqAAJRSwACRSB4SBwO4qI5tA2CNgQ",
+            "BQACAgIAAxkBAAIhf2cRoMoUuLu0X7XZs43Cb4xhhKW4AAJfSwACRSB4SPMZjNgT8Z_sNgQ",
+            "BQACAgIAAxkBAAIhgGcRoMoXDR61vg0CIX9rJ25bl4NzAAIVVQAClZ0QSvyExjhBarIoNgQ",
+            "BQACAgIAAxkBAAIhgWcRoMpF4Y094hECEsOYbHJq4wHmAAI4VQAClZ0QSqjjDkPa5dwbNgQ",
+            "BQACAgIAAxkBAAIhgmcRoMoO-7PDIUclxLj_RtP1F1pqAAJTVQAClZ0QSnkNcx5n8dQ2NgQ"
+          ],
+          "pledgeCost": "119",
+          "cost": "370",
+          "tags": [
+            "terrain",
+            "sla",
+            "fdm",
+            "scatter",
+            "pdf"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAIhd2cRoL3t9KfRLG8MHRssn5hF0xavAAKC5DEb_aORSC5YDTrI3EZMAQADAgADeAADNgQ",
+            "AgACAgIAAxkBAAIheGcRoL2wxkR2aA6KN5PSCgABpATLSAACg-QxG_2jkUiNl_Rj3r8cRwEAAwIAA3kAAzYE",
+            "AgACAgIAAxkBAAIheWcRoL2Eeo5zmmu3jLpXfyUvUtZ9AAKE5DEb_aORSIRWVuvsRRgaAQADAgADeQADNgQ",
+            "AgACAgIAAxkBAAIhemcRoL0-M76Dz2ATtNiErwZil2axAAKF5DEb_aORSEgRxiA6VtJlAQADAgADeQADNgQ",
+            "AgACAgIAAxkBAAIhe2cRoL2iwFI8dDkLQc9raovkgYOcAAKG5DEb_aORSOmX5VMlsCgmAQADAgADeQADNgQ"
+          ],
+          "pledgeName": "All-In"
+        },
+        {
+          "name": "Fantasy Fillers and Heroes: Gallia",
+          "creator": "Highlandsminis",
+          "link": "https://www.myminifactory.com/frontier/fantasy-fillers-and-heroes-gallia-2423",
+          "files": [
+            "BQACAgIAAxkBAAIhlmcRoZ7yQOwamKnrXi3EEkwTc3NLAAKPSAAC30CYStHiTGQ0A4UVNgQ",
+            "BQACAgIAAxkBAAIhl2cRoZ4gXjOjvfT0vdvym7DtAAHqFAACmUgAAt9AmEqk8qXylVbMqDYE",
+            "BQACAgIAAxkBAAIhmGcRoZ5zlAK9WuStRwRj-QrhFoaQAAL4UQAC71ApSIVstgq7QVKsNgQ"
+          ],
+          "pledgeCost": "35",
+          "cost": "150",
+          "tags": [
+            "historical",
+            "miniature",
+            "medieval",
+            "filler",
+            "hero",
+            "knight",
+            "cavalry",
+            "terrain",
+            "sla",
+            "fantasy"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAIhi2cRoYQ_JXR9wS9HH_-kal6rO1cPAAKI5DEb_aORSNST-gMRJ3CiAQADAgADeQADNgQ",
+            "AgACAgIAAxkBAAIhjGcRoYSP-TKSJClkeUJJ3v-5BNR-AAKH5DEb_aORSE6DGdiHzXO_AQADAgADeAADNgQ",
+            "AgACAgIAAxkBAAIhjWcRoYRB6VonKZYPBmd4HIpP1ZNtAAKJ5DEb_aORSJ4w0-6HCWGzAQADAgADeAADNgQ",
+            "AgACAgIAAxkBAAIhjmcRoYQROHV3641Lk8pnzaPJuarmAAKK5DEb_aORSM87GkLzFv-JAQADAgADeAADNgQ",
+            "AgACAgIAAxkBAAIhj2cRoYRQjKtbO8tYkXddBavDOTyNAAKL5DEb_aORSK4TfQ5UTsTGAQADAgADeAADNgQ",
+            "AgACAgIAAxkBAAIhkGcRoYShvCRgS5VxZtPnJWIEk8qAAAKM5DEb_aORSGAcaXLY9fYfAQADAgADeAADNgQ",
+            "AgACAgIAAxkBAAIhkWcRoYRfyGXNUwJJkRg5FeMhWryxAAKN5DEb_aORSGyfBtY1N0jrAQADAgADeAADNgQ",
+            "AgACAgIAAxkBAAIhkmcRoYSXUG9GZrPwCC2kt0G_bS-TAAKO5DEb_aORSMoss-ThJg_uAQADAgADeAADNgQ",
+            "AgACAgIAAxkBAAIhk2cRoYQV4Lwa00LHQ3weL6nDymdkAAKP5DEb_aORSBMVqDs9jK7UAQADAgADeAADNgQ",
+            "AgACAgIAAxkBAAIhlGcRoYSSWWJPEdJ27Mcu7gqiuu_DAAKQ5DEb_aORSHL_H8GWpWaoAQADAgADeAADNgQ"
+          ],
+          "pledgeName": "Fillers & Heroes"
+        },
+        {
+          "name": "Hold My Dwarf - Village",
+          "creator": "Miniatures of Madness",
+          "link": "https://www.myminifactory.com/frontier/hold-my-dwarf-village-2403",
+          "files": [
+            "BQACAgIAAxkBAAIho2cRokSr3fWLPuY-H-hF2pYUVX_RAALWWAACQlOwSG9LNBilxK4YNgQ",
+            "BQACAgIAAxkBAAIhpGcRokSHLfh9W4pMie6HJcJWfEG-AALeWAACQlOwSJzY3HKV9Qt3NgQ"
+          ],
+          "pledgeCost": "99",
+          "cost": "605",
+          "tags": [
+            "dnd",
+            "fantasy",
+            "dwarf",
+            "npc",
+            "villager",
+            "scatter",
+            "sla"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAIhoWcRojFjBviYMEIlKC4uBHw7edadAAKS5DEb_aORSG4R-OmQR5zTAQADAgADeQADNgQ",
+            "AgACAgIAAxkBAAIhomcRojFA7YOwtE1ed4g-vFIZW62fAAKT5DEb_aORSF4QUnIVgtgBAQADAgADeQADNgQ"
+          ],
+          "pledgeName": "Miniatures + Props"
+        },
+        {
+          "name": "Hold My Dwarf - Village (Закрытые стретч цели)",
+          "creator": "Miniatures of Madness",
+          "link": "https://www.myminifactory.com/frontier/hold-my-dwarf-village-2403",
+          "files": [
+            "BQACAgIAAxkBAAIhs2cRorLK4FRG0zPsPwclFSnRfe5HAAKbUAAChRIgSVNHnL2-RRokNgQ"
+          ],
+          "pledgeCost": "41",
+          "cost": "499",
+          "tags": [
+            "dnd",
+            "dwarf",
+            "sla",
+            "hero",
+            "villager",
+            "npc"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAIhrWcRop7Arq9IDjD74MXZqIQPsEOkAALN5DEbBKawSP4WrBjHq9iaAQADAgADeQADNgQ",
+            "AgACAgIAAxkBAAIhrmcRop53WzL6KaHjmRaDZQhVvxb1AALO5DEbBKawSECtFCS78q_6AQADAgADeQADNgQ",
+            "AgACAgIAAxkBAAIhr2cRop7ySAMMCMeJoFFfGKoFqwNuAALP5DEbBKawSGUoCMDeiEySAQADAgADeQADNgQ",
+            "AgACAgIAAxkBAAIhsGcRop7OlP9M4by2pX76aoCs_66wAALQ5DEbBKawSMhfjXPXtLv9AQADAgADeQADNgQ",
+            "AgACAgIAAxkBAAIhsWcRop7zH76-QL-GJF0AAdGVbXXlegAC0eQxGwSmsEhIrPWK0y1oHQEAAwIAA3kAAzYE",
+            "AgACAgIAAxkBAAIhsmcRop6GUOMk0ptK5V8QTLKExIngAALS5DEbBKawSNQGKw_Fzg7xAQADAgADeQADNgQ"
+          ],
+          "pledgeName": "Закрытые стретч цели"
+        },
+        {
+          "name": "Might Against the Maledict",
+          "creator": "SolGoodCreations",
+          "link": "https://www.myminifactory.com/frontier/might-against-the-maledict-2855",
+          "files": [
+            "BQACAgUAAxkBAAIjWmcVh7uz6-SbDS9a43QhTmMcjQPlAAKUEwAC5xyIVBzoyz0LcHy-NgQ",
+            "BQACAgUAAxkBAAIjW2cVh7uC0nHC0zyA4fcSoYqWoYLtAAKZEwAC5xyIVEtkbWpNV6orNgQ",
+            "BQACAgUAAxkBAAIjXGcVh7sbabFRciilwiaF2QI2KBkOAAKcEwAC5xyIVNzDcq_tdvxzNgQ",
+            "BQACAgUAAxkBAAIjXWcVh7tQ7bFv8RPccBrR636xPz6UAAKfEwAC5xyIVKF1EO0WzhxRNgQ",
+            "BQACAgUAAxkBAAIjXmcVh7vpPFM8coJ3lcu5qv9SXs-YAAKgEwAC5xyIVJiBUaWg0jQaNgQ"
+          ],
+          "pledgeCost": "85",
+          "cost": "380",
+          "tags": [
+            "dnd",
+            "miniature",
+            "sla",
+            "hero",
+            "terrain",
+            "barbarian",
+            "goblin",
+            "elf",
+            "monster"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAIjV2cVh5Y2cZGntoQva1n14lKnrKo2AAK-5DEbHZGpSPc8yS5T_uq2AQADAgADeQADNgQ",
+            "AgACAgIAAxkBAAIjWGcVh64EZZrYsPBn07VMhQbLSTpRAAK_5DEbHZGpSIgCn5MK2sK7AQADAgADeQADNgQ",
+            "AgACAgIAAxkBAAIjWWcVh65aXDYLLwrnXTaw5N3m5utxAALA5DEbHZGpSIR3MMZf3ekDAQADAgADeQADNgQ"
+          ],
+          "pledgeName": "All In"
+        },
+        {
+          "name": "Shelfventures 2",
+          "creator": "Don Stouffer (fantasyportals)",
+          "link": "https://www.kickstarter.com/projects/fantasyportals/shelfventures-2-3d-printable-miniature-display",
+          "files": [
+            "BQACAgQAAxkBAAIjaGcViMSQdqDnZ7oxnYSxzLoLYqLIAAJkFAAC2FDBU_Dl47XNr38YNgQ"
+          ],
+          "pledgeCost": "25",
+          "cost": "150",
+          "tags": [
+            "display",
+            "fdm",
+            "sla",
+            "useful",
+            "shelf"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAIjZ2cViK8ne-xFRLwmpzTKudxHe5IJAALD5DEbHZGpSJ5ENemOOrkPAQADAgADeQADNgQ"
+          ],
+          "pledgeName": "Shelfventures Complete Pledge"
+        },
+        {
+          "name": "SHIELD-MAIDEN",
+          "creator": "Apache_Studio",
+          "link": "https://www.kickstarter.com/projects/apache-studio/shield-maiden-viking-female-warrior",
+          "files": [
+            "BQACAgIAAxkBAAIjdWcViUIoBmegPHio6yMQnE7R9FdjAAJUPQACBGOISnU1HPagRmhENgQ"
+          ],
+          "pledgeCost": "15",
+          "cost": "150",
+          "tags": [
+            "sla",
+            "big",
+            "figure",
+            "bust",
+            "diorama"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAIjdGcViS3qGxVXMYaj5TLaIMowuM0nAALE5DEbHZGpSGFAT8pTNdJrAQADAgADeQADNgQ"
+          ],
+          "pledgeName": "Personal Use"
+        },
+        {
+          "name": "Legends of Aetheron: Selene Nightshade",
+          "creator": "Alessandro Di Cesare",
+          "link": "https://www.kickstarter.com/projects/alex920a/legends-of-aetheron-selene-nightshade",
+          "files": [
+            "BQACAgIAAxkBAAIjhGcVia_MSMfqEcix7fZBtooiYCaqAAJIVQACO5xYSIx_d7QfiN7DNgQ"
+          ],
+          "pledgeCost": "20",
+          "cost": "150",
+          "tags": [
+            "sla",
+            "big",
+            "figure",
+            "vampire"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAIjgGcViZbomquITC1IvWobcZBsyVGEAALG5DEbHZGpSHjyUPOAholtAQADAgADeQADNgQ",
+            "AgACAgIAAxkBAAIjgWcViaU9We8JEBEyMEhgFEL-exePAALH5DEbHZGpSJn63FOFxOzsAQADAgADeAADNgQ",
+            "AgACAgIAAxkBAAIjgmcViaU9-fzWJSD5eGBmnys4ChbpAALI5DEbHZGpSLt-NsW67t4pAQADAgADeAADNgQ",
+            "AgACAgIAAxkBAAIjg2cViaWDQQiqCfBazBnFN16m6ibEAALJ5DEbHZGpSFBu2Ec5f_2qAQADAgADeAADNgQ"
+          ],
+          "pledgeName": "Selene Nightshade"
+        },
+        {
+          "name": "Hidden Places VI: Soulstone Cathedral",
+          "creator": "Sawant3d",
+          "link": "https://www.kickstarter.com/projects/sawant3d/hidden-places-vi-soulstone-cathedral",
+          "files": [
+            "BQACAgEAAxkBAAIjjmcVihS2FJUdixsolwLaNGQ8NNzRAALFAwAClZyhRzS2wNpErprrNgQ",
+            "BQACAgEAAxkBAAIjj2cVihQm8O3E2dskKAABcTeP0SxvEwACxgMAApWcoUcIUl84rP_T_zYE",
+            "BQACAgEAAxkBAAIjkGcVihSLOasNqOxIGQHCFU1rFSkWAALHAwAClZyhR2ZLCUnJYlPxNgQ"
+          ],
+          "pledgeCost": "50",
+          "cost": "300",
+          "tags": [
+            "terrain",
+            "fantasy",
+            "sla"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAIjjWcVigzuJ0a2dE3bXu7-UvPRtMk6AALK5DEbHZGpSNrW4uXgVrv3AQADAgADeQADNgQ"
+          ],
+          "pledgeName": "Hidden Places VI"
+        },
+        {
+          "name": "Gnadug The Bonebreaker",
+          "creator": "Brayan Nafarrate",
+          "link": "https://www.kickstarter.com/projects/nafarrate/orc-figure-gnadug-the-bonebreaker-3d-printable-models",
+          "files": [
+            "BQACAgEAAxkBAAIj-GcWsotRKa3uzFoL8DsqRD5--eEEAAKZBAACyWvZRrEJq3m5IbHDNgQ"
+          ],
+          "pledgeCost": "5",
+          "cost": "100",
+          "tags": [
+            "orc",
+            "big",
+            "sla",
+            "bust"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAIj8mcWsmxlar2QM4jTamRn2SJSWLAYAAJs7zEbRG2xSAr0PlUzyPBKAQADAgADeQADNgQ",
+            "AgACAgIAAxkBAAIj82cWsn39dUO0REyQhUt0FTV9JzHbAAJu7zEbRG2xSOf9bd0MflzYAQADAgADeQADNgQ",
+            "AgACAgIAAxkBAAIj9GcWsn3juLzVAAG1ICj2iVe_V2oWtQACb-8xG0RtsUgJQurhPGyy1wEAAwIAA3kAAzYE",
+            "AgACAgIAAxkBAAIj9WcWsn057bT_XvBYI-Z1yhDk2gOwAAJw7zEbRG2xSJXCc3It_hAhAQADAgADeQADNgQ",
+            "AgACAgIAAxkBAAIj9mcWsn2EKWx9ELbipJnnxDIuR7ZbAAJx7zEbRG2xSMIb6R36Cr-bAQADAgADeQADNgQ",
+            "AgACAgIAAxkBAAIj92cWsn3ARDHPcQj0QPFNTW8kK4pqAAJy7zEbRG2xSJvKOa-LdLQaAQADAgADeAADNgQ"
+          ],
+          "pledgeName": "Orc"
+        },
+        {
+          "name": "Infernal Heroes",
+          "creator": "HackNSlash",
+          "link": "https://www.myminifactory.com/campaigns/epic-adventure-miniatures-infernal-heroes-368",
+          "files": [
+            "BQACAgIAAxkBAAIkA2cWs9Olb2zhWFUaLtSh9JeuK0rsAAJRMwAClM1QSupml0_RLk22NgQ"
+          ],
+          "pledgeCost": "60",
+          "cost": "350",
+          "tags": [
+            "dnd",
+            "hero",
+            "tiefling",
+            "bard",
+            "mage",
+            "sla",
+            "miniature",
+            "monk"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAIkAWcWs6qJfj60_HYWAAG0m1bribKgbQACee8xG0RtsUhJSSmhImW5oAEAAwIAA3kAAzYE",
+            "AgACAgIAAxkBAAIkAmcWs8Kl0aZUSvms2wrRfgE7StFpAAJ67zEbRG2xSMnWS0NUm0f-AQADAgADeQADNgQ"
+          ],
+          "pledgeName": "All In"
+        },
+        {
+          "name": "Ladies of 2133",
+          "creator": "Gilmorestudio",
+          "link": "https://www.kickstarter.com/projects/gmstudio/ladies-of-2133",
+          "files": [
+            "BQACAgEAAxkBAAIkh2cZpmH9KrCwS7grPLS6hx2UMHzqAAL9BQAC6L_oRMaaFc-VBDIZNgQ",
+            "BQACAgEAAxkBAAIkiGcZpmGAskJkUYuI9fcV4e3ltFOhAAL-BQAC6L_oRDA0R8lRe-bTNgQ",
+            "BQACAgEAAxkBAAIkiWcZpmHa6sJbLg-0IYdMU00olfV3AAL_BQAC6L_oRFSsIuDtPYF6NgQ",
+            "BQACAgEAAxkBAAIkimcZpmGOBUysmFpLUr04XBFS2MZzAAMGAALov-hE846zrgK3L5k2BA",
+            "BQACAgEAAxkBAAIki2cZpmF8kyJFFtgf3C0dLT7smIQuAAIBBgAC6L_oROYjPNVZqzZENgQ",
+            "BQACAgEAAxkBAAIkjGcZpmGm5vMkmplJiRlZX4_JLJ3WAAICBgAC6L_oRK2AV5lgc8pWNgQ",
+            "BQACAgEAAxkBAAIkjWcZpmGRg0pnagWxL1etVULZ1gnbAAIzBAACuHApRQsrg1iiZi8dNgQ"
+          ],
+          "pledgeCost": "22",
+          "cost": "150",
+          "tags": [
+            "sculpture",
+            "girls"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAIkhmcZpkqx2osAAYlhckz_MjFL4K4D_AACmucxG07TyUiG-kPNOeKWoAEAAwIAA3kAAzYE"
+          ],
+          "pledgeName": "Ladies of 2133"
+        },
+        {
+          "name": "Gothic Sector: Lost Ships Part 2",
+          "creator": "FabricatorsLair",
+          "link": "https://www.kickstarter.com/projects/fabricatorslair/gothic-sector-lost-ships-part-2",
+          "files": [
+            "BQACAgQAAxkBAAIkomcahhF2lNU_ZWQ92kJaG2tTupcHAAKGEQACF_txUr9gQ-pLft1iNgQ",
+            "BQACAgQAAxkBAAIko2cahhFF9IWbi9SAFAmcGcznckXdAAKKEQACF_txUt4gww4PH4SdNgQ",
+            "BQACAgQAAxkBAAIkpGcahhHYU-DJKp915HopubkkZnTMAAKLEQACF_txUiEboooK3SfTNgQ",
+            "BQACAgQAAxkBAAIkpWcahhFxNcJDLyzjAUFU_LpgptpFAALMEgAConNhUyGNxbXxMRRjNgQ"
+          ],
+          "pledgeCost": "30",
+          "cost": "175",
+          "tags": [
+            "fdm",
+            "sci-fi",
+            "wh40k",
+            "terrain"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAIknmcaheJtj7g6Qsh5zkaKAAEIWhgAAVAAAs7iMRvrCdBIi5nCfF1dW5MBAAMCAAN5AAM2BA",
+            "AgACAgIAAxkBAAIkn2cahgTOiW2JoMdkTXu_RUi_okZuAALP4jEb6wnQSNb0I4d2Ch4rAQADAgADeAADNgQ",
+            "AgACAgIAAxkBAAIkoGcahgT7aQkYj-vROsEzCE7nK3nWAALQ4jEb6wnQSBZjmmrQ-DsAAQEAAwIAA3gAAzYE",
+            "AgACAgIAAxkBAAIkoWcahgSEJuycE7EKvKKIASm1bldzAALR4jEb6wnQSMiWgn7yuHsAAQEAAwIAA3gAAzYE"
+          ],
+          "pledgeName": "Complete STL pack"
+        },
+        {
+          "name": "Demons, Orcs, and Rats",
+          "creator": "Brayan Nafarrate",
+          "link": "https://www.kickstarter.com/projects/nafarrate/demons-orcs-and-rats-3d-printable-models",
+          "files": [
+            "BQACAgQAAxkBAAIlXGcgi0xdkYfO2tr4wd3pn2qzmg_qAALaDQAC5iTxURVo8EDufiANNgQ",
+            "BQACAgQAAxkBAAIlXWcgi0z1eUByE5aMhWDGeP-RNULiAALdDQAC5iTxURUddwqbd_TkNgQ",
+            "BQACAgQAAxkBAAIlXmcgi0wc3LqmsdahM0OXcUBG0kmoAALeDQAC5iTxUdee36WvAznENgQ",
+            "BQACAgQAAxkBAAIlX2cgi0y7D5QhpoRHAWOqrapEZ2RdAALgDQAC5iTxUVJjg2RpZSekNgQ",
+            "BQACAgQAAxkBAAIlYGcgi0wNftpdA8wwOoeSJE6qrKBfAALkDQAC5iTxUUBUTHgqfsoKNgQ"
+          ],
+          "pledgeCost": "55",
+          "cost": "300",
+          "tags": [
+            "dnd",
+            "sla",
+            "orc",
+            "demon",
+            "rat"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAIlW2cgix2Di5BxxB33QIOMu_8E6TrZAAL_3TEbhLIJScPyLSBLbQ1XAQADAgADeQADNgQ"
+          ],
+          "pledgeName": "Demons, Orcs, and Rats"
+        },
+        {
+          "name": "Dodge WC series trucks + Opel Blitz trucks of WW2",
+          "creator": "Marharyta Bohush",
+          "link": "https://www.kickstarter.com/projects/wargame3d/dodge-wc-series-trucks-opel-blitz-trucks-ww2",
+          "files": [
+            "BQACAgUAAxkBAAIleGcgj3x7EBW5LcoSgyWZadRkrCXoAAIfDwACCkuoVYxkHZ9XTzzyNgQ",
+            "BQACAgUAAxkBAAIleWcgj3ydoOLajXz0NZ5v8H2b8ZgRAAIpDwACCkuoVf67EOajiiOsNgQ",
+            "BQACAgUAAxkBAAIlemcgj3zouEoSuij1_O_xS1rW94lGAAIvDwACCkuoVVpD74R1WBi9NgQ"
+          ],
+          "pledgeCost": "45",
+          "cost": "300",
+          "tags": [
+            "ww2",
+            "historical",
+            "vehicle",
+            "car",
+            "sla"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAIld2cgj3Odpa5lmmZI0fQnHzwuOyGZAAIb3jEbhLIJSeHyzDa7h77iAQADAgADeAADNgQ"
+          ],
+          "pledgeName": "Dodge WC + Opel Blitz (WW2) - Pers.use"
+        },
+        {
+          "name": "Japanese Fighting vehicles of WW2",
+          "creator": "Marharyta Bohush",
+          "link": "https://www.kickstarter.com/projects/wargame3d/japanese-fighting-vehicles-of-ww2-volume-1-scale-1-56",
+          "files": [
+            "BQACAgUAAxkBAAIlhGcgj9eEevplIL04M2ZLoV-7E02PAALHDAACr8WRV_ucsSPBpAhbNgQ",
+            "BQACAgUAAxkBAAIlhWcgj9eZLhLbmyhD5M1EUjNSoI-AAALJDAACr8WRVySegFn25V7zNgQ",
+            "BQACAgUAAxkBAAIlhmcgj9fI8lYxlMzv8Hig_vzfkudbAALNDAACr8WRV0OcNBs1gGsiNgQ",
+            "BQACAgUAAxkBAAIlh2cgj9eDupYi0o_Boqop5M7uEgKlAALODAACr8WRV6iNHnTJUq6ONgQ"
+          ],
+          "pledgeCost": "45",
+          "cost": "300",
+          "tags": [
+            "ww2",
+            "historical",
+            "vehicle",
+            "tank",
+            "sla"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAIlg2cgj84cgLHIamiHG1IkX2Us1NlAAAIc3jEbhLIJSbE11uGQQRr8AQADAgADeQADNgQ"
+          ],
+          "pledgeName": "15 WW2 JAPAN Fighting vehicles-Pers.use"
+        },
+        {
+          "name": "British wheeled armored cars of WW2",
+          "creator": "Marharyta Bohush",
+          "link": "https://www.kickstarter.com/projects/wargame3d/british-armored-cars-of-ww2-scale-1-56",
+          "files": [
+            "BQACAgUAAxkBAAIlkmcgkCNcPDd2fnOZ9k1Wwe6Ni5OVAALTDQAC1dJZVOwSLx-Ef1gbNgQ",
+            "BQACAgUAAxkBAAIlk2cgkCOWt3RD5uoKKzEBPwTF0lDKAALUDQAC1dJZVHLQ46V7bg53NgQ"
+          ],
+          "pledgeCost": "45",
+          "cost": "300",
+          "tags": [
+            "ww2",
+            "historical",
+            "vehicle",
+            "car",
+            "tank",
+            "sla"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAIlkGcgkBusoETZ__xWel6qJe6Sd4usAAId3jEbhLIJSUHFa41J5ud9AQADAgADeQADNgQ",
+            "AgACAgIAAxkBAAIlkWcgkBu1nNgQiWEAAduYm_WKbuazMQACHt4xG4SyCUnoIZxBP2KlogEAAwIAA3kAAzYE"
+          ],
+          "pledgeName": "British armored cars of WW2 - Pers.use"
+        },
+        {
+          "name": "German Armored vehicles of WW2",
+          "creator": "Marharyta Bohush",
+          "link": "https://www.kickstarter.com/projects/wargame3d/german-armoured-vehicles-of-ww2",
+          "files": [
+            "BQACAgUAAxkBAAIlnWcgkIP3VLevS2BvU_nEf3OCpIsJAAIvEwACUuSYVgNY42qKDCqONgQ",
+            "BQACAgUAAxkBAAIlnmcgkIPrsmIRX1WwkzJGHORJ0kGGAAJ1CgACUuSgViooHJP9Si_eNgQ",
+            "BQACAgUAAxkBAAIln2cgkIOP2_I4l9NhhNQYZeI2mQxWAAJ7CgACUuSgVlkuTtUqM0fINgQ"
+          ],
+          "pledgeCost": "45",
+          "cost": "300",
+          "tags": [
+            "ww2",
+            "historical",
+            "vehicle",
+            "car",
+            "tank",
+            "sla"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAIlnGcgkHbUjxYpLGo8AaJDIyy0NdxyAAIf3jEbhLIJSQPsvZdLMTA5AQADAgADeQADNgQ"
+          ],
+          "pledgeName": "15 WW2 German armoured vehicles-Pers.use"
+        },
+        {
+          "name": "Destroyed Fighting vehicles of WW2",
+          "creator": "Marharyta Bohush",
+          "link": "https://www.kickstarter.com/projects/wargame3d/destroyed-fighting-vehicles-of-ww2-from-wargame3d",
+          "files": [
+            "BQACAgUAAxkBAAIlqWcgkOamQM6Jl6yeHsw5bMjJMkqLAALZDAACyRopV-zJPRhrEO3JNgQ",
+            "BQACAgUAAxkBAAIlqmcgkOZL9pXnqD4VfrNG2iGHKkfOAALaDAACyRopVzPr7H5e2RArNgQ"
+          ],
+          "pledgeCost": "35",
+          "cost": "300",
+          "tags": [
+            "ww2",
+            "historical",
+            "vehicle",
+            "car",
+            "tank",
+            "sla"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAIlqGcgkNMftsH1lPIWDrhP-tydozvCAAIg3jEbhLIJSTo_BWZeRh_fAQADAgADeAADNgQ"
+          ],
+          "pledgeName": "13 DESTROYED vehicles of WW2 - Pers.use"
+        },
+        {
+          "name": "Japanese Fighting vehicles of WW2 - Volume 2",
+          "creator": "Marharyta Bohush",
+          "link": "https://www.kickstarter.com/projects/wargame3d/japan-fighting-vehicles-of-ww2-volume-2-scale-1-56",
+          "files": [
+            "BQACAgUAAxkBAAIltGcgkTIkdotJ9zB5wmYUcnDJusXpAAIgDAACWi8RV5AgKAIlp2MUNgQ",
+            "BQACAgUAAxkBAAIltWcgkTLN7mHila-6ovaMozGkfJyxAAIsDAACWi8RV_KeKBll9uLGNgQ",
+            "BQACAgUAAxkBAAIltmcgkTJ5VJd4xZRldzzgmUov2apnAAItDAACWi8RV4A5QA3m0FTDNgQ"
+          ],
+          "pledgeCost": "48",
+          "cost": "300",
+          "tags": [
+            "ww2",
+            "historical",
+            "vehicle",
+            "car",
+            "tank",
+            "sla"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAIls2cgkSX102p5EaI-SHGHEQKsyYB5AAIj3jEbhLIJSV5eVSLp93j0AQADAgADeQADNgQ"
+          ],
+          "pledgeName": "JAPAN vehicles of WW2 (Vol.2) - Pers.use"
+        },
+        {
+          "name": "Fighting vehicles of INTERWAR (1918-1939)",
+          "creator": "Marharyta Bohush",
+          "link": "https://www.kickstarter.com/projects/wargame3d/fighting-vehicles-of-interwar-1918-1939-scale-1-56",
+          "files": [
+            "BQACAgUAAxkBAAIlwGcgkXZX4_KmNJsXtEQkBqKE3Gd5AAJyDAACpUfoV3pEIwI0NazANgQ",
+            "BQACAgUAAxkBAAIlwWcgkXZGCIZfVR3RpmO8qE0e4dbKAAJ0DAACpUfoV--sJEQJyLLmNgQ"
+          ],
+          "pledgeCost": "48",
+          "cost": "300",
+          "tags": [
+            "ww2",
+            "historical",
+            "vehicle",
+            "car",
+            "tank",
+            "sla"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAIlv2cgkWx5Iuj05K1ZWeHaL0cPe0EsAAIl3jEbhLIJSaTkjVqWF2MxAQADAgADeQADNgQ"
+          ],
+          "pledgeName": "Vehicles of INTERWAR - Pers.use"
+        },
+        {
+          "name": "WW2 German Military Utility vehicles+Artillery",
+          "creator": "Marharyta Bohush",
+          "link": "https://www.kickstarter.com/projects/wargame3d/ww2-german-military-utility-vehicles-artillery-scale-1-56",
+          "files": [
+            "BQACAgUAAxkBAAIly2cgkbWsgJMg7qvTBIAeBapkrfsyAAIZDwACmcX4VO3-ZClQ6CYbNgQ",
+            "BQACAgUAAxkBAAIlzGcgkbWgUBne3JX2-_gtFnDm4Y_bAAK9EAACqWn5VFj_cEX7f_AyNgQ"
+          ],
+          "pledgeCost": "48",
+          "cost": "300",
+          "tags": [
+            "ww2",
+            "historical",
+            "vehicle",
+            "car",
+            "tank",
+            "sla"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAIlymcgka2YMl6lcUb5msl7E_QIGTVfAAIm3jEbhLIJSeNUl4PHtOD7AQADAgADeQADNgQ"
+          ],
+          "pledgeName": "GERMAN Utility vehicles - Personal use"
+        },
+        {
+          "name": "Belgian Fighting vehicles of WW2",
+          "creator": "Wargame3d (Marharyta Bohush)",
+          "link": "https://www.kickstarter.com/projects/planes3d/belgian-fighting-vehicles-of-ww2-scale-1-56-28mm",
+          "files": [
+            "BQACAgUAAxkBAAIl1mcgki20cD0aephJLlYBCRDeO9hBAALuEwAChYXgVlSuQsW-Q32XNgQ",
+            "BQACAgUAAxkBAAIl12cgki3_5i8n8fMd_s_ZqhG9wxI_AALwEwAChYXgVl4aWTASRfrrNgQ"
+          ],
+          "pledgeCost": "48",
+          "cost": "300",
+          "tags": [
+            "ww2",
+            "historical",
+            "vehicle",
+            "car",
+            "tank",
+            "sla"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAIl1WcgkiTwTSuvpRJFh2vNMKKPgtNkAAIs3jEbhLIJSRtndCwEihODAQADAgADeQADNgQ"
+          ],
+          "pledgeName": "WW2 BELGIAN vehicles - Personal use"
+        },
+        {
+          "name": "Polish Fighting vehicles of WW2",
+          "creator": "Marharyta Bohush",
+          "link": "https://www.kickstarter.com/projects/wargame3d/polish-fighting-vehicles-of-ww2-scale-1-56",
+          "files": [
+            "BQACAgUAAxkBAAIl4Wcgkn_H2XMxD6QE9LGft0OegEqpAAIpEQACWdHwVRSBhz4dRHGONgQ",
+            "BQACAgUAAxkBAAIl4mcgkn8wWoYw2NqbZnk1ZLcu7sysAAItEQACWdHwVc2-wg3MwkIbNgQ"
+          ],
+          "pledgeCost": "48",
+          "cost": "300",
+          "tags": [
+            "ww2",
+            "historical",
+            "vehicle",
+            "car",
+            "tank",
+            "sla"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAIl4GcgknCy1J3Z8_GBjUdKDG8mqRDfAAIw3jEbhLIJSYPdtOcZXzihAQADAgADeQADNgQ"
+          ],
+          "pledgeName": "WW2 POLISH Fighting vehicles - Pers.use"
+        },
+        {
+          "name": "BOLT ACTION:Bunkers+Artillery, Dug-in tanks, Radars, Stowage",
+          "creator": "Marharyta Bohush",
+          "link": "https://www.kickstarter.com/projects/wargame3d/bolt-action-bunkers-dug-in-tanks-radars-stowage-of-ww2",
+          "files": [
+            "BQACAgUAAxkBAAIl7GcgksaILc50SdPD6y-BXopAep4HAAKnDwACpg-BV3Wtq0311GJsNgQ",
+            "BQACAgUAAxkBAAIl7WcgksaJfxPGkE0HPfGeoeoPuJoXAALCDwACpg-BV5CwopFA-ODLNgQ",
+            "BQACAgUAAxkBAAIl7mcgksaIHksa7sxj2z0yU8S7SNkbAALDDwACpg-BV4-j9Ibf_e4QNgQ"
+          ],
+          "pledgeCost": "48",
+          "cost": "300",
+          "tags": [
+            "ww2",
+            "historical",
+            "sla",
+            "terrain",
+            "scatter"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAIl62cgkr_CDd0u0Pix52S7sb4gx06hAAJD3jEbhLIJSTIpKOlGhv59AQADAgADeQADNgQ"
+          ],
+          "pledgeName": "BOLT ACTION items - Personal use"
+        },
+        {
+          "name": "Passenger Military Cars of 1930-1945 years",
+          "creator": "Wargame3d (Marharyta Bohush)",
+          "link": "https://www.kickstarter.com/projects/planes3d/passenger-military-cars-of-1930-1945-years-volume-1",
+          "files": [
+            "BQACAgUAAxkBAAIl-Gcgkx0CULP0tiG8fhxouV1Jo_ITAAI7EQACa6S4V17BXpXDJ9cMNgQ",
+            "BQACAgUAAxkBAAIl-Wcgkx0KjlAsFQg61pKe7l80-MFiAAI-EQACa6S4VywgNwKqlYjNNgQ"
+          ],
+          "pledgeCost": "48",
+          "cost": "300",
+          "tags": [
+            "ww2",
+            "historical",
+            "vehicle",
+            "car",
+            "sla"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAIl92cgkxW-__GugJ1fRCfrEfY14N6BAAJG3jEbhLIJSZFkg6My0y8nAQADAgADeQADNgQ"
+          ],
+          "pledgeName": "WW2 Military cars (Vol.1) - Personal use"
+        },
+        {
+          "name": "British War Machines",
+          "creator": "Marharyta Bohush",
+          "link": "https://www.kickstarter.com/projects/wargame3d/british-war-machines-28mm-1-56-2-world-wars-stl-files",
+          "files": [
+            "BQACAgUAAxkBAAImA2cgk16zntsP7ahu-exRWvsE-537AAIfDAACNbRYV-LA1QcVW_d-NgQ"
+          ],
+          "pledgeCost": "40",
+          "cost": "300",
+          "tags": [
+            "ww2",
+            "historical",
+            "vehicle",
+            "car",
+            "tank",
+            "sla"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAImAmcgk1Zx4rzqttqw9VPkDKZL2xGHAAJK3jEbhLIJSWRIBQABs-ooJgEAAwIAA3kAAzYE"
+          ],
+          "pledgeName": "ALL IN - British models (13pcs+goals)"
+        },
+        {
+          "name": "BRITISH Fighting vehicles of WW2 (Vol.2)",
+          "creator": "Marharyta Bohush",
+          "link": "https://www.kickstarter.com/projects/wargame3d/british-fighting-vehicles-for-ww2-vol2-scale-1-56",
+          "files": [
+            "BQACAgUAAxkBAAImDWcgk7d2uTDRVgeqMZ_1_uOn7PTqAAK-DQACMjFQVw49PE-sFX4MNgQ"
+          ],
+          "pledgeCost": "40",
+          "cost": "300",
+          "tags": [
+            "ww2",
+            "historical",
+            "vehicle",
+            "car",
+            "tank",
+            "sla"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAImDGcgk66tqwrmQPILfhyI087yeDH1AAJU3jEbhLIJSfAtOoNg6sMxAQADAgADeQADNgQ"
+          ],
+          "pledgeName": "WW2 British Vol.2 (13pcs+goals)-Pers.use"
+        },
+        {
+          "name": "Fighting vehicles of D-DAY",
+          "creator": "Marharyta Bohush",
+          "link": "https://www.kickstarter.com/projects/wargame3d/fighting-vehicles-of-d-day-for-3d-printing-ww2-scale-1-56",
+          "files": [
+            "BQACAgUAAxkBAAImF2cglVOMIeWMtqiZfPs6_o76ysJ9AAIwDAACNbRYV9YJQFTLW35UNgQ"
+          ],
+          "pledgeCost": "40",
+          "cost": "300",
+          "tags": [
+            "ww2",
+            "historical",
+            "vehicle",
+            "car",
+            "tank",
+            "sla"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAImFmcglUolc9fvoIpcWPz1BywcLOb5AAJj3jEbhLIJSWNR9xMIcV9YAQADAgADeQADNgQ"
+          ],
+          "pledgeName": "D-DAY (13pcs+goals)-Personal use"
+        },
+        {
+          "name": "German War Machines",
+          "creator": "Marharyta Bohush",
+          "link": "https://www.kickstarter.com/projects/wargame3d/3d-printed-stl-files-of-german-war-machines-28mm-1-56",
+          "files": [
+            "BQACAgUAAxkBAAImIWcglcmfdCtEUG-yw_T2oCnB46tgAAI2DAACNbRYV5TcFeJXPKq_NgQ",
+            "BQACAgUAAxkBAAImImcglcm98WKbE9aH5rK8KXniVHORAAJWDAACNbRYV3626t2uzpT8NgQ",
+            "BQACAgUAAxkBAAImI2cglcn9uz_70xCZ9I0xkP4mZzI8AAJXDAACNbRYV5Vxqni_T_toNgQ"
+          ],
+          "pledgeCost": "55",
+          "cost": "300",
+          "tags": [
+            "ww2",
+            "historical",
+            "vehicle",
+            "car",
+            "tank",
+            "sla"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAImIGcglcBoOoD4zS2Oq14cYdfWTid5AAJl3jEbhLIJSdcXSQYx9L4lAQADAgADeAADNgQ"
+          ],
+          "pledgeName": "36 German War machines - Personal use"
+        },
+        {
+          "name": "ITALIAN War Machines",
+          "creator": "Marharyta Bohush",
+          "link": "https://www.kickstarter.com/projects/wargame3d/italian-war-machines-28mm-1-56-world-war-2-stl-files",
+          "files": [
+            "BQACAgUAAxkBAAImLWcglg5FH7rxtotDzATUAeHV4yoIAAJYDAACNbRYV1rE27GwBGUlNgQ"
+          ],
+          "pledgeCost": "35",
+          "cost": "300",
+          "tags": [
+            "ww2",
+            "historical",
+            "vehicle",
+            "car",
+            "tank",
+            "sla"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAImLGcglgQjAAGMwgoP9fQ7VyCxfpPoiAACZt4xG4SyCUkMobRNCfZTZAEAAwIAA3kAAzYE"
+          ],
+          "pledgeName": "ALL IN - Italian war machines (11 pcs)"
+        },
+        {
+          "name": "ITALIAN Fighting vehicles of WW2 (Vol.2)",
+          "creator": "Marharyta Bohush",
+          "link": "https://www.kickstarter.com/projects/wargame3d/italian-fighting-vehicles-of-ww2-vol2-scale-1-56-28mm",
+          "files": [
+            "BQACAgUAAxkBAAImN2cglkIJzDccUpeAXYDvtU0psGK0AAJfDAACNbRYV0H-Sm78PhfDNgQ"
+          ],
+          "pledgeCost": "40",
+          "cost": "300",
+          "tags": [
+            "ww2",
+            "historical",
+            "vehicle",
+            "car",
+            "tank",
+            "sla"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAImNmcgljqJBM-ZFMS9vhFgLgqhirBHAAJo3jEbhLIJSVGF7pZB8pe8AQADAgADeQADNgQ"
+          ],
+          "pledgeName": "ITALIAN tanks of WW2 (Vol.2) - Pers.use"
+        },
+        {
+          "name": "Fighting vehicles of the KOREAN WAR (1950-1953)",
+          "creator": "Marharyta Bohush",
+          "link": "https://www.kickstarter.com/projects/wargame3d/fighting-vehicles-of-the-korean-war-1950-1953-scale-1-56",
+          "files": [
+            "BQACAgUAAxkBAAImQWcgloNfhFGG7QgPGu3CPxj3Gk_7AAJzDAACNbRYV3FuDGHAD42FNgQ"
+          ],
+          "pledgeCost": "40",
+          "cost": "300",
+          "tags": [
+            "ww2",
+            "historical",
+            "vehicle",
+            "car",
+            "tank",
+            "sla"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAImQGcglngPZUmphg4Jdih5T_dxxsaQAAJt3jEbhLIJSaISGtQv171rAQADAgADeQADNgQ"
+          ],
+          "pledgeName": "KOREAN WAR Tanks (14pcs+goals)-Pers.use"
+        },
+        {
+          "name": "Fighting vehicles of LEND-LEASE",
+          "creator": "Marharyta Bohush",
+          "link": "https://www.kickstarter.com/projects/wargame3d/fighting-vehicles-of-lend-lease-1-56-for-3d-print",
+          "files": [
+            "BQACAgUAAxkBAAImS2cglstHa2497SfQ9LibhUiBR3JnAALnDAACMjFYV9B7LupU9XBYNgQ"
+          ],
+          "pledgeCost": "40",
+          "cost": "300",
+          "tags": [
+            "ww2",
+            "historical",
+            "vehicle",
+            "car",
+            "tank",
+            "sla"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAImSmcglsNVq1gLm7Zt5BuD_r0Ks93rAAJu3jEbhLIJSTAcezYAAUTaBAEAAwIAA3kAAzYE"
+          ],
+          "pledgeName": "LEND-LEASE models (13pcs+goals)-Pers.use"
+        },
+        {
+          "name": "Fighting vehicles of Spanish Civil War",
+          "creator": "Marharyta Bohush",
+          "link": "https://www.kickstarter.com/projects/wargame3d/fighting-vehicles-of-spanish-civil-war-1-56-for-3d-print",
+          "files": [
+            "BQACAgUAAxkBAAImVWcglwkst9ugkxr_bcPMVd79OrxQAAKeDAACNbRYV7sOsd5clcLhNgQ"
+          ],
+          "pledgeCost": "45",
+          "cost": "300",
+          "tags": [
+            "ww2",
+            "historical",
+            "vehicle",
+            "car",
+            "tank",
+            "sla"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAImVGcglv4O4oo_bOPK6eu1LCmiDR6DAAJz3jEbhLIJSfohviAhC81tAQADAgADeQADNgQ"
+          ],
+          "pledgeName": "Spanish models (14pcs+goals)-Pers.use"
+        },
+        {
+          "name": "USA/France War Machines",
+          "creator": "Marharyta Bohush",
+          "link": "https://www.kickstarter.com/projects/wargame3d/usa-france-war-machines-1-56-3d-printing-files-vol1",
+          "files": [
+            "BQACAgUAAxkBAAImX2cgl18BcWRtQc9L1Fv5GVknCXF2AAL0DAACMjFYV41VkaRcz8_iNgQ"
+          ],
+          "pledgeCost": "40",
+          "cost": "300",
+          "tags": [
+            "ww2",
+            "historical",
+            "vehicle",
+            "car",
+            "tank",
+            "sla"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAImXmcgl1Ow7cxGudxwUCjepvOu4QqEAAJ43jEbhLIJSd4V3Q7RKsVYAQADAgADeQADNgQ"
+          ],
+          "pledgeName": "ALL-IN-France+USA (14pcs+goals)-Pers.use"
+        },
+        {
+          "name": "USA/France War Machines (Vol.2)",
+          "creator": "Marharyta Bohush",
+          "link": "https://www.kickstarter.com/projects/wargame3d/usa-france-war-machines-1-56-3d-printing-files-vol2",
+          "files": [
+            "BQACAgUAAxkBAAImaWcgl5pv0o84_jvwXdqQu5JoTjPaAAKyDAACNbRYV7CSev6ZtlRUNgQ"
+          ],
+          "pledgeCost": "40",
+          "cost": "300",
+          "tags": [
+            "ww2",
+            "historical",
+            "vehicle",
+            "car",
+            "tank",
+            "sla"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAImaGcgl5GHmjzwSvB6Q-gQTe8_J2CpAAJ53jEbhLIJSRQkdzk65XeqAQADAgADeQADNgQ"
+          ],
+          "pledgeName": "ALL-IN-France+USA (14pcs+goals)-Pers.use"
+        },
+        {
+          "name": "USSR War Machines",
+          "creator": "Marharyta Bohush",
+          "link": "https://www.kickstarter.com/projects/wargame3d/ussr-war-machines-28mm-1-56-stl-files-for-3d-printing",
+          "files": [
+            "BQACAgUAAxkBAAImc2cgmAIi-sqrbr6dlhQabPvP0TkGAAK1DAACNbRYV8yjHVfYhdfDNgQ"
+          ],
+          "pledgeCost": "45",
+          "cost": "300",
+          "tags": [
+            "ww2",
+            "historical",
+            "vehicle",
+            "car",
+            "tank",
+            "sla"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAImcmcgl_kD8b0uAAGtAv8axLk9CKXNUgACe94xG4SyCUlOrDTyjuAjHAEAAwIAA3kAAzYE"
+          ],
+          "pledgeName": "ALL-IN - USSR models (14pcs+goals)"
+        },
+        {
+          "name": "Fighting vehicles of WW1",
+          "creator": "Marharyta Bohush",
+          "link": "https://www.kickstarter.com/projects/wargame3d/fighting-vehicles-of-ww1-volume-1-scale-1-56",
+          "files": [
+            "BQACAgUAAxkBAAImfWcgmD95cmnjwDpUiA4cQqHxCVGkAAK7DAACNbRYV2pbvAYch6HyNgQ"
+          ],
+          "pledgeCost": "40",
+          "cost": "300",
+          "tags": [
+            "ww2",
+            "historical",
+            "vehicle",
+            "car",
+            "tank",
+            "sla"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAImfGcgmDaQ_OLLKQgzGfp6UCRSME1cAAJ_3jEbhLIJST7Qc0zQStq9AQADAgADeQADNgQ"
+          ],
+          "pledgeName": "WW1 Vehicles Vol.1(14pcs+goals)-Pers.use"
+        },
+        {
+          "name": "SOVIET Fighting vehicles of WW2",
+          "creator": "Marharyta Bohush",
+          "link": "https://www.kickstarter.com/projects/wargame3d/soviet-fighting-vehicles-of-ww2-for-3d-printing-volume-1",
+          "files": [
+            "BQACAgUAAxkBAAImh2cgmINGNsuKfDuHJdDhxAvOKE4EAALaDQACtgWoVB_zD4Xt0qx1NgQ",
+            "BQACAgUAAxkBAAImiGcgmIMmLnDfmVoFniCgndiDrY8nAALoDQACtgWoVD1BkwYXqwtoNgQ"
+          ],
+          "pledgeCost": "40",
+          "cost": "300",
+          "tags": [
+            "ww2",
+            "historical",
+            "vehicle",
+            "car",
+            "tank",
+            "sla"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAImhmcgmHlYdjvRe_RlaygWTaIwNAt-AAKB3jEbhLIJSf6-XsVmbInSAQADAgADeQADNgQ"
+          ],
+          "pledgeName": "WW2 Soviet vehicles (Vol.1)-Pers.use"
+        },
+        {
+          "name": "MILITARY Utility vehicles + ARTILLERY of WW2",
+          "creator": "Marharyta Bohush",
+          "link": "https://www.kickstarter.com/projects/wargame3d/military-utility-vehicles-artillery-of-ww2-volume-2",
+          "files": [
+            "BQACAgUAAxkBAAImkmcgmY5F6IEcyvyxhDG8nqDjBZ37AAJZDAACaz-YVRSV7uaGYZqkNgQ",
+            "BQACAgUAAxkBAAImk2cgmY5P5yTN9baO57zHS-Jcva8kAAJbDAACaz-YVdFjjco4KwrpNgQ"
+          ],
+          "pledgeCost": "40",
+          "cost": "300",
+          "tags": [
+            "ww2",
+            "historical",
+            "vehicle",
+            "car",
+            "tank",
+            "sla"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAImkWcgmYgYtpemjOiNxVVhRAQLX2W1AAKg3jEbhLIJSdCwIV0GFwxrAQADAgADeQADNgQ"
+          ],
+          "pledgeName": "WW2 Vehicles+Artillery (Vol.2)-Pers.use"
+        },
+        {
+          "name": "Military UTILITY VEHICLES and ARTILLERY of WW2",
+          "creator": "Marharyta Bohush",
+          "link": "https://www.kickstarter.com/projects/wargame3d/military-utility-vehicles-and-artillery-of-ww2-scale-1-56",
+          "files": [
+            "BQACAgUAAxkBAAImnWcgmctDRJy57BuRzdoBKsfjgBxRAALGDAACvgvhVSyP5rcLDFQPNgQ",
+            "BQACAgUAAxkBAAImnmcgmcvNHHVapejK_Ojmvx4wQnTtAALIDAACvgvhVenm6O_zv7dINgQ"
+          ],
+          "pledgeCost": "40",
+          "cost": "300",
+          "tags": [
+            "ww2",
+            "historical",
+            "vehicle",
+            "car",
+            "tank",
+            "sla"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAImnGcgmcEg7y85IKTjtHuVzHAvAorXAAKj3jEbhLIJSZJhE0WjcpRrAQADAgADeQADNgQ"
+          ],
+          "pledgeName": "WW2 Vehicles+Artillery (Vol.1)-Pers.use"
+        },
+        {
+          "name": "SOVIET Fighting vehicles of WW2 (Volume 2)",
+          "creator": "Wargame3D (Marharyta Bohush)",
+          "link": "https://www.kickstarter.com/projects/airplane3d/soviet-fighting-vehicles-of-ww2-volume-2",
+          "files": [
+            "BQACAgUAAxkBAAImqGcgmiM7SUEbC-K41hDe9Ul8_yX1AAIGCgACfZFhVjgiusXiFn9tNgQ",
+            "BQACAgUAAxkBAAImqWcgmiOe4TMml9MWDC_MMnpJRJPUAAIHCgACfZFhVnkE2g6v1VqSNgQ"
+          ],
+          "pledgeCost": "40",
+          "cost": "300",
+          "tags": [
+            "ww2",
+            "historical",
+            "vehicle",
+            "car",
+            "tank",
+            "sla"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAImp2cgmhmB6bK2S39wuLMBItft3FSjAAKl3jEbhLIJSSmpINbJ1-hQAQADAgADeQADNgQ"
+          ],
+          "pledgeName": "WW2 SOVIET Vehicles (Vol.2)-Pers.use"
+        },
+        {
+          "name": "GERMAN Half-track vehicles of WW2",
+          "creator": "Marharyta Bohush",
+          "link": "https://www.kickstarter.com/projects/wargame3d/german-half-tracks-of-ww2-scale-1-56",
+          "files": [
+            "BQACAgUAAxkBAAImt2cgmmt1pPCL-zkSsrYAAfv0o9sDFQACpAsAAi6X6FTsDbrrtJvBqDYE",
+            "BQACAgUAAxkBAAImuGcgmmsWNeeywJnB9I2bOeBkK7ZIAAKlCwACLpfoVI84_lPxg6AZNgQ",
+            "BQACAgUAAxkBAAImuWcgmmuFeHgmEHS4okCgwxMa7VeIAAKoCwACLpfoVIFRqN1e7og0NgQ"
+          ],
+          "pledgeCost": "45",
+          "cost": "300",
+          "tags": [
+            "ww2",
+            "historical",
+            "vehicle",
+            "car",
+            "tank",
+            "sla"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAImtmcgmmJlidf4pNQn2J8ECmGSRjDzAAKn3jEbhLIJSQmQ5V2FpZDXAQADAgADeQADNgQ"
+          ],
+          "pledgeName": "16 GERMAN Half-tracks of WW2 – Pers.use"
+        },
+        {
+          "name": "HUNGARIAN Fighting vehicles of WW2",
+          "creator": "Marharyta Bohush",
+          "link": "https://www.kickstarter.com/projects/wargame3d/hungarian-fighting-vehicles-of-ww2",
+          "files": [
+            "BQACAgUAAxkBAAImw2cgmpioqzdFyzfiQjlGr_0GerpZAAJlDAACyLChVcpRXFoM4tBONgQ",
+            "BQACAgUAAxkBAAImxGcgmpgZOWV5M0AtVfMSd_7G0yAsAAJnDAACyLChVf3i09Y4oP9QNgQ"
+          ],
+          "pledgeCost": "45",
+          "cost": "300",
+          "tags": [
+            "ww2",
+            "historical",
+            "vehicle",
+            "car",
+            "tank",
+            "sla"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAImwmcgmpG-nymGeGvjQuiVMVCVtQ7MAAKo3jEbhLIJSXSfAbvQRl4IAQADAgADeQADNgQ"
+          ],
+          "pledgeName": "15 WW2 Hungarian vehicles - Personal use"
+        },
+        {
+          "name": "ITALIAN Military Utility vehicles of WW2",
+          "creator": "Marharyta Bohush",
+          "link": "https://www.kickstarter.com/projects/wargame3d/italian-military-utility-vehicles-of-ww2-scale-1-56",
+          "files": [
+            "BQACAgUAAxkBAAImzmcgmsq1lB-uwgIZvTv9d-rT0FcBAAKsDQAC1hIxVsaoFHa7UYQvNgQ",
+            "BQACAgUAAxkBAAImz2cgmsrkD2ZXlLUYopJHyNPWtnCMAAKvDQAC1hIxVu_r6RfU_1ZzNgQ",
+            "BQACAgUAAxkBAAIm0GcgmsoYG-4ZGe7ZyAVS68azgaYaAAKwDQAC1hIxVrYZcvc9K806NgQ"
+          ],
+          "pledgeCost": "45",
+          "cost": "300",
+          "tags": [
+            "ww2",
+            "historical",
+            "vehicle",
+            "car",
+            "tank",
+            "sla"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAImzWcgmsSKNfRKU9fmi7VQN9TkZmp5AAKr3jEbhLIJSaBcLQ0iu0uUAQADAgADeQADNgQ"
+          ],
+          "pledgeName": "ITALIAN Utility trucks (WW2) - Pers.use"
+        },
+        {
+          "name": "AMPHIBIOUS Fighting vehicles of WW2",
+          "creator": "Marharyta Bohush",
+          "link": "https://www.kickstarter.com/projects/wargame3d/amphibious-fighting-vehicles-of-ww2-scale-1-56",
+          "files": [
+            "BQACAgUAAxkBAAIm2mcgmxiy3tF9dO3J2MfaC8mtIg7XAAIcDAACNbRYV3Hdj8lTX-5tNgQ",
+            "BQACAgUAAxkBAAIm22cgmxind9GZ1sa6Ug7LrmoAASFu0AACuA0AAjIxUFcoxvsoumqZMDYE"
+          ],
+          "pledgeCost": "40",
+          "cost": "300",
+          "tags": [
+            "ww2",
+            "historical",
+            "vehicle",
+            "car",
+            "tank",
+            "sla"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAIm2Wcgmw53o-LSa6ofnk00wreqviuXAAKs3jEbhLIJSU3fSIMeOCuBAQADAgADeQADNgQ"
+          ],
+          "pledgeName": "AMPHIBIOUS of WW2 (14pcs+goals)-Pers.use"
+        },
+        {
+          "name": "FRENCH Fighting vehicles of WW2 (Volume 2)",
+          "creator": "Marharyta Bohush",
+          "link": "https://www.kickstarter.com/projects/wargame3d/french-fighting-vehicles-of-ww2-volume-2",
+          "files": [
+            "BQACAgUAAxkBAAIm5Wcgm0vYrIEYEJk2NadSeOJrlhNhAAIWDgAC6_HxV__D2D9NljPNNgQ",
+            "BQACAgUAAxkBAAIm5mcgm0v9g8XMTFdl_6JMkKgh6qvRAAIZDgAC6_HxV_GSlPuDYMjfNgQ",
+            "BQACAgUAAxkBAAIm52cgm0t-ZJZHG8m8y9uRIv0tskEVAAIbDgAC6_HxV_hzijKmRp-WNgQ"
+          ],
+          "pledgeCost": "40",
+          "cost": "300",
+          "tags": [
+            "ww2",
+            "historical",
+            "vehicle",
+            "car",
+            "tank",
+            "sla"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAIm5Gcgm0EUH_NswkrAFtVDUSexhkeQAAK23jEbhLIJSViKTVlEDDmWAQADAgADeQADNgQ"
+          ],
+          "pledgeName": "14 WW2 French vehicles (Vol2) - Pers.use"
+        },
+        {
+          "name": "The Rapid Fire Dicebox",
+          "creator": "Mike Hancox",
+          "link": "https://www.kickstarter.com/projects/steelandflint/the-rapid-fire-dicebox-from-tempest-terrain",
+          "files": [
+            "BQACAgQAAxkBAAInAmcg_mwC6h7z4sqRsw-aDiSYUIEDAAKoEwAC9j6pU2WLeFzQ54DHNgQ"
+          ],
+          "pledgeCost": "20",
+          "cost": "130",
+          "tags": [
+            "fdm",
+            "wh40k",
+            "wargame",
+            "useful",
+            "dice"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAIm_Gcg_iSpm-QraK5j1xdZ263woweuAALb4TEbhLIJSd_nE6tOwNEUAQADAgADeQADNgQ",
+            "AgACAgIAAxkBAAIm_Wcg_j3zR2giG9FbExXsU-2-no2ZAALc4TEbhLIJSZH_d52HPlvyAQADAgADeAADNgQ",
+            "AgACAgIAAxkBAAIm_mcg_j0tq8_V68lysrEXhR1gDnWUAALd4TEbhLIJSU4wkbU4g3bzAQADAgADeAADNgQ",
+            "AgACAgIAAxkBAAIm_2cg_j3GXftWwtemgQEpIMLyIbQtAALe4TEbhLIJSXBbvfmb3derAQADAgADeAADNgQ",
+            "AgACAgIAAxkBAAInAAFnIP49uStObXs_FIJ1eC8Vo3r9PgAC3-ExG4SyCUlqHHVDe6CWKAEAAwIAA3gAAzYE",
+            "AgACAgIAAxkBAAInAWcg_j28l9A2j6FjPHSQhMUm93jOAALg4TEbhLIJSe706NzIXLkaAQADAgADeAADNgQ"
+          ],
+          "pledgeName": "Digital Full Set"
+        },
+        {
+          "name": "Escape from Drakov",
+          "creator": "Modern-Miniatures",
+          "link": "https://www.myminifactory.com/frontier/escape-from-drakov-28mm-wargaming-files-3031",
+          "files": [
+            "BQACAgQAAxkBAAIn0GciZ329OLTzauUNmjlPz331ILAPAAJfIQAC_AXIU70LIaDd3RS0NgQ"
+          ],
+          "pledgeCost": "55",
+          "cost": "330",
+          "tags": [
+            "sla",
+            "miniature",
+            "military",
+            "specter",
+            "wargame",
+            "terrain"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAInz2ciZ2K68etTMBsCxHyV1fOqEyaZAAKHBjIbJm4YSfgkHyKh5jMtAQADAgADeQADNgQ"
+          ],
+          "pledgeName": "ALL-IN Set"
+        },
+        {
+          "name": "Grim Brotherhood",
+          "creator": "Fellowship Games",
+          "link": "https://www.kickstarter.com/projects/fellowshipgames/grim-brotherhood",
+          "files": [
+            "BQACAgIAAxkBAAIoyGckDFPAuD8DIw9o-Ygc-Vfnb0ckAAIfUwACPXbJS7dspJ5N0pndNgQ",
+            "BQACAgIAAxkBAAIoyWckDFNNkxksA00ojWX3KajL-yFGAAIpUwACPXbJS1vxDI76t-XhNgQ",
+            "BQACAgIAAxkBAAIoymckDFOsXp6CjHpYhSMSqkucpUPhAAIxUwACPXbJS7kYMVVDsLe8NgQ",
+            "BQACAgIAAxkBAAIoy2ckDFMVghpn6TGOCMedLQ1OVSIsAAI7UwACPXbJS4foA9y-KyHCNgQ",
+            "BQACAgIAAxkBAAIozGckDFPcFiyG_Yyl1mqYFxeqGAyUAAI_UwACPXbJSxHsEjVg2xotNgQ",
+            "BQACAgIAAxkBAAIozWckDFNTwKyD9c5n2PbzQETahP0BAAJPUwACPXbJSwThTDyWpD2tNgQ",
+            "BQACAgIAAxkBAAIozmckDFNvBbvx-IWNMkygunJkiIuwAAJWUwACPXbJSwL5Q0XNFdWINgQ",
+            "BQACAgIAAxkBAAIoz2ckDFPlbRfjqxpwOMU3fJmIB1yNAAJaUwACPXbJS7VDtmNFVXXANgQ",
+            "BQACAgIAAxkBAAIo0GckDFMu3wYv8gZ4r9MEXyVzz7TeAAJkUwACPXbJS-54FAmqG6FFNgQ",
+            "BQACAgIAAxkBAAIo0WckDFMPQWOdOw72-FY0uTsSiQxSAAIyXAACwtL5SJ5u53Kw8JfLNgQ",
+            "BQACAgIAAxkBAAIo0mckDFP3ftdLc6YuwmFGSoev6k_pAAI1XAACwtL5SJsvxptoCDigNgQ",
+            "BQACAgIAAxkBAAIo02ckDFOrvRAWve18UzQDr0jN3XHjAAI2XAACwtL5SOMzrgwWaP5HNgQ",
+            "BQACAgIAAxkBAAIo1GckDFNh7vTnjQWhiZEM2CYDhP9xAAImXAAC_kIRSdLDTX_ZsXOZNgQ"
+          ],
+          "pledgeCost": "76",
+          "cost": "150",
+          "tags": [
+            "sla",
+            "miniature",
+            "aos",
+            "wh",
+            "priest",
+            "bits"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAIox2ckDDavGcYnuJ4EXLADkGoyozBJAAJc7TEbQ-EhSYz17aN8phIXAQADAgADeQADNgQ"
+          ],
+          "pledgeName": "Special"
+        },
+        {
+          "name": "Legend of Keepers",
+          "creator": "Scott Taylor",
+          "link": "https://www.kickstarter.com/projects/563681582/legend-of-keepers-5e-reverse-dungeon-and-stl-miniatures",
+          "files": [
+            "BQACAgQAAxkBAAIp02cnjOPjZZBCqgMtBOUB_M8bdZu_AAJHDQACjqFhUtLJab7W0BA6NgQ",
+            "BQACAgQAAxkBAAIp1GcnjOOve4ADNYN6I20JRvPHemsXAAJKDQACjqFhUvGe-yxSvpjKNgQ",
+            "BQACAgQAAxkBAAIp1WcnjONZxLDfM2wkRSd6rbvDW1UBAAJLDQACjqFhUluxsNjSQd2LNgQ",
+            "BQACAgQAAxkBAAIp1mcnjOMp5sEjYKYtne7oKmAPHgNhAAJNDQACjqFhUlmBxIj-NnBDNgQ",
+            "BQACAgQAAxkBAAIp12cnjOMnAAGW9FVTYo2HZATy45jAigACTg0AAo6hYVIBGPF7Aond1DYE",
+            "BQACAgQAAxkBAAIp2GcnjONRM_YNBcg_ismtU9v858khAAJPDQACjqFhUnidHAimdvyENgQ",
+            "BQACAgQAAxkBAAIp2WcnjOMl_LVgRdZICfKItajpasL1AAJQDQACjqFhUn-25zgxFRMtNgQ",
+            "BQACAgQAAxkBAAIp2mcnjONo9plUJYj5zw4GYzrMZSe5AAJRDQACjqFhUi3IIvAkMdyNNgQ",
+            "BQACAgQAAxkBAAIp22cnjOPT7XHUfaCoYaFsYZHQI5g-AAJSDQACjqFhUsqNGVvlcRmnNgQ",
+            "BQACAgQAAxkBAAIp3GcnjONTE0u0jyRn8qhFBq8aOG0_AAJTDQACjqFhUhPKaKyE0DZfNgQ",
+            "BQACAgQAAxkBAAIp3WcnjONKa8CyG2N1Mlb7bdN0WnvKAAJVDQACjqFhUnFlmFfVRDICNgQ",
+            "BQACAgQAAxkBAAIp3mcnjOPfX9Ir0sZOkL8KDvF2tEqdAAJZDQACjqFhUtXW00WiIEaGNgQ",
+            "BQACAgQAAxkBAAIp32cnjOMEOELPlLolo5pbmVuLsL9BAAJaDQACjqFhUjH3aJrs6v3INgQ",
+            "BQACAgQAAxkBAAIp4GcnjONYRM9JuYjMQE_zq_7aPIXRAAJdDQACjqFhUrOXO3mlIY5hNgQ",
+            "BQACAgQAAxkBAAIp4WcnjOOgL7k6aeM8ZfY4aAABXebyLAACXw0AAo6hYVIbivBhOsF8gDYE",
+            "BQACAgQAAxkBAAIp4mcnjOMhgxCsV157Mt5AAaruSyPHAAJjDQACjqFhUpULDtb3R5eRNgQ",
+            "BQACAgQAAxkBAAIp42cnjOMeOWI646HH8RIbQc2BoQOqAAJlDQACjqFhUjVu1c6VpCYrNgQ",
+            "BQACAgQAAxkBAAIp5GcnjOND7kJG3H86ZbGYR4Z0ljhKAAJtDQACjqFhUqtKFJFHDBMoNgQ",
+            "BQACAgQAAxkBAAIp5WcnjONDVO6fubrlevUdYUpf_gO_AAJuDQACjqFhUj1Klos_zwSBNgQ",
+            "BQACAgQAAxkBAAIp5mcnjOOSVbOspB1JpvMGjR1mMOeSAAJwDQACjqFhUmKoGdlCcDDnNgQ",
+            "BQACAgQAAxkBAAIp52cnjOPpWupnt6lZaDICwE92bsczAAJzDQACjqFhUpzFFl0nXGkbNgQ",
+            "BQACAgQAAxkBAAIp6GcnjONYEBAwxXxdDrKxQEgsXeU_AAJ0DQACjqFhUtk0MK52X3qNNgQ",
+            "BQACAgQAAxkBAAIp6WcnjOPhFc08k4NcYcalbVvtMDvuAAK5DQACL1BBU_QNSEIIP4efNgQ",
+            "BQACAgQAAxkBAAIp6mcnjOPW1nYvuwSrlessVCInhhohAAKKGAACtiLoUIzApeFQKoUDNgQ",
+            "BQACAgQAAxkBAAIp62cnjOMWhkikhN5n_XzwQCKiugqqAAKpFAAC2o-pUjxh7ZHpFySONgQ",
+            "BQACAgQAAxkBAAIp7GcnjOMqGntzcxHtO3VVBPy98RcwAAKqFAAC2o-pUk9iyxTdSqCpNgQ",
+            "BQACAgQAAxkBAAIp7WcnjOPYkXRewL_0E8lYjegYW3y9AAKrFAAC2o-pUjIsWTtpP0SKNgQ",
+            "BQACAgQAAxkBAAIp7mcnjOPfWxIU1x8wiMYyQPdy6n1DAALsFAACq0ahUEHVsAJmPW3MNgQ",
+            "BQACAgQAAxkBAAIp72cnjOPFDEPgUwUU9y-Zj_GDNRvbAALtFAACq0ahUD6kw_7bq8YcNgQ",
+            "BQACAgQAAxkBAAIp8GcnjON-aUaXipqgF-4Xt2tpv62pAALuFAACq0ahUOfH_mC5QkvUNgQ",
+            "BQACAgQAAxkBAAIp8WcnjONib5eP1g53c96KPw-hLoHTAALvFAACq0ahUCuIeNrropLeNgQ",
+            "BQACAgQAAxkBAAIp8mcnjOOvuQ3_dKxC752JMlJzkWUQAALwFAACq0ahUG8AAaIJihomTDYE",
+            "BQACAgQAAxkBAAIp82cnjOM08WAOjyvQnyfT0Au20_WYAAI-FQACVBTQUWMu5QrgGtZcNgQ"
+          ],
+          "pledgeCost": "140",
+          "cost": "490",
+          "tags": [
+            "dnd",
+            "game",
+            "sla",
+            "miniature",
+            "map",
+            "pdf"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAIp0mcnjKySjd9e6l9vt-6OPKkkSsc0AAI56DEbCWFBSdlTu1nV3TrrAQADAgADeQADNgQ"
+          ],
+          "pledgeName": "Digital All-In (PDF+STL)"
+        },
+        {
+          "name": "Anheron Quest 4",
+          "creator": "Anheron Universe",
+          "link": "https://www.kickstarter.com/projects/anheronquest/anheron-quest-4-the-defense-of-cetian",
+          "files": [
+            "BQACAgEAAxkBAAIqKWcnkUfVNBQPYibTvdiCi__o2FCBAAKwBAACWNyZRYLnsh3CB_YkNgQ"
+          ],
+          "pledgeCost": "13",
+          "cost": "110",
+          "tags": [
+            "dnd",
+            "fantasy",
+            "knight",
+            "sla",
+            "miniature"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAIqKGcnkTd_Cj08ofItGDBGHw2UuS1zAAJV6DEbCWFBScQpvFf1bRe9AQADAgADeQADNgQ"
+          ],
+          "pledgeName": "Phase 4"
+        },
+        {
+          "name": "Cthulhu Investigators",
+          "creator": "Kazrak Studio",
+          "link": "https://www.kickstarter.com/projects/saberandblood/cthulhu-investigators",
+          "files": [
+            "BQACAgIAAxkBAAIqM2cnkbc24Ov0nz1otfpwotYJDu3AAALrLAACuBKQShKZcx2shtTMNgQ"
+          ],
+          "pledgeCost": "25",
+          "cost": "175",
+          "tags": [
+            "arkham",
+            "sla",
+            "miniature"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAIqMmcnkaBX0V7DX6C2rAsKMe4qb4x9AAJY6DEbCWFBSSQSWl284GD8AQADAgADeAADNgQ"
+          ],
+          "pledgeName": "Core Set- STL"
+        },
+        {
+          "name": "Cthulhu Investigators 2",
+          "creator": "Kazrak Studio",
+          "link": "https://www.kickstarter.com/projects/saberandblood/cthulhu-investigators-2",
+          "files": [
+            "BQACAgIAAxkBAAIqPWcnkfNs5t14LQl2Jxv-CHhgjqLMAAL4LAACuBKQSmFkgmAr9lPiNgQ"
+          ],
+          "pledgeCost": "25",
+          "cost": "175",
+          "tags": [
+            "arkham",
+            "sla",
+            "miniature"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAIqPGcnkee3YyPRYVGWjwmEBU3eNmmRAAJc6DEbCWFBSfE5cAvvFRMeAQADAgADeQADNgQ"
+          ],
+          "pledgeName": "STL Core Set"
+        },
+        {
+          "name": "Argoth the Orc King",
+          "creator": "Cavalier 3d Miniatures",
+          "link": "https://www.kickstarter.com/projects/cavalier3dminiatures/argoth-the-orc-king-75mm-and-32mm-stl-sculpted-by-3dsofsan",
+          "files": [
+            "BQACAgEAAxkBAAIqR2cnkkO-QQtX0B8o8wM9ci3Tb7kfAAJ0AwACiRrQRJ4vHONgPTDENgQ"
+          ],
+          "pledgeCost": "13",
+          "cost": "75",
+          "tags": [
+            "fantasy",
+            "orc",
+            "big",
+            "sla"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAIqRmcnkjKRlk0vRsxmV6Vn5BlC3IjVAAJe6DEbCWFBSXdezQ5nTeSbAQADAgADeQADNgQ"
+          ],
+          "pledgeName": "Argoth Ironsoul (The Ork King)"
+        },
+        {
+          "name": "Greywind's Guide To Tharador",
+          "creator": "DM Stash",
+          "link": "https://www.kickstarter.com/projects/dmstash/greywinds-guide-to-tharador-5e",
+          "files": [
+            "BQACAgIAAxkBAAIqUWcnkqTmeamGezk3JquGxeVAtYiOAAKDNwAClM1QSumHHE2PIycvNgQ",
+            "BQACAgIAAxkBAAIqUmcnkqS8NoL2tD9VmIITg00SYMm5AAKsNwAClM1QShd1TuQph34PNgQ",
+            "BQACAgIAAxkBAAIqU2cnkqRqsqxSMtLr4BpMVBiK4OBCAALZNwAClM1QSu1sjn21N2huNgQ",
+            "BQACAgIAAxkBAAIqVGcnkqSZ2aiUcZnBAXfZLkiHnJ0lAAIBOAAClM1QSnU-WJchLLPGNgQ",
+            "BQACAgIAAxkBAAIqVWcnkqRLR8Rvsk5Zuwhn0JJ4mAEkAAI6OAAClM1QSpK6kKrNaA5YNgQ",
+            "BQACAgIAAxkBAAIqVmcnkqQKfCYkEjp5pn3EKG_nTe7JAAJxOAAClM1QSlOqXmiio9LpNgQ",
+            "BQACAgIAAxkBAAIqV2cnkqS1OakzIU5By9uQswFVQfNKAAKyOAAClM1QSjCqH15oPOt2NgQ",
+            "BQACAgIAAxkBAAIqWGcnkqR45b4ooMjORgTCdsALjy0nAALPOAAClM1QSgKuXb5IIFLjNgQ",
+            "BQACAgIAAxkBAAIqWWcnkqTEPyifjng-5vyFhUjoo7Z9AALgOAAClM1QSm7ryc1xWPdWNgQ",
+            "BQACAgIAAxkBAAIqWmcnkqTzz-pLAipLWYaPZIUFl-LmAAIBOQAClM1QSvODMhoVkGhpNgQ",
+            "BQACAgIAAxkBAAIqW2cnkqRRMEz8KJ9AgJf4U7Kik8A3AAITOQAClM1QSv3eyUiK-mA2NgQ",
+            "BQACAgIAAxkBAAIqXGcnkqQO_Vg6Zc1DfeV7ESFlHnBRAAIiOQAClM1QSpn_cJbzyng8NgQ",
+            "BQACAgIAAxkBAAIqXWcnkqS-aDJ5N6OTZUCTCdjOImnTAAI6OQAClM1QShrDl6u3vR9fNgQ",
+            "BQACAgIAAxkBAAIqXmcnkqRrjRBlzPyuYR0vtoh5LtlOAALsLAAClM1YSuMkjuxQyrN3NgQ",
+            "BQACAgIAAxkBAAIqX2cnkqT8l57Nyi46SC4pDy-LQC3XAAL_LAAClM1YSmHbyb1Z08-JNgQ",
+            "BQACAgIAAxkBAAIqYGcnkqRXpd7L9vpkWwS46vWDQY2aAAIXLQAClM1YSliK0B_3U4QoNgQ",
+            "BQACAgIAAxkBAAIqYWcnkqQMMd0BFhAEFHCCCg9QL_2jAAIjLQAClM1YShijqLAFCPD4NgQ",
+            "BQACAgIAAxkBAAIqYmcnkqRtfzESRKjpOtmHyW6NfK50AAIrLQAClM1YSvD22Yat26MzNgQ",
+            "BQACAgIAAxkBAAIqY2cnkqTN_gySAyByc6yYhcG5rmkZAAIsLQAClM1YSp-_B4X0mL1YNgQ"
+          ],
+          "pledgeCost": "85",
+          "cost": "350",
+          "tags": [
+            "dnd",
+            "fantasy",
+            "miniature",
+            "monster",
+            "pdf"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAIqUGcnkpH2PkHVE2-R40KIQda5Efv3AAJh6DEbCWFBSWnw3deA4_VoAQADAgADeQADNgQ"
+          ],
+          "pledgeName": "Digital All-In"
+        },
+        {
+          "name": "Wasteland & Post Apocalyptic Miniatures",
+          "creator": "Command Project Miniatures",
+          "link": "https://www.kickstarter.com/projects/commandminiatures/command-project-post-apocalyptic-miniatures-bundle",
+          "files": [
+            "BQACAgIAAxkBAAIqbWcnkyHbZi72a_mIa3WPAAH61MRZmQAC5DIAAmQrWEjezPnz9SD0djYE",
+            "BQACAgIAAxkBAAIqbmcnkyFi6be0H5smr8jrByvFj9QRAAL4MgACZCtYSCd15-txs07INgQ"
+          ],
+          "pledgeCost": "88",
+          "cost": "650",
+          "tags": [
+            "sla",
+            "madmax",
+            "miniature",
+            "vehicle"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAIqbGcnkwwyEGkU7yD86gGZXGS72NEPAAJl6DEbCWFBSUsV1zUOrAeHAQADAgADeQADNgQ"
+          ],
+          "pledgeName": "All in"
+        },
+        {
+          "name": "Pinup Corps",
+          "creator": "Across the Realms",
+          "link": "https://www.myminifactory.com/frontier/pinup-corps-877",
+          "files": [
+            "BQACAgIAAxkBAAIqe2cnqu6DF6fwsUXniNdTHrcZmr2_AAIpGQACQgcxSB3GpOw53zMqNgQ",
+            "BQACAgIAAxkBAAIqfGcnqu4REmABuYYJRIcDqpJRI7IIAAItGQACQgcxSC_HicR7wULTNgQ",
+            "BQACAgIAAxkBAAIqfWcnqu5cVRFr7inY5Iki0NfbPH6XAAIxGQACQgcxSONtqBHXwdZlNgQ",
+            "BQACAgIAAxkBAAIqfmcnqu4SBgLZnYbaMfgXeJlVJA63AAI0GQACQgcxSGI29Yc8hyQINgQ",
+            "BQACAgIAAxkBAAIqf2cnqu6EZhR358Lw_rpnOcQdjPJ7AAI2GQACQgcxSIveAAHTQ5PVTzYE",
+            "BQACAgIAAxkBAAIqgGcnqu6bsjJQ0Y2elcxVuhqeM4nLAAI3GQACQgcxSDpl8xio9-tGNgQ",
+            "BQACAgIAAxkBAAIqgWcnqu6rEgVMfF0Cwh2_jvEs3BDcAAI4GQACQgcxSHvK0ufEWxCFNgQ",
+            "BQACAgIAAxkBAAIqgmcnqu5sz08l7INvsRaZPfnx9S19AAI5GQACQgcxSGHZCxlryf9bNgQ",
+            "BQACAgIAAxkBAAIqg2cnqu5AIbQjwkmdrq986L2UPrzGAAI6GQACQgcxSOAkgKyKUAXtNgQ",
+            "BQACAgIAAxkBAAIqhGcnqu6xTbCy3MjZkDbhTFDlNdVcAAI8GQACQgcxSJ9BqnXf7h-aNgQ",
+            "BQACAgIAAxkBAAIqhWcnqu5LMYYccqUQkGrCAAGgrSbHpgACPRkAAkIHMUj8V4bcHhUzCDYE",
+            "BQACAgIAAxkBAAIqhmcnqu5AHnEMP9PZ1TO-ESv1LEjdAAI-GQACQgcxSMkfwQxrnvnkNgQ",
+            "BQACAgIAAxkBAAIqh2cnqu40KQZhRfndQtmDpWpP1pwyAAI_GQACQgcxSLmexLg0xakYNgQ",
+            "BQACAgIAAxkBAAIqiGcnqu4PbjtDaa6-SxrSAod0-ktoAAJAGQACQgcxSHa36LVTN0YzNgQ",
+            "BQACAgIAAxkBAAIqiWcnqu6yJEti0GD5eQ83wpex-6K0AAJBGQACQgcxSLIyKMGLf9mONgQ",
+            "BQACAgIAAxkBAAIqimcnqu56Xw_mQoCBXnqDZkkty9OHAAJCGQACQgcxSD1azOuEXFgsNgQ",
+            "BQACAgIAAxkBAAIqi2cnqu6-6jn9goIm_rYyqnBTbMTWAAJEGQACQgcxSAlCYN8Hoz-mNgQ",
+            "BQACAgIAAxkBAAIqjGcnqu70_HbMSQ2KtLPoi5IuRKFwAAJFGQACQgcxSNgKigpqCfwHNgQ",
+            "BQACAgIAAxkBAAIqjWcnqu4abnYtP0W28TwTviu3q5dxAAJGGQACQgcxSDN2o1Dc_60bNgQ",
+            "BQACAgIAAxkBAAIqjmcnqu5yJ4lBmB9zbqLSEzZoZVV9AAI6IAACEsNZSj7o0AwYRTHxNgQ",
+            "BQACAgIAAxkBAAIqj2cnqu4JSJdXDzSPDTQZg5SZ3robAAI7IAACzyrwSkzMRvqBKbabNgQ",
+            "BQACAgIAAxkBAAIqkGcnqu6WKFqH_ihft3hAEbMrC29pAAJbJgACx4nZSwYyZwABZz7CWzYE",
+            "BQACAgQAAxkBAAIqkWcnqu49L-5c1Tq_qaR4sgyUfQUWAAJcDwACfZD5Uet9TmTUqMPJNgQ",
+            "BQACAgIAAxkBAAIqkmcnqu6QyDYOOuNXVrEEYovVpeXsAALmKAACcPyRS96Vrqkl9vVaNgQ",
+            "BQACAgIAAxkBAAIqk2cnqu4cv3okClExStDTg1KS9fs2AALoKAACcPyRSxVWdZppgW6JNgQ",
+            "BQACAgIAAxkBAAIqlGcnqu6qoqNoumGjlj0Cg1QPnShIAALrKAACcPyRS2iGUCFBGcNhNgQ",
+            "BQACAgIAAxkBAAIqlWcnqu5O1AYuWlyKyI2a1GhxWUosAALwKAACcPyRS6NrIkQaAv0nNgQ",
+            "BQACAgIAAxkBAAIqlmcnqu4OabKmosbLFOjImg41ulkvAAL2KAACcPyRS7nOobHmQ_gQNgQ",
+            "BQACAgIAAxkBAAIql2cnqu6ljuK-4qCjxgNzSFx17gfnAAL8KAACcPyRS6KLaNT3J1G7NgQ",
+            "BQACAgIAAxkBAAIqmGcnqu4CZAYH6UzXSWWDzmqlRVS7AAKbKAACT7JISTPFfpWVoaPQNgQ",
+            "BQACAgIAAxkBAAIqmWcnqu7Jct0f_8YTTiAtj3VNtHL_AAKoKAACT7JISdEYEMLcwD97NgQ",
+            "BQACAgIAAxkBAAIqmmcnqu5Lomc_bitbdYv4YKQI2OWJAAKrKAACT7JISSZTgoVDRmszNgQ",
+            "BQACAgIAAxkBAAIqm2cnqu6CvkCKGHp76Z5KUG5yLKhnAAKtKAACT7JISZnvo4xBBgFdNgQ",
+            "BQACAgIAAxkBAAIqnGcnqu7mzYfXocgEplUpXuIMiG9yAAIFMQAC1VlZSgkrueGICYK0NgQ",
+            "BQACAgIAAxkBAAIqnWcnqu5ZBx-wGriNVxN4T2TgSfaqAAKdOAACtu5wSYoX06pbOJ5HNgQ",
+            "BQACAgIAAxkBAAIqnmcnqu5wzo6gMcYdZPZQPP_VFjE4AAKfOAACtu5wSXkrGacfkUNGNgQ",
+            "BQACAgIAAxkBAAIqn2cnqu6SBZsgam7WhLLaDFvXps_4AAKhOgACZqHoSDQrYVzAXYjUNgQ",
+            "BQACAgIAAxkBAAIqoGcnqu6ZaO9-iB_PhiyocXys2stlAAIKPgACeZ24SYAxY_cOyvTsNgQ",
+            "BQACAgIAAxkBAAIqoWcnqu7F1rNH-19irpMXjR-xD-KcAAJTSwACdHKISYV0ERFf9LPENgQ"
+          ],
+          "pledgeCost": "75",
+          "cost": "350",
+          "tags": [
+            "military",
+            "sla",
+            "miniature",
+            "vehicle",
+            "wh40k"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAIqemcnqcJ-sFrGrysHacRTqeXngxsNAAIw6TEbCWFBSSIZ-0UvezZWAQADAgADeQADNgQ"
+          ],
+          "pledgeName": "All-in"
+        },
+        {
+          "name": "Aloe: High Elf Warrior 1:12 scale",
+          "creator": "Printomancer",
+          "link": "https://www.kickstarter.com/projects/printomancer/aloe-high-elf-warrior-1-12-scale",
+          "files": [
+            "BQACAgEAAxkBAAIyHmdQ4Lqg-FFaZ3F4YA-dvxFgEDcZAAJbBAACJMzBRWjFguKwpwxWNgQ"
+          ],
+          "pledgeCost": "15",
+          "cost": "170",
+          "tags": [
+            "figures",
+            "big",
+            "sla"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAIyHWdQ4KmvJRr6GblKXnSdDeeQzpeEAAJ66DEb4O-ISuwGcXA7myr-AQADAgADeQADNgQ"
+          ],
+          "pledgeName": "Aloe: Elven Archer 1:12 scale"
+        },
+        {
+          "name": "3D Printable Basing Bits 3",
+          "creator": "GoonMasterGames",
+          "link": "https://www.kickstarter.com/projects/goonmastergames/3d-printable-basing-bits-3",
+          "files": [
+            "BQACAgUAAxkBAAIyKGdQ4ftAqtlM_Ed2DtdAzWfbZgRKAAJdFAACE1bAVeRwkyKS_s9HNgQ",
+            "BQACAgUAAxkBAAIyKWdQ4fvOunJj7r3FQqO6fDscenxIAAJeFAACE1bAVQimAAGLqcDyaDYE",
+            "BQACAgUAAxkBAAIyKmdQ4fvwVTmvQV4h7PnQ8SUOuAaGAAJpFAACE1bAVVC9-tEBQcY6NgQ"
+          ],
+          "pledgeCost": "40",
+          "cost": "145",
+          "tags": [
+            "bases",
+            "bits",
+            "sla"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAIyJ2dQ4eRPDybeTBrufJW_3zOBS0UkAAJ86DEb4O-ISqCcZVIC3OYTAQADAgADeQADNgQ"
+          ],
+          "pledgeName": "Basing Bits Vol 3"
+        },
+        {
+          "name": "3D Printable Basing Bits 2",
+          "creator": "GoonMasterGames",
+          "link": "https://www.kickstarter.com/projects/goonmastergames/3d-printable-basing-bits-2",
+          "files": [
+            "BQACAgIAAxkBAAIyNGdQ4l2hN4IuMQT22-7FMAqc0jTzAAL8MwAC43WQS5JkXN_O4t_UNgQ",
+            "BQACAgIAAxkBAAIyNWdQ4l1oEE6qxH3IaczzrS3GqoFKAAIiNAAC43WQS-5mXS2IKE8ONgQ",
+            "BQACAgIAAxkBAAIyNmdQ4l39xm1H6RO3qJyQAAHRyGn0GgACSTQAAuN1kEv2HuP3qaK9LDYE",
+            "BQACAgIAAxkBAAIyN2dQ4l38OB726Eep6KuWPKkP76smAAJqNAAC43WQS1Wk3pma_lKHNgQ",
+            "BQACAgIAAxkBAAIyOGdQ4l3uN-T22IcpFWpu9F3GtSOZAAKGNAAC43WQS_rEpyntth6mNgQ",
+            "BQACAgIAAxkBAAIyOWdQ4l3WW7oRqggFwSS8eIDAJr5_AAKsNAAC43WQS3abceyctytxNgQ",
+            "BQACAgIAAxkBAAIyOmdQ4l0i26zACrcqrKe_sZI3vTDpAALGNAAC43WQS3pcnQJV1rUmNgQ"
+          ],
+          "pledgeCost": "63",
+          "cost": "175",
+          "tags": [
+            "bits",
+            "bases",
+            "sla"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAIyM2dQ4k268OoZdR28Ljsz_sFmdI1NAAJ96DEb4O-ISpGQojh6OFCXAQADAgADeQADNgQ"
+          ],
+          "pledgeName": "Basing Bits Vol 1 & 2"
+        },
+        {
+          "name": "3D Printable Basing Bits",
+          "creator": "GoonMasterGames",
+          "link": "https://www.kickstarter.com/projects/goonmastergames/3d-printable-basing-bits",
+          "files": [
+            "BQACAgUAAxkBAAIyRGdQ4qqhRNFyk3HhZhpX1TuCc8SpAAJSFAACE1bAVZ4vJU3B6m1HNgQ",
+            "BQACAgUAAxkBAAIyRWdQ4qo5NXVLVW6DMYzfZ5X91PCwAAJTFAACE1bAVXLnibtEb0C5NgQ"
+          ],
+          "pledgeCost": "35",
+          "cost": "150",
+          "tags": [
+            "bases",
+            "bits",
+            "sla"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAIyQ2dQ4qEiTYFDW25WtM_lGXlMFePGAAJ-6DEb4O-ISuOx4FlHycZYAQADAgADeQADNgQ"
+          ],
+          "pledgeName": "All In Pledge"
+        },
+        {
+          "name": "Dinoworld ORC 2",
+          "creator": "Dinoworld",
+          "link": "https://www.kickstarter.com/projects/dinowolrd/dinoworld-orc2",
+          "files": [
+            "BQACAgEAAxkBAAIyT2dQ4zEz3glB1BKWgsPbU0CN6AZIAAI1BAACeZXZRWWSq6xYOj5oNgQ"
+          ],
+          "pledgeCost": "18",
+          "cost": "80",
+          "tags": [
+            "dnd",
+            "sla",
+            "wh40k",
+            "animals",
+            "orcs",
+            "mechs",
+            "vehicles"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAIyTmdQ4yXNQU8d290LgdQXoJ5R2AJdAAJ_6DEb4O-ISsR69rDTchxbAQADAgADeQADNgQ"
+          ],
+          "pledgeName": "DINO-WAR2"
+        },
+        {
+          "name": "Apolo and Dafne",
+          "creator": "Authorseries Studio",
+          "link": "https://www.kickstarter.com/projects/1885377889/apolo-and-dafne-classic-fantasy-figures",
+          "files": [
+            "BQACAgIAAxkBAAIyWWdQ43qoK4D20NYSCx4eCkzb9HlWAAJ9WQACTcjQSUrO7u1jfjYQNgQ"
+          ],
+          "pledgeCost": "18",
+          "cost": "100",
+          "tags": [
+            "figures",
+            "sla"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAIyWGdQ43NYfqloK5fEvRkFyvCiDgPXAAKA6DEb4O-ISj2T5SvmDOiWAQADAgADeQADNgQ"
+          ],
+          "pledgeName": "Apolo and Dafne ALL-IN"
+        },
+        {
+          "name": "The Shadow over Haven's Harbor",
+          "creator": "Cthulhu girls",
+          "link": "https://www.kickstarter.com/projects/cthulhugirls/the-shadow-over-havens-harbor",
+          "files": [
+            "BQACAgIAAxkBAAIyY2dQ49KZCm29pTkMm5ppm3cZ-h0vAALZagACNdfoScmIZys1MRW8NgQ",
+            "BQACAgIAAxkBAAIyZGdQ49LC2hifZ74DfKGH8miCz6A5AALsagACNdfoSbvaDrmX_zm2NgQ",
+            "BQACAgIAAxkBAAIyZWdQ49LmKccSHv0PjJxDBS45qYEJAALuagACNdfoSfM2krMXN9pCNgQ",
+            "BQACAgIAAxkBAAIyZmdQ49IWM5_fBhInfmFt9JJF79vuAAIBawACNdfoSX8lc7S-xsruNgQ"
+          ],
+          "pledgeCost": "18",
+          "cost": "200",
+          "tags": [
+            "arkham",
+            "cthulhu",
+            "figures",
+            "sla"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAIyYmdQ48VQL7U67kwq3LJOss9eGnLpAAKB6DEb4O-ISoXiqtmH5DydAQADAgADeQADNgQ"
+          ],
+          "pledgeName": "SoHH Full personal"
+        },
+        {
+          "name": "Dungeons & Terrors - Expansion Pack",
+          "creator": "Flesh of Gods",
+          "link": "https://www.myminifactory.com/frontier/dungeons-terrors-expansion-pack-3117",
+          "files": [
+            "BQACAgEAAxkBAAIycGdQ5GTHGE1MTVCzEFrsz3quREs1AAJZBAAC3rPIReD3x01cHJVTNgQ"
+          ],
+          "pledgeCost": "20",
+          "cost": "150",
+          "tags": [
+            "dnd",
+            "sla",
+            "seasonal"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAIyb2dQ5FUgKeUAAZanme6Rkv9Sx4B5pwACg-gxG-DviEps1P6Qdt-IpwEAAwIAA3kAAzYE"
+          ],
+          "pledgeName": "DUNGEONS & TERRORS - EXPANSION PACK"
+        },
+        {
+          "name": "Rise of the Eldertubbies",
+          "creator": "VoidRealm Minis",
+          "link": "https://www.kickstarter.com/projects/voidrealmminis/rise-of-the-eldertubbies",
+          "files": [
+            "BQACAgEAAxkBAAIyemdQ5KTmDL5eibzXosPhBhzr5ey3AALTBAACkcMAAUbaEEDa_AQIKzYE"
+          ],
+          "pledgeCost": "25",
+          "cost": "150",
+          "tags": [
+            "sla",
+            "horror"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAIyeWdQ5J0OjtNxZnhieL8Rc5g29XnmAAKE6DEb4O-ISojnH4lNOIIFAQADAgADeQADNgQ"
+          ],
+          "pledgeName": "[DIGITAL] All-In"
+        },
+        {
+          "name": "Creatures of Arcanterra - Part 3",
+          "creator": "Evox Arts",
+          "link": "https://www.kickstarter.com/projects/infernal-breakout/creatures-of-arcanterra-part-3",
+          "files": [
+            "BQACAgEAAxkBAAIyhGdQ5QAB2o9g02gDy78SDqKv-dRSnwACHgUAAn74CUZYxuOEuaZIjjYE",
+            "BQACAgEAAxkBAAIyhWdQ5QABspoxT2LXAi0g_lUfQ-AFIwACIAUAAn74CUarTqnikFXYXDYE"
+          ],
+          "pledgeCost": "21",
+          "cost": "310",
+          "tags": [
+            "dnd",
+            "sla",
+            "monsters"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAIyg2dQ5O1iVAABTa5-A_k8Nu9_0kXMoAAChugxG-DviEpE8de3nni6iQEAAwIAA3kAAzYE"
+          ],
+          "pledgeName": "Astral Nomad"
+        },
+        {
+          "name": "Dragons of the World - Part IV",
+          "creator": "Evox Arts",
+          "link": "https://www.kickstarter.com/projects/infernal-breakout/dragons-of-the-world-part-iv",
+          "files": [
+            "BQACAgEAAxkBAAIyj2dQ5S024OpGZVVR_b4M2BI8NeSLAAIhBQACfvgJRkkXXx0hI7mjNgQ",
+            "BQACAgEAAxkBAAIykGdQ5S0aijV18HR6fM_nScVb8NBPAAIiBQACfvgJRmbIn0jhmve0NgQ"
+          ],
+          "pledgeCost": "20",
+          "cost": "150",
+          "tags": [
+            "dnd",
+            "sla",
+            "dragons"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAIyjmdQ5SeBnRGCte3uVOYqQgPzS_ISAAKH6DEb4O-IShLU-TBl4t5tAQADAgADeQADNgQ"
+          ],
+          "pledgeName": "Dragon Soul"
+        },
+        {
+          "name": "Cube Pro Organizer",
+          "creator": "Txarli Factory",
+          "link": "https://www.kickstarter.com/projects/txarlifactory/cube-pro-organizer",
+          "files": [
+            "BQACAgQAAxkBAAIymmdQ5dHDC42Jh_nE9zfHPFIQfEoVAAJnFAACx_H5Uawn1cHWBBj3NgQ"
+          ],
+          "pledgeCost": "33",
+          "cost": "100",
+          "tags": [
+            "fdm",
+            "useful",
+            "storage"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAIymWdQ5cIGQHgGivvquZy8D-aZuGJHAAKI6DEb4O-ISh3G0BNHA_F3AQADAgADeQADNgQ"
+          ],
+          "pledgeName": "Builder Pledge"
+        },
+        {
+          "name": "The Frost City 3",
+          "creator": "Rafael Moreno Dominguez",
+          "link": "https://www.kickstarter.com/projects/stlminiatures/the-frost-city-3-3d-printable-stl-miniatures-and-terrains",
+          "files": [
+            "BQACAgEAAxkBAAIypGdQ5iore-p_DxSxIlyG-yUAAfOgSgACpAUAAlpNMEY2it8XKR1c6TYE",
+            "BQACAgEAAxkBAAIypWdQ5irZtrdLkdzra3kIphKGODFwAAKnBQACWk0wRuBaGw8B3qnFNgQ",
+            "BQACAgEAAxkBAAIypmdQ5irpKXlAA_GRqn-LHUyALPfTAAKpBQACWk0wRhBRq9C_lfRQNgQ",
+            "BQACAgEAAxkBAAIyp2dQ5ipdLpXIkBApXd6r-gU8lgABpQACqgUAAlpNMEbiRd_ZnglHvTYE",
+            "BQACAgEAAxkBAAIyqGdQ5iq89rtWKS4hnWRgXevzjDo8AAKsBQACWk0wRu6vCY3sok0tNgQ",
+            "BQACAgEAAxkBAAIyqWdQ5irM4yQbMGgiw6BYhpQu0OCSAAKvBQACWk0wRu1YWpMIAUIeNgQ",
+            "BQACAgEAAxkBAAIyqmdQ5ipF2lCUFAQQVv2r_v5QAuZFAAKwBQACWk0wRvvUTG1aWe4dNgQ",
+            "BQACAgEAAxkBAAIyq2dQ5ioLPAGoAugNLliQYhpjjZOVAAKxBQACWk0wRrvZkxswiRS6NgQ",
+            "BQACAgEAAxkBAAIyrGdQ5irM0SR3afKn8JvnVwPZ2r_iAAKyBQACWk0wRge5n7OqzlpLNgQ"
+          ],
+          "pledgeCost": "130",
+          "cost": "350",
+          "tags": [
+            "dnd",
+            "sla",
+            "miniatures",
+            "npcs",
+            "heroes"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAIyo2dQ5iD56b3qLTwAAb9BtPeKspN4GwACiegxG-DviEq7TtWqOmxn2QEAAwIAA3kAAzYE"
+          ],
+          "pledgeName": "The Frost City 3 - ALL IN"
+        },
+        {
+          "name": "Green Tide - 3 Pirate Fantasy Football Teams",
+          "creator": "BigChildCreatives",
+          "link": "https://www.myminifactory.com/frontier/green-tide-3-pirate-fantasy-football-teams-3146",
+          "files": [
+            "BQACAgEAAxkBAAIytmdQ5rNeTSnKiMmFkqXIY7ZdXfCsAAITBAACHYvZRdICUUd8FdN2NgQ",
+            "BQACAgEAAxkBAAIyt2dQ5rP6tymwUgyFz2RZyky9PYseAAIUBAACHYvZRUTp5LHGxtMENgQ",
+            "BQACAgEAAxkBAAIyuGdQ5rM7_7Tejr9l6_H2R7x1AAHgXQACFQQAAh2L2UX10FpEXezwAAE2BA",
+            "BQACAgEAAxkBAAIyuWdQ5rNJodQFkNpMjwY_BJLHKkkpAAIWBAACHYvZRQSfw42bRrPrNgQ",
+            "BQACAgEAAxkBAAIyumdQ5rORLZITXW8NBlJqr7NgymICAAL_AwACQSsoRmKtWARao644NgQ"
+          ],
+          "pledgeCost": "52",
+          "cost": "150",
+          "tags": [
+            "bloodbowl",
+            "sla"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAIytWdQ5qg4Xe9XDehtnG4lZNFRb1BHAAKQ6DEbaJiBSv6SyHZbkmm-AQADAgADeAADNgQ"
+          ],
+          "pledgeName": "Triple Green Tide"
+        },
+        {
+          "name": "MARCH TO HELL NAPOLEONIC WARS",
+          "creator": "3DBreed Miniatures",
+          "link": "https://www.kickstarter.com/projects/joinordie/march-to-hell-napoleonic-wars",
+          "files": [
+            "BQACAgQAAxkBAAI1n2dYUBaayW3auYAYRsTg2DxuNurzAALuFwACZaWgU9pwd8ZXzXZ8NgQ",
+            "BQACAgQAAxkBAAI1oGdYUBbFepYNzCCJ-4TQ0AuSrYqUAALxFwACZaWgU3Goo-AdzRLLNgQ",
+            "BQACAgQAAxkBAAI1oWdYUBavQhCIjaUprY-csoWs9stvAALzFwACZaWgU7iKeeOYTjOvNgQ",
+            "BQACAgQAAxkBAAI1omdYUBYvYDTB7fKw_fGTK73A-IlMAAL0FwACZaWgU1NPMXO6DakJNgQ",
+            "BQACAgQAAxkBAAI1o2dYUBYndzDN4jnXkJx_kyjlP9JuAAL2FwACZaWgU1Ky5JNWhJ4zNgQ",
+            "BQACAgQAAxkBAAI1pGdYUBbkXUZSdrROXpul1bMqXvJkAAL3FwACZaWgU9b5_hOP-edBNgQ",
+            "BQACAgQAAxkBAAI1pWdYUBY-1yNj2_3CUgYZfpqzZBHqAAL5FwACZaWgU3AKSSD71nqSNgQ",
+            "BQACAgQAAxkBAAI1pmdYUBZHRnB09_1zK3a1V1SmDoLqAAJHGAAC3D2JUXNtolHiLqboNgQ",
+            "BQACAgQAAxkBAAI1p2dYUBaJYFupo57KEp6tPlI2Wtl-AAJIGAAC3D2JUaZIlM5XAAE4WzYE"
+          ],
+          "pledgeCost": "50",
+          "cost": "250",
+          "tags": [
+            "historical",
+            "miniatures",
+            "sla",
+            "napoleonic"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAI1nmdYUAtySmlt6oJst3Fv4p7E1ErEAAJG5jEbWWPBSuctinstsfdbAQADAgADeQADNgQ"
+          ],
+          "pledgeName": "March to Hell Napoleonic Wars"
+        },
+        {
+          "name": "Morozivka, City of the Frost",
+          "creator": "Multiverse",
+          "link": "https://www.kickstarter.com/projects/metropolisscenery/morozivka-city-of-the-frost",
+          "files": [
+            "BQACAgEAAxkBAAI1yWdYUfCvqJ_kwRHvNzMYKNZ_rJxGAAKWAwACYMrBRua5i9l4H6udNgQ",
+            "BQACAgEAAxkBAAI1ymdYUfA6GjcDSY3rotrazS1R6afpAAKXAwACYMrBRkq4oS_2nevhNgQ",
+            "BQACAgEAAxkBAAI1y2dYUfCov_PfOUOETNc-PpBT1dwOAAKYAwACYMrBRqFfNY1DjjUSNgQ",
+            "BQACAgEAAxkBAAI1zGdYUfA0vyENSOpb79ur_92MOSdVAAKZAwACYMrBRth-4WZbaonDNgQ",
+            "BQACAgEAAxkBAAI1zWdYUfD9bK03Q0sjDCvp3AyIe-0ZAAKaAwACYMrBRrYj6xUwYv-KNgQ",
+            "BQACAgEAAxkBAAI1zmdYUfCyHGSS4ijCBV8VTikKeKO3AAKbAwACYMrBRiZ0MqhMpU7ANgQ"
+          ],
+          "pledgeCost": "45",
+          "cost": "200",
+          "tags": [
+            "realistic",
+            "buildings"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAI1yGdYUeGBN6ETEf6HIGJKvDpE6cv0AAJa5jEbWWPBSv59WzsAAXTKSwEAAwIAA3kAAzYE"
+          ],
+          "pledgeName": "All-In"
+        },
+        {
+          "name": "The Snowbound Mysteries",
+          "creator": "GreatGrimoire",
+          "link": "https://www.myminifactory.com/frontier/the-snowbound-mysteries-3303",
+          "files": [
+            "BQACAgIAAx0CeQVSGQACnapnXfXAcyWEb7JFbBdP41_R9CcNRgAC914AAgWK6Uq5uQbMrxG8ujYE",
+            "BQACAgIAAx0CeQVSGQACnatnXfXA03LVyJdnhdpXBKyNIq3wxgACyl8AAgWK6UrIbDQeAs1EtDYE",
+            "BQACAgIAAx0CeQVSGQACnaxnXfXAY5NOAAF_LU4TwH4YfCbWpdAAAkRgAAIFiulK_3sN9Z8Wya82BA",
+            "BQACAgIAAx0CeQVSGQACna1nXfXAzCSHSjzpUlvy-yEYDMnTcgACbmAAAgWK6UrsRi1ezMecgjYE"
+          ],
+          "pledgeCost": "28",
+          "cost": "510",
+          "tags": [
+            "dnd",
+            "sla",
+            "miniature",
+            "christmas"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAI27Wdgp0_ffOaUo3AvzQZW6XlNOk5VAAJG7DEb6vcBS1nnkJZAoA_-AQADAgADeQADNgQ"
+          ],
+          "pledgeName": "Twilight Watchers"
+        },
+        {
+          "name": "Critter Control",
+          "creator": "madsminis",
+          "link": "https://www.myminifactory.com/frontier/critter-control-2744",
+          "files": [
+            "BQACAgQAAxkBAAI2-2dgqL4cvLxSfPlx7hd5cQGu3yj2AALqFAAC0Z6ZUCh9NbfyGsmBNgQ",
+            "BQACAgQAAxkBAAI2_GdgqL58JUljCUyMY9JYEeX7HvWvAALrFAAC0Z6ZUGMdGtSuMC74NgQ",
+            "BQACAgQAAxkBAAI2_WdgqL7jkfgF67nYiZJgGfRMbOJGAALwFAAC0Z6ZULZiy0mbTvU5NgQ",
+            "BQACAgQAAxkBAAI2_mdgqL6jn4uAREuEp9hUquSid6rGAAL2FAAC0Z6ZUB7vfGKVwzVLNgQ",
+            "BQACAgQAAxkBAAI2_2dgqL4gQH7Giyo3JkchJlb-IxqDAAL6FAAC0Z6ZULnFnB3pYlE7NgQ",
+            "BQACAgQAAxkBAAI3AAFnYKi-nhO5ELfwqN-xYZ1xdlaBIQAC-xQAAtGemVDgFGJCxxU5ojYE",
+            "BQACAgQAAxkBAAI3AWdgqL6_dxaKVn6h7W9-V6puZl8IAAL_FAAC0Z6ZUOis90X5uf5wNgQ",
+            "BQACAgQAAxkBAAI3AmdgqL7NgIxdFyFCPAwIiMKSWNAIAAICFQAC0Z6ZUPqWj3qaD_DmNgQ",
+            "BQACAgQAAxkBAAI3A2dgqL4cYWl3hEkjXt7Pl875Cj1VAAIDFQAC0Z6ZUKbbGdPVyJp-NgQ",
+            "BQACAgQAAxkBAAI3BGdgqL7qSFWzs3wr_ZofqrsQDvASAAIEFQAC0Z6ZUMdVOmuoKjvgNgQ",
+            "BQACAgQAAxkBAAI3BWdgqL6HESCRwyze-NkrDBw1GWQ_AAIFFQAC0Z6ZULiLydvYqv5xNgQ",
+            "BQACAgQAAxkBAAI3BmdgqL4Og74BrqJ82L3H4NT9TDZUAAIGFQAC0Z6ZUAjX3LFe8vLLNgQ",
+            "BQACAgQAAxkBAAI3B2dgqL5-h40AARNFdCZioh31O40sdQACCRUAAtGemVAIa319JNDDoTYE",
+            "BQACAgQAAxkBAAI3CGdgqL6CfjLUwbBjFiQ8k0FDz3FSAAIKFQAC0Z6ZUMTVJx9HQbLBNgQ",
+            "BQACAgQAAxkBAAI3CWdgqL4S0y-B6WtgeFa3A7D6x5RuAAILFQAC0Z6ZUBt2ZyID-wuvNgQ",
+            "BQACAgQAAxkBAAI3CmdgqL7uD11E5_jwesgftUAV22baAAIOFQAC0Z6ZUATF8xgJv6u0NgQ",
+            "BQACAgQAAxkBAAI3C2dgqL4q5SY3qzozC6dn2TwbjnP1AAIQFQAC0Z6ZUAaCdOup8BhDNgQ",
+            "BQACAgQAAxkBAAI3DGdgqL54SbYBBd_cksoN81zhXKfoAALGFgACaFHwUV3ejQgI2WOiNgQ",
+            "BQACAgQAAxkBAAI3DWdgqL6p67-XwSDOGtMV52JpkR_KAALJFgACaFHwUW2D3V5oz_VINgQ",
+            "BQACAgQAAxkBAAI3DmdgqL5XtcjWldUv_bbyMptAQeqdAALOFgACaFHwUYRzxaoePgHgNgQ",
+            "BQACAgQAAxkBAAI3D2dgqL6oqgAB3E_Cu-Pr2fSs9sW0gQACDBUAAgaTuFJYFy0S8hUqtDYE",
+            "BQACAgQAAxkBAAI3EGdgqL6PGjSDoWEudq_mZSzUBL2RAAIOFQACBpO4UlyObiqfx7bMNgQ",
+            "BQACAgQAAxkBAAI3EWdgqL7ib8pVyt9P1OLexDjzeuZ4AALjEwACqp3BUvXPN7NTI5h6NgQ",
+            "BQACAgQAAxkBAAI3EmdgqL52H8yeez9LLiGivUPbQRXVAALpEwACqp3BUnd6opDGA17KNgQ",
+            "BQACAgQAAxkBAAI3E2dgqL4sF6LQQ91G-Ll9lTxlROZAAALvEwACqp3BUogLolnLdiCANgQ",
+            "BQACAgQAAxkBAAI3FGdgqL6kkWapCZPsxFiAMJaPQ62iAAL5EwACqp3BUiQoOk7Mnry6NgQ",
+            "BQACAgQAAxkBAAI3FWdgqL7r1ON-BH1HsIHb5spKpDwMAAJxFQACqp3JUq8_mCYfX-NQNgQ",
+            "BQACAgQAAxkBAAI3FmdgqL7Kog3WDIvOEPqwai2TG9BRAAJ4FQACqp3JUmRgfFsWD3XsNgQ",
+            "BQACAgQAAxkBAAI3F2dgqL77LiGATg4CpjQG0-4O9MawAAJ7FQACqp3JUv2L6qmx6_jrNgQ",
+            "BQACAgQAAxkBAAI3GGdgqL7VCRXhJHEhDd_Cm2yCvEkUAAIPFQACBpO4UqamBalcKLt0NgQ",
+            "BQACAgQAAxkBAAI3GWdgqL5uWXdnxqvszTuL3SYnaA2cAAIRFQACBpO4UmnKsIUvqWMHNgQ",
+            "BQACAgQAAxkBAAI3GmdgqL6hHocBH-fHM6Yl2MoE-QFMAAIUFQACBpO4UtkmTtFyLoQpNgQ",
+            "BQACAgQAAxkBAAI3G2dgqL4iuzoSPigakMXVRR81uCDTAAIYFQACBpO4UvoqbqRU1AhxNgQ",
+            "BQACAgQAAxkBAAI3HGdgqL4MsfcD9OFgUXIO6_QPk0OvAAIcFQACBpO4Ut5OC714V2-6NgQ"
+          ],
+          "pledgeCost": "60",
+          "cost": "600",
+          "tags": [
+            "sla",
+            "wh40k",
+            "skavens"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAI2-mdgqJxmukWd6QhjKGMSQ6_6R9yAAAJM7DEb6vcBS90OkzwEgin2AQADAgADeQADNgQ"
+          ],
+          "pledgeName": "Critter Control vs Rage Spreaders"
+        },
+        {
+          "name": "The Frost City 2",
+          "creator": "Rafael Moreno Dominguez",
+          "link": "https://www.kickstarter.com/projects/stlminiatures/the-frost-city-2-3d-printable-stl-miniatures-and-terrains",
+          "files": [
+            "BQACAgIAAxkBAAI3JmdgqVbvhmhOSNV-ggyvmzhWo5TUAAJIQgAC6lIAAUlt0Ty5iGbPsDYE",
+            "BQACAgIAAxkBAAI3J2dgqVaXpdTurwXaVZfzH7zk6qc3AAJsQgAC6lIAAUl4qnGtqyybRTYE",
+            "BQACAgIAAxkBAAI3KGdgqVaU1zCCiSlMngLUMOMwwj5iAAKeQgAC6lIAAUnRZi6IzExpQDYE",
+            "BQACAgIAAxkBAAI3KWdgqVaQQHj7_mu381T3nkux-mnWAALhQgAC6lIAAUkAAU8IkHOwFww2BA",
+            "BQACAgIAAxkBAAI3KmdgqVZaqqqbclSwJA2tQQj35qODAAI5QwAC6lIAAUkPuZ2Og4xD5TYE",
+            "BQACAgIAAxkBAAI3K2dgqVYs1vlpeIPHgW4mlPW8fkqYAAJyQwAC6lIAAUn02INOfMOAKDYE"
+          ],
+          "pledgeCost": "50",
+          "cost": "495",
+          "tags": [
+            "dnd",
+            "sla",
+            "frost",
+            "miniatures",
+            "heroes",
+            "monsters"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAI3JWdgqUZOuGb75FNvaXQbIZbFtCeLAAJV7DEb6vcBS-_3jJgj3JbqAQADAgADeQADNgQ"
+          ],
+          "pledgeName": "The Frost City 2"
+        },
+        {
+          "name": "Guild of Mages",
+          "creator": "Double Edge Miniatures",
+          "link": "https://www.myminifactory.com/frontier/guild-of-mages-2026",
+          "files": [
+            "BQACAgIAAxkBAAI3NWdgtml5cNGIqWyAwY8Mpebu2_ynAAIWMgACf2HpSCYkD8sqO4d0NgQ"
+          ],
+          "pledgeCost": "30",
+          "cost": "120",
+          "tags": [
+            "dnd",
+            "sla",
+            "heroes",
+            "wizards"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAI3NGdgtl8arXp7UeAKmIYmwuBAlR-cAAJv7DEb6vcBSy2RGj7QGX9DAQADAgADeQADNgQ"
+          ],
+          "pledgeName": "ALL IN: Standard Lincense"
+        },
+        {
+          "name": "SUPER GIRLS",
+          "creator": "IMAGINETOYS",
+          "link": "https://www.kickstarter.com/projects/imaginetoys/super-girls",
+          "files": [
+            "BQACAgIAAxkBAAI4cmdtmx9stMxGbRPOE140Fc5AYYXeAAJrawACf0RQSzTuDwr6P1shNgQ",
+            "BQACAgIAAxkBAAI4c2dtmx_OtT8e4JH9uy2of34XzDaDAAJwawACf0RQSwv8J7PnGgq1NgQ"
+          ],
+          "pledgeCost": "35",
+          "cost": "250",
+          "tags": [
+            "sla",
+            "figures",
+            "super"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAI4cWdtmxDOmGfUb6wEFb4dPZaKOn9DAAJG6TEbIOpxS0VkaDPytWaYAQADAgADeQADNgQ"
+          ],
+          "pledgeName": "SUPER GIRLS"
+        },
+        {
+          "name": "The Threat of the Dungeon",
+          "creator": "Matthieu MARTIN",
+          "link": "https://www.kickstarter.com/projects/matthieuma/the-threat-of-the-dungeon/",
+          "files": [
+            "BQACAgEAAxkBAAI4fWdtm3EoXtZbZO4WqUigs3NgbNN9AAJjBgACkPY4RyBcd6nwweADNgQ"
+          ],
+          "pledgeCost": "40",
+          "cost": "170",
+          "tags": [
+            "dnd",
+            "campaign",
+            "sla",
+            "miniatures"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAI4fGdtm2YI9tESTTzZY-oFatxOm0N0AAJH6TEbIOpxS0_HwJT6u92kAQADAgADeQADNgQ"
+          ],
+          "pledgeName": "Threat of the Dungeon : STL + PDF"
+        },
+        {
+          "name": "The Axe Class",
+          "creator": "Nomad Sculpts",
+          "link": "https://www.kickstarter.com/projects/382730535/the-axe-class",
+          "files": [
+            "BQACAgEAAxkBAAI5t2dunpCPv09MAVcUF9J_tMWYfllaAAJEBAACH3uBRf9oJTAgUNm8NgQ",
+            "BQACAgEAAxkBAAI5uGdunpDlUos499M_6n3OEIVv0zLJAAIYBAACDp2wRSLsAc65Qu19NgQ",
+            "BQACAgEAAxkBAAI4h2dtm-NjyGwViXT-Qax3t1geF34pAAIWBQACScoBRoXvhKJYPjd4NgQ"
+          ],
+          "pledgeCost": "22",
+          "cost": "150",
+          "tags": [
+            "sla",
+            "nsfw",
+            "girls",
+            "dnd"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAI4hmdtm9nhaLB3VYX1y2h2K83RT01qAAJM6TEbIOpxS3jkw9ff1YavAQADAgADeQADNgQ"
+          ],
+          "pledgeName": "Axe Class Altogether"
+        },
+        {
+          "name": "Heroes of Eldengaard II",
+          "creator": "Print Fantasy",
+          "link": "https://www.kickstarter.com/projects/print-fantasy/heroes-of-eldengaard-ii-stl-pack",
+          "files": [
+            "BQACAgEAAxkBAAI4kWdtnDhyxaEcdFZWhhjplWlukpg8AAKNBAACFoU5R6yN36msQnqVNgQ",
+            "BQACAgEAAxkBAAI4kmdtnDgJS_QtSlSNSobke0BTXfJcAAKPBAACFoU5R2JCaxWIPcJANgQ"
+          ],
+          "pledgeCost": "29",
+          "cost": "250",
+          "tags": [
+            "dnd",
+            "sla",
+            "miniatures"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAI4kGdtnCQ5yaknRTVr6n9W39gGoFt7AAJO6TEbIOpxS5WrEFnF3Z-xAQADAgADeQADNgQ"
+          ],
+          "pledgeName": "Heroes of Eldengaard II: Stl pack"
+        },
+        {
+          "name": "Necromancers of Monastis",
+          "creator": "Brave Alice",
+          "link": "https://www.kickstarter.com/projects/bravealice/necromancers-of-monastis",
+          "files": [
+            "BQACAgEAAxkBAAI4nGdtnRv23gUyatE7E9TZM0ABlrAYAAKqAwAC8s45R8_25-i42ZYNNgQ"
+          ],
+          "pledgeCost": "75",
+          "cost": "450",
+          "tags": [
+            "dnd",
+            "sla",
+            "miniatures",
+            "pdf"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAI4m2dtnRJeeW5ephGMndCHfL2ss0hpAAJa6TEbIOpxS9vWF2pqdzCrAQADAgADeQADNgQ"
+          ],
+          "pledgeName": "The PDF & All STLs"
+        },
+        {
+          "name": "Corrupted Sanctum",
+          "creator": "War Scenery",
+          "link": "https://www.kickstarter.com/projects/warscenery/corrupted-sanctum-3d-printable-chaos-terrain-and-androids",
+          "files": [
+            "BQACAgQAAxkBAAI4pmdtnlFCunOGhsv-mg9vxb-er5U0AAIXGgACStrhUpSP1Xph4pGmNgQ",
+            "BQACAgQAAxkBAAI4p2dtnlFzm6uOIicPSuF_CqRgUHBpAAIYGgACStrhUrIPFTXQgeGoNgQ"
+          ],
+          "pledgeCost": "71",
+          "cost": "250",
+          "tags": [
+            "sla",
+            "wh40k",
+            "terrain",
+            "miniatures"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAI4pWdtnkeCJrsIU2dbRf1ebNv2G0X1AAJo6TEbIOpxSwV_D5CG87HLAQADAgADeAADNgQ"
+          ],
+          "pledgeName": "Full Pledge"
+        },
+        {
+          "name": "Enchanting Realms V",
+          "creator": "Haito",
+          "link": "https://www.kickstarter.com/projects/haito/enchanting-realms-v",
+          "files": [
+            "BQACAgEAAxkBAAI4sWdtnqCc2z7Lv4zg8fZPwpS2RW_PAAJYBQAC7v3IRrANGX5GZQwENgQ"
+          ],
+          "pledgeCost": "29",
+          "cost": "180",
+          "tags": [
+            "dnd",
+            "sla",
+            "miniatures"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAI4sGdtnpDDFBLqflRahoHlNud4VQznAAJp6TEbIOpxS_SHyAkLnPSeAQADAgADeQADNgQ"
+          ],
+          "pledgeName": "Enchanting Realms VI"
+        },
+        {
+          "name": "Supermassive Space Dwarves",
+          "creator": "Treadhead Rad",
+          "link": "https://www.kickstarter.com/projects/treadheadrad/supermassive-space-dwarves",
+          "files": [
+            "BQACAgQAAxkBAAI4u2dtnwzWUsdL2A6sKf34_E_a5dX2AAK8FwACTOGgUFbOg07PORD6NgQ",
+            "BQACAgQAAxkBAAI4vGdtnwxVvmp8aRYxPXmWZik1j-wDAAK9FwACTOGgUCVif7ah_KTyNgQ",
+            "BQACAgQAAxkBAAI4vWdtnwz_ciUov6RN-hzMKtoUh0rOAAK-FwACTOGgUPm57LXmEBbjNgQ"
+          ],
+          "pledgeCost": "45",
+          "cost": "150",
+          "tags": [
+            "dnd",
+            "sla",
+            "dwarves",
+            "sci-fi"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAI4umdtnwFLPPIjmEtawLsS7MkGIzCOAAJt6TEbIOpxSxtWJms1vg99AQADAgADeQADNgQ"
+          ],
+          "pledgeName": "Complete Army"
+        },
+        {
+          "name": "Flesh and Metal - Rising Sun",
+          "creator": "ZBSminiatures",
+          "link": "https://www.myminifactory.com/frontier/flesh-and-metal-rising-sun-2810",
+          "files": [
+            "BQACAgQAAxkBAAI4x2dtn2F50q6VMWJyKf2k6gHW7rQZAAIbGgACNIxgUnaBdA3zPMiaNgQ",
+            "BQACAgQAAxkBAAI4yGdtn2GrCIY8Dd_wEU9POZZPQDl1AAIcGgACNIxgUqC-tgABiof_wDYE"
+          ],
+          "pledgeCost": "70",
+          "cost": "350",
+          "tags": [
+            "sla",
+            "wh40k",
+            "vehicles",
+            "terrain",
+            "army"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAI4xmdtn1bCLe9wG3iXfXgLSvbWeBEtAAJy6TEbIOpxS5XdcirV0w5vAQADAgADeAADNgQ"
+          ],
+          "pledgeName": "Rising Sun - One and Only!"
+        },
+        {
+          "name": "Troops of Napoleonic Wars - Army of the Austrian Empire",
+          "creator": "Rafal Polkowski",
+          "link": "https://www.kickstarter.com/projects/rafalpolkowski/troops-of-napoleonic-wars-the-austrian-army-17921815-1",
+          "files": [
+            "BQACAgQAAxkBAAI40mdtn9LCx9rzAAEOMHTX4sB58ARMaQACvw8AAjKOgFDFjSVhEOvUUzYE"
+          ],
+          "pledgeCost": "87",
+          "cost": "210",
+          "tags": [
+            "historical",
+            "sla",
+            "miniatures"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAI40Wdtn8OcrGlVmvv0mFDkBdc20ax5AAJ06TEbIOpxS-E3gx5r7iucAQADAgADeQADNgQ"
+          ],
+          "pledgeName": "AUSTRIAN ARMY"
+        },
+        {
+          "name": "Amazing Adventures",
+          "creator": "Haito",
+          "link": "https://www.kickstarter.com/projects/haito/amazing-adventures-printable-heroes",
+          "files": [
+            "BQACAgEAAxkBAAI43GdtoCTAp7uxU-H9djWLqgKDCW5GAAK0BAAChdmARR3BQi-jYq9YNgQ",
+            "BQACAgEAAxkBAAI43WdtoCQ9AAEPB_h8Qh0ZH9Vb05S4bAACuQQAAoXZgEWluhZlmJWzszYE",
+            "BQACAgEAAxkBAAI43mdtoCSgQTSe34AVlKKtjjvZ2FTwAAK-BAAChdmARdFxsZAH0gABLzYE",
+            "BQACAgEAAxkBAAI432dtoCSrgmzAdOhyCw7Ups8j_npFAALGBAAChdmARZtFKwcWxsvhNgQ",
+            "BQACAgEAAxkBAAI44GdtoCRWGMs6PQhSYxJXxQf8io8lAALIBAAChdmARR7ThMjopUGfNgQ"
+          ],
+          "pledgeCost": "65",
+          "cost": "170",
+          "tags": [
+            "dnd",
+            "sla",
+            "miniatures",
+            "heroes",
+            "girls"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAI422dtoBz6L36qAAGwZnX2GaCAIzx2ygACdukxGyDqcUvSe6DL81-KogEAAwIAA3kAAzYE"
+          ],
+          "pledgeName": "Amazing Adventures"
+        },
+        {
+          "name": "Ladies of Fairy Tales",
+          "creator": "Gilmorestudio",
+          "link": "https://www.kickstarter.com/projects/gmstudio/ladies-of-fairy-tales",
+          "files": [
+            "BQACAgEAAxkBAAI46mdtoHr8mTcmSrQnkpwXW0U1GOuQAAKDBAACH6D5RBZ5JjPfsmgGNgQ",
+            "BQACAgEAAxkBAAI462dtoHqMzE93Neu8cg0il7UaDQ_nAAKEBAACH6D5RJWaUK4zTrkINgQ",
+            "BQACAgEAAxkBAAI47GdtoHph6HYopnWnUH0CMTMR_VURAAKFBAACH6D5RM6QsCTURiSeNgQ",
+            "BQACAgEAAxkBAAI47WdtoHr_JTNxJ5ZpLth-G2xkRn9aAAKHBAACH6D5REM3Bj9U4xhXNgQ",
+            "BQACAgEAAxkBAAI47mdtoHpGdQjYgpBLyqerGeREL_4lAAKIBAACH6D5RMMrq6Ek7waVNgQ"
+          ],
+          "pledgeCost": "33",
+          "cost": "120",
+          "tags": [
+            "dnd",
+            "sla",
+            "girls",
+            "fantasy"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAI46WdtoG9hr82cL6sAAbycffKKgoSzYwACd-kxGyDqcUstaQaLSzjghQEAAwIAA3kAAzYE"
+          ],
+          "pledgeName": "LOFT: Complete"
+        },
+        {
+          "name": "Echoes: Northern Catacombs",
+          "creator": "3DHexes",
+          "link": "https://www.kickstarter.com/projects/3dhexes/echoes-northern-catacombs-amazing-3d-printable-scenery",
+          "files": [
+            "BQACAgQAAxkBAAI4-2dtoMWogKq08v72sN2ldfDSFHVuAAIVGAACPENpUY04DiNFT0rvNgQ"
+          ],
+          "pledgeCost": "22",
+          "cost": "120",
+          "tags": [
+            "dnd",
+            "terrain",
+            "fantasy"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAI49WdtoKpNIf_Uj0FKQ5Zc9yO9qdazAAJ56TEbIOpxS4ncOtZesUFhAQADAgADeQADNgQ"
+          ],
+          "pledgeName": "Echoes: Northern Catacombs"
+        },
+        {
+          "name": "Space Aussies",
+          "creator": "Victoria Lamb",
+          "link": "https://www.kickstarter.com/projects/victoriaminiatures/space-aussies-miniature-stl-files",
+          "files": [
+            "BQACAgQAAxkBAAI5EGdtoRHFiinRP97EY3SlKKe2fnJmAAIYFgAC-rLAUGMrGiQgauS8NgQ"
+          ],
+          "pledgeCost": "30",
+          "cost": "120",
+          "tags": [
+            "sla",
+            "miniatures"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAI5D2dtoQgkEXDP8hgdgV6WoGA0bucaAAJ76TEbIOpxS41HBQSq4uqxAQADAgADeQADNgQ"
+          ],
+          "pledgeName": "Space Aussies Digital Mega Bundle"
+        },
+        {
+          "name": "Blades of Persia: The Rise of the Shah",
+          "creator": "Carlos A. Mariani",
+          "link": "https://www.kickstarter.com/projects/resinwarfare/blades-of-persia-the-rise-of-the-shah",
+          "files": [
+            "BQACAgQAAxkBAAI5GmdtoWJH4f7JpHH0bZAYUqAfD4jFAALyFwACs74ZUAeykr2aLL6mNgQ",
+            "BQACAgQAAxkBAAI5G2dtoWIDTMAknVxCIB6jiqiuF9zFAAL1FwACs74ZUJ7kQw9pSpuwNgQ",
+            "BQACAgQAAxkBAAI5HGdtoWK9VwWlQW9dMTPrhp41pPIKAAL4FwACs74ZUPZcLGnEwRwQNgQ",
+            "BQACAgQAAxkBAAI5HWdtoWIjNE2V24mWwhuGRd-uh-rxAAL5FwACs74ZUH8XWyCwvItMNgQ"
+          ],
+          "pledgeCost": "71",
+          "cost": "160",
+          "tags": [
+            "sla",
+            "army",
+            "miniatures"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAI5GWdtoVkK7wEB25zVthGqFXYS2KOZAAKG6TEbIOpxS6tkIcnQSLxuAQADAgADeQADNgQ"
+          ],
+          "pledgeName": "Digital - Blades of Persia"
+        },
+        {
+          "name": "The Longsnouts",
+          "creator": "Carlos Pérez Bugedo",
+          "link": "https://www.kickstarter.com/projects/pebetron/the-longsnouts-3d-printable-miniature-stl",
+          "files": [
+            "BQACAgIAAxkBAAI5J2dto1ipjEpPzpBoAhKPrGFpmBV8AALYYgACIOpxS7rB_ih0R4JcNgQ",
+            "BQACAgIAAxkBAAI5KGdto1ggs76m4G2uHY5ryUiHNhEEAALZYgACIOpxS0HLTGAyB4NPNgQ",
+            "BQACAgIAAxkBAAI5KWdto1jkR-ZXleMwiSwAAb5ioYD6-QAC32IAAiDqcUvoUYqN12ksDzYE"
+          ],
+          "pledgeCost": "33",
+          "cost": "200",
+          "tags": [
+            "wh40k",
+            "sla",
+            "bits"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAI5Jmdtog4M5CCHRa51I5QzwMj2v58ZAAKJ6TEbIOpxS8Gvj8Ibu3JLAQADAgADeQADNgQ"
+          ],
+          "pledgeName": "The Longsnouts"
+        },
+        {
+          "name": "Penitent Crusade: The Iron Legion",
+          "creator": "Bestiarum Miniatures",
+          "link": "https://www.myminifactory.com/frontier/penitent-crusade-the-iron-legion-3102",
+          "files": [
+            "BQACAgEAAxkBAAI-VGd0TVS393S23QmRlv1Pex5z0wxpAAKVBAACFBBhRjqSVLDTrLosNgQ",
+            "BQACAgEAAxkBAAI-VWd0TVTGVCFtCqkppJsPLfFuek9BAAKXBAACFBBhRjkHsGZPW3N6NgQ",
+            "BQACAgEAAxkBAAI-Vmd0TVTxQfs48CetcT8F1JQTgeVUAAKdBAACFBBhRgdGAAHwOPgZWzYE",
+            "BQACAgEAAxkBAAI-V2d0TVQ_5pe2mGIT8-1MbUyr-MFTAAKhBAACFBBhRqYVNWVYImIVNgQ",
+            "BQACAgEAAxkBAAI-WGd0TVTnyalP7e6-1lkNRixGi0vMAAKjBAACFBBhRoo4b-uBmfJ6NgQ",
+            "BQACAgEAAxkBAAI-WWd0TVSTAAGmBIiYpipueKvpSJnPBAACpwQAAhQQYUb-kwLD7PCV_TYE",
+            "BQACAgEAAxkBAAI-Wmd0TVSCy3NlQ0Ia1SWv5Bc-5d7GAAKoBAACFBBhRuLSAgVY2U9YNgQ",
+            "BQACAgEAAxkBAAI-W2d0TVQa7MNBEh_8auC4SKpeM1cIAAKqBAACFBBhRgxcDo2bcvvaNgQ",
+            "BQACAgEAAxkBAAI-XGd0TVR-PfaiaoxzEFDJH_rievhOAAKtBAACFBBhRqA675N9ayhrNgQ",
+            "BQACAgEAAxkBAAI-XWd0TVS5z30-_9N4zCzOBO3oabVSAAKuBAACFBBhRkLUaebW8PQSNgQ",
+            "BQACAgEAAxkBAAI-Xmd0TVSs3J7oMYF_QKJ9yeXbP6ihAAKvBAACFBBhRi2b1kf-VjXkNgQ",
+            "BQACAgEAAxkBAAI-X2d0TVRAjZ2EGpu7KgN4WP3vPdVzAAJ3BgACyAExR86uaF59lQJPNgQ",
+            "BQACAgEAAxkBAAI-YGd0TVTIJSrI6mnjw4ytmoNj4zCjAAKJBQACL10xRxNifjyo7bgAATYE",
+            "BQACAgEAAxkBAAI-YWd0TVTem9HeKOSN0TsSTBTwGwfZAAKKBQACL10xR47FQaGzYgrLNgQ",
+            "BQACAgEAAxkBAAI-Ymd0TVSqCloQiX5Bp5cD5yblTaKQAAKABgACyAExRwEbGwpP96b6NgQ",
+            "BQACAgEAAxkBAAI-Y2d0TVTZK-iNr1O2VRq9KpINaEaVAAKLBQACL10xR-UU4REPzymlNgQ",
+            "BQACAgEAAxkBAAI-ZGd0TVR-BjlgBwb_nrzMLtPGyCtlAAKMBQACL10xR1bM1JOw01ukNgQ",
+            "BQACAgEAAxkBAAI-ZWd0TVTtP-x3GUJxYoZHGBHLULoSAAL2BQACez8wR55DIvX1xG7INgQ",
+            "BQACAgEAAxkBAAI-Zmd0TVRwjqK9nfnpXuRnew5Xgi-hAAKOBQACL10xR_GKFfGcaPMYNgQ",
+            "BQACAgEAAxkBAAI-Z2d0TVTPO291MU2lpe8OIvhCTqEPAAKDBgACyAExR-G5Y6syx1A9NgQ",
+            "BQACAgEAAxkBAAI-aGd0TVTF-kCu2FZYZfVEu3GLn12aAAKEBgACyAExR17Drthn5ETtNgQ"
+          ],
+          "pledgeCost": "95",
+          "cost": "350",
+          "tags": [
+            "sla",
+            "trench",
+            "heroes",
+            "villains"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAI-U2d0TUJOOWpP6PjAFqmoSSJej6O-AALZ5zEbuDWpSyRPi4jGixt5AQADAgADeQADNgQ"
+          ],
+          "pledgeName": "The Combo"
+        },
+        {
+          "name": "Warriors of the Wild: Collection of Gnolls",
+          "creator": "Nafarrate",
+          "link": "https://www.myminifactory.com/frontier/warriors-of-the-wild-collection-of-gnolls-2500",
+          "files": [
+            "BQACAgEAAxkBAAI_jmd4LnDxF1iqke_kVzh0mDmGKfG2AAJqBAACyLqZReN1VjrYupPeNgQ"
+          ],
+          "pledgeCost": "20",
+          "cost": "220",
+          "tags": [
+            "dnd",
+            "sla",
+            "miniatures",
+            "monsters",
+            "gnolls"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAI_jWd4LmQ2rc9d-6DGNQ_vKaLxz20bAALe6DEbfDbAS8_jAlDi3rGMAQADAgADeQADNgQ"
+          ],
+          "pledgeName": "Warriors of the Wild"
+        },
+        {
+          "name": "FatesEnd Tomes",
+          "creator": "Kim Bourrie",
+          "link": "https://www.kickstarter.com/projects/kimbolt/fatesend-tomes",
+          "files": [
+            "BQACAgQAAxkBAAI_mGd4L8fneRRLE43vi8O_SrBaBi9uAAIVFgACIBNwU2voLnHgcAxHNgQ",
+            "BQACAgQAAxkBAAI_mWd4L8dfgViZfTBPDmn4NRGnA80rAAK4FQACWwABkVPHhMub6p8uIzYE",
+            "BQACAgQAAxkBAAI_mmd4L8f7NsmneF8CjicobI_N9y8SAAJOGAACS_BwUzL9dxvfFryiNgQ",
+            "BQACAgQAAxkBAAI_m2d4L8cv18N2iF8vMv_rcBf5Z2hHAAJPGAACS_BwU7zBXxWZGuO8NgQ"
+          ],
+          "pledgeCost": "37",
+          "cost": "350",
+          "tags": [
+            "fdm",
+            "useful"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAI_l2d4L72sd3URX_uYGxKVXN4ZVZNJAAL36DEbfDbAS5enB_EGhVTbAQADAgADeQADNgQ"
+          ],
+          "pledgeName": "Loot All - 20 Tomes + 4 Trays"
+        },
+        {
+          "name": "Gakou Tactics RELOADED",
+          "creator": "TurnBaseMiniatures",
+          "link": "https://www.myminifactory.com/frontier/gakou-tactics-reloaded-by-turnbase-3094",
+          "files": [
+            "BQACAgQAAxkBAAJAC2d7P-qxDRx49UHSpt-diaHWmacvAAKmFQACCIAhUv_Srt4V8NlpNgQ"
+          ],
+          "pledgeCost": "35",
+          "cost": "250",
+          "tags": [
+            "modern",
+            "military",
+            "anime",
+            "miniatures",
+            "sla"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAJACmd7P9KuhNPkDgRFImSqDIGWjgw9AAL15TEbbSjgS0O1B1fFNGyPAQADAgADeQADNgQ"
+          ],
+          "pledgeName": "Standard Tier"
+        },
+        {
+          "name": "Tales from the Radiation Zone",
+          "creator": "Stormforge Minis",
+          "link": "https://www.kickstarter.com/projects/stormforgeminis/tales-from-the-radiation-zone",
+          "files": [
+            "BQACAgUAAxkBAAJBcWeIqI__eZV9U7_o_iKQm21pBoVoAAIbFgACClzBV7JEdBfIc-xvNgQ"
+          ],
+          "pledgeCost": "20",
+          "cost": "150",
+          "tags": [
+            "sla",
+            "miniatures",
+            "stalker",
+            "modern"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAJBcGeIqHx0Jq8oz37KofDnEpvF-kmsAALV6jEbLidISLK4ZO08DzLIAQADAgADdwADNgQ"
+          ],
+          "pledgeName": "Complete Set Personal Use"
+        },
+        {
+          "name": "Dungeons and Damsels",
+          "creator": "level 50 miniatures",
+          "link": "https://www.kickstarter.com/projects/level50miniatures/dungeons-and-damsels",
+          "files": [
+            "BQACAgUAAxkBAAJC4GeYOLOoouqHH3U3FVIn1xWYRAL_AAI-EAAChTy5VCUIvzhsxOP7NgQ"
+          ],
+          "pledgeCost": "33",
+          "cost": "180",
+          "tags": [
+            "dnd",
+            "sla",
+            "heroes",
+            "females",
+            "paladin",
+            "tiefling",
+            "cleric"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAJC32eYOKqFWCEVbbIwNXp8kxQRqI75AAJ08zEb-0_ASAS0IUm-galfAQADAgADdwADNgQ"
+          ],
+          "pledgeName": "The Core Set"
+        },
+        {
+          "name": "Elites and Titans",
+          "creator": "madsminis",
+          "link": "https://www.myminifactory.com/frontier/elites-and-titans-2024-2746",
+          "files": [
+            "BQACAgUAAxkBAAJC6meYOU02dll1a7c2i3uI7F94ibaVAAICEQACEA5YVLPnYuhTxwcmNgQ"
+          ],
+          "pledgeCost": "60",
+          "cost": "490",
+          "tags": [
+            "sla"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAJC6WeYOUWSHNmB9NTAtCsp4cpvC4QDAAJ18zEb-0_ASAABJG8-m_gVtQEAAwIAA3cAAzYE"
+          ],
+          "pledgeName": "Elites and Titans 2024"
+        },
+        {
+          "name": "Queen-Pawn",
+          "creator": "WorksByDesign",
+          "link": "https://www.patreon.com/WorksByDesign/shop/queen-pawn-3d-printing-files-614491",
+          "files": [
+            "BQACAgEAAxkBAAJC9GeYObpITwuzGjnArckvR3Ye7FUNAAJEBAACv-cQREH_7RBM8JyFNgQ"
+          ],
+          "pledgeCost": "15",
+          "cost": "250",
+          "tags": [
+            "fdm",
+            "chess"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAJC82eYOa7Yq-1N4A7WPeXsgFRqMeKGAAJ28zEb-0_ASFdrgs2qHGrCAQADAgADdwADNgQ"
+          ],
+          "pledgeName": "Queen-Pawn"
+        },
+        {
+          "name": "Schatten über Grimstadt - The Tale Begins",
+          "creator": "Moshartz",
+          "link": "https://www.kickstarter.com/projects/1603788744/schatten-uber-grimstadt-the-tale-begins",
+          "files": [
+            "BQACAgQAAxkBAAJDH2eZJ8NcJTgBAAEGBYlBnKgoOQtC0gACIhwAAnyJqFAji2hthQTP7TYE"
+          ],
+          "pledgeCost": "45",
+          "cost": "200",
+          "tags": [
+            "sla",
+            "miniatures",
+            "mordheim"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAJDHmeZJ6uzyN15gVHIg-pk2mR6D57aAAIJ7TEbEQ_ISKko-kE4UnaFAQADAgADdwADNgQ"
+          ],
+          "pledgeName": "Digital Miniatures"
+        },
+        {
+          "name": "Commander Sebastian Highway \"The Vulture\"",
+          "creator": "Elminiaturista",
+          "link": "https://www.myminifactory.com/frontier/commander-sebastian-highway-the-vulture-3401",
+          "files": [
+            "BQACAgQAAxkBAAJGWWelV-HW0R3NHX2vIvziv-OqLNeuAAKuFQAC_YrRUIr_dmEy5KmnNgQ"
+          ],
+          "pledgeCost": "19",
+          "cost": "250",
+          "tags": [
+            "sla",
+            "bust"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAJGWGelV9e8mviwjDwV1cejaLKzrkxdAAKy6DEbRmkwSZHwQwABpZkQBQEAAwIAA3cAAzYE"
+          ],
+          "pledgeName": "ADVANCED TIER"
+        },
+        {
+          "name": "Sector AL-IX / RISE expansion pack",
+          "creator": "Bishok",
+          "link": "https://www.kickstarter.com/projects/bishok/sector-al-ix-rise-expansion-pack",
+          "files": [
+            "BQACAgEAAxkBAAJGY2elXC7VIOMw3_Zxp9c-cw4GDBOQAAKaBQACQN_wRFtXK4QmYnV3NgQ",
+            "BQACAgEAAxkBAAJGZGelXC4cPkkY-2yYN_Uy9AyclWCyAAKcBQACQN_wRJXuzWkqvwu2NgQ",
+            "BQACAgEAAxkBAAJGZWelXC4W9tgBLGqG0y92fnkJfXzBAAKdBQACQN_wRHFYunavFheWNgQ",
+            "BQACAgEAAxkBAAJGZmelXC5fN_gEujN6GLIpPbcnBAyRAAKqBAACmV_5RKpKIjlbHuflNgQ",
+            "BQACAgEAAxkBAAJGZ2elXC5dLw4Po2ljxG9yJ1f1k8YoAAJWBgACeDcZRbNyRbWGob1ANgQ",
+            "BQACAgEAAxkBAAJGaGelXC7hmlpl5fTeRoIGdkpSUzs8AAJXBgACbJoZRTW7mR_Fo_5XNgQ",
+            "BQACAgEAAxkBAAJGaWelXC6Q3UldpEoddPA_Qr5z7_pJAAJOBAACbJohRe4iNfjdByxBNgQ"
+          ],
+          "pledgeCost": "91",
+          "cost": "250",
+          "tags": [
+            "terrain"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAJGYmelXB4oC4iBcsrjGDgwX_RFxw0JAAK36DEbRmkwSQ5D3-Eg2KwCAQADAgADdwADNgQ"
+          ],
+          "pledgeName": "Rise + Sector AL-IX"
+        },
+        {
+          "name": "Hunger of Yggdrasil",
+          "creator": "HardWitch Games",
+          "link": "https://www.kickstarter.com/projects/hardwitch/hunger-of-yggdrasil",
+          "files": [
+            "BQACAgEAAxkBAAJGc2elXzLn5GPmrFjokDX2W2gtrzuAAALQBQACSvVJR4SlFMsq7Lq6NgQ",
+            "BQACAgEAAxkBAAJGdGelXzLOxqEpuvN8gmlDpsMHFI26AAJFBAAC1gtJR6d0WCDmzcdlNgQ",
+            "BQACAgEAAxkBAAJGdWelXzJU0p8ec_RRjxjDGFanDczmAALMBAAC_dNJRy-Vogv8T-fbNgQ",
+            "BQACAgEAAxkBAAJGdmelXzKpzsZMcQ_Ecb3rSf7osh3gAALRBQACSvVJRwlELGPZf5RqNgQ",
+            "BQACAgEAAxkBAAJGd2elXzJ8_9-3nbXprfprG_fQ3KC8AAKuBQACpx3oRJVG4VcmDtKANgQ"
+          ],
+          "pledgeCost": "27",
+          "cost": "100",
+          "tags": [
+            "sla",
+            "dnd",
+            "miniatures",
+            "heroes"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAJGcmelXx71AXcBMHfWmpTw__mBIUH4AAK46DEbRmkwSd-JmdciBPVgAQADAgADdwADNgQ"
+          ],
+          "pledgeName": "The Hunger of Yggdrasil"
+        },
+        {
+          "name": "Guardians of the Sacred Forest",
+          "creator": "Claudia Rodríguez",
+          "link": "https://www.kickstarter.com/projects/claudiagallery/guardians-of-the-sacred-forest",
+          "files": [
+            "BQACAgEAAxkBAAJGgWelYdzeJkDgs1RH_Krt0oY5T98dAALkCgACpVMZRLIgRHScGIvBNgQ"
+          ],
+          "pledgeCost": "25",
+          "cost": "150",
+          "tags": [
+            "dnd",
+            "sla",
+            "miniatures",
+            "girls"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAJGgGelYdTOysoJiCjOluWbYbZHCJNkAAK86DEbRmkwSZbBySUQm9ERAQADAgADdwADNgQ"
+          ],
+          "pledgeName": "Core set - STL"
+        },
+        {
+          "name": "DnD heroes #4 - Barbarians",
+          "creator": "TytanTroll Miniatures",
+          "link": "https://www.kickstarter.com/projects/tytantrollminiatures/3d-printable-dnd-heroes-4-barbarians",
+          "files": [
+            "BQACAgIAAxkBAAJGi2elZPR85FuIadWbrEQZXJ_FbkdHAAInYwACHN5IS-IPye4T3SuKNgQ"
+          ],
+          "pledgeCost": "35",
+          "cost": "160",
+          "tags": [
+            "dnd",
+            "sla",
+            "miniatures",
+            "heroes",
+            "barbarians"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAJGimelZOx2d9WHOk71mQIgMcCPsP3AAALB6DEbRmkwScxhto8stbeXAQADAgADdwADNgQ"
+          ],
+          "pledgeName": "DnD Heroes - Barbarians"
+        },
+        {
+          "name": "Spectre Operations Part 9",
+          "creator": "SpectreMiniatures",
+          "link": "https://spectreminiatures.com/",
+          "files": [
+            "BQACAgEAAxkBAAJH3Ge2CNXn-TUG25y8x6QG3UA-SyNVAAJoBQAC1yjRRNa85cWj2oF0NgQ"
+          ],
+          "pledgeCost": "350",
+          "cost": "1650",
+          "tags": [
+            "sla",
+            "miniatures",
+            "modern"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAJH22e2CK34KePDa6tKxH_kKfKeIotqAAKh6zEb8MKwSZazqaconGKGAQADAgADdwADNgQ"
+          ],
+          "pledgeName": "Frontline Expansion Rulebook\nRemote Weapons Stations\nInsurgent Mercenary Marksman\nInsurgent Mercenary Drone Operator\nInsurgent Mercenary Commander\nInsurgent Mercenary Element\nTask Force Nomad\nTask Force Nomad Covert\nTrailer Defense Force\nSanta\nDragons Teeth\nSmall Tetrapods\nMedium Tetrapods\nLarge Tetrapods\nSoviet Fences 1\nSoviet Fences 2\nSoviet Fences 3\nBMP Berezhok turret\nBMP-1AM turret\nPartisan maxim\nPartisan Fighter Element"
+        },
+        {
+          "name": "Gothic Sector : Templaris Part 2",
+          "creator": "FabricatorsLair",
+          "link": "https://www.kickstarter.com/projects/fabricatorslair/gothic-sector-templaris-part-2",
+          "files": [
+            "BQACAgQAAxkBAAJKMWfCLf67N8cc2yPcT6tP2xb1lFNvAAJkGgACac3pUji-3GPUTfh6NgQ",
+            "BQACAgQAAxkBAAJKMmfCLf5ZId8sicqwRlYaX1hZu07IAAJsGgACac3pUmLJ2kNie_FNNgQ",
+            "BQACAgQAAxkBAAJKM2fCLf4qoZTuGAmZP11ZyCLLXItaAAKcGgACac3pUvVNNWHIhm__NgQ",
+            "BQACAgQAAxkBAAJKNGfCLf5TMtKeENpn_t7WQoVIM8M3AAKdGgACac3pUjWy-XZSXqdjNgQ"
+          ],
+          "pledgeCost": "40",
+          "cost": "150",
+          "tags": [
+            "sla",
+            "terrain",
+            "fdm"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAJKMGfCLfGw_Cg5xvnWDsugu_V-4TL1AAKR9DEbQ6kQSrCBGCXPKFw0AQADAgADeQADNgQ"
+          ],
+          "pledgeName": "Complete STL pack"
+        },
+        {
+          "name": "Fantastic Ladies of the Dimensions",
+          "creator": "SolGood Forge",
+          "link": "https://www.kickstarter.com/projects/tylerbridwell/stl-fantastic-ladies-of-the-dimensions",
+          "files": [
+            "BQACAgUAAxkBAAJKPmfCLlUNcNeU12RyBBATmY0MFukqAAJUDwACgbKhVg2catUSoL31NgQ",
+            "BQACAgUAAxkBAAJKP2fCLlU7nAKWsP_Vo-U4iqkWfM7FAAJsDwACgbKhVm12owst0f1tNgQ",
+            "BQACAgUAAxkBAAJKQGfCLlVAW57F6O02uv3LMVPYl3GIAAJ4DwACgbKhVgYXOCS4s7TrNgQ"
+          ],
+          "pledgeCost": "39",
+          "cost": "260",
+          "tags": [
+            "sla",
+            "female",
+            "figures"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAJKPWfCLkvvHOrmJQILBFy1abQg45p_AAKS9DEbQ6kQSmSbrfZgoVosAQADAgADdwADNgQ"
+          ],
+          "pledgeName": "Fantastic Ladies"
+        },
+        {
+          "name": "Void Stalkers: Eldritch Swarm",
+          "creator": "MammothFactory",
+          "link": "https://www.myminifactory.com/frontier/void-stalkers-eldritch-swarm-3088",
+          "files": [
+            "BQACAgUAAxkBAAJKSmfCLrbOktBzZUTCVfOp5Y9sH6qtAAKBEwACIalpV2Ky5BhsOOX-NgQ",
+            "BQACAgUAAxkBAAJKS2fCLrYN4eFlcaayPNstuq0pXcY-AAKJEwACIalpVzIo7FONJ0W-NgQ",
+            "BQACAgUAAxkBAAJKTGfCLraygOKipyCsddCexDy5pmMzAAKNEwACIalpV5id3Sw-BK68NgQ",
+            "BQACAgUAAxkBAAJKTWfCLrY0fPPePVS0g5VTHr1pzJcJAAKbEwACIalpV45-wf2I-V_XNgQ",
+            "BQACAgUAAxkBAAJKTmfCLrZ56xsy15p_ZOgrxSQPM-IMAAK1EwACIalpV8vwahqFwnW2NgQ",
+            "BQACAgUAAxkBAAJKT2fCLrbMA28x5z9jbSJYR_64sCNeAALtEwAC9OhxV8yS5IQz5J5nNgQ"
+          ],
+          "pledgeCost": "60",
+          "cost": "300",
+          "tags": [
+            "sla"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAJKSWfCLqaiC8QCmyxjBuacy-j5e62pAAKT9DEbQ6kQSiYTTHOv6r2XAQADAgADdwADNgQ"
+          ],
+          "pledgeName": "Tier 5: Eldritch Adventur﻿es"
+        },
+        {
+          "name": "LOSTHOLLOW",
+          "creator": "Forgotten Loot",
+          "link": "https://www.kickstarter.com/projects/forgottenloot/losthollow",
+          "files": [
+            "BQACAgEAAxkBAAJKWWfCLxGVAQ9soZjPr2pZ5dztAAHv0QACfQMAAk5QIEWc-dhIDzXt2TYE",
+            "BQACAgEAAxkBAAJKWmfCLxHjJSwk_NB8raFGxHlj3TvLAAJ-AwACTlAgRSLgcO4Xd_ifNgQ"
+          ],
+          "pledgeCost": "71",
+          "cost": "650",
+          "tags": [
+            "terrain",
+            "fdm",
+            "sla"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAJKWGfCLwZGLqvngX1y9LrPUtGQ7SJFAAKU9DEbQ6kQSlp23lsWhAUsAQADAgADdwADNgQ"
+          ],
+          "pledgeName": "LOSTHOLLOW+SUNRISE CASTLE"
+        },
+        {
+          "name": "WASTELAND OUTSIDERS - VOLUME 1",
+          "creator": "EnCobertura",
+          "link": "https://www.kickstarter.com/projects/encobertura/wasteland-outsiders-volume-1",
+          "files": [
+            "BQACAgQAAxkBAAJKZGfCL7CF5OyEcqvXUtCABEzJI7a_AALxDwACNZGwUVQ1M6H8axrLNgQ"
+          ],
+          "pledgeCost": "33",
+          "cost": "150",
+          "tags": [
+            "sla"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAJKY2fCL6UwIK3W3gTbdI01rDK77qZzAAKV9DEbQ6kQSlF9VMb-WsJzAQADAgADdwADNgQ"
+          ],
+          "pledgeName": "EnCobertura"
+        },
+        {
+          "name": "Overwatch - Part 1",
+          "creator": "MakerLab",
+          "link": "https://cults3d.com/en/3d-model/fashion/overwatch-part-1-15-printable-models-stl-personal-use",
+          "files": [
+            "BQACAgQAAxkBAAJKbmfCMEo2TWw3LmNNYAduy7N7Vt6cAAKYFgACFvixUqBuFvDuS7UqNgQ"
+          ],
+          "pledgeCost": "150",
+          "cost": "1350",
+          "tags": [
+            "props",
+            "fdm"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAJKbWfCMDl5I-X-73YKQwPM7gPl3vM5AAKX9DEbQ6kQSvsGC51jl6Q8AQADAgADdwADNgQ"
+          ],
+          "pledgeName": "Cults"
+        },
+        {
+          "name": "Scarlet Empire - Legends of Old World vol2.",
+          "creator": "TitanForgeMiniatures",
+          "link": "https://www.myminifactory.com/frontier/scarlet-empire-legends-of-old-world-vol2-3191",
+          "files": [
+            "BQACAgEAAxkBAAJKeGfCMLLGILkon2kj6VyuZ5sx0f5_AAK4BAACZuiZR5J7Zg5DDx74NgQ",
+            "BQACAgEAAxkBAAJKeWfCMLLzZKhgzMlQOh7s2llmdCLPAAK5BAACZuiZR4WzATN7PWwMNgQ",
+            "BQACAgEAAxkBAAJKemfCMLKoubUK0-DwSN6o_EM6MsRSAAK6BAACZuiZR0OBYwvfBGPjNgQ",
+            "BQACAgEAAxkBAAJKe2fCMLKsZUOvvHjk8qDQM0pLOVtiAAK7BAACZuiZR2KV8zqT2nDuNgQ",
+            "BQACAgEAAxkBAAJKfGfCMLI-_B0gn2ZJltl5d9BYns0eAAK8BAACZuiZR3mNpUz_h_XSNgQ"
+          ],
+          "pledgeCost": "39",
+          "cost": "450",
+          "tags": [
+            "sla"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAJKd2fCMKposd0bkghuTwnoKayGfWFzAAJz7TEbN64QSqjQgo1m9IdFAQADAgADeAADNgQ"
+          ],
+          "pledgeName": "Grand Inquisitor"
+        },
+        {
+          "name": "JERRY´S SCRAPYARD",
+          "creator": "KRAKEN 3D STUDIOS",
+          "link": "https://www.kickstarter.com/projects/kraken3dstudios/jerry-s-scrapyard",
+          "files": [
+            "BQACAgEAAxkBAAJKhmfCMRhlFtOKaTlP4W3mepWOzz_6AAJpBQACDHcQRD4MTaorkImWNgQ",
+            "BQACAgEAAxkBAAJKh2fCMRhhRBsvKOwgX08JUJO8OEC2AAJqBQACDHcQRKPc4m-_Khr3NgQ",
+            "BQACAgEAAxkBAAJKiGfCMRgQ7TGd6SD_-LV8eofBEjecAALFAwACEagpRI-1xLWNm0MkNgQ",
+            "BQACAgEAAxkBAAJKiWfCMRhIgqfyf2S6ahCQXL5Sb25SAALGAwACEagpRP5VWob6rXkMNgQ"
+          ],
+          "pledgeCost": "63",
+          "cost": "350",
+          "tags": [
+            "sla",
+            "terrain"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAJKhWfCMRCaEijJb_Ep-B_Sz0dGgCGoAAJ07TEbN64QSoHdhT7DgGg0AQADAgADdwADNgQ"
+          ],
+          "pledgeName": "EVERYTHING - DIGITAL PRODUCT + Rulebook"
+        },
+        {
+          "name": "Fantasy Girls Figurines 1:12 scale",
+          "creator": "Ravi",
+          "link": "https://www.kickstarter.com/projects/ohn/fantasy-girls-figurines-1-12-scale/",
+          "files": [
+            "BQACAgEAAxkBAAJKk2fCMWDYxY-I0yiMaoOokLvfv4WQAAInBAACfY6QRJHlp9y2DDIAATYE"
+          ],
+          "pledgeCost": "29",
+          "cost": "190",
+          "tags": [
+            "sla"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAJKkmfCMVXhWrf-7KrVeMdVuGkQM5LgAAJ17TEbN64QSlRrgx1AsFABAQADAgADdwADNgQ"
+          ],
+          "pledgeName": "Fantasy Girls Figurines"
+        },
+        {
+          "name": "Ladies of Chaos: Afterlife",
+          "creator": "Gilmorestudio",
+          "link": "https://www.kickstarter.com/projects/gmstudio/ladies-of-chaos-afterlife/",
+          "files": [
+            "BQACAgEAAxkBAAJKnWfCMaU7HfuuEXIIcqILpL7yKSt8AAI5DQAC_TrYRL1bEkrLirS4NgQ",
+            "BQACAgEAAxkBAAJKnmfCMaVecpcFhGufAjV01OEjHps8AAI9DQAC_TrYRH_Ep2jLS7z6NgQ",
+            "BQACAgEAAxkBAAJKn2fCMaUa-5ueXg0N8xOElohdCJfxAAI_DQAC_TrYRC9-jseVlOzUNgQ",
+            "BQACAgEAAxkBAAJKoGfCMaWx9QS1MTuWWOmsbO7u4pitAAJADQAC_TrYREyQe74ausYSNgQ",
+            "BQACAgEAAxkBAAJKoWfCMaXQ94px4CDwBBRvna_Y1pQFAAJBDQAC_TrYRE7jU5JcO1CDNgQ"
+          ],
+          "pledgeCost": "35",
+          "cost": "150",
+          "tags": [
+            "sla"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAJKnGfCMZ7vpr1-mKpoiqqdOc3ma3q7AAJ27TEbN64QSiaUcBSWPAABGgEAAwIAA3cAAzYE"
+          ],
+          "pledgeName": "LOC: Afterlife (PERSONAL)"
+        },
+        {
+          "name": "Welcome to Helwick - Part I - There's Something Fishy Afoot!",
+          "creator": "TERRABLOKS",
+          "link": "https://www.kickstarter.com/projects/terrabloks/welcome-to-helwick-part-i-theres-something-fishy-afoot",
+          "files": [
+            "BQACAgEAAxkBAAJKq2fCMgpbqqBRSvT78m3jvKodGDWGAAKMBQACEIxARbUbhpxCrMJiNgQ",
+            "BQACAgEAAxkBAAJKrGfCMgqpOjkvBnVylMfO-xiGO6_uAAKOBQACEIxAReGZe92YpO52NgQ",
+            "BQACAgEAAxkBAAJKrWfCMgqkr21NJMguN3xKI-lOR8FxAAKPBQACEIxARQjgj4ljfhjENgQ",
+            "BQACAgEAAxkBAAJKrmfCMgq3lj-wIN86ovYY_xxWTyGHAAKSBQACEIxARWgsxBYpKv9ANgQ",
+            "BQACAgEAAxkBAAJKr2fCMgo6svZpvgaaxHKknaPGCRXxAAKTBQACEIxARbNExFoSzeZDNgQ",
+            "BQACAgEAAxkBAAJKsGfCMgrY3LLCi2Uf2TKm3dYj02-ZAAKVBQACEIxARX-6zLPnHPwRNgQ",
+            "BQACAgEAAxkBAAJKsWfCMgreVQ1L1l3gPTpRzJbMBLOVAAKXBQACEIxARWE_A0z3T3TiNgQ",
+            "BQACAgEAAxkBAAJKsmfCMgp50oJWWnvYtKHJfuCJYFlHAAKcBQACEIxARdXJTT6f31aLNgQ",
+            "BQACAgEAAxkBAAJKs2fCMgo6u8BFVTInAqvE-hK7UdviAAKdBQACEIxARd3qSSKMJcVRNgQ",
+            "BQACAgEAAxkBAAJKtGfCMgo7SLwGcdDPMezwEsFK0BWRAAIDBgACUOhxR5tM-Fg_ARhjNgQ",
+            "BQACAgEAAxkBAAJKtWfCMgoyoq8o7dJevuqDKf94jGp9AAIKBQAC4wSwR4DUUJfcV8ikNgQ"
+          ],
+          "pledgeCost": "75",
+          "cost": "250",
+          "tags": [
+            "terrain"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAJKqmfCMfnm36F_eaNO5v_KTgAB01o5JwACFvUxG1EqEUoL-ZzjRnNVhAEAAwIAA3cAAzYE"
+          ],
+          "pledgeName": "All In"
+        },
+        {
+          "name": "Rebel Command Base",
+          "creator": "War Scenery",
+          "link": "https://www.kickstarter.com/projects/warscenery/rebel-command-base-3d-printable-sci-fi-terrain-and-minis",
+          "files": [
+            "BQACAgEAAxkBAAJKxGfCNrlGrxJwj9PMrFrqfxztbFWQAAIKBAACvbihRVU3hR2LDxYhNgQ"
+          ],
+          "pledgeCost": "60",
+          "cost": "250",
+          "tags": [
+            "starwars",
+            "sla"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAJKw2fCNpZbVo7zKFEhsiuddN8rMDWhAAJ57TEbN64QSlnThOxyPCu8AQADAgADeQADNgQ"
+          ],
+          "pledgeName": "Full Pledge"
+        },
+        {
+          "name": "Game Of Thrones",
+          "creator": "KnightModels",
+          "link": "https://www.myminifactory.com/frontier/game-of-thrones-stl-files-3340",
+          "files": [
+            "BQACAgEAAxkBAAJM-mfch8bFY_M77qfYF7UhGDUbdJkzAAIPBgACrkgwRhSRpN2hqAFPNgQ",
+            "BQACAgEAAxkBAAJM-2fch8YWf6DKGRUyD4GpNvmvwNZNAAIQBgACrkgwRp8tQ-CK_NQxNgQ",
+            "BQACAgEAAxkBAAJM_Gfch8ZVQ6G1kT4hvVulILPzCFkwAAISBgACrkgwRgosnw2q1oeeNgQ"
+          ],
+          "pledgeCost": "115",
+          "cost": "250",
+          "tags": [
+            "sla",
+            "pop",
+            "miniaturess"
+          ],
+          "photos": [
+            "AgACAgIAAxkBAAJM-Wfch7n-bRcMWCP2iO2tufkqT1NXAALF7zEbpPLhSl_rARe_EDX7AQADAgADdwADNgQ"
+          ],
+          "pledgeName": "All-In Tier"
+        }
+      ]
+    }
+  }
+}

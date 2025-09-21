@@ -1,0 +1,17 @@
+{
+  "settings": {
+    "type": "string",
+    "data": {
+      "chats": {
+        "ks": {
+          "thread_id": 34174,
+          "id": -1001812007776
+        },
+        "polls": {
+          "thread_id": 15045,
+          "id": -1001812007776
+        }
+      }
+    }
+  }
+}

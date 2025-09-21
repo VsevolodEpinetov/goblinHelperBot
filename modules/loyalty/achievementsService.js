@@ -24,10 +24,19 @@ async function grantAchievement(adminUserId, targetUserId, achievementType, achi
   try {
     if (notifications.rpgTopicId && notifications.mainGroupId) {
       const title = (achievementsConfig[achievementType]?.title) || achievementType;
+      
+      // Get user data for tagging
+      const { getUser } = require('../db/helpers');
+      const userData = await getUser(targetUserId);
+      const username = userData?.username ? `@${userData.username}` : userData?.first_name || `ID: ${targetUserId}`;
+      
       await globalThis.__bot?.telegram.sendMessage(
         notifications.mainGroupId, 
-        `🏆 Пользователь ${targetUserId} получил достижение: ${title}`,
-        { message_thread_id: notifications.rpgTopicId }
+        `🏆 ${username} получил достижение: ${title}`,
+        { 
+          parse_mode: 'HTML',
+          message_thread_id: notifications.rpgTopicId 
+        }
       );
     }
   } catch {}

@@ -115,9 +115,18 @@ const selectAchievement = Composer.action(/^selectAchievement_/, async (ctx) => 
     // Send public notification to RPG topic in main group
     if (notifications.rpgTopicId && notifications.mainGroupId) {
       try {
+        // Create tagged message for RPG topic
+        const username = userData.username ? `@${userData.username}` : userData.first_name || `ID: ${userId}`;
+        const rpgMessage = 
+          `🏆 <b>Новое достижение!</b>\n\n` +
+          `${username} заслужил знак отличия:\n\n` +
+          `✨ <b>${achievementConfig.title}</b>\n` +
+          `${achievementConfig.description}\n\n` +
+          `🕯 Главгоблин кивает одобрительно.`;
+        
         await ctx.telegram.sendMessage(
           notifications.mainGroupId,
-          achievementMessage, 
+          rpgMessage, 
           { 
             parse_mode: 'HTML',
             message_thread_id: notifications.rpgTopicId

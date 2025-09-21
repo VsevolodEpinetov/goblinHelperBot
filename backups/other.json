@@ -1,0 +1,117 @@
+{
+  "filesIzolda": {
+    "type": "string",
+    "data": {
+      "trd": {
+        "А1": {
+          "fileId": "BQACAgIAAxkBAAO6Z3NnAuoeSeGaPjzyExyV9E6w3DQAAktrAAJbX5hLbuAqVYOz2282BA"
+        },
+        "А1+Д1": {
+          "fileId": "BQACAgIAAxkBAAO7Z3NnAvN89HNmOtgG8qAo1yxhQ_QAAkxrAAJbX5hLiidr1l4Pdzw2BA"
+        },
+        "А2": {
+          "fileId": "BQACAgIAAxkBAAO8Z3NnAwP6tBrFEqVIF9nMc7Wx1rQAAk1rAAJbX5hLZnG2Yju8R6w2BA"
+        },
+        "А2+А2С": {
+          "fileId": "BQACAgIAAxkBAAO9Z3NnBKENwzNoBzmIqW_xJ9UR85MAAk5rAAJbX5hLkSN37vdb4wABNgQ"
+        },
+        "А2+А2С+ШД2+ШД1": {
+          "fileId": "BQACAgIAAxkBAAO-Z3NnBD33EmTEjRZGdovvyLXprc0AAk9rAAJbX5hLRu1A07-Sr9A2BA"
+        },
+        "А2+А2С+ШД2+ШД1+Д2": {
+          "fileId": "BQACAgIAAxkBAAO_Z3NnBPOGGurHrIoOOFHU4A1vxpQAAlBrAAJbX5hLD4qj89wN45Q2BA"
+        },
+        "А2С": {
+          "fileId": "BQACAgIAAxkBAAPAZ3NnBau4B2hZtbRj4jPTJWa5hTwAAlFrAAJbX5hLNLQLgYrmlL02BA"
+        },
+        "А3": {
+          "fileId": "BQACAgIAAxkBAAPBZ3NnBm35Z7_Wmcs3fqRIp5An9eEAAlJrAAJbX5hLqibA7UVVjZ82BA"
+        },
+        "А3+Д3": {
+          "fileId": "BQACAgIAAxkBAAPCZ3NnB2ETpIjKm_5wZX7Uf_h2B_gAAlNrAAJbX5hLKepKVOVD8bA2BA"
+        },
+        "А4": {
+          "fileId": "BQACAgIAAxkBAAPDZ3NnCT64c6DFXRjwO7ArwGVfAAEGAAJUawACW1-YS_VphFmSBpzwNgQ"
+        },
+        "А4+ВД": {
+          "fileId": "BQACAgIAAxkBAAPEZ3NnCWoXS3y_WL8W9kTySep0qk0AAlVrAAJbX5hLpDNWqy0XhW02BA"
+        },
+        "А4+ВД+Д4": {
+          "fileId": "BQACAgIAAxkBAAPFZ3NnCWU5RGKHkUZEQZ0cj-EmZWwAAlZrAAJbX5hLp3dktIYVtWg2BA"
+        },
+        "А5": {
+          "fileId": "BQACAgIAAxkBAAPGZ3NnCi262AaLmThpxprWmzyFknYAAldrAAJbX5hL_QgAAYH5yX-wNgQ"
+        },
+        "А5+Д5": {
+          "fileId": "BQACAgIAAxkBAAPHZ3NnChy4pr1Qk2uDT_qc3zdOZQkAAlhrAAJbX5hLmiWMBoWky_s2BA"
+        },
+        "А6": {
+          "fileId": "BQACAgIAAxkBAAPIZ3NnC-Y-WevEsuunlD4a0oxMcfMAAllrAAJbX5hLXNZl0BkYrrI2BA"
+        },
+        "А6+А8": {
+          "fileId": "BQACAgIAAxkBAAPJZ3NnC7OjZGlkJUgEeNhoy_kqXccAAlprAAJbX5hLZX2UzSONXzs2BA"
+        },
+        "А6+А8+ДД1+ДД2": {
+          "fileId": "BQACAgIAAxkBAAPKZ3NnDI3_PioT7EKe9nF8FCbiEWQAAltrAAJbX5hLajqZaSlQ77w2BA"
+        },
+        "А6+А8+ДД1+ДД2+Д6": {
+          "fileId": "BQACAgIAAxkBAAPLZ3NnDOG2TT6IqKCBDn5aKZEAAekuAAJcawACW1-YS9yPqDh_M3lgNgQ"
+        },
+        "А7": {
+          "fileId": "BQACAgIAAxkBAAPMZ3NnDTAQm4AY6GG81Ec6hF4M69YAAl1rAAJbX5hLKAs8f-y3mN42BA"
+        },
+        "А7+Д7": {
+          "fileId": "BQACAgIAAxkBAAPNZ3NnDR-tKEFQGQ1oZcqX83Gr8WoAAl5rAAJbX5hLV9rHGVZPjho2BA"
+        },
+        "А8": {
+          "fileId": "BQACAgIAAxkBAAPOZ3NnDl3Ztf-RG8sPu8oz5thxiioAAl9rAAJbX5hLidywILjGsvY2BA"
+        },
+        "ВД": {
+          "fileId": "BQACAgIAAxkBAAPPZ3NnDkdPNa59R9pT8QW5x13VJKMAAmBrAAJbX5hLmsP_DqtlQ9M2BA"
+        },
+        "Д1": {
+          "fileId": "BQACAgIAAxkBAAPQZ3NnD7JfdoMXKtrueR9RZY7gZu0AAmFrAAJbX5hL1muJ3cbcz8Y2BA"
+        },
+        "Д2": {
+          "fileId": "BQACAgIAAxkBAAPRZ3NnD1S8mujrUAlp0oe2W5CTbbEAAmJrAAJbX5hLZI6p2TmXX482BA"
+        },
+        "Д3": {
+          "fileId": "BQACAgIAAxkBAAPSZ3NnEEE29kaylW_Kjli0rP41uFoAAmNrAAJbX5hLdfjXRfUp4ws2BA"
+        },
+        "Д4": {
+          "fileId": "BQACAgIAAxkBAAPTZ3NnEP-zRoRi6eoV8UMZlhuXELEAAmRrAAJbX5hL389ZuBeO0Oo2BA"
+        },
+        "Д5": {
+          "fileId": "BQACAgIAAxkBAAPUZ3NnEROQQTHZFpdsGZr6vaqobZ0AAmVrAAJbX5hLUXrIK6f2-O82BA"
+        },
+        "Д6": {
+          "fileId": "BQACAgIAAxkBAAPVZ3NnEZ34XAAB8qvYEdQ_DVmaYiirAAJmawACW1-YS8X4LPlf9g3dNgQ"
+        },
+        "Д7": {
+          "fileId": "BQACAgIAAxkBAAPWZ3NnEhpocI5vx2nJ0ZY9o6w-7UMAAmdrAAJbX5hLiyMbsKDgfcA2BA"
+        },
+        "Д8": {
+          "fileId": "BQACAgIAAxkBAAPXZ3NnEs13mgWqNp6lezLeZKLnjbEAAmhrAAJbX5hLlfRu8SElvEU2BA"
+        },
+        "ДД1": {
+          "fileId": "BQACAgIAAxkBAAPYZ3NnE6-Qn9Ber9KdTA_T__Cx2GsAAmlrAAJbX5hLU4t1kHpE4HI2BA"
+        },
+        "ДД1+ДД2": {
+          "fileId": "BQACAgIAAxkBAAPZZ3NnE3qykITWWA9y6KVqJKIyHeUAAmprAAJbX5hLNqk6x0Zt8kA2BA"
+        },
+        "ДД2": {
+          "fileId": "BQACAgIAAxkBAAPaZ3NnFNgOQzp8DTIB_zbFvRIXmMcAAmtrAAJbX5hLRLsxghCE1LQ2BA"
+        },
+        "ШД1": {
+          "fileId": "BQACAgIAAxkBAAPbZ3NnFAaHwNPtBG66a3PdaH6tkZcAAmxrAAJbX5hLGnX97XzD1m42BA"
+        },
+        "ШД2": {
+          "fileId": "BQACAgIAAxkBAAPcZ3NnFY7NTSA7Jnqr6cGIGU2f7uYAAm1rAAJbX5hLrlq4KtQZ9aU2BA"
+        },
+        "ШД2+ШД1": {
+          "fileId": "BQACAgIAAxkBAAPdZ3NnFcS4rc64XoEQyNjM5DucRO4AAm5rAAJbX5hL1Dfg0fLjVHY2BA"
+        }
+      }
+    }
+  }
+}

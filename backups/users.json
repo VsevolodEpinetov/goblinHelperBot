@@ -1,0 +1,6421 @@
+{
+  "101922344-user": {
+    "type": "string",
+    "data": {
+      "results": [
+        "920572103"
+      ],
+      "userId": "440173485",
+      "purchasing": {
+        "type": "group",
+        "year": "2024",
+        "month": "10",
+        "userId": 101922344,
+        "isOld": false
+      }
+    }
+  },
+  "405125289-user": {
+    "type": "string",
+    "data": {
+      "purchasing": {
+        "type": "group",
+        "year": "2025",
+        "month": "08",
+        "userId": 405125289,
+        "isOld": false
+      },
+      "results": []
+    }
+  },
+  "1898411672-user": {
+    "type": "string",
+    "data": {
+      "purchasing": {
+        "type": "group",
+        "year": "2025",
+        "month": "01",
+        "userId": 1898411672,
+        "isOld": true
+      },
+      "results": []
+    }
+  },
+  "42799644-user": {
+    "type": "string",
+    "data": {
+      "purchasing": {
+        "type": "group",
+        "year": "2025",
+        "month": "08",
+        "userId": 42799644,
+        "isOld": false
+      }
+    }
+  },
+  "6131929859-user": {
+    "type": "string",
+    "data": {
+      "purchasing": {
+        "type": "group",
+        "year": "2025",
+        "month": "04",
+        "userId": 6131929859,
+        "isOld": false
+      },
+      "results": [
+        93,
+        96
+      ]
+    }
+  },
+  "214097883-user": {
+    "type": "string",
+    "data": {
+      "purchasing": {
+        "type": "group",
+        "year": "2025",
+        "month": "08",
+        "userId": 214097883,
+        "isOld": false
+      }
+    }
+  },
+  "2066869625-user": {
+    "type": "string",
+    "data": {
+      "results": []
+    }
+  },
+  "257670004-user": {
+    "type": "string",
+    "data": {
+      "purchasing": {
+        "type": "group",
+        "year": "2025",
+        "month": "08",
+        "userId": 257670004,
+        "isOld": false
+      }
+    }
+  },
+  "386852843-user": {
+    "type": "string",
+    "data": {
+      "purchasing": {
+        "type": "group",
+        "year": "2024",
+        "month": "03",
+        "userId": 386852843,
+        "isOld": true
+      },
+      "results": [
+        12,
+        13,
+        15,
+        16,
+        93,
+        96,
+        99
+      ]
+    }
+  },
+  "1292914182-user": {
+    "type": "string",
+    "data": {
+      "results": [],
+      "purchasing": {
+        "type": "group",
+        "year": "2025",
+        "month": "08",
+        "userId": 1292914182,
+        "isOld": false
+      }
+    }
+  },
+  "433592664-user": {
+    "type": "string",
+    "data": {
+      "purchasing": {
+        "type": "group",
+        "year": "2025",
+        "month": "03",
+        "userId": 433592664,
+        "isOld": false
+      },
+      "results": []
+    }
+  },
+  "24835051-user": {
+    "type": "string",
+    "data": {
+      "purchasing": {
+        "type": "group",
+        "year": "2025",
+        "month": "08",
+        "userId": 24835051,
+        "isOld": false
+      }
+    }
+  },
+  "947137695-user": {
+    "type": "string",
+    "data": {
+      "purchasing": {
+        "type": "group",
+        "year": "2025",
+        "month": "08",
+        "userId": 947137695,
+        "isOld": false
+      }
+    }
+  },
+  "425696085-user": {
+    "type": "string",
+    "data": {
+      "purchasing": {
+        "type": "group",
+        "year": "2025",
+        "month": "08",
+        "userId": 425696085,
+        "isOld": false
+      },
+      "results": []
+    }
+  },
+  "814608036-user": {
+    "type": "string",
+    "data": {
+      "purchasing": {
+        "type": "group",
+        "year": "2025",
+        "month": "06",
+        "userId": 814608036,
+        "isOld": true
+      },
+      "results": []
+    }
+  },
+  "1427093277-user": {
+    "type": "string",
+    "data": {
+      "purchasing": {
+        "type": "kickstarter",
+        "userId": 1427093277,
+        "ksId": "120",
+        "name": "Gakou Tactics RELOADED",
+        "price": 250
+      },
+      "results": []
+    }
+  },
+  "350865539-user": {
+    "type": "string",
+    "data": {
+      "purchasing": {
+        "type": "group",
+        "year": "2025",
+        "month": "07",
+        "userId": 350865539,
+        "isOld": false
+      }
+    }
+  },
+  "91430770-user": {
+    "type": "string",
+    "data": {
+      "userId": "7058039189"
+    }
+  },
+  "1358974437-user": {
+    "type": "string",
+    "data": {
+      "purchasing": {
+        "type": "group",
+        "year": "2025",
+        "month": "08",
+        "userId": 1358974437,
+        "isOld": false
+      },
+      "results": []
+    }
+  },
+  "389123917-user": {
+    "type": "string",
+    "data": {
+      "purchasing": {
+        "type": "group",
+        "year": "2025",
+        "month": "08",
+        "userId": 389123917,
+        "isOld": false
+      }
+    }
+  },
+  "854956012-user": {
+    "type": "string",
+    "data": {
+      "purchasing": {
+        "type": "group",
+        "year": "2025",
+        "month": "08",
+        "userId": 854956012,
+        "isOld": false
+      },
+      "results": [
+        11
+      ]
+    }
+  },
+  "683200394-user": {
+    "type": "string",
+    "data": {
+      "purchasing": {
+        "type": "group",
+        "year": "2025",
+        "month": "07",
+        "userId": 683200394,
+        "isOld": false
+      }
+    }
+  },
+  "739689021-user": {
+    "type": "string",
+    "data": {
+      "purchasing": {
+        "type": "group",
+        "year": "2025",
+        "month": "08",
+        "userId": 739689021,
+        "isOld": false
+      },
+      "results": []
+    }
+  },
+  "692445732-user": {
+    "type": "string",
+    "data": {
+      "purchasing": {
+        "type": "group",
+        "year": "2025",
+        "month": "06",
+        "userId": 692445732,
+        "isOld": true
+      },
+      "results": []
+    }
+  },
+  "407762110-user": {
+    "type": "string",
+    "data": {
+      "purchasing": {
+        "type": "group",
+        "year": "2024",
+        "month": "11",
+        "userId": 407762110,
+        "isOld": false
+      }
+    }
+  },
+  "386904870-user": {
+    "type": "string",
+    "data": {
+      "purchasing": {
+        "type": "group",
+        "year": "2025",
+        "month": "08",
+        "userId": 386904870,
+        "isOld": false
+      }
+    }
+  },
+  "400253080-user": {
+    "type": "string",
+    "data": {
+      "purchasing": {
+        "type": "group",
+        "year": "2025",
+        "month": "08",
+        "userId": 400253080,
+        "isOld": false
+      },
+      "results": []
+    }
+  },
+  "255757294-user": {
+    "type": "string",
+    "data": {
+      "purchasing": {
+        "type": "group",
+        "year": "2025",
+        "month": "04",
+        "userId": 255757294,
+        "isOld": false
+      },
+      "results": []
+    }
+  },
+  "495764441-user": {
+    "type": "string",
+    "data": {
+      "purchasing": {
+        "type": "kickstarter",
+        "userId": 495764441,
+        "ksId": 93,
+        "name": "The Frost City 3",
+        "price": "350"
+      },
+      "results": []
+    }
+  },
+  "58568340-user": {
+    "type": "string",
+    "data": {
+      "purchasing": {
+        "type": "group",
+        "year": "2025",
+        "month": "05",
+        "userId": 58568340,
+        "isOld": true
+      },
+      "results": []
+    }
+  },
+  "1629116317-user": {
+    "type": "string",
+    "data": {
+      "results": [
+        126
+      ],
+      "purchasing": {
+        "type": "kickstarter",
+        "userId": 1629116317,
+        "ksId": "103",
+        "name": "The Axe Class",
+        "price": 150
+      }
+    }
+  },
+  "920572103-user": {
+    "type": "string",
+    "data": {
+      "results": [],
+      "purchasing": {
+        "type": "group",
+        "year": "2025",
+        "month": "08",
+        "userId": 920572103,
+        "isOld": false
+      }
+    }
+  },
+  "1393463449-user": {
+    "type": "string",
+    "data": {
+      "purchasing": {
+        "type": "group",
+        "year": "2025",
+        "month": "01",
+        "userId": 1393463449,
+        "isOld": false
+      },
+      "results": [
+        11
+      ]
+    }
+  },
+  "262773814-user": {
+    "type": "string",
+    "data": {
+      "purchasing": {
+        "type": "group",
+        "year": "2025",
+        "month": "04",
+        "userId": 262773814,
+        "isOld": true
+      },
+      "results": []
+    }
+  },
+  "642772993-user": {
+    "type": "string",
+    "data": {
+      "purchasing": {
+        "type": "group",
+        "year": "2025",
+        "month": "08",
+        "userId": 642772993,
+        "isOld": false
+      }
+    }
+  },
+  "235591625-user": {
+    "type": "string",
+    "data": {
+      "purchasing": {
+        "type": "group",
+        "year": "2024",
+        "month": "12",
+        "userId": 235591625,
+        "isOld": false
+      }
+    }
+  },
+  "897497132-user": {
+    "type": "string",
+    "data": {
+      "purchasing": {
+        "type": "group",
+        "year": "2025",
+        "month": "08",
+        "userId": 897497132,
+        "isOld": false
+      },
+      "results": [
+        103
+      ]
+    }
+  },
+  "699230065-user": {
+    "type": "string",
+    "data": {
+      "purchasing": {
+        "type": "group",
+        "year": "2024",
+        "month": "11",
+        "userId": 699230065,
+        "isOld": false
+      }
+    }
+  },
+  "437129878-user": {
+    "type": "string",
+    "data": {
+      "purchasing": {
+        "type": "group",
+        "year": "2025",
+        "month": "08",
+        "userId": 437129878,
+        "isOld": false
+      },
+      "results": []
+    }
+  },
+  "1987405994-user": {
+    "type": "string",
+    "data": {
+      "purchasing": {
+        "type": "group",
+        "year": "2025",
+        "month": "08",
+        "userId": 1987405994,
+        "isOld": false
+      },
+      "results": []
+    }
+  },
+  "332336-user": {
+    "type": "string",
+    "data": {
+      "purchasing": {
+        "type": "group",
+        "year": "2025",
+        "month": "08",
+        "userId": 332336,
+        "isOld": false
+      }
+    }
+  },
+  "1519577898-user": {
+    "type": "string",
+    "data": {
+      "purchasing": {
+        "type": "group",
+        "year": "2025",
+        "month": "09",
+        "userId": 1519577898,
+        "isOld": false
+      },
+      "results": []
+    }
+  },
+  "440173485-user": {
+    "type": "string",
+    "data": {
+      "results": [
+        94
+      ],
+      "purchasing": {
+        "type": "group",
+        "year": "2025",
+        "month": "07",
+        "userId": 440173485,
+        "isOld": true
+      }
+    }
+  },
+  "1206422029-user": {
+    "type": "string",
+    "data": {
+      "purchasing": {
+        "type": "group",
+        "year": "2025",
+        "month": "08",
+        "userId": 1206422029,
+        "isOld": false
+      },
+      "results": []
+    }
+  },
+  "473582830-user": {
+    "type": "string",
+    "data": {
+      "purchasing": {
+        "type": "group",
+        "year": "2025",
+        "month": "06",
+        "userId": 473582830,
+        "isOld": false
+      }
+    }
+  },
+  "444212458-user": {
+    "type": "string",
+    "data": {
+      "purchasing": {
+        "type": "group",
+        "year": "2025",
+        "month": "08",
+        "userId": 444212458,
+        "isOld": false
+      },
+      "results": []
+    }
+  },
+  "135292978-user": {
+    "type": "string",
+    "data": {
+      "purchasing": {
+        "type": "group",
+        "year": "2025",
+        "month": "06",
+        "userId": 135292978,
+        "isOld": false
+      }
+    }
+  },
+  "1129968341-user": {
+    "type": "string",
+    "data": {
+      "purchasing": {
+        "type": "group",
+        "year": "2025",
+        "month": "08",
+        "userId": 1129968341,
+        "isOld": false
+      },
+      "results": [
+        28
+      ]
+    }
+  },
+  "628694430-user": {
+    "type": "string",
+    "data": {
+      "purchasing": {
+        "type": "group",
+        "year": "2025",
+        "month": "07",
+        "userId": 628694430,
+        "isOld": true
+      },
+      "results": [
+        87
+      ]
+    }
+  },
+  "434370797-user": {
+    "type": "string",
+    "data": {
+      "purchasing": {
+        "type": "group",
+        "year": "2025",
+        "month": "08",
+        "userId": 434370797,
+        "isOld": false
+      }
+    }
+  },
+  "352250364-user": {
+    "type": "string",
+    "data": {
+      "purchasing": {
+        "type": "group",
+        "year": "2025",
+        "month": "07",
+        "userId": 352250364,
+        "isOld": true
+      }
+    }
+  },
+  "6192973372-user": {
+    "type": "string",
+    "data": {
+      "purchasing": {
+        "type": "group",
+        "year": "2025",
+        "month": "08",
+        "userId": 6192973372,
+        "isOld": false
+      }
+    }
+  },
+  "612818429-user": {
+    "type": "string",
+    "data": {
+      "purchasing": {
+        "type": "group",
+        "year": "2025",
+        "month": "08",
+        "userId": 612818429,
+        "isOld": false
+      }
+    }
+  },
+  "1193382536-user": {
+    "type": "string",
+    "data": {
+      "purchasing": {
+        "type": "group",
+        "year": "2025",
+        "month": "08",
+        "userId": 1193382536,
+        "isOld": false
+      },
+      "results": [
+        144
+      ]
+    }
+  },
+  "348347335-user": {
+    "type": "string",
+    "data": {
+      "purchasing": {
+        "type": "group",
+        "year": "2025",
+        "month": "08",
+        "userId": 348347335,
+        "isOld": false
+      },
+      "results": []
+    }
+  },
+  "387515762-user": {
+    "type": "string",
+    "data": {
+      "purchasing": {
+        "type": "group",
+        "year": "2025",
+        "month": "08",
+        "userId": 387515762,
+        "isOld": false
+      },
+      "results": []
+    }
+  },
+  "5853237200-user": {
+    "type": "string",
+    "data": {
+      "purchasing": {
+        "type": "group",
+        "year": "2025",
+        "month": "08",
+        "userId": 5853237200,
+        "isOld": false
+      },
+      "results": []
+    }
+  },
+  "users": {
+    "type": "string",
+    "data": {
+      "list": {
+        "332336": {
+          "id": 332336,
+          "username": "Zlodeykin",
+          "first_name": "Sergey",
+          "last_name": "SM",
+          "dateAdded": "2024-09-30T17:31:04.915Z",
+          "roles": [
+            "goblin"
+          ],
+          "purchases": {
+            "kickstarters": [],
+            "groups": {
+              "regular": [
+                "2024_10",
+                "2024_11",
+                "2024_12",
+                "2025_01",
+                "2025_02",
+                "2025_03",
+                "2025_04",
+                "2025_07",
+                "2025_08"
+              ],
+              "plus": [],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 0
+          }
+        },
+        "24835051": {
+          "id": 24835051,
+          "username": "sister_psychosis",
+          "first_name": "The Sniper at the Gates of Dawn",
+          "last_name": "",
+          "dateAdded": "2024-12-08T23:53:30.836Z",
+          "roles": [
+            "goblin"
+          ],
+          "purchases": {
+            "kickstarters": [],
+            "groups": {
+              "regular": [
+                "2024_12",
+                "2024_11",
+                "2025_01",
+                "2025_02",
+                "2025_03",
+                "2025_04",
+                "2025_05",
+                "2025_06",
+                "2025_07",
+                "2025_08"
+              ],
+              "plus": [
+                "2025_02",
+                "2025_03",
+                "2025_04",
+                "2025_05",
+                "2025_08"
+              ],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 0
+          }
+        },
+        "42799644": {
+          "id": 42799644,
+          "username": "Zuperzuche",
+          "first_name": "Zuche",
+          "last_name": "",
+          "dateAdded": "2024-10-07T19:03:11.443Z",
+          "roles": [
+            "goblin"
+          ],
+          "purchases": {
+            "kickstarters": [],
+            "groups": {
+              "regular": [
+                "2024_10",
+                "2024_11",
+                "2024_12",
+                "2025_01",
+                "2025_02",
+                "2025_03",
+                "2025_04",
+                "2025_05",
+                "2025_06",
+                "2025_07",
+                "2025_08"
+              ],
+              "plus": [],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 0
+          }
+        },
+        "58568340": {
+          "id": 58568340,
+          "username": "CheshireKot",
+          "first_name": "Dmitri",
+          "last_name": "Kot",
+          "dateAdded": "2024-10-10T13:36:59.307Z",
+          "roles": [
+            "admin"
+          ],
+          "purchases": {
+            "kickstarters": [
+              "95",
+              "125",
+              "128",
+              "117",
+              "11"
+            ],
+            "groups": {
+              "regular": [],
+              "plus": [],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": -996
+          }
+        },
+        "84978786": {
+          "id": 84978786,
+          "username": "ZOObastik",
+          "first_name": "Лёха",
+          "last_name": "Макаров",
+          "dateAdded": "2024-09-30T13:53:56.189Z",
+          "roles": [
+            "goblin"
+          ],
+          "purchases": {
+            "kickstarters": [],
+            "groups": {
+              "regular": [
+                "2024_10",
+                "2024_11",
+                "2024_12",
+                "2025_01",
+                "2025_02",
+                "2025_03",
+                "2025_04",
+                "2025_05",
+                "2025_06",
+                "2025_07",
+                "2025_08"
+              ],
+              "plus": [
+                "2024_01"
+              ],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 0
+          }
+        },
+        "89056171": {
+          "id": 89056171,
+          "username": "whoisdn4k",
+          "first_name": "ДånR",
+          "last_name": "",
+          "dateAdded": "2025-08-17T10:15:55.016Z",
+          "roles": [],
+          "purchases": {
+            "kickstarters": [],
+            "groups": {
+              "regular": [],
+              "plus": [],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 0
+          }
+        },
+        "91430770": {
+          "id": 91430770,
+          "username": "send_dog_pics",
+          "first_name": "Velipedastal",
+          "last_name": "Zamovsky",
+          "dateAdded": "2024-10-10T02:47:27.288Z",
+          "roles": [
+            "adminPlus",
+            "admin",
+            "goblin"
+          ],
+          "purchases": {
+            "kickstarters": [],
+            "groups": {
+              "regular": [],
+              "plus": [],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 0
+          }
+        },
+        "101922344": {
+          "id": 101922344,
+          "username": "WarmDuck",
+          "first_name": "Анна",
+          "last_name": "",
+          "dateAdded": "2024-10-10T02:49:11.894Z",
+          "roles": [
+            "goblin",
+            "admin",
+            "adminPlus"
+          ],
+          "purchases": {
+            "kickstarters": [],
+            "groups": {
+              "regular": [],
+              "plus": [],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 0
+          }
+        },
+        "104866555": {
+          "id": 104866555,
+          "username": "renfun",
+          "first_name": "Ренат",
+          "last_name": "",
+          "dateAdded": "2024-09-28T06:09:54.564Z",
+          "roles": [
+            "goblin"
+          ],
+          "purchases": {
+            "kickstarters": [
+              "71",
+              "33",
+              "112",
+              "119",
+              "121",
+              "131"
+            ],
+            "groups": {
+              "regular": [
+                "2024_10",
+                "2024_11",
+                "2024_12",
+                "2025_01",
+                "2025_02",
+                "2025_03",
+                "2025_04",
+                "2025_05",
+                "2025_06",
+                "2025_07",
+                "2025_08",
+                "2025_09",
+                "2025_10",
+                "2025_11",
+                "2025_12"
+              ],
+              "plus": [
+                "2024_10",
+                "2024_11",
+                "2024_12",
+                "2023_11",
+                "2023_12",
+                "2024_01",
+                "2024_02",
+                "2024_03",
+                "2024_04",
+                "2024_05",
+                "2024_06",
+                "2024_07",
+                "2024_08",
+                "2024_09",
+                "2025_01",
+                "2025_02",
+                "2025_03",
+                "2025_04",
+                "2025_05",
+                "2025_06",
+                "2025_07",
+                "2025_08",
+                "2025_09",
+                "2025_10",
+                "2025_11",
+                "2025_12"
+              ],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 5
+          }
+        },
+        "127273718": {
+          "id": 127273718,
+          "username": "p_serdiuk",
+          "first_name": "Paul",
+          "last_name": "Serdiuk",
+          "dateAdded": "2024-10-07T23:40:31.553Z",
+          "roles": [
+            "goblin"
+          ],
+          "purchases": {
+            "kickstarters": [],
+            "groups": {
+              "regular": [
+                "2024_11",
+                "2024_10",
+                "2024_09",
+                "2024_12",
+                "2025_01",
+                "2024_08",
+                "2024_07",
+                "2024_06",
+                "2024_05",
+                "2024_04",
+                "2024_03",
+                "2024_02",
+                "2024_01",
+                "2023_12",
+                "2023_11",
+                "2023_10",
+                "2023_09",
+                "2023_08",
+                "2023_07",
+                "2023_06",
+                "2023_05",
+                "2023_04",
+                "2023_03",
+                "2023_02"
+              ],
+              "plus": [
+                "2024_11",
+                "2024_10",
+                "2024_09"
+              ],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 0
+          }
+        },
+        "135292978": {
+          "id": 135292978,
+          "username": "MSMikon",
+          "first_name": "Mikhail",
+          "last_name": "Semisotov",
+          "dateAdded": "2024-10-10T11:42:16.980Z",
+          "roles": [
+            "goblin",
+            "banned"
+          ],
+          "purchases": {
+            "kickstarters": [],
+            "groups": {
+              "regular": [
+                "2024_10",
+                "2024_11",
+                "2024_12",
+                "2025_01",
+                "2025_02",
+                "2025_03",
+                "2025_04",
+                "2025_05",
+                "2025_06"
+              ],
+              "plus": [
+                "2023_11",
+                "2024_03",
+                "2024_04",
+                "2024_05",
+                "2024_06",
+                "2024_07",
+                "2024_08"
+              ],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 0
+          }
+        },
+        "176988041": {
+          "id": 176988041,
+          "username": "Mackay",
+          "first_name": "Yuri",
+          "last_name": "Anishenko",
+          "dateAdded": "2024-09-30T14:35:59.333Z",
+          "roles": [
+            "goblin"
+          ],
+          "purchases": {
+            "kickstarters": [
+              "111"
+            ],
+            "groups": {
+              "regular": [
+                "2024_10",
+                "2024_11",
+                "2024_12",
+                "2025_01",
+                "2025_02",
+                "2025_03",
+                "2025_04",
+                "2025_05",
+                "2025_06",
+                "2025_07",
+                "2025_08"
+              ],
+              "plus": [
+                "2023_11",
+                "2024_04"
+              ],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 0
+          }
+        },
+        "187034022": {
+          "id": 187034022,
+          "username": "cr_alex_nn",
+          "first_name": "Alex",
+          "last_name": "",
+          "dateAdded": "2024-09-30T08:01:13.991Z",
+          "roles": [
+            "goblin"
+          ],
+          "purchases": {
+            "kickstarters": [
+              "78",
+              "73"
+            ],
+            "groups": {
+              "regular": [
+                "2024_10",
+                "2024_11",
+                "2024_12",
+                "2025_01",
+                "2025_02",
+                "2025_03",
+                "2025_04",
+                "2025_05",
+                "2025_06",
+                "2025_07",
+                "2025_08"
+              ],
+              "plus": [
+                "2024_10",
+                "2024_03",
+                "2024_04",
+                "2024_05",
+                "2024_06",
+                "2024_07",
+                "2024_08",
+                "2024_09",
+                "2024_11",
+                "2024_12",
+                "2025_01",
+                "2025_02",
+                "2025_03",
+                "2025_04",
+                "2025_05"
+              ],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 2
+          }
+        },
+        "189298303": {
+          "id": 189298303,
+          "username": "Vadim_Mazur",
+          "first_name": "Vadim",
+          "last_name": "Mazur",
+          "dateAdded": "2024-12-09T19:06:59.247Z",
+          "roles": [
+            "rejected"
+          ],
+          "purchases": {
+            "kickstarters": [],
+            "groups": {
+              "regular": [],
+              "plus": [],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 0
+          }
+        },
+        "193025665": {
+          "id": 193025665,
+          "username": "Zzyth",
+          "first_name": "Sergey",
+          "last_name": "",
+          "dateAdded": "2024-10-01T12:12:34.228Z",
+          "roles": [
+            "goblin",
+            "banned"
+          ],
+          "purchases": {
+            "kickstarters": [],
+            "groups": {
+              "regular": [
+                "2024_10",
+                "2024_11",
+                "2024_12",
+                "2025_01",
+                "2025_02",
+                "2025_03",
+                "2025_04",
+                "2025_05"
+              ],
+              "plus": [],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 0
+          }
+        },
+        "214097883": {
+          "id": 214097883,
+          "username": "nellit_dm",
+          "first_name": "Dmitry",
+          "last_name": "Shitov",
+          "dateAdded": "2024-10-03T16:28:20.600Z",
+          "roles": [
+            "goblin"
+          ],
+          "purchases": {
+            "kickstarters": [],
+            "groups": {
+              "regular": [
+                "2024_10",
+                "2024_11",
+                "2024_12",
+                "2025_01",
+                "2025_02",
+                "2025_03",
+                "2025_04",
+                "2025_05",
+                "2025_06",
+                "2025_07",
+                "2025_08"
+              ],
+              "plus": [],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 0
+          }
+        },
+        "235591625": {
+          "id": 235591625,
+          "username": "not_set",
+          "first_name": "Artemon",
+          "last_name": "",
+          "dateAdded": "2024-09-30T13:44:26.885Z",
+          "roles": [
+            "rejected"
+          ],
+          "purchases": {
+            "kickstarters": [],
+            "groups": {
+              "regular": [
+                "2024_10",
+                "2024_11",
+                "2024_12"
+              ],
+              "plus": [
+                "2024_10",
+                "2023_11",
+                "2023_12",
+                "2024_01",
+                "2024_02",
+                "2024_03",
+                "2024_04",
+                "2024_05",
+                "2024_06",
+                "2024_07",
+                "2024_08",
+                "2024_09",
+                "2024_11",
+                "2024_12"
+              ],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 0
+          }
+        },
+        "246334931": {
+          "id": 246334931,
+          "username": "kerukt",
+          "first_name": "ivan",
+          "last_name": "",
+          "dateAdded": "2024-09-27T21:42:31.980Z",
+          "roles": [
+            "goblin"
+          ],
+          "purchases": {
+            "kickstarters": [],
+            "groups": {
+              "regular": [
+                "2024_10",
+                "2024_11",
+                "2024_12",
+                "2025_01",
+                "2025_02",
+                "2025_03",
+                "2025_04",
+                "2025_05",
+                "2025_06",
+                "2025_07",
+                "2025_08"
+              ],
+              "plus": [
+                "2023_11"
+              ],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 0
+          }
+        },
+        "255757294": {
+          "id": 255757294,
+          "username": "LeoGalanteRus",
+          "first_name": "Леонид Вячеславович",
+          "last_name": "Арустамов-Андрияка",
+          "dateAdded": "2024-10-23T09:10:32.517Z",
+          "roles": [
+            "goblin"
+          ],
+          "purchases": {
+            "kickstarters": [],
+            "groups": {
+              "regular": [
+                "2024_11",
+                "2024_12",
+                "2025_01",
+                "2025_02",
+                "2025_03",
+                "2025_04",
+                "2025_05",
+                "2025_06",
+                "2025_07",
+                "2025_08",
+                "2025_09",
+                "2025_10",
+                "2025_11",
+                "2025_12"
+              ],
+              "plus": [],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 0
+          }
+        },
+        "257670004": {
+          "id": 257670004,
+          "username": "kawaiidon",
+          "first_name": "Philipp",
+          "last_name": "Kamenev",
+          "dateAdded": "2024-10-11T11:26:52.901Z",
+          "roles": [
+            "goblin"
+          ],
+          "purchases": {
+            "kickstarters": [
+              "104"
+            ],
+            "groups": {
+              "regular": [
+                "2024_10",
+                "2024_11",
+                "2024_12",
+                "2025_01",
+                "2025_02",
+                "2025_03",
+                "2025_05",
+                "2025_06",
+                "2025_07",
+                "2025_08"
+              ],
+              "plus": [],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 0
+          }
+        },
+        "262773814": {
+          "id": 262773814,
+          "username": "alkolon",
+          "first_name": "Oleg",
+          "last_name": "Amirov",
+          "dateAdded": "2024-10-10T12:11:31.556Z",
+          "roles": [
+            "goblin"
+          ],
+          "purchases": {
+            "kickstarters": [],
+            "groups": {
+              "regular": [
+                "2024_10",
+                "2024_11",
+                "2025_01",
+                "2025_02",
+                "2025_03",
+                "2025_04",
+                "2025_05",
+                "2025_06",
+                "2025_07"
+              ],
+              "plus": [
+                "2023_11",
+                "2023_12",
+                "2024_01",
+                "2024_02",
+                "2024_03",
+                "2024_04",
+                "2024_05",
+                "2024_06",
+                "2024_07",
+                "2024_08",
+                "2024_09",
+                "2024_10",
+                "2024_11",
+                "2025_01",
+                "2025_02",
+                "2025_03",
+                "2025_04",
+                "2025_05",
+                "2025_06",
+                "2025_07"
+              ],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 0
+          }
+        },
+        "267852186": {
+          "id": 267852186,
+          "username": "HolodForge",
+          "first_name": "Holod Airsoft",
+          "last_name": "",
+          "dateAdded": "2024-09-28T23:40:18.016Z",
+          "roles": [
+            "goblin"
+          ],
+          "purchases": {
+            "kickstarters": [
+              "142"
+            ],
+            "groups": {
+              "regular": [
+                "2024_10",
+                "2024_11",
+                "2024_12",
+                "2025_01",
+                "2025_02",
+                "2025_03",
+                "2025_04",
+                "2025_05",
+                "2025_06",
+                "2025_07"
+              ],
+              "plus": [
+                "2023_12",
+                "2024_01",
+                "2024_02"
+              ],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 1
+          }
+        },
+        "320427886": {
+          "id": 320427886,
+          "username": "Nolandsman",
+          "first_name": "Oleg",
+          "last_name": "",
+          "dateAdded": "2024-09-30T13:48:33.513Z",
+          "roles": [
+            "goblin"
+          ],
+          "purchases": {
+            "kickstarters": [
+              "103",
+              "112",
+              "34",
+              "106"
+            ],
+            "groups": {
+              "regular": [
+                "2024_10",
+                "2024_11",
+                "2024_12",
+                "2025_01",
+                "2025_02",
+                "2025_03",
+                "2025_04",
+                "2025_05",
+                "2025_06",
+                "2025_07",
+                "2025_08"
+              ],
+              "plus": [
+                "2024_10",
+                "2023_11",
+                "2023_12",
+                "2024_01",
+                "2024_02",
+                "2024_03",
+                "2024_04",
+                "2024_05",
+                "2024_06",
+                "2024_07",
+                "2024_08",
+                "2024_09",
+                "2024_11",
+                "2024_12",
+                "2025_01",
+                "2025_02",
+                "2025_03",
+                "2025_04",
+                "2025_05",
+                "2025_06",
+                "2025_07",
+                "2025_08"
+              ],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 4
+          }
+        },
+        "348347335": {
+          "id": 348347335,
+          "username": "odysseus1973",
+          "first_name": "Alexey",
+          "last_name": "",
+          "dateAdded": "2024-09-30T09:10:30.955Z",
+          "roles": [
+            "goblin"
+          ],
+          "purchases": {
+            "kickstarters": [
+              "117"
+            ],
+            "groups": {
+              "regular": [
+                "2024_10",
+                "2024_11",
+                "2024_12",
+                "2025_01",
+                "2025_02",
+                "2025_03",
+                "2025_04",
+                "2025_05",
+                "2025_06",
+                "2025_07",
+                "2025_08"
+              ],
+              "plus": [],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 0
+          }
+        },
+        "350865539": {
+          "id": 350865539,
+          "username": "frankymad",
+          "first_name": "franky",
+          "last_name": "mad",
+          "dateAdded": "2024-09-28T20:44:58.006Z",
+          "roles": [
+            "admin"
+          ],
+          "purchases": {
+            "kickstarters": [],
+            "groups": {
+              "regular": [],
+              "plus": [],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": -1000
+          }
+        },
+        "352250364": {
+          "id": 352250364,
+          "username": "ins0mn",
+          "first_name": "Артем",
+          "last_name": "Ins0mn1",
+          "dateAdded": "2024-09-28T21:30:27.936Z",
+          "roles": [
+            "admin"
+          ],
+          "purchases": {
+            "kickstarters": [],
+            "groups": {
+              "regular": [],
+              "plus": [],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": -1000
+          }
+        },
+        "386852843": {
+          "id": 386852843,
+          "username": "ershua",
+          "first_name": "Denis",
+          "last_name": "",
+          "dateAdded": "2024-12-29T23:07:02.218Z",
+          "roles": [
+            "goblin",
+            "admin"
+          ],
+          "purchases": {
+            "kickstarters": [],
+            "groups": {
+              "regular": [],
+              "plus": [],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 0
+          }
+        },
+        "386904870": {
+          "id": 386904870,
+          "username": "RiruD",
+          "first_name": "Анастасия",
+          "last_name": "",
+          "dateAdded": "2024-10-06T09:23:52.194Z",
+          "roles": [
+            "goblin"
+          ],
+          "purchases": {
+            "kickstarters": [
+              "112",
+              "144"
+            ],
+            "groups": {
+              "regular": [
+                "2024_10",
+                "2024_11",
+                "2024_12",
+                "2025_01",
+                "2025_02",
+                "2025_03",
+                "2025_04",
+                "2025_05",
+                "2025_06",
+                "2025_07",
+                "2025_08"
+              ],
+              "plus": [
+                "2024_10",
+                "2023_11",
+                "2023_12",
+                "2024_01",
+                "2024_02",
+                "2024_03",
+                "2024_04",
+                "2024_05",
+                "2024_06",
+                "2024_07",
+                "2024_08",
+                "2024_11",
+                "2024_12",
+                "2025_01",
+                "2025_02",
+                "2025_03",
+                "2025_04",
+                "2025_05",
+                "2025_06",
+                "2025_07",
+                "2025_08"
+              ],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 2
+          }
+        },
+        "387515762": {
+          "id": 387515762,
+          "username": "JoeRay71",
+          "first_name": "Евгений",
+          "last_name": "Миляев",
+          "dateAdded": "2024-09-30T14:29:50.214Z",
+          "roles": [
+            "goblin"
+          ],
+          "purchases": {
+            "kickstarters": [
+              "99",
+              "93",
+              "96",
+              "126",
+              "138",
+              "26",
+              "59"
+            ],
+            "groups": {
+              "regular": [
+                "2024_10",
+                "2024_11",
+                "2024_12",
+                "2025_01",
+                "2025_02",
+                "2025_03",
+                "2025_04",
+                "2025_05",
+                "2025_06",
+                "2025_07",
+                "2025_08"
+              ],
+              "plus": [
+                "2024_10",
+                "2024_04",
+                "2024_05",
+                "2024_06",
+                "2024_07",
+                "2024_08",
+                "2024_09",
+                "2024_11",
+                "2024_12",
+                "2025_01",
+                "2025_02",
+                "2025_03",
+                "2025_04",
+                "2025_05",
+                "2025_06",
+                "2025_07",
+                "2025_08"
+              ],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 5
+          }
+        },
+        "389123917": {
+          "id": 389123917,
+          "username": "Zaremus",
+          "first_name": "Pavel",
+          "last_name": "Pinzhin",
+          "dateAdded": "2024-09-28T01:41:08.236Z",
+          "roles": [
+            "goblin"
+          ],
+          "purchases": {
+            "kickstarters": [
+              "96"
+            ],
+            "groups": {
+              "regular": [
+                "2024_10",
+                "2024_11",
+                "2024_12",
+                "2025_01",
+                "2025_02",
+                "2025_03",
+                "2025_04",
+                "2025_05",
+                "2025_06",
+                "2025_07",
+                "2025_08"
+              ],
+              "plus": [
+                "2024_10",
+                "2023_11",
+                "2023_12",
+                "2024_01",
+                "2024_02",
+                "2024_03",
+                "2024_04",
+                "2024_05",
+                "2024_06",
+                "2024_07",
+                "2024_08",
+                "2024_09",
+                "2024_11",
+                "2024_12",
+                "2025_01",
+                "2025_02",
+                "2025_03",
+                "2025_04",
+                "2025_05",
+                "2025_06",
+                "2025_07",
+                "2025_08"
+              ],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 0
+          }
+        },
+        "395054875": {
+          "id": 395054875,
+          "username": "katrin_jupiter",
+          "first_name": "Катерина",
+          "last_name": "Юпитер",
+          "dateAdded": "2025-05-21T21:14:06.889Z",
+          "roles": [
+            "goblin"
+          ],
+          "purchases": {
+            "kickstarters": [],
+            "groups": {
+              "regular": [
+                "2025_05",
+                "2025_06",
+                "2025_07",
+                "2025_08"
+              ],
+              "plus": [],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 0
+          }
+        },
+        "398906141": {
+          "id": 398906141,
+          "username": "andreiGOMEL",
+          "first_name": "Andrei",
+          "last_name": "",
+          "dateAdded": "2024-12-19T18:04:42.834Z",
+          "roles": [
+            "rejected"
+          ],
+          "purchases": {
+            "kickstarters": [],
+            "groups": {
+              "regular": [],
+              "plus": [],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 0
+          }
+        },
+        "400253080": {
+          "id": 400253080,
+          "username": "ElisabetthIris",
+          "first_name": "Nata",
+          "last_name": "Iris",
+          "dateAdded": "2024-09-30T13:44:20.488Z",
+          "roles": [
+            "goblin"
+          ],
+          "purchases": {
+            "kickstarters": [
+              "71",
+              "75",
+              "76",
+              "121",
+              "122",
+              "144"
+            ],
+            "groups": {
+              "regular": [
+                "2024_10",
+                "2024_11",
+                "2024_12",
+                "2025_01",
+                "2025_02",
+                "2025_03",
+                "2025_04",
+                "2025_05",
+                "2025_06",
+                "2025_07",
+                "2025_08"
+              ],
+              "plus": [
+                "2024_05"
+              ],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 0
+          }
+        },
+        "401733995": {
+          "id": 401733995,
+          "username": "KyterMan",
+          "first_name": "Kirill",
+          "last_name": "Permyakov",
+          "dateAdded": "2024-09-28T10:26:18.949Z",
+          "roles": [
+            "goblin"
+          ],
+          "purchases": {
+            "kickstarters": [],
+            "groups": {
+              "regular": [
+                "2024_10",
+                "2024_11",
+                "2024_12",
+                "2025_01",
+                "2025_02",
+                "2025_03",
+                "2025_04",
+                "2025_05",
+                "2025_06",
+                "2025_07",
+                "2025_08"
+              ],
+              "plus": [
+                "2024_10",
+                "2023_11",
+                "2023_12",
+                "2024_01",
+                "2024_02",
+                "2024_03",
+                "2024_04",
+                "2024_05",
+                "2024_06",
+                "2024_07",
+                "2024_08",
+                "2024_09",
+                "2024_11",
+                "2024_12",
+                "2025_01",
+                "2025_02",
+                "2025_03",
+                "2025_04",
+                "2025_05",
+                "2025_06",
+                "2025_07",
+                "2025_08"
+              ],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 0
+          }
+        },
+        "405125289": {
+          "id": 405125289,
+          "username": "SpaseSam",
+          "first_name": "matthew",
+          "last_name": "",
+          "dateAdded": "2024-09-27T21:33:58.927Z",
+          "roles": [
+            "goblin"
+          ],
+          "purchases": {
+            "kickstarters": [
+              "9"
+            ],
+            "groups": {
+              "regular": [
+                "2024_10",
+                "2024_11",
+                "2024_12",
+                "2025_01",
+                "2025_02",
+                "2025_03",
+                "2025_04",
+                "2025_05",
+                "2025_06",
+                "2025_07",
+                "2025_08"
+              ],
+              "plus": [
+                "2024_10",
+                "2024_11",
+                "2024_12",
+                "2025_01",
+                "2025_02",
+                "2025_03"
+              ],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 0
+          }
+        },
+        "407762110": {
+          "id": 407762110,
+          "username": "Almiton",
+          "first_name": "Aleksandr Mitrofanov",
+          "last_name": "",
+          "dateAdded": "2024-10-02T02:32:30.181Z",
+          "roles": [
+            "rejected"
+          ],
+          "purchases": {
+            "kickstarters": [],
+            "groups": {
+              "regular": [
+                "2024_10",
+                "2024_11"
+              ],
+              "plus": [],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 0
+          }
+        },
+        "417718935": {
+          "id": 417718935,
+          "username": "Goroson",
+          "first_name": "Артем",
+          "last_name": "Федоров",
+          "dateAdded": "2024-10-09T21:02:07.007Z",
+          "roles": [
+            "goblin"
+          ],
+          "purchases": {
+            "kickstarters": [],
+            "groups": {
+              "regular": [
+                "2024_10",
+                "2024_11",
+                "2024_12",
+                "2025_01",
+                "2025_02",
+                "2025_03",
+                "2025_04",
+                "2025_05",
+                "2025_06",
+                "2025_07",
+                "2025_08"
+              ],
+              "plus": [
+                "2024_10",
+                "2023_11",
+                "2023_12",
+                "2024_01",
+                "2024_03",
+                "2024_04",
+                "2024_05",
+                "2024_06",
+                "2024_07",
+                "2024_08",
+                "2024_11",
+                "2024_12",
+                "2025_01",
+                "2025_02",
+                "2025_03",
+                "2025_04",
+                "2025_05",
+                "2025_06",
+                "2025_07",
+                "2025_08"
+              ],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 0
+          }
+        },
+        "425388360": {
+          "id": 425388360,
+          "username": "LastXanter",
+          "first_name": "Leoric",
+          "last_name": "👁",
+          "dateAdded": "2024-10-08T16:14:15.363Z",
+          "roles": [
+            "goblin"
+          ],
+          "purchases": {
+            "kickstarters": [],
+            "groups": {
+              "regular": [
+                "2024_10",
+                "2024_11",
+                "2024_12",
+                "2025_01",
+                "2025_02",
+                "2025_03",
+                "2025_04",
+                "2025_05",
+                "2025_06",
+                "2025_07"
+              ],
+              "plus": [],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 0
+          }
+        },
+        "425696085": {
+          "id": 425696085,
+          "username": "dwarfworkshop",
+          "first_name": "Dwarf",
+          "last_name": "Workshop",
+          "dateAdded": "2024-09-28T03:10:22.450Z",
+          "roles": [
+            "goblin"
+          ],
+          "purchases": {
+            "kickstarters": [
+              "71",
+              "120",
+              "128",
+              "144",
+              "116",
+              "92",
+              "141"
+            ],
+            "groups": {
+              "regular": [
+                "2024_10",
+                "2024_11",
+                "2024_12",
+                "2025_01",
+                "2025_02",
+                "2025_03",
+                "2025_04",
+                "2025_05",
+                "2025_06",
+                "2025_07",
+                "2025_08"
+              ],
+              "plus": [
+                "2024_10",
+                "2023_11",
+                "2023_12",
+                "2024_01",
+                "2024_02",
+                "2024_03",
+                "2024_04",
+                "2024_05",
+                "2024_06",
+                "2024_07",
+                "2024_08",
+                "2024_09",
+                "2024_11",
+                "2024_12",
+                "2025_01",
+                "2025_02",
+                "2025_03",
+                "2025_04",
+                "2025_06"
+              ],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 6
+          }
+        },
+        "433592664": {
+          "id": 433592664,
+          "username": "Borodobrid",
+          "first_name": "Даниил",
+          "last_name": "Алликас",
+          "dateAdded": "2024-10-10T08:12:16.152Z",
+          "roles": [
+            "goblin"
+          ],
+          "purchases": {
+            "kickstarters": [],
+            "groups": {
+              "regular": [
+                "2024_10",
+                "2024_11",
+                "2024_12",
+                "2025_01",
+                "2025_02"
+              ],
+              "plus": [
+                "2024_01",
+                "2024_07",
+                "2024_08"
+              ],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 0
+          }
+        },
+        "434370797": {
+          "id": 434370797,
+          "username": "Alexander_Key",
+          "first_name": "Alexader",
+          "last_name": "Key",
+          "dateAdded": "2024-10-05T18:51:30.248Z",
+          "roles": [
+            "goblin"
+          ],
+          "purchases": {
+            "kickstarters": [
+              "142"
+            ],
+            "groups": {
+              "regular": [
+                "2024_10",
+                "2024_11",
+                "2024_12",
+                "2025_01",
+                "2025_02",
+                "2025_03",
+                "2025_04",
+                "2025_05",
+                "2025_06",
+                "2025_07",
+                "2025_08"
+              ],
+              "plus": [
+                "2023_11",
+                "2023_12",
+                "2024_01",
+                "2024_02",
+                "2024_04",
+                "2024_03",
+                "2024_06",
+                "2024_07",
+                "2024_08"
+              ],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 1
+          }
+        },
+        "437129878": {
+          "id": 437129878,
+          "username": "Magestin",
+          "first_name": "Alexandr",
+          "last_name": "Danshin",
+          "dateAdded": "2024-09-30T13:06:13.972Z",
+          "roles": [
+            "goblin"
+          ],
+          "purchases": {
+            "kickstarters": [
+              "106"
+            ],
+            "groups": {
+              "regular": [
+                "2024_10",
+                "2024_11",
+                "2024_12",
+                "2025_01",
+                "2025_02",
+                "2025_03",
+                "2025_04",
+                "2025_05",
+                "2025_06",
+                "2025_07",
+                "2025_08"
+              ],
+              "plus": [
+                "2024_10",
+                "2023_11",
+                "2023_12",
+                "2024_01",
+                "2024_02",
+                "2024_03",
+                "2024_04",
+                "2024_05",
+                "2024_06",
+                "2024_07",
+                "2024_08",
+                "2024_09",
+                "2024_11",
+                "2024_12",
+                "2025_01",
+                "2025_02",
+                "2025_03",
+                "2025_04",
+                "2025_05",
+                "2025_06",
+                "2025_07",
+                "2025_08"
+              ],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 1
+          }
+        },
+        "440173485": {
+          "id": 440173485,
+          "username": "Volodja23",
+          "first_name": "Vladimir",
+          "last_name": "Vladimirovich",
+          "dateAdded": "2024-09-28T09:35:53.920Z",
+          "roles": [
+            "goblin",
+            "admin"
+          ],
+          "purchases": {
+            "kickstarters": [
+              "1",
+              "6",
+              "31",
+              "77",
+              "73",
+              "74",
+              "75",
+              "76",
+              "78",
+              "80",
+              "79",
+              "94",
+              "111",
+              "103",
+              "89",
+              "119",
+              "122",
+              "129",
+              "141",
+              "144"
+            ],
+            "groups": {
+              "regular": [
+                "2024_10",
+                "2024_11",
+                "2024_12",
+                "2025_01",
+                "2025_02",
+                "2025_04",
+                "2025_06",
+                "2025_08"
+              ],
+              "plus": [],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": -31
+          }
+        },
+        "444212458": {
+          "id": 444212458,
+          "username": "Andrey_Karpochev",
+          "first_name": "Андрей",
+          "last_name": "",
+          "dateAdded": "2024-09-30T18:59:30.484Z",
+          "roles": [
+            "goblin"
+          ],
+          "purchases": {
+            "kickstarters": [],
+            "groups": {
+              "regular": [
+                "2024_10",
+                "2024_11",
+                "2024_12",
+                "2025_01",
+                "2025_02",
+                "2025_03",
+                "2025_04",
+                "2025_05",
+                "2025_06",
+                "2025_07",
+                "2025_08"
+              ],
+              "plus": [
+                "2023_11",
+                "2024_01",
+                "2024_02",
+                "2024_03",
+                "2024_04",
+                "2024_05"
+              ],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 0
+          }
+        },
+        "449241043": {
+          "id": 449241043,
+          "username": "Aleksandr_Savv",
+          "first_name": "Aleksandr",
+          "last_name": "Savvinmsk",
+          "dateAdded": "2024-12-09T00:55:34.907Z",
+          "roles": [],
+          "purchases": {
+            "kickstarters": [],
+            "groups": {
+              "regular": [],
+              "plus": [],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 0
+          }
+        },
+        "456740412": {
+          "id": 456740412,
+          "username": "aadrnd",
+          "first_name": "Sanych",
+          "last_name": "",
+          "dateAdded": "2024-10-03T09:13:06.112Z",
+          "roles": [
+            "goblin"
+          ],
+          "purchases": {
+            "kickstarters": [
+              "141"
+            ],
+            "groups": {
+              "regular": [
+                "2024_10",
+                "2024_11",
+                "2024_12",
+                "2025_01",
+                "2025_02",
+                "2025_03",
+                "2025_04",
+                "2025_05",
+                "2025_06",
+                "2025_07",
+                "2025_08"
+              ],
+              "plus": [],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 0
+          }
+        },
+        "463332905": {
+          "id": 463332905,
+          "username": "Fedtago7",
+          "first_name": "Ис˥ֹॱк",
+          "last_name": "",
+          "dateAdded": "2024-09-27T19:48:16.188Z",
+          "roles": [
+            "goblin"
+          ],
+          "purchases": {
+            "kickstarters": [
+              "71",
+              "72",
+              "93",
+              "94",
+              "108",
+              "116",
+              "117",
+              "121",
+              "125",
+              "136",
+              "142",
+              "106"
+            ],
+            "groups": {
+              "regular": [
+                "2024_10",
+                "2024_11",
+                "2024_12",
+                "2025_01",
+                "2025_02",
+                "2025_03",
+                "2025_04",
+                "2025_05",
+                "2025_06",
+                "2025_07",
+                "2025_08"
+              ],
+              "plus": [
+                "2023_12",
+                "2024_08"
+              ],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 0
+          }
+        },
+        "473582830": {
+          "id": 473582830,
+          "username": "matyraux",
+          "first_name": "MATY RAUX",
+          "last_name": "",
+          "dateAdded": "2024-10-07T07:37:38.553Z",
+          "roles": [
+            "goblin",
+            "banned"
+          ],
+          "purchases": {
+            "kickstarters": [],
+            "groups": {
+              "regular": [
+                "2024_10",
+                "2024_11",
+                "2024_12",
+                "2025_01",
+                "2025_02",
+                "2025_03",
+                "2025_04",
+                "2025_05",
+                "2025_06"
+              ],
+              "plus": [],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 0
+          }
+        },
+        "475503977": {
+          "id": 475503977,
+          "username": "ALeXVB1",
+          "first_name": "Алексей",
+          "last_name": "Веселков",
+          "dateAdded": "2024-09-28T05:43:09.088Z",
+          "roles": [
+            "goblin"
+          ],
+          "purchases": {
+            "kickstarters": [],
+            "groups": {
+              "regular": [
+                "2024_10",
+                "2024_11",
+                "2024_12",
+                "2025_01",
+                "2025_02",
+                "2025_03",
+                "2025_04",
+                "2025_05",
+                "2025_06",
+                "2025_07",
+                "2025_08"
+              ],
+              "plus": [
+                "2024_10",
+                "2023_11",
+                "2023_12",
+                "2024_01",
+                "2024_02",
+                "2024_03",
+                "2024_04",
+                "2024_05",
+                "2024_06",
+                "2024_07",
+                "2024_08",
+                "2024_09",
+                "2024_11",
+                "2024_12",
+                "2025_01",
+                "2025_02",
+                "2025_03",
+                "2025_04",
+                "2025_05",
+                "2025_06",
+                "2025_07",
+                "2025_08"
+              ],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 0
+          }
+        },
+        "491622625": {
+          "id": 491622625,
+          "username": "primaryNoir",
+          "first_name": "Nøir АУРЭК",
+          "last_name": "",
+          "dateAdded": "2025-04-28T12:00:40.911Z",
+          "roles": [
+            "goblin"
+          ],
+          "purchases": {
+            "kickstarters": [],
+            "groups": {
+              "regular": [
+                "2025_04",
+                "2025_05",
+                "2025_06",
+                "2025_07"
+              ],
+              "plus": [
+                "2025_06",
+                "2025_07"
+              ],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 0
+          }
+        },
+        "495764441": {
+          "id": 495764441,
+          "username": "ChLPDR",
+          "first_name": "D",
+          "last_name": "",
+          "dateAdded": "2024-09-27T19:45:39.665Z",
+          "roles": [
+            "goblin"
+          ],
+          "purchases": {
+            "kickstarters": [
+              "22",
+              "23",
+              "78",
+              "89",
+              "25",
+              "117",
+              "116",
+              "111",
+              "20",
+              "107",
+              "139",
+              "9",
+              "93"
+            ],
+            "groups": {
+              "regular": [
+                "2024_10",
+                "2024_11",
+                "2024_12",
+                "2025_01",
+                "2025_02",
+                "2025_03",
+                "2025_04",
+                "2025_05",
+                "2025_06",
+                "2025_07",
+                "2025_08"
+              ],
+              "plus": [
+                "2024_10",
+                "2024_03",
+                "2024_04",
+                "2024_05",
+                "2024_06",
+                "2024_07",
+                "2024_08",
+                "2024_09",
+                "2024_11",
+                "2024_12",
+                "2025_01",
+                "2025_02",
+                "2025_03",
+                "2025_04",
+                "2025_05",
+                "2025_06",
+                "2025_07",
+                "2025_08"
+              ],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 11
+          }
+        },
+        "498812873": {
+          "id": 498812873,
+          "username": "Svetlanashik",
+          "first_name": "Svetlana Shik Ⓜ️ MEMES",
+          "last_name": "",
+          "dateAdded": "2024-12-09T13:50:51.347Z",
+          "roles": [
+            "rejected"
+          ],
+          "purchases": {
+            "kickstarters": [],
+            "groups": {
+              "regular": [],
+              "plus": [],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 0
+          }
+        },
+        "500656237": {
+          "id": 500656237,
+          "username": "not_set",
+          "first_name": "Seral",
+          "last_name": "Garado",
+          "dateAdded": "2024-10-16T13:51:25.741Z",
+          "roles": [
+            "goblin",
+            "admin"
+          ],
+          "purchases": {
+            "kickstarters": [],
+            "groups": {
+              "regular": [],
+              "plus": [],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": -1000
+          }
+        },
+        "612818429": {
+          "id": 612818429,
+          "username": "gooseart",
+          "first_name": "Artem",
+          "last_name": "G",
+          "dateAdded": "2024-10-01T05:40:46.199Z",
+          "roles": [
+            "goblin"
+          ],
+          "purchases": {
+            "kickstarters": [],
+            "groups": {
+              "regular": [
+                "2024_10",
+                "2024_11",
+                "2024_12",
+                "2025_01",
+                "2025_02",
+                "2025_03",
+                "2025_04",
+                "2025_05",
+                "2025_06",
+                "2025_07",
+                "2025_08"
+              ],
+              "plus": [],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 0
+          }
+        },
+        "628694430": {
+          "id": 628694430,
+          "username": "Sphericalhorseinvacuum",
+          "first_name": "Aleks",
+          "last_name": ".",
+          "dateAdded": "2024-09-29T03:53:11.240Z",
+          "roles": [
+            "adminPlus",
+            "admin"
+          ],
+          "purchases": {
+            "kickstarters": [
+              "40",
+              "116",
+              "87"
+            ],
+            "groups": {
+              "regular": [],
+              "plus": [],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": -997
+          }
+        },
+        "642772993": {
+          "id": 642772993,
+          "username": "hamsterzavr",
+          "first_name": "Саадир",
+          "last_name": "",
+          "dateAdded": "2024-10-04T18:23:37.669Z",
+          "roles": [
+            "goblin"
+          ],
+          "purchases": {
+            "kickstarters": [],
+            "groups": {
+              "regular": [
+                "2024_10",
+                "2024_11",
+                "2024_12",
+                "2025_01",
+                "2025_02",
+                "2025_03",
+                "2025_04",
+                "2025_05",
+                "2025_06",
+                "2025_07",
+                "2025_08"
+              ],
+              "plus": [],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 0
+          }
+        },
+        "661082275": {
+          "id": 661082275,
+          "username": "epineuson",
+          "first_name": "Lia",
+          "last_name": "",
+          "dateAdded": "2024-12-10T04:16:56.664Z",
+          "roles": [
+            "rejected"
+          ],
+          "purchases": {
+            "kickstarters": [],
+            "groups": {
+              "regular": [],
+              "plus": [],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 0
+          }
+        },
+        "663899692": {
+          "id": 663899692,
+          "username": "Babarruco",
+          "first_name": "Guitar66",
+          "last_name": "",
+          "dateAdded": "2024-10-16T22:29:49.604Z",
+          "roles": [],
+          "purchases": {
+            "kickstarters": [],
+            "groups": {
+              "regular": [],
+              "plus": [],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 0
+          }
+        },
+        "669148193": {
+          "id": 669148193,
+          "username": "Alexander_Ship",
+          "first_name": "Alex",
+          "last_name": "Ship",
+          "dateAdded": "2024-10-10T02:07:13.328Z",
+          "roles": [
+            "goblin"
+          ],
+          "purchases": {
+            "kickstarters": [],
+            "groups": {
+              "regular": [
+                "2024_10",
+                "2024_06",
+                "2024_11",
+                "2024_12",
+                "2025_01",
+                "2025_02",
+                "2025_03",
+                "2025_04",
+                "2025_05",
+                "2025_06",
+                "2025_07",
+                "2025_08"
+              ],
+              "plus": [
+                "2024_10",
+                "2023_11",
+                "2023_12",
+                "2024_01",
+                "2024_02",
+                "2024_03",
+                "2024_04",
+                "2024_05",
+                "2024_06",
+                "2024_07",
+                "2024_08",
+                "2024_09",
+                "2024_11",
+                "2024_12",
+                "2025_01",
+                "2025_02",
+                "2025_03",
+                "2025_04",
+                "2025_05",
+                "2025_06",
+                "2025_07",
+                "2025_08"
+              ],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 0
+          }
+        },
+        "683200394": {
+          "id": 683200394,
+          "username": "shiroyashia",
+          "first_name": "Вадим",
+          "last_name": "",
+          "dateAdded": "2024-10-11T14:46:37.857Z",
+          "roles": [
+            "goblin"
+          ],
+          "purchases": {
+            "kickstarters": [],
+            "groups": {
+              "regular": [
+                "2024_10",
+                "2024_11",
+                "2024_12",
+                "2025_01",
+                "2025_02",
+                "2025_04",
+                "2025_03",
+                "2025_05",
+                "2025_06"
+              ],
+              "plus": [],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 0
+          }
+        },
+        "691675552": {
+          "id": 691675552,
+          "username": "Dzhamalova_Naida_Atomi",
+          "first_name": "Dzhamalova",
+          "last_name": "Naida",
+          "dateAdded": "2025-02-04T21:30:28.337Z",
+          "roles": [
+            "rejected"
+          ],
+          "purchases": {
+            "kickstarters": [],
+            "groups": {
+              "regular": [],
+              "plus": [],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 0
+          }
+        },
+        "692445732": {
+          "id": 692445732,
+          "username": "Vit_Franc",
+          "first_name": "Vitaliy",
+          "last_name": "",
+          "dateAdded": "2024-09-30T13:46:23.138Z",
+          "roles": [
+            "goblin"
+          ],
+          "purchases": {
+            "kickstarters": [],
+            "groups": {
+              "regular": [
+                "2024_10",
+                "2024_11",
+                "2024_12",
+                "2025_01",
+                "2025_02",
+                "2025_03",
+                "2025_04",
+                "2025_05",
+                "2025_06",
+                "2025_07",
+                "2025_08"
+              ],
+              "plus": [],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 0
+          }
+        },
+        "697422303": {
+          "id": 697422303,
+          "username": "yttikmi",
+          "first_name": "Kate",
+          "last_name": "",
+          "dateAdded": "2024-12-24T15:20:14.995Z",
+          "roles": [
+            "rejected"
+          ],
+          "purchases": {
+            "kickstarters": [],
+            "groups": {
+              "regular": [],
+              "plus": [],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 0
+          }
+        },
+        "699230065": {
+          "id": 699230065,
+          "username": "terminaltitan",
+          "first_name": "Vladimir",
+          "last_name": "",
+          "dateAdded": "2024-10-21T14:51:30.208Z",
+          "roles": [
+            "goblin"
+          ],
+          "purchases": {
+            "kickstarters": [],
+            "groups": {
+              "regular": [
+                "2024_09",
+                "2024_11",
+                "2024_12",
+                "2025_01",
+                "2025_02",
+                "2025_03",
+                "2025_04",
+                "2025_05",
+                "2025_06"
+              ],
+              "plus": [
+                "2024_11",
+                "2024_12",
+                "2025_01",
+                "2025_02",
+                "2025_03",
+                "2025_04",
+                "2025_05",
+                "2025_06"
+              ],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 0
+          }
+        },
+        "734472773": {
+          "id": 734472773,
+          "username": "Zakffvii",
+          "first_name": "Василий Соколов",
+          "last_name": "",
+          "dateAdded": "2024-09-30T13:47:02.859Z",
+          "roles": [
+            "goblin"
+          ],
+          "purchases": {
+            "kickstarters": [
+              "34",
+              "70",
+              "124"
+            ],
+            "groups": {
+              "regular": [
+                "2024_10",
+                "2024_11",
+                "2024_12",
+                "2025_01",
+                "2025_02",
+                "2025_03",
+                "2025_04",
+                "2025_05",
+                "2025_06",
+                "2025_07",
+                "2025_08"
+              ],
+              "plus": [],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 0
+          }
+        },
+        "739689021": {
+          "id": 739689021,
+          "username": "K_n_a_v_e",
+          "first_name": "Knave",
+          "last_name": "🃏",
+          "dateAdded": "2024-10-03T18:34:03.954Z",
+          "roles": [
+            "goblin"
+          ],
+          "purchases": {
+            "kickstarters": [],
+            "groups": {
+              "regular": [
+                "2024_10",
+                "2024_11",
+                "2024_12",
+                "2025_01",
+                "2025_02",
+                "2025_03",
+                "2025_04",
+                "2025_05",
+                "2025_06",
+                "2025_07",
+                "2025_08"
+              ],
+              "plus": [],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 0
+          }
+        },
+        "790430972": {
+          "id": 790430972,
+          "username": "marvelous_gyatto",
+          "first_name": "Cursed",
+          "last_name": "Thing",
+          "dateAdded": "2024-09-30T18:50:48.973Z",
+          "roles": [
+            "goblin"
+          ],
+          "purchases": {
+            "kickstarters": [],
+            "groups": {
+              "regular": [
+                "2024_10",
+                "2024_11",
+                "2024_12",
+                "2025_01",
+                "2025_02",
+                "2025_03",
+                "2025_04",
+                "2025_05",
+                "2025_06",
+                "2025_07",
+                "2025_08"
+              ],
+              "plus": [],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 0
+          }
+        },
+        "796352911": {
+          "id": 796352911,
+          "username": "Inst1nct67",
+          "first_name": "Jackie",
+          "last_name": "Chan",
+          "dateAdded": "2024-12-10T04:18:54.931Z",
+          "roles": [],
+          "purchases": {
+            "kickstarters": [],
+            "groups": {
+              "regular": [],
+              "plus": [],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 0
+          }
+        },
+        "813810627": {
+          "id": 813810627,
+          "username": "dartvodka",
+          "first_name": "Сергей",
+          "last_name": "",
+          "dateAdded": "2024-10-05T17:11:58.252Z",
+          "roles": [
+            "goblin"
+          ],
+          "purchases": {
+            "kickstarters": [],
+            "groups": {
+              "regular": [
+                "2024_10",
+                "2024_11",
+                "2024_12",
+                "2025_01",
+                "2025_02",
+                "2025_03",
+                "2025_04",
+                "2025_05",
+                "2025_07",
+                "2025_08"
+              ],
+              "plus": [
+                "2024_01",
+                "2023_12"
+              ],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 0
+          }
+        },
+        "814608036": {
+          "id": 814608036,
+          "username": "OrdoHeretycus",
+          "first_name": "OrdoHeretycus",
+          "last_name": "",
+          "dateAdded": "2024-09-30T15:22:15.365Z",
+          "roles": [
+            "goblin"
+          ],
+          "purchases": {
+            "kickstarters": [],
+            "groups": {
+              "regular": [
+                "2024_10",
+                "2024_11",
+                "2024_12",
+                "2025_01",
+                "2025_02",
+                "2025_03",
+                "2025_04",
+                "2025_05",
+                "2025_06",
+                "2025_07",
+                "2025_08"
+              ],
+              "plus": [],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 0
+          }
+        },
+        "836484742": {
+          "id": 836484742,
+          "username": "AlefGy",
+          "first_name": "Alef",
+          "last_name": "Guiop",
+          "dateAdded": "2025-01-02T06:45:27.791Z",
+          "roles": [
+            "rejected"
+          ],
+          "purchases": {
+            "kickstarters": [],
+            "groups": {
+              "regular": [],
+              "plus": [],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 0
+          }
+        },
+        "854480437": {
+          "id": 854480437,
+          "username": "Raimik133",
+          "first_name": "Rai",
+          "last_name": "",
+          "dateAdded": "2025-01-18T09:02:59.792Z",
+          "roles": [
+            "rejected"
+          ],
+          "purchases": {
+            "kickstarters": [],
+            "groups": {
+              "regular": [],
+              "plus": [],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 0
+          }
+        },
+        "854956012": {
+          "id": 854956012,
+          "username": "Master_Mimic",
+          "first_name": "Master Mimic",
+          "last_name": "",
+          "dateAdded": "2024-09-30T15:05:25.229Z",
+          "roles": [
+            "goblin"
+          ],
+          "purchases": {
+            "kickstarters": [
+              "11"
+            ],
+            "groups": {
+              "regular": [
+                "2024_10",
+                "2024_11",
+                "2024_12",
+                "2025_01",
+                "2025_02",
+                "2025_03",
+                "2025_04",
+                "2025_05",
+                "2025_06",
+                "2025_07",
+                "2025_08"
+              ],
+              "plus": [],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 0
+          }
+        },
+        "862497921": {
+          "id": 862497921,
+          "username": "pavelkalyuta",
+          "first_name": "Pavel",
+          "last_name": "Kaliuta",
+          "dateAdded": "2025-01-22T16:00:32.864Z",
+          "roles": [
+            "rejected"
+          ],
+          "purchases": {
+            "kickstarters": [],
+            "groups": {
+              "regular": [],
+              "plus": [],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 0
+          }
+        },
+        "897497132": {
+          "id": 897497132,
+          "username": "eboblog",
+          "first_name": "Ebobolog",
+          "last_name": "",
+          "dateAdded": "2024-10-02T18:47:16.479Z",
+          "roles": [
+            "goblin"
+          ],
+          "purchases": {
+            "kickstarters": [
+              "133",
+              "126",
+              "92",
+              "71",
+              "103"
+            ],
+            "groups": {
+              "regular": [
+                "2024_10",
+                "2024_11",
+                "2024_12",
+                "2025_01",
+                "2025_02",
+                "2025_03",
+                "2025_04",
+                "2025_05",
+                "2025_06",
+                "2025_07",
+                "2025_08"
+              ],
+              "plus": [
+                "2024_10",
+                "2024_03",
+                "2024_04",
+                "2024_05",
+                "2024_06",
+                "2024_07",
+                "2024_08",
+                "2024_09",
+                "2024_11",
+                "2024_12",
+                "2025_01",
+                "2025_02",
+                "2025_03",
+                "2025_04",
+                "2025_05",
+                "2025_06",
+                "2025_07",
+                "2025_08"
+              ],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 5
+          }
+        },
+        "920572103": {
+          "id": 920572103,
+          "username": "alexseveryanov",
+          "first_name": "Александр",
+          "last_name": "Северьянов",
+          "dateAdded": "2024-09-27T21:41:09.808Z",
+          "roles": [
+            "goblin"
+          ],
+          "purchases": {
+            "kickstarters": [
+              "117"
+            ],
+            "groups": {
+              "regular": [
+                "2024_10",
+                "2024_11",
+                "2024_12",
+                "2025_01",
+                "2025_02",
+                "2025_03",
+                "2025_04",
+                "2025_05",
+                "2025_06",
+                "2025_07",
+                "2025_08"
+              ],
+              "plus": [
+                "2024_10",
+                "2024_04",
+                "2024_05",
+                "2024_06",
+                "2024_07",
+                "2024_08",
+                "2024_09",
+                "2024_11",
+                "2024_12",
+                "2025_01",
+                "2025_02",
+                "2025_03",
+                "2025_04",
+                "2025_05",
+                "2025_06",
+                "2025_07",
+                "2025_08"
+              ],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 0
+          }
+        },
+        "933823562": {
+          "id": 933823562,
+          "username": "Andrew_B_D",
+          "first_name": "Андрей",
+          "last_name": "Бобр",
+          "dateAdded": "2024-10-05T12:13:30.787Z",
+          "roles": [
+            "goblin"
+          ],
+          "purchases": {
+            "kickstarters": [],
+            "groups": {
+              "regular": [
+                "2024_10",
+                "2024_11",
+                "2024_12",
+                "2025_01",
+                "2025_02",
+                "2025_03",
+                "2025_04",
+                "2025_05",
+                "2025_06",
+                "2025_07",
+                "2025_08"
+              ],
+              "plus": [],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 0
+          }
+        },
+        "947137695": {
+          "id": 947137695,
+          "username": "Rathat_1",
+          "first_name": "Вячеслав",
+          "last_name": "",
+          "dateAdded": "2024-09-29T04:51:27.461Z",
+          "roles": [
+            "goblin"
+          ],
+          "purchases": {
+            "kickstarters": [],
+            "groups": {
+              "regular": [
+                "2024_10",
+                "2024_11",
+                "2024_12",
+                "2025_01",
+                "2025_02",
+                "2025_03",
+                "2025_04",
+                "2025_05",
+                "2025_06",
+                "2025_07",
+                "2025_08"
+              ],
+              "plus": [],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 0
+          }
+        },
+        "950320031": {
+          "id": 950320031,
+          "username": "Rocket_rain",
+          "first_name": "Константин",
+          "last_name": "Сергеевич",
+          "dateAdded": "2024-10-07T20:44:45.889Z",
+          "roles": [
+            "goblin"
+          ],
+          "purchases": {
+            "kickstarters": [],
+            "groups": {
+              "regular": [
+                "2024_10",
+                "2024_11",
+                "2024_12",
+                "2025_01",
+                "2025_02",
+                "2025_03",
+                "2025_04",
+                "2025_05",
+                "2025_06",
+                "2025_07",
+                "2025_08"
+              ],
+              "plus": [],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 0
+          }
+        },
+        "957473939": {
+          "id": 957473939,
+          "username": "magus_magna",
+          "first_name": "Антошка",
+          "last_name": "",
+          "dateAdded": "2024-10-03T10:03:22.678Z",
+          "roles": [
+            "goblin"
+          ],
+          "purchases": {
+            "kickstarters": [],
+            "groups": {
+              "regular": [
+                "2024_10",
+                "2024_11",
+                "2024_12",
+                "2025_01",
+                "2025_02",
+                "2025_03",
+                "2025_04",
+                "2025_05",
+                "2025_06",
+                "2025_07",
+                "2025_08"
+              ],
+              "plus": [],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 0
+          }
+        },
+        "962450116": {
+          "id": 962450116,
+          "username": "Fortes_fortuna_adiuvat",
+          "first_name": "Dzmitry 🐾 Ⓜ️ MEMES 🍅 🐈‍⬛ 🐍 🐐 🌱SEED",
+          "last_name": "",
+          "dateAdded": "2025-06-22T14:56:08.247Z",
+          "roles": [
+            "rejected"
+          ],
+          "purchases": {
+            "kickstarters": [],
+            "groups": {
+              "regular": [],
+              "plus": [],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 0
+          }
+        },
+        "1015214825": {
+          "id": 1015214825,
+          "username": "ABOALHANUOF",
+          "first_name": "Abu_Al Hanouf",
+          "last_name": "Al-Anzi",
+          "dateAdded": "2024-12-09T00:50:32.617Z",
+          "roles": [
+            "rejected"
+          ],
+          "purchases": {
+            "kickstarters": [],
+            "groups": {
+              "regular": [],
+              "plus": [],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 0
+          }
+        },
+        "1030834944": {
+          "id": 1030834944,
+          "username": "Technodrozd",
+          "first_name": "Akseley",
+          "last_name": "",
+          "dateAdded": "2024-10-03T07:32:10.444Z",
+          "roles": [
+            "goblin"
+          ],
+          "purchases": {
+            "kickstarters": [],
+            "groups": {
+              "regular": [
+                "2024_10",
+                "2024_11",
+                "2024_12",
+                "2025_01",
+                "2025_02",
+                "2025_03",
+                "2025_04",
+                "2025_05",
+                "2025_06",
+                "2025_07",
+                "2025_08"
+              ],
+              "plus": [],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 0
+          }
+        },
+        "1032904486": {
+          "id": 1032904486,
+          "username": "A_rmman",
+          "first_name": "GHULAM",
+          "last_name": "hassan",
+          "dateAdded": "2024-10-25T12:31:26.349Z",
+          "roles": [],
+          "purchases": {
+            "kickstarters": [],
+            "groups": {
+              "regular": [],
+              "plus": [],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 0
+          }
+        },
+        "1067273529": {
+          "id": 1067273529,
+          "username": "GoshaGraiD",
+          "first_name": "GoshA",
+          "last_name": "GraiD",
+          "dateAdded": "2025-04-11T20:52:21.422Z",
+          "roles": [
+            "rejected"
+          ],
+          "purchases": {
+            "kickstarters": [],
+            "groups": {
+              "regular": [],
+              "plus": [],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 0
+          }
+        },
+        "1086472785": {
+          "id": 1086472785,
+          "username": "Artur_Krip",
+          "first_name": "Artur",
+          "last_name": "Krip 🐾 🐶🐍",
+          "dateAdded": "2025-01-22T23:20:10.395Z",
+          "roles": [],
+          "purchases": {
+            "kickstarters": [],
+            "groups": {
+              "regular": [],
+              "plus": [],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 0
+          }
+        },
+        "1090274107": {
+          "id": 1090274107,
+          "username": "not_set",
+          "first_name": "Nader",
+          "last_name": "Almehrzi",
+          "dateAdded": "2025-06-09T17:07:23.549Z",
+          "roles": [],
+          "purchases": {
+            "kickstarters": [],
+            "groups": {
+              "regular": [],
+              "plus": [],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 0
+          }
+        },
+        "1102475259": {
+          "id": 1102475259,
+          "username": "yaretsP",
+          "first_name": "Павел",
+          "last_name": "Ярец",
+          "dateAdded": "2024-09-28T14:29:38.229Z",
+          "roles": [
+            "goblin"
+          ],
+          "purchases": {
+            "kickstarters": [
+              "138",
+              "117",
+              "72"
+            ],
+            "groups": {
+              "regular": [
+                "2024_10",
+                "2024_11",
+                "2024_12",
+                "2025_01",
+                "2025_02",
+                "2025_03",
+                "2025_04",
+                "2025_05",
+                "2025_06",
+                "2025_07",
+                "2025_08"
+              ],
+              "plus": [
+                "2024_10",
+                "2024_07",
+                "2024_08",
+                "2024_09",
+                "2024_11",
+                "2024_12",
+                "2025_01",
+                "2025_02",
+                "2025_03",
+                "2025_04",
+                "2025_05",
+                "2025_06",
+                "2025_07",
+                "2025_08"
+              ],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 3
+          }
+        },
+        "1108825622": {
+          "id": 1108825622,
+          "username": "siebtehimmel",
+          "first_name": "Joanna",
+          "last_name": "Budzyn",
+          "dateAdded": "2025-01-06T19:42:31.134Z",
+          "roles": [],
+          "purchases": {
+            "kickstarters": [],
+            "groups": {
+              "regular": [],
+              "plus": [],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 0
+          }
+        },
+        "1129968341": {
+          "id": 1129968341,
+          "username": "Arteme1s",
+          "first_name": "Artyom",
+          "last_name": "Sorokin",
+          "dateAdded": "2024-09-27T19:27:50.707Z",
+          "roles": [
+            "goblin",
+            "admin",
+            "polls"
+          ],
+          "purchases": {
+            "kickstarters": [],
+            "groups": {
+              "regular": [],
+              "plus": [],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": -1000
+          }
+        },
+        "1132306234": {
+          "id": 1132306234,
+          "username": "not_set",
+          "first_name": "tacki y macki",
+          "last_name": "",
+          "dateAdded": "2024-10-29T20:45:05.263Z",
+          "roles": [],
+          "purchases": {
+            "kickstarters": [],
+            "groups": {
+              "regular": [],
+              "plus": [],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 0
+          }
+        },
+        "1161746332": {
+          "id": 1161746332,
+          "username": "tt_0oo",
+          "first_name": "Владислав 🐾",
+          "last_name": "",
+          "dateAdded": "2025-01-22T19:57:17.251Z",
+          "roles": [
+            "rejected"
+          ],
+          "purchases": {
+            "kickstarters": [],
+            "groups": {
+              "regular": [],
+              "plus": [],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 0
+          }
+        },
+        "1193382536": {
+          "id": 1193382536,
+          "username": "hoot156",
+          "first_name": "koda",
+          "last_name": "ivan",
+          "dateAdded": "2024-10-05T15:41:27.240Z",
+          "roles": [
+            "goblin"
+          ],
+          "purchases": {
+            "kickstarters": [],
+            "groups": {
+              "regular": [
+                "2024_10",
+                "2024_11",
+                "2024_12",
+                "2025_01",
+                "2025_02",
+                "2025_03",
+                "2025_04",
+                "2025_05",
+                "2025_06",
+                "2025_07",
+                "2025_08"
+              ],
+              "plus": [
+                "2024_10",
+                "2024_06",
+                "2024_07",
+                "2024_08",
+                "2024_09",
+                "2024_11",
+                "2024_12",
+                "2025_01",
+                "2025_02",
+                "2025_03",
+                "2025_04",
+                "2025_05",
+                "2025_06",
+                "2025_07",
+                "2025_08"
+              ],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 0
+          }
+        },
+        "1195974773": {
+          "id": 1195974773,
+          "username": "not_set",
+          "first_name": "Tata...",
+          "last_name": "",
+          "dateAdded": "2025-01-22T18:45:50.090Z",
+          "roles": [],
+          "purchases": {
+            "kickstarters": [],
+            "groups": {
+              "regular": [],
+              "plus": [],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 0
+          }
+        },
+        "1206422029": {
+          "id": 1206422029,
+          "username": "masnakls",
+          "first_name": "Александр",
+          "last_name": "Валерьевич",
+          "dateAdded": "2024-09-28T10:57:57.822Z",
+          "roles": [
+            "goblin"
+          ],
+          "purchases": {
+            "kickstarters": [
+              "26",
+              "78",
+              "10",
+              "88",
+              "122",
+              "128",
+              "86",
+              "144"
+            ],
+            "groups": {
+              "regular": [
+                "2024_10",
+                "2024_11",
+                "2024_12",
+                "2025_01",
+                "2025_02",
+                "2025_03",
+                "2025_04",
+                "2025_05",
+                "2025_06",
+                "2025_07",
+                "2025_08"
+              ],
+              "plus": [
+                "2024_10",
+                "2023_11",
+                "2023_12",
+                "2024_05",
+                "2024_06",
+                "2024_07",
+                "2024_08",
+                "2024_09",
+                "2024_11",
+                "2024_12",
+                "2025_01",
+                "2025_02",
+                "2025_03",
+                "2025_04",
+                "2025_05",
+                "2025_06",
+                "2025_07",
+                "2025_08"
+              ],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 8
+          }
+        },
+        "1224536032": {
+          "id": 1224536032,
+          "username": "not_set",
+          "first_name": "k7",
+          "last_name": "",
+          "dateAdded": "2025-03-02T18:34:34.880Z",
+          "roles": [],
+          "purchases": {
+            "kickstarters": [],
+            "groups": {
+              "regular": [],
+              "plus": [],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 0
+          }
+        },
+        "1227852219": {
+          "id": 1227852219,
+          "username": "Saed1469",
+          "first_name": "Saeed",
+          "last_name": "",
+          "dateAdded": "2024-12-31T09:18:20.922Z",
+          "roles": [
+            "rejected"
+          ],
+          "purchases": {
+            "kickstarters": [],
+            "groups": {
+              "regular": [],
+              "plus": [],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 0
+          }
+        },
+        "1281377991": {
+          "id": 1281377991,
+          "username": "not_set",
+          "first_name": "Натали",
+          "last_name": "",
+          "dateAdded": "2025-03-02T11:44:20.926Z",
+          "roles": [
+            "rejected"
+          ],
+          "purchases": {
+            "kickstarters": [],
+            "groups": {
+              "regular": [],
+              "plus": [],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 0
+          }
+        },
+        "1292914182": {
+          "id": 1292914182,
+          "username": "Komrad13sq",
+          "first_name": "13sq",
+          "last_name": "",
+          "dateAdded": "2024-09-29T18:55:21.177Z",
+          "roles": [
+            "goblin"
+          ],
+          "purchases": {
+            "kickstarters": [
+              "93",
+              "81",
+              "82",
+              "83",
+              "84",
+              "86",
+              "88",
+              "103",
+              "107",
+              "112",
+              "114",
+              "108",
+              "42",
+              "47",
+              "124",
+              "122",
+              "121",
+              "128",
+              "144",
+              "67",
+              "38",
+              "141"
+            ],
+            "groups": {
+              "regular": [
+                "2024_10",
+                "2024_11",
+                "2024_12",
+                "2025_01",
+                "2025_02",
+                "2025_03",
+                "2025_04",
+                "2025_05",
+                "2025_06",
+                "2025_07",
+                "2025_08"
+              ],
+              "plus": [
+                "2023_12",
+                "2024_09",
+                "2024_12",
+                "2025_01",
+                "2025_02",
+                "2025_03",
+                "2025_04",
+                "2025_05",
+                "2025_06",
+                "2025_07",
+                "2025_08"
+              ],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 0
+          }
+        },
+        "1318615545": {
+          "id": 1318615545,
+          "username": "not_set",
+          "first_name": "Павел",
+          "last_name": "",
+          "dateAdded": "2024-12-15T01:29:24.729Z",
+          "roles": [
+            "rejected"
+          ],
+          "purchases": {
+            "kickstarters": [],
+            "groups": {
+              "regular": [],
+              "plus": [],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 0
+          }
+        },
+        "1339947231": {
+          "id": 1339947231,
+          "username": "MeduzaRus",
+          "first_name": "Андрей",
+          "last_name": "Барбин",
+          "dateAdded": "2024-09-30T14:19:36.208Z",
+          "roles": [
+            "goblin"
+          ],
+          "purchases": {
+            "kickstarters": [
+              "95",
+              "104"
+            ],
+            "groups": {
+              "regular": [
+                "2024_10",
+                "2024_11",
+                "2024_12",
+                "2025_01",
+                "2025_02",
+                "2025_03",
+                "2025_04",
+                "2025_05",
+                "2025_06",
+                "2025_07",
+                "2025_08"
+              ],
+              "plus": [
+                "2023_11",
+                "2023_12",
+                "2024_11",
+                "2024_12"
+              ],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 1
+          }
+        },
+        "1358974437": {
+          "id": 1358974437,
+          "username": "laughingbeaver",
+          "first_name": "Дмитрий",
+          "last_name": "Боробов",
+          "dateAdded": "2024-09-28T09:47:45.212Z",
+          "roles": [
+            "goblin"
+          ],
+          "purchases": {
+            "kickstarters": [],
+            "groups": {
+              "regular": [
+                "2024_10",
+                "2024_11",
+                "2024_12",
+                "2025_01",
+                "2025_02",
+                "2025_03",
+                "2025_05",
+                "2025_04",
+                "2025_06",
+                "2025_07",
+                "2025_08"
+              ],
+              "plus": [
+                "2023_11",
+                "2023_12",
+                "2024_01",
+                "2024_02",
+                "2024_03"
+              ],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 0
+          }
+        },
+        "1393463449": {
+          "id": 1393463449,
+          "username": "Kermit_Swag",
+          "first_name": "Anton Alexandrov",
+          "last_name": "",
+          "dateAdded": "2024-09-30T14:58:16.115Z",
+          "roles": [
+            "rejected"
+          ],
+          "purchases": {
+            "kickstarters": [
+              "11"
+            ],
+            "groups": {
+              "regular": [],
+              "plus": [],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 0
+          }
+        },
+        "1419523980": {
+          "id": 1419523980,
+          "username": "serw85",
+          "first_name": "Максим",
+          "last_name": "Якименко",
+          "dateAdded": "2024-12-20T07:21:42.810Z",
+          "roles": [
+            "rejected"
+          ],
+          "purchases": {
+            "kickstarters": [],
+            "groups": {
+              "regular": [],
+              "plus": [],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 0
+          }
+        },
+        "1427093277": {
+          "id": 1427093277,
+          "username": "EvgenMol",
+          "first_name": "Евгений",
+          "last_name": "",
+          "dateAdded": "2024-09-30T13:46:25.298Z",
+          "roles": [
+            "goblin"
+          ],
+          "purchases": {
+            "kickstarters": [
+              "108",
+              "117",
+              "116",
+              "121",
+              "114",
+              "72",
+              "131",
+              "143",
+              "144"
+            ],
+            "groups": {
+              "regular": [
+                "2024_10",
+                "2024_11",
+                "2024_12",
+                "2025_01",
+                "2025_02",
+                "2025_03",
+                "2025_04",
+                "2025_05",
+                "2025_06",
+                "2025_07",
+                "2025_08"
+              ],
+              "plus": [
+                "2024_10",
+                "2024_01",
+                "2024_02",
+                "2024_03",
+                "2024_04",
+                "2024_05",
+                "2024_06",
+                "2024_07",
+                "2024_08",
+                "2024_09",
+                "2024_11",
+                "2024_12",
+                "2025_01",
+                "2025_02",
+                "2025_03",
+                "2025_04",
+                "2025_05",
+                "2025_06",
+                "2025_07",
+                "2025_08"
+              ],
+              "special": []
+            },
+            "collections": [],
+            "balance": 300,
+            "releases": {},
+            "ticketsSpent": 6
+          }
+        },
+        "1430374902": {
+          "id": 1430374902,
+          "username": "German2083",
+          "first_name": "💠🐦🐐🦉🐶🦒✨️🧀#NeoHash 💊#TotalHash",
+          "last_name": "German",
+          "dateAdded": "2025-02-05T10:06:42.089Z",
+          "roles": [
+            "rejected"
+          ],
+          "purchases": {
+            "kickstarters": [],
+            "groups": {
+              "regular": [],
+              "plus": [],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 0
+          }
+        },
+        "1461633552": {
+          "id": 1461633552,
+          "username": "lev4ik01",
+          "first_name": "Алёна🦒",
+          "last_name": "",
+          "dateAdded": "2024-12-29T20:20:28.900Z",
+          "roles": [
+            "rejected"
+          ],
+          "purchases": {
+            "kickstarters": [],
+            "groups": {
+              "regular": [],
+              "plus": [],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 0
+          }
+        },
+        "1519577898": {
+          "id": 1519577898,
+          "username": "id_3878",
+          "first_name": "мимо",
+          "last_name": "проходил",
+          "dateAdded": "2024-09-30T10:08:59.608Z",
+          "roles": [
+            "goblin"
+          ],
+          "purchases": {
+            "kickstarters": [
+              "82"
+            ],
+            "groups": {
+              "regular": [
+                "2024_10",
+                "2024_11",
+                "2024_12",
+                "2025_01",
+                "2025_02",
+                "2025_03",
+                "2025_04",
+                "2025_05",
+                "2025_06",
+                "2025_07",
+                "2025_08"
+              ],
+              "plus": [],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 0
+          }
+        },
+        "1526381762": {
+          "id": 1526381762,
+          "username": "Petro1982",
+          "first_name": "петро",
+          "last_name": "",
+          "dateAdded": "2024-12-17T19:34:11.689Z",
+          "roles": [
+            "rejected"
+          ],
+          "purchases": {
+            "kickstarters": [],
+            "groups": {
+              "regular": [],
+              "plus": [],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 0
+          }
+        },
+        "1531352052": {
+          "id": 1531352052,
+          "username": "Daotta",
+          "first_name": "Dani",
+          "last_name": "Otta",
+          "dateAdded": "2024-10-17T09:53:56.942Z",
+          "roles": [],
+          "purchases": {
+            "kickstarters": [],
+            "groups": {
+              "regular": [],
+              "plus": [],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 0
+          }
+        },
+        "1558368175": {
+          "id": 1558368175,
+          "username": "AndiOlyna",
+          "first_name": "Andy",
+          "last_name": "Olyna",
+          "dateAdded": "2024-12-09T05:24:01.466Z",
+          "roles": [
+            "rejected"
+          ],
+          "purchases": {
+            "kickstarters": [],
+            "groups": {
+              "regular": [],
+              "plus": [],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 0
+          }
+        },
+        "1629116317": {
+          "id": 1629116317,
+          "username": "PrintUsDmitry",
+          "first_name": "UsDmitry",
+          "last_name": "",
+          "dateAdded": "2025-04-11T20:37:07.012Z",
+          "roles": [
+            "goblin"
+          ],
+          "purchases": {
+            "kickstarters": [
+              "126",
+              "139",
+              "72",
+              "116",
+              "93"
+            ],
+            "groups": {
+              "regular": [
+                "2025_04",
+                "2025_03",
+                "2025_05",
+                "2025_06",
+                "2025_07",
+                "2025_08"
+              ],
+              "plus": [],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 0
+          }
+        },
+        "1632202596": {
+          "id": 1632202596,
+          "username": "yasya_1",
+          "first_name": "Yasya,",
+          "last_name": "",
+          "dateAdded": "2024-12-09T09:58:20.676Z",
+          "roles": [
+            "rejected"
+          ],
+          "purchases": {
+            "kickstarters": [],
+            "groups": {
+              "regular": [],
+              "plus": [],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 0
+          }
+        },
+        "1675986660": {
+          "id": 1675986660,
+          "username": "Donbas2020",
+          "first_name": "Ivan🐾🥠",
+          "last_name": "",
+          "dateAdded": "2025-01-25T11:06:08.760Z",
+          "roles": [
+            "rejected"
+          ],
+          "purchases": {
+            "kickstarters": [],
+            "groups": {
+              "regular": [],
+              "plus": [],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 0
+          }
+        },
+        "1726644883": {
+          "id": 1726644883,
+          "username": "IgorBch",
+          "first_name": "Igor",
+          "last_name": "B",
+          "dateAdded": "2024-10-07T16:16:53.006Z",
+          "roles": [
+            "goblin"
+          ],
+          "purchases": {
+            "kickstarters": [
+              "1",
+              "115",
+              "110"
+            ],
+            "groups": {
+              "regular": [
+                "2024_10",
+                "2024_11",
+                "2024_12",
+                "2025_01",
+                "2025_02",
+                "2025_03",
+                "2025_04",
+                "2025_05",
+                "2025_06",
+                "2025_07"
+              ],
+              "plus": [],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 0
+          }
+        },
+        "1823682058": {
+          "id": 1823682058,
+          "username": "Adelkassem",
+          "first_name": "Adel",
+          "last_name": "Kassem",
+          "dateAdded": "2024-10-18T16:40:13.570Z",
+          "roles": [],
+          "purchases": {
+            "kickstarters": [],
+            "groups": {
+              "regular": [],
+              "plus": [],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 0
+          }
+        },
+        "1898411672": {
+          "id": 1898411672,
+          "username": "katerinafelix",
+          "first_name": "Katerina",
+          "last_name": "",
+          "dateAdded": "2024-10-07T05:44:44.821Z",
+          "roles": [
+            "admin"
+          ],
+          "purchases": {
+            "kickstarters": [],
+            "groups": {
+              "regular": [
+                "2024_09"
+              ],
+              "plus": [
+                "2024_11"
+              ],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 0
+          }
+        },
+        "1968225771": {
+          "id": 1968225771,
+          "username": "not_set",
+          "first_name": "Malik",
+          "last_name": "",
+          "dateAdded": "2024-10-22T03:53:46.468Z",
+          "roles": [],
+          "purchases": {
+            "kickstarters": [],
+            "groups": {
+              "regular": [],
+              "plus": [],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 0
+          }
+        },
+        "1971739642": {
+          "id": 1971739642,
+          "username": "Pushkin90spb",
+          "first_name": "Andrey",
+          "last_name": "",
+          "dateAdded": "2024-12-09T23:04:44.409Z",
+          "roles": [
+            "rejected"
+          ],
+          "purchases": {
+            "kickstarters": [],
+            "groups": {
+              "regular": [],
+              "plus": [],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 0
+          }
+        },
+        "1987405994": {
+          "id": 1987405994,
+          "username": "TahoDog",
+          "first_name": "Сергей",
+          "last_name": "Зданович",
+          "dateAdded": "2024-10-04T09:15:47.151Z",
+          "roles": [
+            "goblin"
+          ],
+          "purchases": {
+            "kickstarters": [
+              "32",
+              "35",
+              "75",
+              "76"
+            ],
+            "groups": {
+              "regular": [
+                "2024_10",
+                "2024_11",
+                "2024_12",
+                "2025_01",
+                "2025_02",
+                "2025_03",
+                "2025_04",
+                "2025_05",
+                "2025_06",
+                "2025_07",
+                "2025_08"
+              ],
+              "plus": [
+                "2024_10",
+                "2023_11",
+                "2023_12",
+                "2024_02",
+                "2024_03",
+                "2024_05",
+                "2024_04",
+                "2024_06",
+                "2024_07",
+                "2024_08",
+                "2024_09",
+                "2024_11",
+                "2024_12",
+                "2025_01",
+                "2025_02",
+                "2025_03",
+                "2025_04",
+                "2025_05",
+                "2025_06",
+                "2025_07",
+                "2025_08"
+              ],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 3
+          }
+        },
+        "2065303897": {
+          "id": 2065303897,
+          "username": "P1P7P7",
+          "first_name": "ㅤPeter",
+          "last_name": "",
+          "dateAdded": "2025-06-20T06:22:22.376Z",
+          "roles": [],
+          "purchases": {
+            "kickstarters": [],
+            "groups": {
+              "regular": [],
+              "plus": [],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 0
+          }
+        },
+        "2066869625": {
+          "id": 2066869625,
+          "username": "koshk451",
+          "first_name": "koshk451",
+          "last_name": "",
+          "dateAdded": "2024-12-10T14:29:24.831Z",
+          "roles": [
+            "goblin"
+          ],
+          "purchases": {
+            "kickstarters": [],
+            "groups": {
+              "regular": [
+                "2024_12",
+                "2024_11",
+                "2025_01",
+                "2025_02",
+                "2025_03",
+                "2025_04",
+                "2025_05",
+                "2025_06",
+                "2025_07",
+                "2025_08",
+                "2025_09",
+                "2025_10",
+                "2025_11",
+                "2025_12"
+              ],
+              "plus": [],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 0
+          }
+        },
+        "6192973372": {
+          "id": 6192973372,
+          "username": "PetrCherno",
+          "first_name": "Петр",
+          "last_name": "Чернопятов",
+          "dateAdded": "2024-09-27T19:33:33.858Z",
+          "roles": [
+            "goblin"
+          ],
+          "purchases": {
+            "kickstarters": [
+              "72",
+              "125"
+            ],
+            "groups": {
+              "regular": [
+                "2024_10",
+                "2024_11",
+                "2024_12",
+                "2025_01",
+                "2025_02",
+                "2025_03",
+                "2025_04",
+                "2025_05",
+                "2025_06",
+                "2025_07",
+                "2025_08"
+              ],
+              "plus": [],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 0
+          }
+        },
+        "5947625123": {
+          "id": 5947625123,
+          "username": "stl_hoarder",
+          "first_name": "STL",
+          "last_name": "Hoarder",
+          "dateAdded": "2024-09-27T19:36:35.689Z",
+          "roles": [
+            "goblin",
+            "admin"
+          ],
+          "purchases": {
+            "kickstarters": [
+              "1",
+              "11",
+              "73"
+            ],
+            "groups": {
+              "regular": [],
+              "plus": [],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": -17
+          }
+        },
+        "5853237200": {
+          "id": 5853237200,
+          "username": "Vyacheslav_Nord",
+          "first_name": "Dr_Jew",
+          "last_name": "",
+          "dateAdded": "2024-09-28T20:06:27.969Z",
+          "roles": [
+            "goblin"
+          ],
+          "purchases": {
+            "kickstarters": [
+              "121",
+              "80"
+            ],
+            "groups": {
+              "regular": [
+                "2024_10",
+                "2024_11",
+                "2024_12",
+                "2025_01",
+                "2025_02",
+                "2025_03",
+                "2025_04",
+                "2025_05",
+                "2025_06",
+                "2025_07",
+                "2025_08"
+              ],
+              "plus": [
+                "2024_01",
+                "2024_03",
+                "2024_04",
+                "2024_05",
+                "2024_06",
+                "2024_07",
+                "2024_11",
+                "2025_02",
+                "2025_03",
+                "2025_04",
+                "2025_05",
+                "2025_06",
+                "2025_07",
+                "2025_08"
+              ],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 2
+          }
+        },
+        "5565596708": {
+          "id": 5565596708,
+          "username": "csangry",
+          "first_name": "Angry",
+          "last_name": "",
+          "dateAdded": "2024-10-01T18:28:40.821Z",
+          "roles": [
+            "goblin"
+          ],
+          "purchases": {
+            "kickstarters": [],
+            "groups": {
+              "regular": [
+                "2024_10",
+                "2024_11",
+                "2024_12",
+                "2025_01",
+                "2025_02",
+                "2025_03",
+                "2025_04",
+                "2025_05",
+                "2025_06",
+                "2025_07",
+                "2025_08"
+              ],
+              "plus": [
+                "2024_10",
+                "2024_03",
+                "2024_04",
+                "2024_05",
+                "2024_06",
+                "2024_07",
+                "2024_08",
+                "2024_09",
+                "2024_11",
+                "2024_12",
+                "2025_01",
+                "2025_02",
+                "2025_03",
+                "2025_04",
+                "2025_05",
+                "2025_06",
+                "2025_07",
+                "2025_08"
+              ],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 0
+          }
+        },
+        "5822931325": {
+          "id": 5822931325,
+          "username": "AxeLsForge",
+          "first_name": "Axl",
+          "last_name": "Low",
+          "dateAdded": "2024-10-03T19:03:05.600Z",
+          "roles": [
+            "rejected"
+          ],
+          "purchases": {
+            "kickstarters": [
+              "34",
+              "92"
+            ],
+            "groups": {
+              "regular": [],
+              "plus": [],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 2
+          }
+        },
+        "6131929859": {
+          "id": 6131929859,
+          "username": "ION_TLT",
+          "first_name": "ION",
+          "last_name": "MAN",
+          "dateAdded": "2024-10-10T18:57:26.223Z",
+          "roles": [
+            "goblin"
+          ],
+          "purchases": {
+            "kickstarters": [],
+            "groups": {
+              "regular": [
+                "2024_10",
+                "2024_11",
+                "2024_12",
+                "2025_01",
+                "2025_02",
+                "2025_03",
+                "2025_04"
+              ],
+              "plus": [
+                "2024_10",
+                "2024_11",
+                "2024_12",
+                "2025_01",
+                "2025_02",
+                "2025_03",
+                "2025_04"
+              ],
+              "special": []
+            },
+            "collections": [],
+            "balance": 400,
+            "releases": {},
+            "ticketsSpent": 0
+          }
+        },
+        "7111643796": {
+          "id": 7111643796,
+          "username": "Malibufta",
+          "first_name": "Branko",
+          "last_name": "Srnec🥠",
+          "dateAdded": "2024-10-13T07:21:42.719Z",
+          "roles": [],
+          "purchases": {
+            "kickstarters": [],
+            "groups": {
+              "regular": [],
+              "plus": [],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 0
+          }
+        },
+        "5769020196": {
+          "id": 5769020196,
+          "username": "Mirrza1122",
+          "first_name": "Mirza",
+          "last_name": "Baig",
+          "dateAdded": "2024-10-14T13:03:09.150Z",
+          "roles": [],
+          "purchases": {
+            "kickstarters": [],
+            "groups": {
+              "regular": [],
+              "plus": [],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 0
+          }
+        },
+        "6882711214": {
+          "id": 6882711214,
+          "username": "Aguirre_miguel",
+          "first_name": "98838",
+          "last_name": "Aguirre",
+          "dateAdded": "2024-10-16T05:28:03.162Z",
+          "roles": [],
+          "purchases": {
+            "kickstarters": [],
+            "groups": {
+              "regular": [],
+              "plus": [],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 0
+          }
+        },
+        "6073920749": {
+          "id": 6073920749,
+          "username": "not_set",
+          "first_name": "Sebbe",
+          "last_name": "Helge",
+          "dateAdded": "2024-10-19T13:49:46.855Z",
+          "roles": [],
+          "purchases": {
+            "kickstarters": [],
+            "groups": {
+              "regular": [],
+              "plus": [],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 0
+          }
+        },
+        "7712160204": {
+          "id": 7712160204,
+          "username": "not_set",
+          "first_name": "Oksa",
+          "last_name": "Oksa",
+          "dateAdded": "2024-10-20T08:25:16.585Z",
+          "roles": [],
+          "purchases": {
+            "kickstarters": [],
+            "groups": {
+              "regular": [],
+              "plus": [],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 0
+          }
+        },
+        "5138014296": {
+          "id": 5138014296,
+          "username": "KirShadowwalker",
+          "first_name": "Kir",
+          "last_name": "",
+          "dateAdded": "2024-10-20T11:19:17.100Z",
+          "roles": [
+            "goblin"
+          ],
+          "purchases": {
+            "kickstarters": [],
+            "groups": {
+              "regular": [
+                "2024_10",
+                "2024_11",
+                "2024_12",
+                "2025_01",
+                "2025_03",
+                "2025_02",
+                "2025_04",
+                "2025_05",
+                "2025_06",
+                "2025_07"
+              ],
+              "plus": [],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 0
+          }
+        },
+        "6774680155": {
+          "id": 6774680155,
+          "username": "not_set",
+          "first_name": "Prophet",
+          "last_name": "",
+          "dateAdded": "2024-10-20T22:16:46.157Z",
+          "roles": [],
+          "purchases": {
+            "kickstarters": [],
+            "groups": {
+              "regular": [],
+              "plus": [],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 0
+          }
+        },
+        "5830404256": {
+          "id": 5830404256,
+          "username": "not_set",
+          "first_name": "Szai",
+          "last_name": "Obligacion🍅",
+          "dateAdded": "2024-10-21T02:23:52.451Z",
+          "roles": [],
+          "purchases": {
+            "kickstarters": [],
+            "groups": {
+              "regular": [],
+              "plus": [],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 0
+          }
+        },
+        "6024594394": {
+          "id": 6024594394,
+          "username": "not_set",
+          "first_name": "🥠murat",
+          "last_name": "",
+          "dateAdded": "2024-10-22T17:42:13.709Z",
+          "roles": [],
+          "purchases": {
+            "kickstarters": [],
+            "groups": {
+              "regular": [],
+              "plus": [],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 0
+          }
+        },
+        "7644881410": {
+          "id": 7644881410,
+          "username": "SanyaGameCoinsApps",
+          "first_name": "Саня_",
+          "last_name": "GameCoinsApps",
+          "dateAdded": "2024-12-09T19:16:37.846Z",
+          "roles": [
+            "rejected"
+          ],
+          "purchases": {
+            "kickstarters": [],
+            "groups": {
+              "regular": [],
+              "plus": [],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 0
+          }
+        },
+        "5009814581": {
+          "id": 5009814581,
+          "username": "not_set",
+          "first_name": "Вячеслав",
+          "last_name": "",
+          "dateAdded": "2024-12-10T03:26:36.441Z",
+          "roles": [
+            "rejected"
+          ],
+          "purchases": {
+            "kickstarters": [],
+            "groups": {
+              "regular": [],
+              "plus": [],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 0
+          }
+        },
+        "6629282332": {
+          "id": 6629282332,
+          "username": "Cep1313",
+          "first_name": "Сергей",
+          "last_name": "",
+          "dateAdded": "2024-12-10T04:51:28.343Z",
+          "roles": [
+            "rejected"
+          ],
+          "purchases": {
+            "kickstarters": [],
+            "groups": {
+              "regular": [],
+              "plus": [],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 0
+          }
+        },
+        "7082884031": {
+          "id": 7082884031,
+          "username": "Vitia48",
+          "first_name": "Виктор",
+          "last_name": "Zevs",
+          "dateAdded": "2024-12-10T09:07:16.514Z",
+          "roles": [
+            "rejected"
+          ],
+          "purchases": {
+            "kickstarters": [],
+            "groups": {
+              "regular": [],
+              "plus": [],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 0
+          }
+        },
+        "6154123477": {
+          "id": 6154123477,
+          "username": "M_S_KhaNx",
+          "first_name": "SuLiMaN khanX",
+          "last_name": "",
+          "dateAdded": "2024-12-10T10:53:25.646Z",
+          "roles": [],
+          "purchases": {
+            "kickstarters": [],
+            "groups": {
+              "regular": [],
+              "plus": [],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 0
+          }
+        },
+        "7918073366": {
+          "id": 7918073366,
+          "username": "not_set",
+          "first_name": "Света",
+          "last_name": "Гоцкая",
+          "dateAdded": "2024-12-11T08:59:08.504Z",
+          "roles": [
+            "rejected"
+          ],
+          "purchases": {
+            "kickstarters": [],
+            "groups": {
+              "regular": [],
+              "plus": [],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 0
+          }
+        },
+        "6133817165": {
+          "id": 6133817165,
+          "username": "not_set",
+          "first_name": "Ramon",
+          "last_name": "González",
+          "dateAdded": "2024-12-11T11:51:05.451Z",
+          "roles": [
+            "rejected"
+          ],
+          "purchases": {
+            "kickstarters": [],
+            "groups": {
+              "regular": [],
+              "plus": [],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 0
+          }
+        },
+        "5822388596": {
+          "id": 5822388596,
+          "username": "Sava79Stas",
+          "first_name": "Станислав",
+          "last_name": "",
+          "dateAdded": "2024-12-11T13:44:12.134Z",
+          "roles": [
+            "rejected"
+          ],
+          "purchases": {
+            "kickstarters": [],
+            "groups": {
+              "regular": [],
+              "plus": [],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 0
+          }
+        },
+        "6324413127": {
+          "id": 6324413127,
+          "username": "not_set",
+          "first_name": "Женя",
+          "last_name": "",
+          "dateAdded": "2024-12-12T18:12:58.906Z",
+          "roles": [
+            "rejected"
+          ],
+          "purchases": {
+            "kickstarters": [],
+            "groups": {
+              "regular": [],
+              "plus": [],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 0
+          }
+        },
+        "5169718770": {
+          "id": 5169718770,
+          "username": "Archibaidi",
+          "first_name": "Александр🐾▪️🦒",
+          "last_name": "Чабанов",
+          "dateAdded": "2024-12-16T12:08:54.614Z",
+          "roles": [
+            "rejected"
+          ],
+          "purchases": {
+            "kickstarters": [],
+            "groups": {
+              "regular": [],
+              "plus": [],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 0
+          }
+        },
+        "7841861014": {
+          "id": 7841861014,
+          "username": "not_set",
+          "first_name": "Khan",
+          "last_name": "",
+          "dateAdded": "2024-12-24T17:20:00.598Z",
+          "roles": [],
+          "purchases": {
+            "kickstarters": [],
+            "groups": {
+              "regular": [],
+              "plus": [],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 0
+          }
+        },
+        "5411032357": {
+          "id": 5411032357,
+          "username": "daintnd",
+          "first_name": "Phọt🍅 🌱SEEDⓂ️ MEMES🐾📦 Bums",
+          "last_name": "Đại▪️",
+          "dateAdded": "2024-12-27T09:47:49.470Z",
+          "roles": [
+            "rejected"
+          ],
+          "purchases": {
+            "kickstarters": [],
+            "groups": {
+              "regular": [],
+              "plus": [],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 0
+          }
+        },
+        "8166623615": {
+          "id": 8166623615,
+          "username": "not_set",
+          "first_name": "OSMANY",
+          "last_name": "",
+          "dateAdded": "2024-12-30T17:07:36.503Z",
+          "roles": [],
+          "purchases": {
+            "kickstarters": [],
+            "groups": {
+              "regular": [],
+              "plus": [],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 0
+          }
+        },
+        "7017579752": {
+          "id": 7017579752,
+          "username": "NikaGan",
+          "first_name": "Вероника",
+          "last_name": "",
+          "dateAdded": "2025-01-06T12:53:06.264Z",
+          "roles": [
+            "rejected"
+          ],
+          "purchases": {
+            "kickstarters": [],
+            "groups": {
+              "regular": [],
+              "plus": [],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 0
+          }
+        },
+        "6193053018": {
+          "id": 6193053018,
+          "username": "gella22011991",
+          "first_name": "G",
+          "last_name": "A",
+          "dateAdded": "2025-01-18T00:06:25.776Z",
+          "roles": [],
+          "purchases": {
+            "kickstarters": [],
+            "groups": {
+              "regular": [],
+              "plus": [],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 0
+          }
+        },
+        "7654108174": {
+          "id": 7654108174,
+          "username": "not_set",
+          "first_name": "Саша",
+          "last_name": "",
+          "dateAdded": "2025-01-19T01:15:19.924Z",
+          "roles": [
+            "rejected"
+          ],
+          "purchases": {
+            "kickstarters": [],
+            "groups": {
+              "regular": [],
+              "plus": [],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 0
+          }
+        },
+        "5551937435": {
+          "id": 5551937435,
+          "username": "Fuente1w",
+          "first_name": "🐍",
+          "last_name": "Mota",
+          "dateAdded": "2025-01-22T17:23:19.997Z",
+          "roles": [
+            "rejected"
+          ],
+          "purchases": {
+            "kickstarters": [],
+            "groups": {
+              "regular": [],
+              "plus": [],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 0
+          }
+        },
+        "6520933444": {
+          "id": 6520933444,
+          "username": "Kirill040719",
+          "first_name": "Кирилл",
+          "last_name": "🐍",
+          "dateAdded": "2025-01-23T04:55:39.252Z",
+          "roles": [
+            "rejected"
+          ],
+          "purchases": {
+            "kickstarters": [],
+            "groups": {
+              "regular": [],
+              "plus": [],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 0
+          }
+        },
+        "5847284954": {
+          "id": 5847284954,
+          "username": "not_set",
+          "first_name": "Сергей🐍",
+          "last_name": "",
+          "dateAdded": "2025-01-23T19:02:32.002Z",
+          "roles": [],
+          "purchases": {
+            "kickstarters": [],
+            "groups": {
+              "regular": [],
+              "plus": [],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 0
+          }
+        },
+        "5979090520": {
+          "id": 5979090520,
+          "username": "evlxtgYura",
+          "first_name": "Yura",
+          "last_name": "",
+          "dateAdded": "2025-02-04T22:09:57.167Z",
+          "roles": [
+            "rejected"
+          ],
+          "purchases": {
+            "kickstarters": [],
+            "groups": {
+              "regular": [],
+              "plus": [],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 0
+          }
+        },
+        "6321492181": {
+          "id": 6321492181,
+          "username": "pochxo",
+          "first_name": "Davit 👾 BITS❤️🌱SEED🍅Ⓜ️ MEMES 🦴🐍Σ✌️Yescoiner $MAGAS #P4L 🍖",
+          "last_name": "PocketFiEmoji",
+          "dateAdded": "2025-02-21T15:39:14.769Z",
+          "roles": [
+            "rejected"
+          ],
+          "purchases": {
+            "kickstarters": [],
+            "groups": {
+              "regular": [],
+              "plus": [],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 0
+          }
+        },
+        "5196118838": {
+          "id": 5196118838,
+          "username": "xsteartimo",
+          "first_name": "Moha",
+          "last_name": "",
+          "dateAdded": "2025-02-23T22:30:24.196Z",
+          "roles": [],
+          "purchases": {
+            "kickstarters": [],
+            "groups": {
+              "regular": [],
+              "plus": [],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 0
+          }
+        },
+        "5125642464": {
+          "id": 5125642464,
+          "username": "Sellaoui1957",
+          "first_name": "sadek",
+          "last_name": "Sadek 💲BLM Meshchain.Ai $MOKL MyGate Network",
+          "dateAdded": "2025-07-03T14:13:04.239Z",
+          "roles": [
+            "rejected"
+          ],
+          "purchases": {
+            "kickstarters": [],
+            "groups": {
+              "regular": [],
+              "plus": [],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 0
+          }
+        },
+        "7493830530": {
+          "id": 7493830530,
+          "username": "aditya426363",
+          "first_name": "$XAditya",
+          "last_name": "$X",
+          "dateAdded": "2025-07-12T18:49:23.215Z",
+          "roles": [
+            "rejected"
+          ],
+          "purchases": {
+            "kickstarters": [],
+            "groups": {
+              "regular": [],
+              "plus": [],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 0
+          }
+        },
+        "8478543564": {
+          "id": 8478543564,
+          "username": "glavgoblin",
+          "first_name": "Гоблин",
+          "last_name": "Шеф",
+          "dateAdded": "2025-08-24T13:37:37.206Z",
+          "roles": [],
+          "purchases": {
+            "kickstarters": [],
+            "groups": {
+              "regular": [],
+              "plus": [],
+              "special": []
+            },
+            "collections": [],
+            "balance": 0,
+            "releases": {},
+            "ticketsSpent": 0
+          }
+        }
+      }
+    }
+  },
+  "176988041-user": {
+    "type": "string",
+    "data": {
+      "purchasing": {
+        "type": "group",
+        "year": "2025",
+        "month": "09",
+        "userId": 176988041,
+        "isOld": true
+      }
+    }
+  },
+  "425388360-user": {
+    "type": "string",
+    "data": {
+      "purchasing": {
+        "type": "group",
+        "year": "2025",
+        "month": "08",
+        "userId": 425388360,
+        "isOld": false
+      }
+    }
+  },
+  "463332905-user": {
+    "type": "string",
+    "data": {
+      "results": [],
+      "purchasing": {
+        "type": "group",
+        "year": "2025",
+        "month": "08",
+        "userId": 463332905,
+        "isOld": false
+      }
+    }
+  },
+  "491622625-user": {
+    "type": "string",
+    "data": {
+      "purchasing": {
+        "type": "group",
+        "year": "2025",
+        "month": "07",
+        "userId": 491622625,
+        "isOld": true
+      }
+    }
+  },
+  "246334931-user": {
+    "type": "string",
+    "data": {
+      "results": [],
+      "purchasing": {
+        "type": "group",
+        "year": "2025",
+        "month": "08",
+        "userId": 246334931,
+        "isOld": false
+      }
+    }
+  },
+  "790430972-user": {
+    "type": "string",
+    "data": {
+      "purchasing": {
+        "type": "group",
+        "year": "2025",
+        "month": "08",
+        "userId": 790430972,
+        "isOld": false
+      }
+    }
+  },
+  "187034022-user": {
+    "type": "string",
+    "data": {
+      "purchasing": {
+        "type": "group",
+        "year": "2025",
+        "month": "08",
+        "userId": 187034022,
+        "isOld": false
+      },
+      "results": []
+    }
+  },
+  "320427886-user": {
+    "type": "string",
+    "data": {
+      "purchasing": {
+        "type": "group",
+        "year": "2025",
+        "month": "08",
+        "userId": 320427886,
+        "isOld": false
+      },
+      "results": []
+    }
+  },
+  "usersIzolda": {
+    "type": "string",
+    "data": {
+      "list": {
+        "89056171": {
+          "id": 89056171,
+          "is_bot": false,
+          "first_name": "ДånR",
+          "username": "whoisdn4k",
+          "language_code": "ru",
+          "is_premium": true,
+          "lastAccessTimestamp": 1735637225287
+        },
+        "91430770": {
+          "id": 91430770,
+          "is_bot": false,
+          "first_name": "Velipedastal",
+          "last_name": "Zamovsky",
+          "username": "send_dog_pics",
+          "language_code": "en",
+          "is_premium": true,
+          "lastAccessTimestamp": 1737356055820
+        },
+        "441639418": {
+          "id": 441639418,
+          "is_bot": false,
+          "first_name": "Artem",
+          "username": "iamincart",
+          "language_code": "ru",
+          "lastAccessTimestamp": 1737578510161
+        },
+        "685612404": {
+          "id": 685612404,
+          "is_bot": false,
+          "first_name": "Слава",
+          "last_name": "Чувилев",
+          "username": "Viacheslav_1005",
+          "language_code": "ru",
+          "lastAccessTimestamp": 1736862202861
+        },
+        "868972902": {
+          "id": 868972902,
+          "is_bot": false,
+          "first_name": "Mikel",
+          "last_name": "Dudikov",
+          "username": "Mikel_Dudikoff",
+          "language_code": "ru",
+          "is_premium": true,
+          "lastAccessTimestamp": 1737035275916
+        }
+      }
+    }
+  },
+  "5822931325-user": {
+    "type": "string",
+    "data": {
+      "purchasing": {
+        "type": "kickstarter",
+        "userId": 5822931325,
+        "ksId": 92,
+        "name": "Cube Pro Organizer",
+        "price": "100"
+      },
+      "results": [
+        92
+      ]
+    }
+  },
+  "456740412-user": {
+    "type": "string",
+    "data": {
+      "results": [],
+      "purchasing": {
+        "type": "group",
+        "year": "2025",
+        "month": "08",
+        "userId": 456740412,
+        "isOld": false
+      }
+    }
+  },
+  "1726644883-user": {
+    "type": "string",
+    "data": {
+      "purchasing": {
+        "type": "group",
+        "year": "2025",
+        "month": "07",
+        "userId": 1726644883,
+        "isOld": false
+      },
+      "results": [
+        1
+      ]
+    }
+  },
+  "500656237-user": {
+    "type": "string",
+    "data": {
+      "purchasing": {
+        "type": "group",
+        "year": "2025",
+        "month": "08",
+        "userId": 500656237,
+        "isOld": false
+      }
+    }
+  },
+  "395054875-user": {
+    "type": "string",
+    "data": {
+      "purchasing": {
+        "type": "group",
+        "year": "2025",
+        "month": "08",
+        "userId": 395054875,
+        "isOld": false
+      }
+    }
+  },
+  "957473939-user": {
+    "type": "string",
+    "data": {
+      "purchasing": {
+        "type": "group",
+        "year": "2025",
+        "month": "08",
+        "userId": 957473939,
+        "isOld": false
+      }
+    }
+  },
+  "5138014296-user": {
+    "type": "string",
+    "data": {
+      "purchasing": {
+        "type": "group",
+        "year": "2025",
+        "month": "07",
+        "userId": 5138014296,
+        "isOld": false
+      }
+    }
+  },
+  "1102475259-user": {
+    "type": "string",
+    "data": {
+      "purchasing": {
+        "type": "group",
+        "year": "2025",
+        "month": "08",
+        "userId": 1102475259,
+        "isOld": false
+      },
+      "results": []
+    }
+  },
+  "127273718-user": {
+    "type": "string",
+    "data": {
+      "purchasing": {
+        "type": "group",
+        "year": "2024",
+        "month": "12",
+        "userId": 127273718,
+        "isOld": false
+      }
+    }
+  },
+  "933823562-user": {
+    "type": "string",
+    "data": {
+      "purchasing": {
+        "type": "group",
+        "year": "2025",
+        "month": "08",
+        "userId": 933823562,
+        "isOld": false
+      }
+    }
+  },
+  "267852186-user": {
+    "type": "string",
+    "data": {
+      "purchasing": {
+        "type": "group",
+        "year": "2025",
+        "month": "07",
+        "userId": 267852186,
+        "isOld": true
+      }
+    }
+  },
+  "1030834944-user": {
+    "type": "string",
+    "data": {
+      "purchasing": {
+        "type": "group",
+        "year": "2025",
+        "month": "08",
+        "userId": 1030834944,
+        "isOld": false
+      }
+    }
+  },
+  "950320031-user": {
+    "type": "string",
+    "data": {
+      "purchasing": {
+        "type": "group",
+        "year": "2025",
+        "month": "08",
+        "userId": 950320031,
+        "isOld": false
+      }
+    }
+  },
+  "813810627-user": {
+    "type": "string",
+    "data": {
+      "purchasing": {
+        "type": "group",
+        "year": "2025",
+        "month": "07",
+        "userId": 813810627,
+        "isOld": true
+      }
+    }
+  },
+  "193025665-user": {
+    "type": "string",
+    "data": {
+      "purchasing": {
+        "type": "group",
+        "year": "2025",
+        "month": "05",
+        "userId": 193025665,
+        "isOld": false
+      }
+    }
+  },
+  "104866555-user": {
+    "type": "string",
+    "data": {
+      "purchasing": {
+        "type": "group",
+        "year": "2025",
+        "month": "09",
+        "userId": 104866555,
+        "isOld": true
+      },
+      "results": [
+        131
+      ]
+    }
+  },
+  "475503977-user": {
+    "type": "string",
+    "data": {
+      "purchasing": {
+        "type": "group",
+        "year": "2025",
+        "month": "08",
+        "userId": 475503977,
+        "isOld": false
+      },
+      "results": []
+    }
+  },
+  "669148193-user": {
+    "type": "string",
+    "data": {
+      "purchasing": {
+        "type": "group",
+        "year": "2025",
+        "month": "08",
+        "userId": 669148193,
+        "isOld": false
+      }
+    }
+  },
+  "1339947231-user": {
+    "type": "string",
+    "data": {
+      "purchasing": {
+        "type": "group",
+        "year": "2025",
+        "month": "08",
+        "userId": 1339947231,
+        "isOld": false
+      },
+      "results": []
+    }
+  },
+  "401733995-user": {
+    "type": "string",
+    "data": {
+      "purchasing": {
+        "type": "group",
+        "year": "2025",
+        "month": "08",
+        "userId": 401733995,
+        "isOld": false
+      },
+      "results": []
+    }
+  },
+  "84978786-user": {
+    "type": "string",
+    "data": {
+      "purchasing": {
+        "type": "group",
+        "year": "2025",
+        "month": "08",
+        "userId": 84978786,
+        "isOld": false
+      },
+      "results": []
+    }
+  },
+  "734472773-user": {
+    "type": "string",
+    "data": {
+      "purchasing": {
+        "type": "group",
+        "year": "2025",
+        "month": "08",
+        "userId": 734472773,
+        "isOld": false
+      },
+      "results": [
+        124
+      ]
+    }
+  },
+  "5947625123-user": {
+    "type": "string",
+    "data": {
+      "results": [
+        73
+      ],
+      "purchasing": {
+        "type": "group",
+        "year": "2025",
+        "month": "02",
+        "userId": 5947625123,
+        "isOld": true
+      }
+    }
+  },
+  "417718935-user": {
+    "type": "string",
+    "data": {
+      "purchasing": {
+        "type": "group",
+        "year": "2025",
+        "month": "08",
+        "userId": 417718935,
+        "isOld": false
+      }
+    }
+  },
+  "5565596708-user": {
+    "type": "string",
+    "data": {
+      "purchasing": {
+        "type": "group",
+        "year": "2025",
+        "month": "08",
+        "userId": 5565596708,
+        "isOld": false
+      },
+      "results": []
+    }
+  }
+}
