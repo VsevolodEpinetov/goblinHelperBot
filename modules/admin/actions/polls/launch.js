@@ -3,6 +3,7 @@ const util = require('../../../util');
 const SETTINGS = require('../../../../settings.json');
 const { getSetting, getUser } = require('../../../db/helpers');
 const { hasPermission } = require('../../../rbac');
+const { getAllStudios, getStats } = require('../../../db/polls');
 
 module.exports = Composer.action('adminPollsStart', async (ctx) => {
   // Check permissions using new RBAC system
@@ -13,8 +14,10 @@ module.exports = Composer.action('adminPollsStart', async (ctx) => {
   }
   // Get polls chat settings from PostgreSQL
   const pollsChat = await getSetting('chats.polls');
+  const stats = await getStats();
+  
   if (!pollsChat) {
-    await ctx.editMessageText(`❌ Не смог запустить голосование - нет чата.\n\nСтудий в ядре: ${ctx.polls.core.length}\nДобавленных студий: ${ctx.polls.studios.length}`, {
+    await ctx.editMessageText(`❌ Не смог запустить голосование - нет чата.\n\nСтудий в ядре: ${stats.coreStudios}\nДобавленных студий: ${stats.dynamicStudios}`, {
       parse_mode: 'HTML',
       ...Markup.inlineKeyboard([
         [
@@ -33,8 +36,8 @@ module.exports = Composer.action('adminPollsStart', async (ctx) => {
     return;
   }
 
-  const studios = ctx.polls.core.concat(ctx.polls.studios);
-  studios.sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()));
+  // Get all studios from database
+  const studios = await getAllStudios();
   const maxOptionsPerPoll = 9;
   let options = [[]];
 
@@ -70,7 +73,7 @@ module.exports = Composer.action('adminPollsStart', async (ctx) => {
     }
   }
 
-  await ctx.editMessageText(`✅ Голосование запущено\n\nСтудий в ядре: ${ctx.polls.core.length}\nДобавленных студий: ${ctx.polls.studios.length}`, {
+  await ctx.editMessageText(`✅ Голосование запущено\n\nСтудий в ядре: ${stats.coreStudios}\nДобавленных студий: ${stats.dynamicStudios}`, {
     parse_mode: 'HTML',
     ...Markup.inlineKeyboard([
       [

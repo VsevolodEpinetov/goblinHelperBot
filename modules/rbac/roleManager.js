@@ -158,7 +158,7 @@ async function getAdminUsers() {
  */
 async function getPollsAdminUsers() {
   try {
-    const pollsRoles = ['polls', 'admin', 'adminPlus', 'super'];
+    const pollsRoles = ['polls', 'adminPolls', 'admin', 'adminPlus', 'super'];
     const users = await knex('userRoles')
       .whereIn('role', pollsRoles)
       .select('userId');
@@ -257,6 +257,11 @@ function getRoleHierarchy() {
     polls: {
       level: 3,
       description: 'Polls administrator',
+      inherits: ['user']
+    },
+    adminPolls: {
+      level: 3,
+      description: 'Admin polls - can manage polls with admin access',
       inherits: ['user']
     },
     protector: {

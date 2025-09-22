@@ -259,8 +259,21 @@ function hasPermission(userRoles, permission) {
 
   // Check if user has any role that grants this permission
   for (const role of userRoles) {
-    if (PERMISSIONS[role] && PERMISSIONS[role][permission]) {
-      return true;
+    if (PERMISSIONS[role]) {
+      // Check for exact permission match
+      if (PERMISSIONS[role][permission]) {
+        return true;
+      }
+      
+      // Check for wildcard permissions (e.g., 'admin:polls:*' matches 'admin:polls:create')
+      for (const rolePermission in PERMISSIONS[role]) {
+        if (PERMISSIONS[role][rolePermission] && rolePermission.endsWith(':*')) {
+          const wildcardPrefix = rolePermission.replace(':*', '');
+          if (permission.startsWith(wildcardPrefix + ':')) {
+            return true;
+          }
+        }
+      }
     }
   }
 

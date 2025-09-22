@@ -1,9 +1,9 @@
 const { Composer, Markup } = require("telegraf");
 const util = require('../../../util');
 const SETTINGS = require('../../../../settings.json');
-const STUDIOS = require('../../../../studios.json');
 const { hasPermission } = require('../../../rbac');
 const { getUser } = require('../../../db/helpers');
+const { clearDynamicStudios } = require('../../../db/polls');
 
 module.exports = Composer.action('adminPollsStudiosReset', async (ctx) => {
   // Check permissions using new RBAC system
@@ -12,8 +12,9 @@ module.exports = Composer.action('adminPollsStudiosReset', async (ctx) => {
     await ctx.answerCbQuery('❌ У вас нет прав для сброса добавленных студий');
     return;
   }
-  ctx.polls.studios = [];
-  await ctx.editMessageText(`✅ <i>Все добавленные студии были <b>сброшены</b></i>\n\n<u>Добавленные студии:</u>\n${ctx.polls.studios.join('\n')}`, {
+  // Clear dynamic studios from database
+  await clearDynamicStudios();
+  await ctx.editMessageText(`✅ <i>Все добавленные студии были <b>сброшены</b></i>\n\n<u>Добавленные студии:</u>\n(пусто)`, {
     parse_mode: 'HTML',
     ...Markup.inlineKeyboard([
       [

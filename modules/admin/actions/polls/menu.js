@@ -3,6 +3,7 @@ const util = require('../../../util');
 const SETTINGS = require('../../../../settings.json');
 const { hasPermission } = require('../../../rbac');
 const { getUser } = require('../../../db/helpers');
+const { getStats } = require('../../../db/polls');
 
 module.exports = Composer.action('adminPolls', async (ctx) => {
   // Check permissions using new RBAC system
@@ -12,12 +13,13 @@ module.exports = Composer.action('adminPolls', async (ctx) => {
     return;
   }
 
-  if (!ctx.polls.studios) ctx.polls.studios = [];
-  if (!ctx.polls.core) ctx.polls.core = [];
   const userId = ctx.callbackQuery.from.id;
+  
+  // Get statistics from database
+  const stats = await getStats();
 
   if (!ctx.callbackQuery.message.photo) {
-    await ctx.editMessageText(`📊 <b>Меню работы с голосованиями</b> 📊\n\nСтудий в ядре: ${ctx.polls.core.length}\nДобавленных студий: ${ctx.polls.studios.length}`, {
+    await ctx.editMessageText(`📊 <b>Меню работы с голосованиями</b> 📊\n\nСтудий в ядре: ${stats.coreStudios}\nДобавленных студий: ${stats.dynamicStudios}`, {
       parse_mode: 'HTML',
       ...Markup.inlineKeyboard([
         [
@@ -35,7 +37,7 @@ module.exports = Composer.action('adminPolls', async (ctx) => {
     })
   } else {
     await ctx.deleteMessage();
-    await ctx.replyWithHTML(`📊 <b>Меню работы с голосованиями</b> 📊\n\nСтудий в ядре: ${ctx.polls.core.length}\nДобавленных студий: ${ctx.polls.studios.length}`, {
+    await ctx.replyWithHTML(`📊 <b>Меню работы с голосованиями</b> 📊\n\nСтудий в ядре: ${stats.coreStudios}\nДобавленных студий: ${stats.dynamicStudios}`, {
       parse_mode: 'HTML',
       ...Markup.inlineKeyboard([
         [

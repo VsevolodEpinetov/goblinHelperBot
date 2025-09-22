@@ -15,11 +15,11 @@ async function addAdminRole() {
   if (!userId) {
     console.log('❌ Usage: node scripts/add_admin_role.js <userId> [role]');
     console.log('📝 Example: node scripts/add_admin_role.js 91430770 super');
-    console.log('\nAvailable roles: user, goblin, polls, admin, adminPlus, super');
+    console.log('\nAvailable roles: user, goblin, polls, adminPolls, admin, adminPlus, super');
     process.exit(1);
   }
   
-  const validRoles = ['user', 'goblin', 'polls', 'admin', 'adminPlus', 'super'];
+  const validRoles = ['user', 'goblin', 'polls', 'adminPolls', 'admin', 'adminPlus', 'super'];
   if (!validRoles.includes(role)) {
     console.log(`❌ Invalid role: ${role}`);
     console.log(`Valid roles: ${validRoles.join(', ')}`);

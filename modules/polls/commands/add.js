@@ -3,6 +3,7 @@ const SETTINGS = require('../../../settings.json')
 const util = require('../../util')
 const { hasPermission } = require('../../rbac')
 const { getUser } = require('../../db/helpers')
+const knex = require('../../db/knex')
 
 module.exports = Composer.command('add', async (ctx) => {
   util.log(ctx)
@@ -36,13 +37,30 @@ module.exports = Composer.command('add', async (ctx) => {
     studio[type] = value;
   });
   
-  let copy = ctx.globalSession.studios.slice();
-  copy.push(studio);
-  copy.sort((a, b) => a.name.localeCompare(b.name));
-  ctx.globalSession.studios = copy;
+  try {
+    // Add studio to core studios table
+    await knex('polls_core_studios').insert({
+      name: studio.name,
+      price: studio.price,
+      is_active: true
+    });
 
-  const addedMessage = await ctx.reply(`Added ${studio.name} and sorted`);
-  setTimeout(async () => {
-    await ctx.deleteMessage(addedMessage.message_id);
-  }, 5000);
+    const addedMessage = await ctx.reply(`Added ${studio.name} to core studios`);
+    setTimeout(async () => {
+      await ctx.deleteMessage(addedMessage.message_id);
+    }, 5000);
+  } catch (error) {
+    if (error.code === '23505') { // Unique constraint violation
+      const errorMessage = await ctx.reply(`Studio ${studio.name} already exists in core studios`);
+      setTimeout(async () => {
+        await ctx.deleteMessage(errorMessage.message_id);
+      }, 5000);
+    } else {
+      console.error('Error adding studio to core:', error);
+      const errorMessage = await ctx.reply(`Error adding studio: ${error.message}`);
+      setTimeout(async () => {
+        await ctx.deleteMessage(errorMessage.message_id);
+      }, 5000);
+    }
+  }
 })

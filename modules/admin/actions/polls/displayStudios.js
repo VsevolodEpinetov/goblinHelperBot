@@ -3,6 +3,7 @@ const util = require('../../../util');
 const SETTINGS = require('../../../../settings.json');
 const { hasPermission } = require('../../../rbac');
 const { getUser } = require('../../../db/helpers');
+const { getDynamicStudios } = require('../../../db/polls');
 
 module.exports = Composer.action('adminPollsStudios', async (ctx) => {
   // Check permissions using new RBAC system
@@ -11,7 +12,11 @@ module.exports = Composer.action('adminPollsStudios', async (ctx) => {
     await ctx.answerCbQuery('❌ У вас нет прав для управления добавленными студиями');
     return;
   }
-  await ctx.editMessageText(`📊➕ <b>Добавленные студии</b>\n\nВсе добавленные студии:\n${ctx.polls.studios.join('\n')}`, {
+  // Get dynamic studios from database
+  const dynamicStudios = await getDynamicStudios();
+  const studioNames = dynamicStudios.map(s => s.name);
+  
+  await ctx.editMessageText(`📊➕ <b>Добавленные студии</b>\n\nВсе добавленные студии:\n${studioNames.join('\n')}`, {
     parse_mode: 'HTML',
     ...Markup.inlineKeyboard([
       [

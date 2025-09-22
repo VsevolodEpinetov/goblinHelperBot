@@ -61,7 +61,7 @@ bot.use(require('./modules/middleware/userTracker'));
 // 4. Modules (command and action handlers)
 // --------------------------------------------------------------------------
 
-// bot.use(require('./modules/polls'));
+bot.use(require('./modules/polls'));
 // bot.use(require('./modules/indexator-creator'));
 
 bot.use(require('./modules/common'));
