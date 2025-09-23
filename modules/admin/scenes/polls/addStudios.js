@@ -1,6 +1,6 @@
 const { Scenes, Markup } = require("telegraf");
 const SETTINGS = require('../../../../settings.json');
-const { getUserMenu, getUserDescription } = require("../../../util");
+const { getUserDescription } = require("../../../util");
 
 const addStudios = new Scenes.BaseScene('ADMIN_SCENE_ADD_POLLS_STUDIOS');
 

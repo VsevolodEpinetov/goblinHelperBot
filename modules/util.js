@@ -224,7 +224,7 @@ function getUserButtons (ctx, userData) {
   ]
 }
 
-function getUserMenu (userId) {
+function getAdminUserMenu (userId) {
   const buttons = [
     [
       Markup.button.callback(`Месяцы`, `showUserMonths_${userId}`),
@@ -439,8 +439,8 @@ module.exports = {
   isAdmin,
   getCommandParameter,
   isSuperUser,
-  getUserMenu,
   getUserDescription,
+  getAdminUserMenu,
   getUserScrolls,
   createStatusCard,
   createSmartMenu,
