@@ -5,7 +5,7 @@ const knex = require('../db/knex');
  * Handles promo file selection, cooldown management, and usage tracking
  */
 
-const COOLDOWN_HOURS = 48;
+const COOLDOWN_HOURS = 6;
 
 /**
  * Get a random promo file that the user hasn't used recently
