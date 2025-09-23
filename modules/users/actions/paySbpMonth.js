@@ -1,6 +1,7 @@
 const { Composer, Markup } = require("telegraf");
 const { getUser } = require('../../db/helpers');
 const { getUserSubscriptionStatus, getCurrentMonthPeriod } = require('../subscriptionHelpers');
+const { hasAchievement } = require('../../loyalty/achievementsService');
 const util = require('../../util');
 
 module.exports = Composer.action('paySbpMonth', async (ctx) => {
@@ -12,6 +13,23 @@ module.exports = Composer.action('paySbpMonth', async (ctx) => {
       await ctx.editMessageText(
         '❌ <b>Лицо не найдено в хрониках</b>\n\n' +
         'Твои следы растворились в тумане логова. Попробуй позже или позови старейшину.',
+        {
+          parse_mode: 'HTML',
+          ...Markup.inlineKeyboard([[Markup.button.callback('⬅️ Назад', 'refreshUserStatus')]])
+        }
+      );
+      return;
+    }
+
+    // SECURITY CHECK: Verify user has SBP payment achievement
+    const SBP_PAYMENT = 'sbp_payment';
+    const hasSbpPayment = await hasAchievement(Number(userData.id), SBP_PAYMENT);
+    
+    if (!hasSbpPayment) {
+      await ctx.editMessageText(
+        '🔒 <b>Доступ запрещён</b>\n\n' +
+        'Эта функция доступна только пользователям с особыми правами.\n' +
+        'Обратитесь к администратору для получения доступа.',
         {
           parse_mode: 'HTML',
           ...Markup.inlineKeyboard([[Markup.button.callback('⬅️ Назад', 'refreshUserStatus')]])

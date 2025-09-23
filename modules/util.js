@@ -100,7 +100,7 @@ function createSmartMenu(ctx, userData) {
   let primaryActions = [];
   
   if (!hasCurrentMonth) {
-    primaryActions.push(['💳 Оплатить текущий месяц', 'sendPayment_currentMonth']);
+    primaryActions.push(['💳 Оплатить текущий месяц', 'payCurrentMonth']);
   } else if (!hasPlus) {
     primaryActions.push(['⭐ Добавить ➕ к месяцу', 'addPlusToCurrentMonth']);
   }
@@ -204,7 +204,7 @@ function getUserButtons (ctx, userData) {
   let notPurchasedPart = [];
   if (!purchasedCurrent) {
     notPurchasedPart = [
-      Markup.button.callback('👉 Оплатить текущий месяц 👈', `sendPayment_currentMonth`)
+      Markup.button.callback('👉 Оплатить текущий месяц 👈', `payCurrentMonth`)
     ]
   }
 

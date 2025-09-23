@@ -10,14 +10,11 @@ module.exports = Composer.action(/^sendPayment/g, async (ctx) => {
     return;
   }
   if (ctx.callbackQuery.data.indexOf('currentMonth') > -1) {
-    const currentPeriod = util.getCurrentPeriod(ctx);
-    ctx.userSession.purchasing = {
-      type: 'group',
-      year: currentPeriod.year,
-      month: currentPeriod.month,
-      userId: ctx.callbackQuery.from.id,
-      isOld: false
-    }
+    // Redirect to the new secure payment flow instead of old scene
+    const { Composer } = require('telegraf');
+    const payCurrentMonthAction = require('../payCurrentMonth');
+    return payCurrentMonthAction(ctx);
   }
+  // For other payment types, use the old scene (kickstarters, etc.)
   ctx.scene.enter('SEND_PAYMENT');
 });

@@ -1,11 +1,31 @@
 const { Scenes, Markup } = require("telegraf");
 const SETTINGS = require('../../../settings.json')
 const { getUser } = require('../../db/helpers');
+const { hasAchievement } = require('../../loyalty/achievementsService');
 const util = require('../../util');
 
 const sceneSbpPayment = new Scenes.BaseScene('SBP_PAYMENT');
 
 sceneSbpPayment.enter(async (ctx) => {
+  // SECURITY CHECK: Verify user has SBP payment achievement before showing sensitive data
+  const SBP_PAYMENT = 'sbp_payment';
+  const hasSbpPayment = await hasAchievement(Number(ctx.from.id), SBP_PAYMENT);
+  
+  if (!hasSbpPayment) {
+    await ctx.replyWithHTML(
+      '🔒 <b>Доступ запрещён</b>\n\n' +
+      'Эта функция доступна только пользователям с особыми правами.\n' +
+      'Обратитесь к администратору для получения доступа.',
+      {
+        ...Markup.inlineKeyboard([
+          Markup.button.callback('⬅️ Назад', 'refreshUserStatus')
+        ])
+      }
+    );
+    ctx.scene.leave();
+    return;
+  }
+
   const message = 
     `🏦 <b>Оплата через СБП</b>\n\n` +
     `Гоблины принимают золото и людскими путями.\n` +

@@ -36,7 +36,7 @@ module.exports = Composer.action('userMonths', async (ctx) => {
   const monthsKeyboard = [];
   
   // Primary actions based on current status
-  if (!hasCurrentMonth) monthsKeyboard.push([Markup.button.callback(t('messages.months.payNow'), 'sendPayment_currentMonth')]);
+  if (!hasCurrentMonth) monthsKeyboard.push([Markup.button.callback(t('messages.months.payNow'), 'payCurrentMonth')]);
   else if (!hasCurrentPlus) monthsKeyboard.push([Markup.button.callback(t('messages.months.addPlus'), 'addPlusToCurrentMonth')]);
   
   // Standard actions

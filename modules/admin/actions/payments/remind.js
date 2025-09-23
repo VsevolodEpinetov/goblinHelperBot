@@ -51,7 +51,7 @@ async function sendReminders(ctx, level) {
         await ctx.telegram.sendMessage(userData.id, message.text, {
           parse_mode: 'HTML',
           ...Markup.inlineKeyboard([
-            Markup.button.callback(message.button, `sendPayment_currentMonth`)
+            Markup.button.callback(message.button, `payCurrentMonth`)
           ])
         });
         usernames.push(userData.username !== 'not_set' ? userData.username : `${userData.first_name} ${userData.last_name}`);
