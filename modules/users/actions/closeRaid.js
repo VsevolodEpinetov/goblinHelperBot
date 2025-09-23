@@ -65,7 +65,9 @@ module.exports = Composer.action(/^closeRaid_(\d+)$/, async (ctx) => {
     
     // Go back to raid management
     ctx.match = [`manageRaid_${raidId}`, raidId];
-    return require('./manageRaid')(ctx);
+    // Trigger the manageRaid action by simulating the callback query
+    const manageRaidAction = require('./manageRaid');
+    return manageRaidAction.middleware()(ctx, () => {});
 
   } catch (error) {
     console.error('Error in closeRaid:', error);

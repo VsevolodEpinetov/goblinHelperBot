@@ -69,7 +69,9 @@ module.exports = Composer.action(/^excludeParticipant_(\d+)_(\d+)$/, async (ctx)
     
     // Go back to participant management
     ctx.match = [`raidParticipants_${raidId}`, raidId];
-    return require('./raidParticipants')(ctx);
+    // Trigger the raidParticipants action by simulating the callback query
+    const raidParticipantsAction = require('./raidParticipants');
+    return raidParticipantsAction.middleware()(ctx, () => {});
 
   } catch (error) {
     console.error('Error in excludeParticipant:', error);
