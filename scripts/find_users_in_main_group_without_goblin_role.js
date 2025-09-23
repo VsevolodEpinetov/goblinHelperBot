@@ -25,16 +25,14 @@ async function findUsersInMainGroupWithoutGoblinRole() {
         'users.id',
         'users.username',
         'users.firstName',
-        'users.lastName',
-        knex.raw('ARRAY_AGG(DISTINCT userRoles.role) as current_roles'),
-        knex.raw('ARRAY_AGG(DISTINCT userGroups.period) as group_periods')
+        'users.lastName'
       )
       .leftJoin('userRoles', 'users.id', 'userRoles.userId')
       .leftJoin('userGroups', 'users.id', 'userGroups.userId')
       .whereNotExists(function() {
         this.select('*')
           .from('userRoles as ur')
-          .whereRaw('ur.userId = users.id')
+          .whereRaw('ur."userId" = users.id')
           .andWhere('ur.role', 'goblin');
       })
       .groupBy('users.id', 'users.username', 'users.firstName', 'users.lastName')
@@ -105,8 +103,7 @@ async function findUsersInMainGroupWithoutGoblinRole() {
         'users.username',
         'users.firstName',
         'users.lastName',
-        knex.raw('ARRAY_AGG(DISTINCT userGroups.period) as paid_periods'),
-        knex.raw('ARRAY_AGG(DISTINCT userRoles.role) as current_roles')
+        knex.raw('ARRAY_AGG(DISTINCT userGroups.period) as paid_periods')
       )
       .leftJoin('userGroups', 'users.id', 'userGroups.userId')
       .leftJoin('userRoles', 'users.id', 'userRoles.userId')
@@ -114,7 +111,7 @@ async function findUsersInMainGroupWithoutGoblinRole() {
       .whereNotExists(function() {
         this.select('*')
           .from('userRoles as ur')
-          .whereRaw('ur.userId = users.id')
+          .whereRaw('ur."userId" = users.id')
           .andWhere('ur.role', 'goblin');
       })
       .groupBy('users.id', 'users.username', 'users.firstName', 'users.lastName')
@@ -134,8 +131,7 @@ async function findUsersInMainGroupWithoutGoblinRole() {
         const displayName = `${firstName} ${lastName}`.trim() || username;
         
         console.log(`${index + 1}. ID: ${user.id} | @${username} | ${displayName}`);
-        console.log(`   Status: ${user.telegramStatus} | Roles: ${user.current_roles.filter(r => r).join(', ') || 'none'}`);
-        console.log(`   Group periods: ${user.group_periods.filter(p => p).join(', ') || 'none'}`);
+        console.log(`   Status: ${user.telegramStatus}`);
         console.log('');
       });
     }
@@ -152,7 +148,6 @@ async function findUsersInMainGroupWithoutGoblinRole() {
         const displayName = `${firstName} ${lastName}`.trim() || username;
         
         console.log(`${index + 1}. ID: ${user.id} | @${username} | ${displayName}`);
-        console.log(`   Roles: ${user.current_roles.filter(r => r).join(', ') || 'none'}`);
         console.log(`   Paid periods: ${user.paid_periods.filter(p => p).join(', ')}`);
         console.log('');
       });
