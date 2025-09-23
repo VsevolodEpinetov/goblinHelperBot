@@ -165,9 +165,16 @@ bot.command('ex', ctx => {
 
 // Extract polls core data command
 bot.command('extract_polls_core', ctx => {
+  console.log('EXTRACT_POLLS_CORE COMMAND TRIGGERED');
+  console.log('User ID:', ctx.message.from.id);
+  console.log('Expected IDs:', SETTINGS.CHATS.EPINETOV, SETTINGS.CHATS.GLAVGOBLIN);
+  
   if (ctx.message.from.id != SETTINGS.CHATS.EPINETOV && ctx.message.from.id != SETTINGS.CHATS.GLAVGOBLIN) {
+    console.log('PERMISSION DENIED');
     return;
   }
+  
+  console.log('PERMISSION GRANTED');
   ctx.deleteMessage();
   console.log('CURRENT CTX.POLLS.CORE DATA:', JSON.stringify(ctx.polls.core, null, 2));
   ctx.reply('Polls core data logged to console. Check server logs.');
