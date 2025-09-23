@@ -18,31 +18,24 @@ module.exports = Composer.command('add', async (ctx) => {
 
   const data = JSON.stringify(messageText).replaceAll('"', '').split('\\n');
   let studio = {
-    name: "dummy",
-    price: 0,
-    mainLink: "google.com",
-    bought: false
+    name: "dummy"
   }
 
   data.forEach((el) => {
-    let type = 'name';
     let value = el.trim(); // Удаляем лишние пробелы
     if (el.indexOf('http') === 0) {
-      type = 'mainLink';
+      // Skip links for now
     } else if (el.indexOf('$') === 0 || el.indexOf('€') === 0) {
-      type = 'price';
-      value = el.replaceAll('$', '').replaceAll('€', '');
-      value = parseInt(value);
+      // Skip prices for now
+    } else {
+      studio.name = value;
     }
-    studio[type] = value;
   });
   
   try {
     // Add studio to core studios table
     await knex('polls_core_studios').insert({
-      name: studio.name,
-      price: studio.price,
-      is_active: true
+      name: studio.name
     });
 
     const addedMessage = await ctx.reply(`Added ${studio.name} to core studios`);

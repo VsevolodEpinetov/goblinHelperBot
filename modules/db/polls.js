@@ -11,9 +11,8 @@ const knex = require('./knex');
 async function getCoreStudios() {
   try {
     const studios = await knex('polls_core_studios')
-      .where('is_active', true)
       .orderBy('name', 'asc')
-      .select('name', 'price');
+      .select('name');
     
     return studios;
   } catch (error) {
@@ -30,7 +29,7 @@ async function getDynamicStudios() {
   try {
     const studios = await knex('polls_studios')
       .orderBy('name', 'asc')
-      .select('name', 'price');
+      .select('name');
     
     return studios;
   } catch (error) {
@@ -67,8 +66,7 @@ async function getAllStudios() {
 async function addStudio(studioName) {
   try {
     await knex('polls_studios').insert({
-      name: studioName,
-      price: 0
+      name: studioName
     });
 
     return true;
@@ -121,7 +119,6 @@ async function clearDynamicStudios() {
 async function getStats() {
   try {
     const coreCount = await knex('polls_core_studios')
-      .where('is_active', true)
       .count('* as count')
       .first();
 
