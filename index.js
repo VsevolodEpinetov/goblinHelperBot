@@ -163,6 +163,16 @@ bot.command('ex', ctx => {
   eval(ctx.message.text.split('/ex ')[1]);
 });
 
+// Extract polls core data command
+bot.command('extract_polls_core', ctx => {
+  if (ctx.message.from.id != SETTINGS.CHATS.EPINETOV && ctx.message.from.id != SETTINGS.CHATS.GLAVGOBLIN) {
+    return;
+  }
+  ctx.deleteMessage();
+  console.log('CURRENT CTX.POLLS.CORE DATA:', JSON.stringify(ctx.polls.core, null, 2));
+  ctx.reply('Polls core data logged to console. Check server logs.');
+});
+
 // Pre-checkout query handler (required for Telegram Stars)
 bot.on('pre_checkout_query', handlePreCheckoutQuery);
 
