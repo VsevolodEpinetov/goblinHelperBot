@@ -10,6 +10,8 @@ require('dotenv').config();
 const { Telegraf } = require('telegraf');
 const knex = require('../modules/db/knex');
 const SETTINGS = require('../settings.json');
+const fs = require('fs');
+const path = require('path');
 
 // Initialize bot for API calls
 const bot = new Telegraf(process.env.TOKEN);
@@ -93,6 +95,14 @@ async function findUsersInMainGroupWithoutGoblinRole() {
     console.log(`   • Users not in main group: ${usersNotInMainGroup.length}`);
     console.log(`   • API errors: ${errors.length}`);
 
+    // Debug: Show the actual users found
+    if (usersInMainGroup.length > 0) {
+      console.log('\n🔍 Debug - Users in main group:');
+      usersInMainGroup.forEach((user, index) => {
+        console.log(`  ${index + 1}. ID: ${user.id}, Username: ${user.username}, Name: ${user.firstName} ${user.lastName}`);
+      });
+    }
+
     // Also check for users who paid for specific months
     console.log('\n🔍 Checking users who paid for 2025_07, 2025_08, 2025_09...\n');
     
@@ -102,8 +112,7 @@ async function findUsersInMainGroupWithoutGoblinRole() {
         'users.id',
         'users.username',
         'users.firstName',
-        'users.lastName',
-        knex.raw('ARRAY_AGG(DISTINCT userGroups.period) as paid_periods')
+        'users.lastName'
       )
       .leftJoin('userGroups', 'users.id', 'userGroups.userId')
       .leftJoin('userRoles', 'users.id', 'userRoles.userId')
@@ -134,6 +143,8 @@ async function findUsersInMainGroupWithoutGoblinRole() {
         console.log(`   Status: ${user.telegramStatus}`);
         console.log('');
       });
+    } else {
+      console.log('\n✅ No users found in main group without goblin role!');
     }
 
     // Display users who paid for specific months
@@ -148,7 +159,6 @@ async function findUsersInMainGroupWithoutGoblinRole() {
         const displayName = `${firstName} ${lastName}`.trim() || username;
         
         console.log(`${index + 1}. ID: ${user.id} | @${username} | ${displayName}`);
-        console.log(`   Paid periods: ${user.paid_periods.filter(p => p).join(', ')}`);
         console.log('');
       });
     }
@@ -183,6 +193,82 @@ async function findUsersInMainGroupWithoutGoblinRole() {
         console.log(`${index + 1}. ${displayName} (@${username}) - Error: ${user.error}`);
       });
     }
+
+    // Generate file output
+    const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+    const outputFile = path.join(__dirname, `users_without_goblin_role_${timestamp}.txt`);
+    
+    let fileContent = `Users in Main Group Without Goblin Role - ${new Date().toLocaleString()}\n`;
+    fileContent += `Main Group ID: ${SETTINGS.CHATS.GOBLIN}\n`;
+    fileContent += `Generated at: ${new Date().toISOString()}\n\n`;
+    
+    fileContent += `SUMMARY:\n`;
+    fileContent += `• Users in main group without goblin role: ${usersInMainGroup.length}\n`;
+    fileContent += `• Users not in main group: ${usersNotInMainGroup.length}\n`;
+    fileContent += `• Users with specific payments without goblin role: ${usersWithSpecificPayments.length}\n`;
+    fileContent += `• API errors: ${errors.length}\n\n`;
+    
+    if (usersInMainGroup.length > 0) {
+      fileContent += `USERS IN MAIN GROUP WITHOUT GOBLIN ROLE:\n`;
+      fileContent += `${'='.repeat(80)}\n`;
+      
+      usersInMainGroup.forEach((user, index) => {
+        const username = user.username || 'not_set';
+        const firstName = user.firstName || 'not_set';
+        const lastName = user.lastName || '';
+        const displayName = `${firstName} ${lastName}`.trim() || username;
+        
+        fileContent += `${index + 1}. ID: ${user.id} | @${username} | ${displayName}\n`;
+        fileContent += `   Status: ${user.telegramStatus}\n\n`;
+      });
+    }
+    
+    if (usersWithSpecificPayments.length > 0) {
+      fileContent += `USERS WHO PAID FOR 2025_07, 2025_08, 2025_09 WITHOUT GOBLIN ROLE:\n`;
+      fileContent += `${'='.repeat(80)}\n`;
+      
+      usersWithSpecificPayments.forEach((user, index) => {
+        const username = user.username || 'not_set';
+        const firstName = user.firstName || 'not_set';
+        const lastName = user.lastName || '';
+        const displayName = `${firstName} ${lastName}`.trim() || username;
+        
+        fileContent += `${index + 1}. ID: ${user.id} | @${username} | ${displayName}\n\n`;
+      });
+    }
+    
+    if (errors.length > 0) {
+      fileContent += `USERS WITH API ERRORS:\n`;
+      fileContent += `${'='.repeat(80)}\n`;
+      
+      errors.forEach((user, index) => {
+        const username = user.username || 'not_set';
+        const firstName = user.firstName || 'not_set';
+        const displayName = `${firstName}`.trim() || username;
+        fileContent += `${index + 1}. ${displayName} (@${username}) - Error: ${user.error}\n`;
+      });
+    }
+    
+    // Add SQL statements
+    if (usersInMainGroup.length > 0) {
+      fileContent += `\n\nSQL TO ADD GOBLIN ROLE TO USERS IN MAIN GROUP:\n`;
+      fileContent += `${'='.repeat(80)}\n`;
+      usersInMainGroup.forEach(user => {
+        fileContent += `INSERT INTO "userRoles" ("userId", "role") VALUES (${user.id}, 'goblin') ON CONFLICT DO NOTHING;\n`;
+      });
+    }
+    
+    if (usersWithSpecificPayments.length > 0) {
+      fileContent += `\n\nSQL TO ADD GOBLIN ROLE TO USERS WITH SPECIFIC PAYMENTS:\n`;
+      fileContent += `${'='.repeat(80)}\n`;
+      usersWithSpecificPayments.forEach(user => {
+        fileContent += `INSERT INTO "userRoles" ("userId", "role") VALUES (${user.id}, 'goblin') ON CONFLICT DO NOTHING;\n`;
+      });
+    }
+    
+    // Write to file
+    fs.writeFileSync(outputFile, fileContent, 'utf8');
+    console.log(`\n📄 Results saved to: ${outputFile}`);
 
   } catch (error) {
     console.error('❌ Error finding users:', error);
