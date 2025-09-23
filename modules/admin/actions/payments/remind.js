@@ -66,7 +66,32 @@ async function sendReminders(ctx, level) {
   return { counter, failed, usernames, failedUsernames };
 }
 
-module.exports = Composer.action(/^adminRemind_/, async (ctx) => {
+const remindComposer = new Composer();
+
+remindComposer.action('adminRemind', async (ctx) => {
+  const userId = ctx.callbackQuery.from.id;
+
+  if (userId != SETTINGS.CHATS.EPINETOV && userId != SETTINGS.CHATS.GLAVGOBLIN) {
+    return;
+  }
+
+  // Show level selection
+  await ctx.editMessageText('🔔 <b>Выберите уровень напоминания</b>\n\nВыберите, насколько настойчиво напомнить гоблинам о необходимости оплаты:', {
+    parse_mode: 'HTML',
+    ...Markup.inlineKeyboard([
+      [
+        Markup.button.callback('🔔 Мягкое', 'adminRemind_soft'),
+        Markup.button.callback('⚔️ Среднее', 'adminRemind_medium'),
+        Markup.button.callback('💀 Жёсткое', 'adminRemind_hard')
+      ],
+      [
+        Markup.button.callback('← Назад', 'adminMonths'),
+      ]
+    ])
+  });
+});
+
+remindComposer.action(/^adminRemind_/, async (ctx) => {
   const userId = ctx.callbackQuery.from.id;
 
   if (userId != SETTINGS.CHATS.EPINETOV && userId != SETTINGS.CHATS.GLAVGOBLIN) {
@@ -106,3 +131,5 @@ module.exports = Composer.action(/^adminRemind_/, async (ctx) => {
     ])
   });
 });
+
+module.exports = remindComposer;

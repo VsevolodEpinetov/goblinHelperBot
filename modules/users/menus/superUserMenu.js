@@ -17,8 +17,7 @@ function getSuperUserMenu(ctx, userData) {
         Markup.button.callback('Управление голосованиями', 'adminPolls')
       ],
       [
-        Markup.button.callback('Платежи', 'adminPayments'),
-        Markup.button.callback('🔔 Напомнить', 'adminRemind')
+        Markup.button.callback('Платежи', 'adminPayments')
       ]
     ]
   };

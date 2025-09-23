@@ -2,7 +2,7 @@ const { Composer, Markup } = require("telegraf");
 const util = require('../../../util');
 const SETTINGS = require('../../../../settings.json');
 
-module.exports = Composer.action(/^adminMonths/g, async (ctx) => {
+module.exports = Composer.action(/^adminMonths_/, async (ctx) => {
   const userId = ctx.callbackQuery.from.id;
   const callbackData = ctx.callbackQuery.data;
 
@@ -82,9 +82,6 @@ module.exports = Composer.action(/^adminMonths/g, async (ctx) => {
           [
             Markup.button.callback('Ссылка на обычную', `adminAddLink_${year}_${month}`),
             Markup.button.callback('Ссылка на плюсовую', `adminAddLinkPlus_${year}_${month}`)
-          ],
-          [
-            Markup.button.callback('🔔 Напомнить', `adminRemindLevels`),
           ],
           [
             Markup.button.callback('←', `adminMonths_show_${year}`),

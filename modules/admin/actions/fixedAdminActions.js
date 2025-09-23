@@ -49,6 +49,7 @@ const adminMonthsAction = Composer.action(/^adminMonths$/g, async (ctx) => {
       keyboard.push(yearButtons.slice(i, i + 3));
     }
     
+    keyboard.push([Markup.button.callback('🔔 Напомнить', 'adminRemind')]);
     keyboard.push([Markup.button.callback('🔙 Назад', 'adminMenu')]);
     
     await ctx.editMessageText(message, {
