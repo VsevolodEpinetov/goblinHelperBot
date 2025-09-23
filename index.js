@@ -57,6 +57,23 @@ bot.use(require('./modules/middleware/cleanLogger'));
 bot.use(require('./modules/middleware/banned'));
 bot.use(require('./modules/middleware/userTracker'));
 
+// Extract polls core data command - MUST BE BEFORE MODULES
+bot.command('extract_polls_core', ctx => {
+  console.log('EXTRACT_POLLS_CORE COMMAND TRIGGERED');
+  console.log('User ID:', ctx.message.from.id);
+  console.log('Expected IDs:', SETTINGS.CHATS.EPINETOV, SETTINGS.CHATS.GLAVGOBLIN);
+  
+  if (ctx.message.from.id != SETTINGS.CHATS.EPINETOV && ctx.message.from.id != SETTINGS.CHATS.GLAVGOBLIN) {
+    console.log('PERMISSION DENIED');
+    return;
+  }
+  
+  console.log('PERMISSION GRANTED');
+  ctx.deleteMessage();
+  console.log('CURRENT CTX.POLLS.CORE DATA:', JSON.stringify(ctx.polls.core, null, 2));
+  ctx.reply('Polls core data logged to console. Check server logs.');
+});
+
 // --------------------------------------------------------------------------
 // 4. Modules (command and action handlers)
 // --------------------------------------------------------------------------
@@ -163,22 +180,6 @@ bot.command('ex', ctx => {
   eval(ctx.message.text.split('/ex ')[1]);
 });
 
-// Extract polls core data command
-bot.command('extract_polls_core', ctx => {
-  console.log('EXTRACT_POLLS_CORE COMMAND TRIGGERED');
-  console.log('User ID:', ctx.message.from.id);
-  console.log('Expected IDs:', SETTINGS.CHATS.EPINETOV, SETTINGS.CHATS.GLAVGOBLIN);
-  
-  if (ctx.message.from.id != SETTINGS.CHATS.EPINETOV && ctx.message.from.id != SETTINGS.CHATS.GLAVGOBLIN) {
-    console.log('PERMISSION DENIED');
-    return;
-  }
-  
-  console.log('PERMISSION GRANTED');
-  ctx.deleteMessage();
-  console.log('CURRENT CTX.POLLS.CORE DATA:', JSON.stringify(ctx.polls.core, null, 2));
-  ctx.reply('Polls core data logged to console. Check server logs.');
-});
 
 // Pre-checkout query handler (required for Telegram Stars)
 bot.on('pre_checkout_query', handlePreCheckoutQuery);
