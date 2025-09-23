@@ -3,6 +3,7 @@ const util = require('../../../util');
 const SETTINGS = require('../../../../settings.json');
 const { hasPermission } = require('../../../rbac');
 const { getUser } = require('../../../db/helpers');
+const { getCoreStudios } = require('../../../db/polls');
 
 module.exports = Composer.action('adminPollsCore', async (ctx) => {
   // Check permissions using new RBAC system
@@ -11,7 +12,11 @@ module.exports = Composer.action('adminPollsCore', async (ctx) => {
     await ctx.answerCbQuery('❌ У вас нет прав для управления ядром голосований');
     return;
   }
-  await ctx.editMessageText(`📊 <b>Ядро голосований</b>\n\nСтудии ядра:\n${ctx.polls.core.join('\n')}`, {
+  // Get core studios from database
+  const coreStudios = await getCoreStudios();
+  const coreStudioNames = coreStudios.map(s => s.name);
+  
+  await ctx.editMessageText(`📊 <b>Ядро голосований</b>\n\nСтудии ядра:\n${coreStudioNames.join('\n')}`, {
     parse_mode: 'HTML',
     ...Markup.inlineKeyboard([
       [

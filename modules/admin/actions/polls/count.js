@@ -1,9 +1,9 @@
 const { Composer, Markup } = require("telegraf");
 const util = require('../../../util');
 const SETTINGS = require('../../../../settings.json');
-const STUDIOS = require('../../../../studios.json');
 const { hasPermission } = require('../../../rbac');
 const { getUser } = require('../../../db/helpers');
+const { getCoreStudios, getDynamicStudios } = require('../../../db/polls');
 
 module.exports = Composer.action('adminPollsCount', async (ctx) => {
   // Check permissions using new RBAC system
@@ -12,9 +12,13 @@ module.exports = Composer.action('adminPollsCount', async (ctx) => {
     await ctx.answerCbQuery('❌ У вас нет прав для подсчета результатов голосований');
     return;
   }
-  ctx.polls.core = [];
-  STUDIOS.forEach(st => ctx.polls.core.push(st.name));
-  await ctx.editMessageText(`Ага, идея отличная, но я пока что хз, как реализовать. Поэтому пока что ручками:) /count на каждое сообщение\n\nСтудий в ядре: ${ctx.polls.core.length}\nДобавленных студий: ${ctx.polls.studios.length}`, {
+  // Get studios from database
+  const coreStudios = await getCoreStudios();
+  const dynamicStudios = await getDynamicStudios();
+  const coreStudioNames = coreStudios.map(s => s.name);
+  const dynamicStudioNames = dynamicStudios.map(s => s.name);
+  
+  await ctx.editMessageText(`Ага, идея отличная, но я пока что хз, как реализовать. Поэтому пока что ручками:) /count на каждое сообщение\n\nСтудий в ядре: ${coreStudioNames.length}\nДобавленных студий: ${dynamicStudioNames.length}`, {
     parse_mode: 'HTML',
     ...Markup.inlineKeyboard([
       [

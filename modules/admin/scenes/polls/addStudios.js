@@ -1,6 +1,7 @@
 const { Scenes, Markup } = require("telegraf");
 const SETTINGS = require('../../../../settings.json');
 const { getUserDescription } = require("../../../util");
+const { getDynamicStudios, addStudio, removeStudio } = require("../../../db/polls");
 
 const addStudios = new Scenes.BaseScene('ADMIN_SCENE_ADD_POLLS_STUDIOS');
 
@@ -17,8 +18,8 @@ addStudios.on('text', async (ctx) => {
 
   if (isRemoving) {
     studioName = ctx.message.text.split('-')[1];
-    if (ctx.polls.studios.indexOf(studioName) > -1) {
-      ctx.polls.studios = ctx.polls.studios.filter(st => st !== studioName);
+    const success = await removeStudio(studioName);
+    if (success) {
       message = `✅ <i>Студия <b>${studioName}</b> успешно удалена из добавленных</i>`
       await ctx.telegram.sendMessage(SETTINGS.CHATS.LOGS, `❌ ${ctx.message.from.id} REMOVED studio ${studioName} from added`)
     } else {
@@ -26,8 +27,8 @@ addStudios.on('text', async (ctx) => {
     }
   } else {
     studioName = ctx.message.text;
-    if (ctx.polls.studios.indexOf(studioName) < 0) {
-      ctx.polls.studios.push(studioName);
+    const success = await addStudio(studioName);
+    if (success) {
       message = `✅ <i>Студия <b>${studioName}</b> успешно добавлена в добавленные</i>`
       await ctx.telegram.sendMessage(SETTINGS.CHATS.LOGS, ` ${ctx.message.from.id} ADDED studio ${studioName} to added`)
     } else {
@@ -35,9 +36,13 @@ addStudios.on('text', async (ctx) => {
     }
   }
 
+  // Get updated dynamic studios from database
+  const dynamicStudios = await getDynamicStudios();
+  const dynamicStudioNames = dynamicStudios.map(s => s.name);
+
   await ctx.deleteMessage(ctx.message.message_id);
   await ctx.deleteMessage(ctx.session.toRemove);
-  ctx.replyWithHTML(message + ' ' + `\n\nДобавленные студии:\n${ctx.polls.studios.join('\n')}`, {
+  ctx.replyWithHTML(message + ' ' + `\n\nДобавленные студии:\n${dynamicStudioNames.join('\n')}`, {
     ...Markup.inlineKeyboard([
       [
         Markup.button.callback('+/-', 'adminPollsStudiosAdd'),

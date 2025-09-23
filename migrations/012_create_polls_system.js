@@ -5,7 +5,7 @@
  */
 
 exports.up = async function(knex) {
-  // Create polls_core_studios table (static core studios from studios.json)
+  // Create polls_core_studios table (core studios stored in database)
   await knex.schema.createTable('polls_core_studios', (table) => {
     table.increments('id').primary();
     table.string('name', 255).notNullable().unique();

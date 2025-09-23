@@ -99,6 +99,46 @@ async function removeStudio(studioName) {
 }
 
 /**
+ * Add a studio to core studios
+ * @param {string} studioName - Name of the studio to add
+ * @returns {Promise<boolean>} Success status
+ */
+async function addCoreStudio(studioName) {
+  try {
+    await knex('polls_core_studios').insert({
+      name: studioName
+    });
+
+    return true;
+  } catch (error) {
+    if (error.code === '23505') { // Unique constraint violation
+      console.log(`Core studio ${studioName} already exists`);
+      return false;
+    }
+    console.error('Error adding core studio:', error);
+    return false;
+  }
+}
+
+/**
+ * Remove a studio from core studios
+ * @param {string} studioName - Name of the studio to remove
+ * @returns {Promise<boolean>} Success status
+ */
+async function removeCoreStudio(studioName) {
+  try {
+    const deleted = await knex('polls_core_studios')
+      .where('name', studioName)
+      .del();
+
+    return deleted > 0;
+  } catch (error) {
+    console.error('Error removing core studio:', error);
+    return false;
+  }
+}
+
+/**
  * Clear all dynamic studios
  * @returns {Promise<boolean>} Success status
  */
@@ -143,6 +183,8 @@ module.exports = {
   getAllStudios,
   addStudio,
   removeStudio,
+  addCoreStudio,
+  removeCoreStudio,
   clearDynamicStudios,
   getStats
 };
