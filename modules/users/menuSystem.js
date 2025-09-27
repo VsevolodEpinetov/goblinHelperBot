@@ -72,16 +72,15 @@ async function checkMenuPermission(userId, userRoles, menuType, requiredAchievem
         return userRoles.includes('super') && hasPermission(userRoles, 'admin:super:roles:manage');
       
       case 'admin':
-        return (userRoles.includes('admin') || userRoles.includes('adminPlus') || userRoles.includes('adminPolls')) &&
-               hasPermission(userRoles, 'admin:users:view');
+        return (userRoles.includes('admin') || userRoles.includes('adminPlus') || userRoles.includes('adminPolls'));
       
       case 'goblin':
-        const hasGoblinRole = userRoles.includes('goblin') && hasPermission(userRoles, 'goblin:premium:access');
+        const hasGoblinRole = userRoles.includes('goblin');
         
         return hasGoblinRole;
       
       case 'protector':
-        return userRoles.includes('protector') && hasPermission(userRoles, 'admin:requests:view');
+        return userRoles.includes('protector');
       
       case 'departed':
         return userRoles.includes('departed');
