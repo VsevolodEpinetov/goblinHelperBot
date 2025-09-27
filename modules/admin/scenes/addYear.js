@@ -33,7 +33,7 @@ adminSceneAddYear.on('text', async (ctx) => {
       ...Markup.inlineKeyboard([
         menu,
         [
-          Markup.button.callback('←', `adminMenu`),
+          Markup.button.callback('←', `userMenu`),
           Markup.button.callback('+', `monthsAddYear`),
           Markup.button.callback('-', `monthsRemoveYear`),
         ]
@@ -52,7 +52,7 @@ adminSceneAddYear.on('text', async (ctx) => {
       ...Markup.inlineKeyboard([
         menu,
         [
-          Markup.button.callback('←', `adminMenu`),
+          Markup.button.callback('←', `userMenu`),
           Markup.button.callback('+', `monthsAddYear`),
           Markup.button.callback('-', `monthsRemoveYear`),
         ]

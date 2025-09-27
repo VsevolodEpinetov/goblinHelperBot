@@ -14,7 +14,7 @@ requestsScene.enter(async (ctx) => {
     {
       parse_mode: 'HTML',
       ...Markup.inlineKeyboard([
-        [Markup.button.callback('❌ Отмена', 'adminMenu')]
+        [Markup.button.callback('❌ Отмена', 'userMenu')]
       ])
     }
   ).then(nctx => {
@@ -42,7 +42,7 @@ requestsScene.on('text', async (ctx) => {
         {
           parse_mode: 'HTML',
           ...Markup.inlineKeyboard([
-            [Markup.button.callback('❌ Отмена', 'adminMenu')]
+            [Markup.button.callback('❌ Отмена', 'userMenu')]
           ])
         }
       );
@@ -80,7 +80,7 @@ requestsScene.on('text', async (ctx) => {
           {
             parse_mode: 'HTML',
             ...Markup.inlineKeyboard([
-              [Markup.button.callback('🔙 Назад', 'adminMenu')]
+              [Markup.button.callback('🔙 Назад', 'userMenu')]
             ])
           }
         );
@@ -195,7 +195,7 @@ requestsScene.on('text', async (ctx) => {
       {
         parse_mode: 'HTML',
         ...Markup.inlineKeyboard([
-          [Markup.button.callback('🔙 Назад', 'adminMenu')]
+          [Markup.button.callback('🔙 Назад', 'userMenu')]
         ])
       }
     );

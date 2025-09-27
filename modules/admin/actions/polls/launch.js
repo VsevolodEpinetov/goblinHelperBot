@@ -30,7 +30,7 @@ module.exports = Composer.action('adminPollsStart', async (ctx) => {
           Markup.button.callback('🔄 Посчитать', 'adminPollsCount')
         ],
         [
-          Markup.button.callback('←', 'adminMenu')
+          Markup.button.callback('←', 'userMenu')
         ]
       ])
     })
@@ -86,7 +86,7 @@ module.exports = Composer.action('adminPollsStart', async (ctx) => {
         Markup.button.callback('🔄 Посчитать', 'adminPollsCount')
       ],
       [
-        Markup.button.callback('←', 'adminMenu')
+        Markup.button.callback('←', 'userMenu')
       ]
     ])
   })

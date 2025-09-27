@@ -22,7 +22,7 @@ module.exports = Composer.action(/^createNewLink_(.+)_(.+)$/, async (ctx) => {
         {
           parse_mode: 'HTML',
           ...Markup.inlineKeyboard([
-            [Markup.button.callback('🔙 Назад', 'adminMenu')]
+            [Markup.button.callback('🔙 Назад', 'userMenu')]
           ])
         }
       );
@@ -46,7 +46,7 @@ module.exports = Composer.action(/^createNewLink_(.+)_(.+)$/, async (ctx) => {
     await ctx.editMessageText(successMessage, {
       parse_mode: 'HTML',
       ...Markup.inlineKeyboard([
-        [Markup.button.callback('🔙 Назад', 'adminMenu')]
+        [Markup.button.callback('🔙 Назад', 'userMenu')]
       ])
     });
     
@@ -58,7 +58,7 @@ module.exports = Composer.action(/^createNewLink_(.+)_(.+)$/, async (ctx) => {
       {
         parse_mode: 'HTML',
         ...Markup.inlineKeyboard([
-          [Markup.button.callback('🔙 Назад', 'adminMenu')]
+          [Markup.button.callback('🔙 Назад', 'userMenu')]
         ])
       }
     );

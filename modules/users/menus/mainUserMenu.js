@@ -99,7 +99,7 @@ async function getMainUserMenu(ctx, userData) {
   // Admin actions (if applicable)
   if (isAdmin) {
     keyboard.push([
-      Markup.button.callback('⚙️ Панель старейшин', 'adminMenu')
+      Markup.button.callback('⚙️ Панель старейшин', 'userMenu')
     ]);
   }
   

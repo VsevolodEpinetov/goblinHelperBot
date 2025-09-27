@@ -19,7 +19,7 @@ module.exports = Composer.action(/^adminParticipants/g, async (ctx) => {
           Markup.button.callback('🔗 Ссылки', 'adminInviteLinksMenu')
         ],
         [
-          Markup.button.callback('←', `adminMenu`)
+          Markup.button.callback('←', `userMenu`)
         ]
       ])
     }

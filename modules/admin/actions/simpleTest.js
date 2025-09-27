@@ -7,7 +7,7 @@ module.exports = Composer.action('adminMonths', async (ctx) => {
     await ctx.editMessageText('🧪 <b>Simple Test Action Works!</b>\n\nAdmin action system is functional.\n\nThe issue is in the original admin action code.', {
       parse_mode: 'HTML',
       ...Markup.inlineKeyboard([
-        [Markup.button.callback('🔙 Назад', 'adminMenu')]
+        [Markup.button.callback('🔙 Назад', 'userMenu')]
       ])
     });
     

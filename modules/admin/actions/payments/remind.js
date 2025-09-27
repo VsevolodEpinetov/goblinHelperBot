@@ -126,7 +126,7 @@ remindComposer.action(/^adminRemind_/, async (ctx) => {
         Markup.button.callback('← Месяцы', 'adminMonths')
       ],
       [
-        Markup.button.callback('🏠 Главное меню', 'adminMenu')
+        Markup.button.callback('🏠 Главное меню', 'userMenu')
       ]
     ])
   });

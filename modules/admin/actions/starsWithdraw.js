@@ -17,7 +17,7 @@ module.exports = Composer.action('adminStarsWithdraw', async (ctx) => {
     if (!adminUser || !adminUser.roles || !adminUser.roles.includes('super')) {
       logDenied(ctx.from.id, ctx.from.username, 'adminStarsWithdraw', 'insufficient permissions');
       await ctx.editMessageText('❌ Недостаточно прав для вывода звёзд', {
-        ...Markup.inlineKeyboard([[Markup.button.callback('🔙 Назад', 'adminMenu')]])
+        ...Markup.inlineKeyboard([[Markup.button.callback('🔙 Назад', 'userMenu')]])
       });
       return;
     }
@@ -67,7 +67,7 @@ module.exports = Composer.action('adminStarsWithdraw', async (ctx) => {
           Markup.button.callback('🔄 Обновить', 'adminStarsWithdraw')
         ],
         [
-          Markup.button.callback('🔙 Назад', 'adminMenu')
+          Markup.button.callback('🔙 Назад', 'userMenu')
         ]
       ])
     });
@@ -77,7 +77,7 @@ module.exports = Composer.action('adminStarsWithdraw', async (ctx) => {
     
     try {
       await ctx.editMessageText(`❌ Ошибка получения информации о выводе: ${error.message}`, {
-        ...Markup.inlineKeyboard([[Markup.button.callback('🔙 Назад', 'adminMenu')]])
+        ...Markup.inlineKeyboard([[Markup.button.callback('🔙 Назад', 'userMenu')]])
       });
     } catch (fallbackError) {
       console.error('❌ Withdrawal fallback failed:', fallbackError.message);

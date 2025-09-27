@@ -25,7 +25,7 @@ module.exports = Composer.action('removeRejected', async (ctx) => {
         Markup.button.callback('🗑', 'removeRejected')
       ],
       [
-        Markup.button.callback('←', `adminMenu`)
+        Markup.button.callback('←', `userMenu`)
       ]
     ])
   })

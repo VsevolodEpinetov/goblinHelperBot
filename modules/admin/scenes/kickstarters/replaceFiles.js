@@ -44,7 +44,7 @@ adminReplaceKickstarterFiles.leave(async (ctx) => {
         Markup.button.callback('✏️', 'adminEditKickstarter')
       ],
       [
-        Markup.button.callback('←', 'adminMenu')
+        Markup.button.callback('←', 'userMenu')
       ]
     ])
   })

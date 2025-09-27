@@ -32,7 +32,7 @@ module.exports = Composer.action('adminPendingApplications', async (ctx) => {
         {
           parse_mode: 'HTML',
           ...Markup.inlineKeyboard([
-            [Markup.button.callback('🔙 Назад', 'adminMenu')]
+            [Markup.button.callback('🔙 Назад', 'userMenu')]
           ])
         }
       );

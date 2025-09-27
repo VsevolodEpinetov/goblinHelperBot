@@ -15,7 +15,7 @@ module.exports = Composer.action('adminKickstarters', async (ctx) => {
           Markup.button.callback('✏️', 'adminEditKickstarter')
         ],
         [
-          Markup.button.callback('←', 'adminMenu')
+          Markup.button.callback('←', 'userMenu')
         ]
       ])
     })
@@ -29,7 +29,7 @@ module.exports = Composer.action('adminKickstarters', async (ctx) => {
           Markup.button.callback('✏️', 'adminEditKickstarter')
         ],
         [
-          Markup.button.callback('←', 'adminMenu')
+          Markup.button.callback('←', 'userMenu')
         ]
       ])
     })

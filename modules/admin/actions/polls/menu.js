@@ -31,7 +31,7 @@ module.exports = Composer.action('adminPolls', async (ctx) => {
           Markup.button.callback('🔄 Посчитать', 'adminPollsCount')
         ],
         [
-          Markup.button.callback('←', `${util.isSuperUser(userId) ? 'adminMenu' : 'userMenu'}`)
+          Markup.button.callback('←', 'userMenu')
         ]
       ])
     })
@@ -49,7 +49,7 @@ module.exports = Composer.action('adminPolls', async (ctx) => {
           Markup.button.callback('🔄 Посчитать', 'adminPollsCount')
         ],
         [
-          Markup.button.callback('←', `${util.isSuperUser(userId) ? 'adminMenu' : 'userMenu'}`)
+          Markup.button.callback('←', 'userMenu')
         ]
       ])
     })

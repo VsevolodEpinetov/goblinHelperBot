@@ -39,7 +39,7 @@ module.exports = Composer.action(/^showKickstarterFromGoblin_/g, async (ctx) => 
         Markup.button.callback(t('kickstarters.single.admin.buy'), `sendPayment`),
       ],
       [
-        Markup.button.callback(t('kickstarters.single.admin.home'), `adminMenu`),
+        Markup.button.callback(t('kickstarters.single.admin.home'), `userMenu`),
       ]
     ]
   }

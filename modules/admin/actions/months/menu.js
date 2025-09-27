@@ -26,7 +26,7 @@ module.exports = Composer.action(/^adminMonths_/, async (ctx) => {
       ...Markup.inlineKeyboard([
         ...menu,
         [
-          Markup.button.callback('←', `adminMenu`),
+          Markup.button.callback('←', `userMenu`),
           Markup.button.callback('+', `monthsAddYear`),
           Markup.button.callback('-', `monthsRemoveYear`),
         ]
@@ -85,7 +85,7 @@ module.exports = Composer.action(/^adminMonths_/, async (ctx) => {
           ],
           [
             Markup.button.callback('←', `adminMonths_show_${year}`),
-            Markup.button.callback('В начало', `adminMenu`),
+            Markup.button.callback('В начало', `userMenu`),
           ]
         ])
       })

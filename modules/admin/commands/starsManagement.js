@@ -85,7 +85,7 @@ const starsCommand = Composer.command('stars', async (ctx) => {
       ],
       [
         Markup.button.callback('📊 Подробная статистика', 'detailedStarsStats'),
-        Markup.button.callback('🔙 Админ меню', 'adminMenu')
+        Markup.button.callback('🔙 Админ меню', 'userMenu')
       ]
     ];
 
@@ -131,7 +131,7 @@ const withdrawalAction = Composer.action('requestStarsWithdrawal', async (ctx) =
   
   await ctx.editMessageText(withdrawalInfo, {
     parse_mode: 'HTML',
-    ...Markup.inlineKeyboard([[Markup.button.callback('🔙 Назад', 'adminMenu')]])
+    ...Markup.inlineKeyboard([[Markup.button.callback('🔙 Назад', 'userMenu')]])
   });
 });
 
@@ -190,13 +190,13 @@ const statsAction = Composer.action('detailedStarsStats', async (ctx) => {
 
     await ctx.editMessageText(statsMessage, {
       parse_mode: 'HTML',
-      ...Markup.inlineKeyboard([[Markup.button.callback('🔙 Назад', 'adminMenu')]])
+      ...Markup.inlineKeyboard([[Markup.button.callback('🔙 Назад', 'userMenu')]])
     });
     
   } catch (error) {
     console.error('❌ Error getting detailed stats:', error);
     await ctx.editMessageText('❌ Ошибка получения статистики', {
-      ...Markup.inlineKeyboard([[Markup.button.callback('🔙 Назад', 'adminMenu')]])
+      ...Markup.inlineKeyboard([[Markup.button.callback('🔙 Назад', 'userMenu')]])
     });
   }
 });

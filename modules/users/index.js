@@ -66,7 +66,6 @@ const enhancedActionPaths = [
   './actions/oldMonthsJoin',
   './actions/oldMonthsBuy',
   './actions/oldMonthsBuyCompat',
-  './actions/adminMenu',
   './actions/months/menu',
   './actions/kickstarter/menu',
   // Raid management actions

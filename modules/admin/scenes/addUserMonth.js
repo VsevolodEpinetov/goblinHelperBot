@@ -61,7 +61,7 @@ sceneAddUserMonth.on('text', async (ctx) => {
       ],
       [
         Markup.button.callback('←', `showUser_${userId}`),
-        Markup.button.callback('В начало', `adminMenu`)
+        Markup.button.callback('В начало', `userMenu`)
       ]
     ])
   })

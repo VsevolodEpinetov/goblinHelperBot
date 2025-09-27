@@ -50,7 +50,7 @@ const adminMonthsAction = Composer.action(/^adminMonths$/g, async (ctx) => {
     }
     
     keyboard.push([Markup.button.callback('🔔 Напомнить', 'adminRemind')]);
-    keyboard.push([Markup.button.callback('🔙 Назад', 'adminMenu')]);
+    keyboard.push([Markup.button.callback('🔙 Назад', 'userMenu')]);
     
     await ctx.editMessageText(message, {
       parse_mode: 'HTML',
@@ -60,7 +60,7 @@ const adminMonthsAction = Composer.action(/^adminMonths$/g, async (ctx) => {
   } catch (error) {
     console.error('❌ Error in adminMonths:', error);
     await ctx.editMessageText('❌ Ошибка загрузки месяцев', {
-      ...Markup.inlineKeyboard([[Markup.button.callback('🔙 Назад', 'adminMenu')]])
+      ...Markup.inlineKeyboard([[Markup.button.callback('🔙 Назад', 'userMenu')]])
     });
   }
 });
@@ -98,7 +98,7 @@ const adminParticipantsAction = Composer.action('adminParticipants', async (ctx)
         Markup.button.callback('🔍 Поиск', 'admin_search_user')
       ],
       [
-        Markup.button.callback('🔙 Назад', 'adminMenu')
+        Markup.button.callback('🔙 Назад', 'userMenu')
       ]
     ];
     
@@ -110,7 +110,7 @@ const adminParticipantsAction = Composer.action('adminParticipants', async (ctx)
   } catch (error) {
     console.error('❌ Error in adminParticipants:', error);
     await ctx.editMessageText('❌ Ошибка загрузки участников', {
-      ...Markup.inlineKeyboard([[Markup.button.callback('🔙 Назад', 'adminMenu')]])
+      ...Markup.inlineKeyboard([[Markup.button.callback('🔙 Назад', 'userMenu')]])
     });
   }
 });
@@ -130,7 +130,7 @@ const adminPaymentsAction = Composer.action('adminPayments', async (ctx) => {
       Markup.button.callback('💫 Баланс звёзд', 'adminStarsBalance'),
       Markup.button.callback('💸 Вывод звёзд', 'adminStarsWithdraw')
     ],
-    [Markup.button.callback('🔙 Назад', 'adminMenu')]
+    [Markup.button.callback('🔙 Назад', 'userMenu')]
   ];
   
   await ctx.editMessageText(message, {
@@ -150,7 +150,7 @@ const adminAchievementsAction = Composer.action('adminAchievements', async (ctx)
   
   const message = '🏆 <b>Достижения</b>\n\nУправление достижениями.';
   const keyboard = [
-    [Markup.button.callback('🔙 Назад', 'adminMenu')]
+    [Markup.button.callback('🔙 Назад', 'userMenu')]
   ];
   
   await ctx.editMessageText(message, {

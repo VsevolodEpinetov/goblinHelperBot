@@ -54,7 +54,7 @@ const allApplicationsHandler = Composer.action('adminAllApplications', async (ct
         {
           parse_mode: 'HTML',
           ...Markup.inlineKeyboard([
-            [Markup.button.callback('🔙 Назад', 'adminMenu')]
+            [Markup.button.callback('🔙 Назад', 'userMenu')]
           ])
         }
       );
@@ -146,7 +146,7 @@ const allApplicationsHandler = Composer.action('adminAllApplications', async (ct
     ]);
     keyboard.push([
       Markup.button.callback('🔄 Обновить', 'adminAllApplications'),
-      Markup.button.callback('🔙 Назад', 'adminMenu')
+      Markup.button.callback('🔙 Назад', 'userMenu')
     ]);
 
     await ctx.editMessageText(message, {
@@ -163,7 +163,7 @@ const allApplicationsHandler = Composer.action('adminAllApplications', async (ct
     await ctx.editMessageText(errorMessage, {
       parse_mode: 'HTML',
       ...Markup.inlineKeyboard([
-        [Markup.button.callback('🔙 Назад', 'adminMenu')]
+        [Markup.button.callback('🔙 Назад', 'userMenu')]
       ])
     });
   }

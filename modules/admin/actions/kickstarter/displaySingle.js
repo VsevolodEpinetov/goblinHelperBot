@@ -58,7 +58,7 @@ module.exports = Composer.action(/^showKickstarter_/g, async (ctx) => {
       ],
       [
         Markup.button.callback('←', `searchResultKickstarter`),
-        Markup.button.callback('В начало', `adminMenu`),
+        Markup.button.callback('В начало', `userMenu`),
       ]
     ]
   }

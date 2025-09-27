@@ -30,7 +30,7 @@ module.exports = Composer.action('adminPollsCount', async (ctx) => {
         Markup.button.callback('🔄 Посчитать', 'adminPollsCount')
       ],
       [
-        Markup.button.callback('←', 'adminMenu')
+        Markup.button.callback('←', 'userMenu')
       ]
     ])
   })

@@ -243,7 +243,7 @@ function getAdminUserMenu (userId) {
     ],
     [
       Markup.button.callback('←', `adminParticipants`),
-      Markup.button.callback('В начало', `adminMenu`),
+      Markup.button.callback('В начало', `userMenu`),
     ]
   ];
 

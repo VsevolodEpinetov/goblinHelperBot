@@ -7,7 +7,7 @@ module.exports = Composer.action('adminStarsBalance', async (ctx) => {
     await ctx.editMessageText('🧪 <b>Test Action Works!</b>\n\nStar balance action is working correctly.', {
       parse_mode: 'HTML',
       ...Markup.inlineKeyboard([
-        [Markup.button.callback('🔙 Назад', 'adminMenu')]
+        [Markup.button.callback('🔙 Назад', 'userMenu')]
       ])
     });
     
