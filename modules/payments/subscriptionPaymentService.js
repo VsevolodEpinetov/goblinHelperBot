@@ -50,11 +50,11 @@ async function createSubscriptionInvoice(ctx, subscriptionType, userId) {
       description += `💰 Цена: ${priceInStars}⭐`;
     }
     const payload = JSON.stringify({
-      type: 'subscription',
-      subscriptionType,
-      userId: Number(userId),
-      period: currentPeriod,
-      timestamp: Date.now()
+      t: 'sub',
+      st: subscriptionType,
+      u: Number(userId),
+      p: currentPeriod,
+      ts: Date.now()
     });
     const provider_token = ''; // Empty for Telegram Stars
     const currency = 'XTR'; // Telegram Stars currency code
@@ -177,11 +177,11 @@ async function processSubscriptionPayment(ctx, paymentData) {
   try {
     const payload = JSON.parse(paymentData.invoice_payload);
     
-    if (payload.type !== 'subscription') {
+    if (payload.t !== 'sub') {
       throw new Error('Invalid payment type');
     }
 
-    const { subscriptionType, userId, period, isUpgrade } = payload;
+    const { st: subscriptionType, u: userId, p: period, iu: isUpgrade } = payload;
 
     // Calculate expected price based on whether this is an upgrade or full payment
     const hasYears = await hasYearsOfService(Number(userId));
@@ -242,7 +242,7 @@ async function processSubscriptionPayment(ctx, paymentData) {
       .where('type', subscriptionType)
       .increment('counterPaid', 1);
 
-    // Apply loyalty XP gain based on actual amount paid (discount already applied in invoice)
+    // Apply loyalty XP gain based on subscription type (discounts only affect price, not XP)
     try {
       let deltaUnits;
       let description;
@@ -252,14 +252,13 @@ async function processSubscriptionPayment(ctx, paymentData) {
         const regularBasePrice = parseInt(rpgConfig.prices.regularStars || process.env.REGULAR_PRICE);
         const plusBasePrice = parseInt(rpgConfig.prices.plusStars || process.env.PLUS_PRICE);
         const upgradeBasePrice = plusBasePrice - regularBasePrice;
-        const xpMultiplier = hasYears ? getAchievementMultiplier(YEARS_OF_SERVICE) : 1.0;
-        deltaUnits = upgradeBasePrice * xpMultiplier;
+        // XP is calculated from base units, not discounted price
+        deltaUnits = upgradeBasePrice;
         description = 'Subscription upgrade payment';
       } else {
-        // For full payments, use the full subscription base units
+        // For full payments, use the full subscription base units (no discount applied to XP)
         const baseUnits = getSubscriptionBaseUnits(subscriptionType);
-        const xpMultiplier = hasYears ? getAchievementMultiplier(YEARS_OF_SERVICE) : 1.0;
-        deltaUnits = baseUnits * xpMultiplier;
+        deltaUnits = baseUnits;
         description = 'Subscription payment';
       }
       
@@ -364,12 +363,12 @@ async function createUpgradeInvoice(ctx, subscriptionType, userId) {
     }
     
     const payload = JSON.stringify({
-      type: 'subscription',
-      subscriptionType,
-      userId: Number(userId),
-      period: currentPeriod,
-      isUpgrade: true,
-      timestamp: Date.now()
+      t: 'sub',
+      st: subscriptionType,
+      u: Number(userId),
+      p: currentPeriod,
+      iu: true,
+      ts: Date.now()
     });
     const provider_token = ''; // Empty for Telegram Stars
     const currency = 'XTR'; // Telegram Stars currency code

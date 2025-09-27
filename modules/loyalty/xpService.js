@@ -3,6 +3,7 @@ const rpgConfig = require('../../configs/rpg');
 const notifications = require('../../configs/notifications');
 const benefitsConfig = require('../../configs/benefits');
 const { getUser } = require('../db/helpers');
+const { sendXpGainNotification, sendLevelUpNotification } = require('./xpNotifications');
 
 // Constants per loyalty.md
 const BASE_REGULAR_UNITS = rpgConfig.baseUnits.regular;
@@ -97,6 +98,15 @@ async function applyXpGain(userId, deltaUnits, source, metadata = {}) {
     }
   });
 
+  // Send XP gain notification (always)
+  if (deltaXp > 0) {
+    try {
+      await sendXpGainNotification(Number(userId), deltaXp, source, metadata);
+    } catch (error) {
+      console.error('Failed to send XP gain notification:', error);
+    }
+  }
+
   // Send RPG level up notification to main group with RPG topic
   if (level !== row.current_level || tier !== row.current_tier) {
     try {
@@ -167,6 +177,15 @@ module.exports = {
         });
       }
     });
+
+    // Send XP gain notification (always)
+    if (deltaXp > 0) {
+      try {
+        await sendXpGainNotification(Number(userId), deltaXp, source, metadata);
+      } catch (error) {
+        console.error('Failed to send XP gain notification:', error);
+      }
+    }
 
     // Send RPG level up notification to main group with RPG topic
     if (level !== row.current_level || tier !== row.current_tier) {

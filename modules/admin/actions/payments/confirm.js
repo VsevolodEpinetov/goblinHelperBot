@@ -3,6 +3,8 @@ const util = require('../../../util');
 const SETTINGS = require('../../../../settings.json');
 const knex = require('../../../../modules/db/knex');
 const { getUser, updateUser, addUserToGroup, incrementMonthCounter, addUserKickstarter, getKickstarter, hasUserPurchasedKickstarter, hasUserPurchasedMonth } = require('../../../db/helpers');
+const { applyXpGain, getSubscriptionBaseUnits } = require('../../../loyalty/xpService');
+const rpgConfig = require('../../../../configs/rpg');
 
 module.exports = Composer.action(/^confirmPayment_/g, async (ctx) => {
   const data = ctx.callbackQuery.data.split('_');
@@ -28,6 +30,22 @@ module.exports = Composer.action(/^confirmPayment_/g, async (ctx) => {
       if (!alreadyHasGroup) {
         await addUserToGroup(userId, year, month, groupType);
         await incrementMonthCounter(year, month, groupType, 'paid');
+        
+        // Grant XP for subscription confirmation
+        try {
+          const baseUnits = getSubscriptionBaseUnits(groupType);
+          const period = `${year}-${month}`;
+          await applyXpGain(Number(userId), baseUnits, 'admin_payment_confirm', {
+            subscriptionType: groupType,
+            period: period,
+            description: `Admin confirmed ${groupType} subscription for ${period}`,
+            confirmedBy: ctx.callbackQuery.from.id,
+            confirmedByUsername: ctx.callbackQuery.from.username || ctx.callbackQuery.from.first_name
+          });
+        } catch (xpError) {
+          console.error('⚠️ Failed to grant XP for admin payment confirmation:', xpError);
+        }
+        
         await ctx.telegram.sendMessage(SETTINGS.CHATS.LOGS, `ℹ️ user ${userId} got ${year}-${month}${groupType  == 'plus' ? '+' : ''} an access given by @${ctx.callbackQuery.from.username || ctx.callbackQuery.from.first_name} (${ctx.callbackQuery.from.id})`)
         ctx.replyWithHTML(`Выдал ${userName} (${userId}) доступ к ${year}-${month}${groupType  == 'plus' ? '+' : ''}`)
         ctx.telegram.sendMessage(userId, `Подтверждён доступ к ${year}-${month}${groupType  == 'plus' ? '+' : ''}`, {
@@ -52,6 +70,22 @@ module.exports = Composer.action(/^confirmPayment_/g, async (ctx) => {
       const alreadyHasKickstarter = await hasUserPurchasedKickstarter(userId, ksId);
       if (!alreadyHasKickstarter) {
         await addUserKickstarter(userId, ksId);
+        
+        // Grant XP for kickstarter confirmation
+        try {
+          const kickstarterData = await getKickstarter(ksId);
+          const ksUnits = rpgConfig.baseUnits.ksPerBackingCapUnits || 300; // Default kickstarter units
+          await applyXpGain(Number(userId), ksUnits, 'admin_kickstarter_confirm', {
+            kickstarterId: ksId,
+            kickstarterName: kickstarterData?.name || 'Unknown',
+            description: `Admin confirmed kickstarter access: ${kickstarterData?.name || 'Unknown'}`,
+            confirmedBy: ctx.callbackQuery.from.id,
+            confirmedByUsername: ctx.callbackQuery.from.username || ctx.callbackQuery.from.first_name
+          });
+        } catch (xpError) {
+          console.error('⚠️ Failed to grant XP for admin kickstarter confirmation:', xpError);
+        }
+        
         const kickstarterData = await getKickstarter(ksId);
         await ctx.telegram.sendMessage(SETTINGS.CHATS.LOGS, `ℹ️ user ${userId} got kickstarter ${ksId} an access given by @${ctx.callbackQuery.from.username || ctx.callbackQuery.from.first_name} (${ctx.callbackQuery.from.id})`)
         await ctx.telegram.sendMessage(userId, `Подтверждён доступ к кикстартеру ${kickstarterData?.name || 'Unknown'}`, {
