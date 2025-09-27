@@ -7,6 +7,7 @@ const { getRejectedUserMenu } = require('./rejectedUserMenu');
 const { getBannedUserMenu } = require('./bannedUserMenu');
 const { getSelfBannedUserMenu } = require('./selfBannedUserMenu');
 const { getNewUserMenu } = require('./newUserMenu');
+const { getDepartedMenu } = require('./alumniMenu');
 
 module.exports = {
   getSuperUserMenu,
@@ -18,5 +19,6 @@ module.exports = {
   getBannedUserMenu,
   getSelfBannedUserMenu,
   getNewUserMenu,
+  getDepartedMenu,
   markInvitationUsed
 };

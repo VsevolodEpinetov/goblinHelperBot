@@ -32,6 +32,31 @@ const PERMISSIONS = {
   // Regular user permissions
   user: USER_PERMISSIONS,
 
+  // Departed role (users who left on good terms)
+  departed: {
+    // Very minimal permissions - no menu access, just basic profile viewing
+    'user:profile:view': true,
+    
+    // No other permissions
+    'user:profile:edit': false,
+    'user:payments:view': false,
+    'user:payments:request': false,
+    'user:kickstarters:view': false,
+    'user:kickstarters:join': false,
+    'user:lots:view': false,
+    'user:lots:join': false,
+    'user:lots:leave': false,
+    'user:polls:view': false,
+    'user:polls:vote': false,
+    
+    // No admin actions
+    'admin:*': false,
+    'admin:users:*': false,
+    'admin:content:*': false,
+    'admin:payments:*': false,
+    'admin:reports:*': false
+  },
+
   // Goblin role (premium user)
   goblin: {
     // Inherit all user permissions

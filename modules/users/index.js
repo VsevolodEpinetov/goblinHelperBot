@@ -83,7 +83,8 @@ const enhancedActionPaths = [
   './actions/raidParticipants',
   './actions/excludeParticipant',
   './actions/viewRaid',
-  './actions/closeRaid'
+  './actions/closeRaid',
+  './actions/contactGlavgoblin'
 ];
 
 const enhancedActions = enhancedActionPaths

@@ -12,12 +12,13 @@ module.exports = Composer.action('adminPollsStart', async (ctx) => {
     await ctx.answerCbQuery('❌ У вас нет прав для запуска голосований');
     return;
   }
-  // Get polls chat settings from PostgreSQL
-  const pollsChat = await getSetting('chats.polls');
+  // Get polls chat settings from environment variables
+  const mainGroupId = process.env.MAIN_GROUP_ID;
+  const pollsTopicId = process.env.POLLS_TOPIC_ID;
   const stats = await getStats();
   
-  if (!pollsChat) {
-    await ctx.editMessageText(`❌ Не смог запустить голосование - нет чата.\n\nСтудий в ядре: ${stats.coreStudios}\nДобавленных студий: ${stats.dynamicStudios}`, {
+  if (!mainGroupId) {
+    await ctx.editMessageText(`❌ Не смог запустить голосование - не настроен MAIN_GROUP_ID.\n\nСтудий в ядре: ${stats.coreStudios}\nДобавленных студий: ${stats.dynamicStudios}`, {
       parse_mode: 'HTML',
       ...Markup.inlineKeyboard([
         [
@@ -61,13 +62,13 @@ module.exports = Composer.action('adminPollsStart', async (ctx) => {
   for (let i = 0; i < options.length; i++) {
     if (options[i].length > 0) { // Skip empty options
       await ctx.telegram.sendPoll(
-        pollsChat.id,
+        mainGroupId,
         `Голосование. Часть ${i + 1}`,
         options[i],
         {
           is_anonymous: false,
           allows_multiple_answers: true,
-          message_thread_id: pollsChat.thread_id
+          message_thread_id: pollsTopicId ? parseInt(pollsTopicId) : undefined
         }
       );
     }

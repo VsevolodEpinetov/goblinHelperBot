@@ -249,6 +249,11 @@ function getRoleHierarchy() {
       description: 'Basic user with limited access',
       inherits: []
     },
+    departed: {
+      level: 1,
+      description: 'Departed - users who left on good terms, minimal access',
+      inherits: []
+    },
     goblin: {
       level: 2,
       description: 'Premium user with extended access',
