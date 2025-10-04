@@ -35,7 +35,7 @@ module.exports = Composer.action(/^adminMonths_/, async (ctx) => {
     })
   } else {
     if (!callbackData.split('_')[3]) {
-      const year = callbackData.split('_')[2];
+      const year = callbackData.split('_')[2] || callbackData.split('_')[1];
       for (let month in monthsData.list[year]) {
         if (!monthsData.list[year][month]) {
           monthsData.list[year][month] = {
@@ -69,7 +69,7 @@ module.exports = Composer.action(/^adminMonths_/, async (ctx) => {
       })
     } else {
       choosing = false;
-      const year = callbackData.split('_')[2];
+      const year = callbackData.split('_')[2] || callbackData.split('_')[1];
       const month = callbackData.split('_')[3];
       const info = monthsData.list[year][month];
       let regularGroupInfo, plusGroupInfo;
