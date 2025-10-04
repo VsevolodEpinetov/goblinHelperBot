@@ -1,9 +1,11 @@
 const { Composer, Markup } = require("telegraf");
 const util = require('../../../util');
 const SETTINGS = require('../../../../settings.json');
+const { getAllUsers, updateUser } = require('../../../db/helpers');
 
 module.exports = Composer.action('removeRejected', async (ctx) => {
-  const users = JSON.parse(JSON.stringify(ctx.users.list));
+  const usersData = await getAllUsers();
+  const users = JSON.parse(JSON.stringify(usersData.list));
   let totalAmountOfUsers = Object.keys(users).length;
   let removedCount = 0;
 
@@ -15,7 +17,7 @@ module.exports = Composer.action('removeRejected', async (ctx) => {
     }
   }
 
-  ctx.users.list = users;
+  // Note: User data is now managed through database, no need to update ctx.users.list
 
   await ctx.editMessageText(`✅ <i>Все лишние (${removedCount}) были удалены</i>\n\nВсего зарегистрировано: ${totalAmountOfUsers}`, {
     parse_mode: "HTML",

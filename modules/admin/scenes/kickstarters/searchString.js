@@ -1,6 +1,7 @@
 const { Scenes, Markup } = require("telegraf");
 const SETTINGS = require('../../../../settings.json');
 const { splitMenu, isSuperUser } = require("../../../util");
+const { getKickstarters } = require('../../../db/helpers');
 
 const searchKickstarterString = new Scenes.BaseScene('SCENE_SEARCH_STRING');
 
@@ -26,7 +27,9 @@ searchKickstarterString.on('text', async (ctx) => {
   await ctx.deleteMessage(ctx.message.message_id);
   await ctx.deleteMessage(ctx.session.toRemove);
 
-  ctx.kickstarters.list.forEach((project, id) => {
+  const kickstartersData = await getKickstarters();
+
+  kickstartersData.list.forEach((project, id) => {
     for (const key in project) {
       if (results.indexOf(id) < 0) {
         if (typeof project[key] == 'object') {
@@ -56,7 +59,7 @@ searchKickstarterString.on('text', async (ctx) => {
     message = `Найдено ${results.length} проектов\n\n`;
     menu = [];
     results.forEach((ksID, id) => {
-      message += `${id + 1}. ${ctx.kickstarters.list[ksID].creator} - ${ctx.kickstarters.list[ksID].name}\n`
+      message += `${id + 1}. ${kickstartersData.list[ksID].creator} - ${kickstartersData.list[ksID].name}\n`
       menu.push(Markup.button.callback(id + 1, `showKickstarter_${id}`))
     })
 

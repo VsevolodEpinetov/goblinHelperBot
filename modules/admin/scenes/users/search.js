@@ -1,5 +1,6 @@
 const { Scenes, Markup } = require("telegraf");
-const SETTINGS = require('../../../../settings.json')
+const SETTINGS = require('../../../../settings.json');
+const { getAllUsers } = require('../../../db/helpers');
 
 const searchUser = new Scenes.BaseScene('SCENE_SEARCH_USER');
 
@@ -38,8 +39,10 @@ searchUser.on('text', async (ctx) => {
   await ctx.deleteMessage(ctx.message.message_id);
   await ctx.deleteMessage(ctx.session.toRemove);
 
-  for (const userID in ctx.users.list) {
-    const userData = ctx.users.list[userID];
+  const usersData = await getAllUsers();
+
+  for (const userID in usersData.list) {
+    const userData = usersData.list[userID];
     const name = userData.first_name.toLowerCase();
     const lastName = userData.last_name.toLowerCase();
     const username = userData.username.toLowerCase();
@@ -59,7 +62,7 @@ searchUser.on('text', async (ctx) => {
     message = `Найдено ${results.length} пользователей\n\n`;
     menu = [];
     results.forEach((userID, id) => {
-      message += `${id + 1}. ${ctx.users.list[userID].first_name}${ctx.users.list[userID].username != 'not_set' ? ` - @${ctx.users.list[userID].username}` : ''} (${userID})\n`
+      message += `${id + 1}. ${usersData.list[userID].first_name}${usersData.list[userID].username != 'not_set' ? ` - @${usersData.list[userID].username}` : ''} (${userID})\n`
       menu.push(Markup.button.callback(id + 1, `showUser_${userID}`))
     })
 

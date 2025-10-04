@@ -4,15 +4,29 @@ const util = require('../../util')
 const { updateMonth } = require('../../db/helpers');
 const knex = require('../../db/knex');
 
-module.exports = Composer.on('channel_post', async (ctx) => {
+module.exports = Composer.on('channel_post', async (ctx, next) => {
   const channelID = ctx.channelPost.chat.id;
   const messageText = ctx.channelPost.text;
 
-  if (!messageText) {
-    return;
+  // Only process messages that contain 'thisis ' - let other handlers process everything else
+  if (!messageText || !messageText.includes('thisis ')) {
+    return next();
   }
 
-  const data = messageText.split('thisis ')[1].split('_');
+  // Check if message has the expected format after 'thisis '
+  const thisisIndex = messageText.indexOf('thisis ');
+  const afterThisis = messageText.substring(thisisIndex + 7); // 7 is length of 'thisis '
+  
+  if (!afterThisis) {
+    return next();
+  }
+
+  const data = afterThisis.split('_');
+  if (data.length < 3) {
+    console.log(`⚠️ Channel: Invalid format in message: "${messageText}". Expected: "thisis YEAR_MONTH_TYPE"`);
+    return next();
+  }
+
   const year = data[0], month = data[1], type = data[2];
 
   const inviteLink = await ctx.createChatInviteLink({

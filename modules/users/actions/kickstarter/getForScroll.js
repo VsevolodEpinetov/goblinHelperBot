@@ -2,6 +2,7 @@ const { Composer, Markup } = require("telegraf");
 const { t } = require('../../../../modules/i18n');
 const util = require('../../../util');
 const SETTINGS = require('../../../../settings.json');
+const { getUser, updateUser } = require('../../../db/helpers');
 
 module.exports = Composer.action(/^getKickstarterForScroll_/g, async (ctx) => {
   try {
@@ -13,13 +14,14 @@ module.exports = Composer.action(/^getKickstarterForScroll_/g, async (ctx) => {
   const ksId = ctx.callbackQuery.data.split('_')[2];
   const userId = ctx.callbackQuery.data.split('_')[1];
 
-  const userData = ctx.users.list[userId];
+  const userData = await getUser(userId);
   const scrolls = Math.floor(userData.purchases.groups.plus.length / 3) * 2 - userData.purchases.scrollsSpent;
 
   if (scrolls > 0) {
     if (userData.purchases.kickstarters.indexOf(ksId) < 0) {
-      ctx.users.list[userId].purchases.scrollsSpent = ctx.users.list[userId].purchases.scrollsSpent + 1;
-      ctx.users.list[userId].purchases.kickstarters.push(ksId);
+      userData.purchases.scrollsSpent = userData.purchases.scrollsSpent + 1;
+      userData.purchases.kickstarters.push(ksId);
+      await updateUser(userId, userData);
       await ctx.replyWithHTML(t('kickstarters.scroll.received'), {
         parse_mode: "HTML",
         ...Markup.inlineKeyboard([

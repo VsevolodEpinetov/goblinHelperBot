@@ -2,12 +2,13 @@ const { Composer, Markup } = require("telegraf");
 const { t } = require('../../../../modules/i18n');
 const util = require('../../../util');
 const SETTINGS = require('../../../../settings.json');
+const { getKickstarter, getUser } = require('../../../db/helpers');
 
 module.exports = Composer.action(/^showKickstarterFromGoblin_/g, async (ctx) => {
   const projectID = ctx.callbackQuery.data.split('_')[1];
-  const projectData = ctx.kickstarters.list[projectID];
+  const projectData = await getKickstarter(projectID);
   const userId = ctx.callbackQuery.from.id;
-  const userData = ctx.users.list[userId];
+  const userData = await getUser(userId);
   const scrolls = (Math.floor(userData.purchases.groups.plus.length / 3) * 2 - userData.purchases.scrollsSpent) || 0;
 
   ctx.userSession.purchasing = {

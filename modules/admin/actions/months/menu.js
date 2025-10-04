@@ -1,6 +1,7 @@
 const { Composer, Markup } = require("telegraf");
 const util = require('../../../util');
 const SETTINGS = require('../../../../settings.json');
+const { getMonths } = require('../../../db/helpers');
 
 module.exports = Composer.action(/^adminMonths_/, async (ctx) => {
   const userId = ctx.callbackQuery.from.id;
@@ -10,12 +11,12 @@ module.exports = Composer.action(/^adminMonths_/, async (ctx) => {
     return;
   }
 
-  if (!ctx.months.list) ctx.months.list = {};
+  const monthsData = await getMonths();
 
   let menu = [];
 
   if (callbackData.indexOf('_') < 0) {
-    for (let year in ctx.months.list) {
+    for (let year in monthsData.list) {
       menu.push(Markup.button.callback(year, `adminMonths_show_${year}`))
     }
 
@@ -35,9 +36,9 @@ module.exports = Composer.action(/^adminMonths_/, async (ctx) => {
   } else {
     if (!callbackData.split('_')[3]) {
       const year = callbackData.split('_')[2];
-      for (let month in ctx.months.list[year]) {
-        if (!ctx.months.list[year][month]) {
-          ctx.months.list[year][month] = {
+      for (let month in monthsData.list[year]) {
+        if (!monthsData.list[year][month]) {
+          monthsData.list[year][month] = {
             regular: {
               link: '',
               id: '',
@@ -70,7 +71,7 @@ module.exports = Composer.action(/^adminMonths_/, async (ctx) => {
       choosing = false;
       const year = callbackData.split('_')[2];
       const month = callbackData.split('_')[3];
-      const info = ctx.months.list[year][month];
+      const info = monthsData.list[year][month];
       let regularGroupInfo, plusGroupInfo;
       if (info.regular.id) regularGroupInfo = await ctx.getChat(info.regular.id)
       if (info.plus.id) plusGroupInfo = await ctx.getChat(info.plus.id)

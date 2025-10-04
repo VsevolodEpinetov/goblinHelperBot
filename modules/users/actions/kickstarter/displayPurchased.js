@@ -2,11 +2,12 @@ const { Composer, Markup } = require("telegraf");
 const { t } = require('../../../../modules/i18n');
 const util = require('../../../util');
 const SETTINGS = require('../../../../settings.json');
+const { getKickstarters, getUser } = require('../../../db/helpers');
 
 module.exports = Composer.action('showPurchasedKickstarters', async (ctx) => {
-  if (!ctx.kickstarters.list) ctx.kickstarters.list = [];
+  const kickstartersData = await getKickstarters();
   const userId = ctx.callbackQuery.from.id;
-  const userData = ctx.users.list[userId];
+  const userData = await getUser(userId);
   const purchasedKickstarters = userData.purchases.kickstarters;
 
   let menu = [];
@@ -14,7 +15,7 @@ module.exports = Composer.action('showPurchasedKickstarters', async (ctx) => {
 
   purchasedKickstarters.forEach((ksId, id) => {
     menu.push(Markup.button.callback(id + 1, `sendFilesKickstarter_${userId}_${ksId}`))
-    message += `${id + 1}. ${ctx.kickstarters.list[ksId].creator} - ${ctx.kickstarters.list[ksId].name}\n`
+    message += `${id + 1}. ${kickstartersData.list[ksId].creator} - ${kickstartersData.list[ksId].name}\n`
   });
 
   menu = util.splitMenu(menu)

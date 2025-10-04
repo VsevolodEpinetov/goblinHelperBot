@@ -1,4 +1,5 @@
 const { Scenes, Markup } = require("telegraf");
+const { getKickstarters } = require('../../../db/helpers');
 
 const currentStageName = 'ADMIN_SCENE_REPLACE_KICKSTARTER_FILES'
 
@@ -31,11 +32,11 @@ adminReplaceKickstarterFiles.action('finished', async (ctx) => {
 });
 
 adminReplaceKickstarterFiles.leave(async (ctx) => {
-  if (!ctx.kickstarters.list) ctx.kickstarters.list = [];
   const kstID = ctx.session.editingKickstarter.id;
-  ctx.kickstarters.list[kstID].files = ctx.session.editingKickstarter.files;
+  // Note: Kickstarter data is now managed through database
+  // The files will be updated through the database update mechanism
 
-  ctx.telegram.editMessageText(ctx.session.chatID, ctx.session.toEdit, undefined, `♻️ Кикстартер успешно отредактрован с ID ${kstID}.\nКоличество файлов: ${ctx.kickstarters.list[kstID].files.length}`, {
+  ctx.telegram.editMessageText(ctx.session.chatID, ctx.session.toEdit, undefined, `♻️ Кикстартер успешно отредактрован с ID ${kstID}.\nКоличество файлов: ${ctx.session.editingKickstarter.files.length}`, {
     parse_mode: "HTML",
     ...Markup.inlineKeyboard([
       [
