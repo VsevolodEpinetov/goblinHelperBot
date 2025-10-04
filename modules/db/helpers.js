@@ -177,6 +177,19 @@ async function getMonths() {
 		};
 	}
 
+	// Get invitation links for all periods
+	const links = await knex('invitationLinks')
+		.select('groupPeriod', 'groupType', 'telegramInviteLink')
+		.whereNull('userId') // Group links only
+		.whereNotNull('telegramInviteLink');
+
+	for (const link of links) {
+		const [year, month] = link.groupPeriod.split('_');
+		if (monthsShape.list[year] && monthsShape.list[year][month] && monthsShape.list[year][month][link.groupType]) {
+			monthsShape.list[year][month][link.groupType].link = link.telegramInviteLink || '';
+		}
+	}
+
 	return monthsShape;
 }
 
