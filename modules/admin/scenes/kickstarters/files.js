@@ -37,7 +37,7 @@ adminAddKickstarterFiles.leave(async (ctx) => {
   if (ksChat) {
     const projectData = ctx.session.kickstarter;
     await ctx.telegram.sendPhoto(ksChat.id, projectData.photos[0], {
-      caption: `${projectData.link}\n\n<b>Название:</b> ${projectData.name}\n<b>Автор:</b> ${projectData.creator}\n<b>Пледж:</b> ${projectData.pledgeName}\n<b>Оригинальная стоимость:</b> $${projectData.pledgeCost}\n\n<b>Количество файлов:</b> ${projectData.files.length}\n\n<b>Стоимость:</b> ${projectData.cost}₽`,
+      caption: `${projectData.link}\n\n<b>Название:</b> ${projectData.name}\n<b>Автор:</b> ${projectData.creator}\n<b>Пледж:</b> ${projectData.pledgeName}\n<b>Оригинальная стоимость:</b> $${projectData.pledgeCost}\n\n<b>Количество файлов:</b> ${projectData.files.length}\n\n<b>Стоимость:</b> ${projectData.cost} ⭐`,
       message_thread_id: ksChat.thread_id,
       parse_mode: 'HTML',
       ...Markup.inlineKeyboard([

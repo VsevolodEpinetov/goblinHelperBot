@@ -29,27 +29,10 @@ module.exports = Composer.action('userKickstarters', async (ctx) => {
 
     const kickstarterKeyboard = [];
     
-    // Primary actions based on available scrolls
-    if (scrolls > 0) {
-      kickstarterKeyboard.push([
-        Markup.button.callback(t('kickstarters.menu.buttons.buy'), 'browseKickstarters'),
-        Markup.button.callback(t('kickstarters.menu.buttons.useScroll'), 'useScroll')
-      ]);
-    } else {
-      kickstarterKeyboard.push([
-        Markup.button.callback(t('kickstarters.menu.buttons.buyPlus'), 'addPlusToCurrentMonth')
-      ]);
-    }
-    
-    // Standard actions
+    // Primary actions - simplified to only show purchased and find new
     kickstarterKeyboard.push([
-      Markup.button.callback(t('kickstarters.menu.buttons.my'), 'myKickstarters'),
-      Markup.button.callback(t('kickstarters.menu.buttons.search'), 'searchKickstarters')
-    ]);
-    
-    kickstarterKeyboard.push([
-      Markup.button.callback(t('kickstarters.menu.buttons.stats'), 'kickstarterStats'),
-      Markup.button.callback(t('kickstarters.menu.buttons.help'), 'kickstarterHelp')
+      Markup.button.callback('📚 Мои кикстартеры', 'myKickstarters'),
+      Markup.button.callback('🔍 Найти новые', 'browseKickstarters')
     ]);
     
     // Single back button

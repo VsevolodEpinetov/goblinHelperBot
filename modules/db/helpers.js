@@ -357,6 +357,67 @@ async function getKickstarter(kickstarterId) {
 	};
 }
 
+// Helper function to add kickstarter to database
+async function addKickstarter(kickstarterData) {
+	const trx = await knex.transaction();
+	
+	try {
+		// Insert main kickstarter record
+		const [kickstarterId] = await trx('kickstarters').insert({
+			name: kickstarterData.name,
+			creator: kickstarterData.creator,
+			link: kickstarterData.link,
+			cost: kickstarterData.cost,
+			pledgeName: kickstarterData.pledgeName,
+			pledgeCost: kickstarterData.pledgeCost
+		}).returning('id');
+		
+		// Insert photos if any
+		if (kickstarterData.photos && kickstarterData.photos.length > 0) {
+			const photoInserts = kickstarterData.photos.map((fileId, index) => ({
+				kickstarterId: kickstarterId,
+				ord: index + 1,
+				fileId: fileId
+			}));
+			await trx('kickstarterPhotos').insert(photoInserts);
+		}
+		
+		// Insert files if any
+		if (kickstarterData.files && kickstarterData.files.length > 0) {
+			const fileInserts = kickstarterData.files.map((fileId, index) => ({
+				kickstarterId: kickstarterId,
+				ord: index + 1,
+				fileId: fileId
+			}));
+			await trx('kickstarterFiles').insert(fileInserts);
+		}
+		
+	await trx.commit();
+	return kickstarterId;
+} catch (error) {
+	await trx.rollback();
+	throw error;
+}
+}
+
+// Helper function to update kickstarter price
+async function updateKickstarterPrice(kickstarterId, newPrice) {
+	await knex('kickstarters')
+		.where('id', kickstarterId)
+		.update({ cost: newPrice });
+	
+	return true;
+}
+
+// Helper function to get all kickstarters with current prices
+async function getAllKickstartersWithPrices() {
+	const kickstarters = await knex('kickstarters')
+		.select('id', 'name', 'creator', 'cost', 'pledgeName', 'pledgeCost', 'link')
+		.orderBy('id');
+	
+	return kickstarters;
+}
+
 module.exports = {
 	getUser,
 	getAllUsers,
@@ -364,6 +425,9 @@ module.exports = {
 	getMonths,
 	updateMonth,
 	getKickstarters,
+	addKickstarter,
+	updateKickstarterPrice,
+	getAllKickstartersWithPrices,
 	getSetting,
 	setSetting,
 	findMonthByChatId,

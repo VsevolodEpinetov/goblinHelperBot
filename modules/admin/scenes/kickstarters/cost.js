@@ -6,7 +6,7 @@ const nextStageName = 'ADMIN_SCENE_ADD_KICKSTARTER_TAGS'
 const adminAddKickstarterCost = new Scenes.BaseScene(currentStageName);
 
 adminAddKickstarterCost.enter(async (ctx) => {
-  await ctx.telegram.editMessageText(ctx.session.chatID, ctx.session.toEdit, undefined, `Пришли <b>стоимость покупки</b> проекта`, {
+  await ctx.telegram.editMessageText(ctx.session.chatID, ctx.session.toEdit, undefined, `Пришли <b>стоимость покупки</b> проекта в <b>Telegram Stars</b>`, {
     parse_mode: "HTML"
   });
 });
