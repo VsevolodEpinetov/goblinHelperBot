@@ -1,5 +1,5 @@
 const { Composer, Markup } = require('telegraf');
-const { hasUserPurchasedMonth, getMonths } = require('../../db/helpers');
+const { hasUserPurchasedMonth, getMonths, getUser } = require('../../db/helpers');
 
 function chunk(arr, size) {
   const out = [];
@@ -13,6 +13,10 @@ module.exports = Composer.action(/^oldMonths_month_(\d{4}_\d{2})$/, async (ctx) 
   const [year, month] = period.split('_');
   const userId = ctx.from.id;
 
+  // Get user data to check admin status
+  const userData = await getUser(userId);
+  const isAdmin = userData?.roles?.includes('admin') || userData?.roles?.includes('adminPlus');
+
   // Re-check ownership fresh from DB each time
   const ownsRegular = await hasUserPurchasedMonth(userId, year, month, 'regular');
   const ownsPlus = await hasUserPurchasedMonth(userId, year, month, 'plus');
@@ -25,34 +29,59 @@ module.exports = Composer.action(/^oldMonths_month_(\d{4}_\d{2})$/, async (ctx) 
   const isEligible = !!lvl; // any existing level qualifies (Wood 1+)
 
   let message = `📚 <b>Архив ${period}</b>\n\n`;
-  message += `${(ownsRegular || ownsPlus) ? '✅ Доступ уже открыт' : '❌ Доступ не куплен'}\n`;
-  message += `🗝 <b>Требуется:</b> WOOD 1+\n`;
-  message += `📈 <b>Ты сейчас:</b> ${userTier} ${userLevel} ${isEligible ? '— проходишь' : '— не дотягиваешь'}\n\n`;
-  message += `🕯 Слова Главгоблина: знания — за звёзды, уважение — за послушание.`;
+  if (isAdmin) {
+    message += `⚙️ <b>Статус:</b> Администратор — прямой доступ\n`;
+    message += `📈 <b>Ты сейчас:</b> ${userTier} ${userLevel}\n\n`;
+    message += `🕯 Слова Главгоблина: старейшины не платят — они управляют.`;
+  } else {
+    message += `${(ownsRegular || ownsPlus) ? '✅ Доступ уже открыт' : '❌ Доступ не куплен'}\n`;
+    message += `🗝 <b>Требуется:</b> WOOD 1+\n`;
+    message += `📈 <b>Ты сейчас:</b> ${userTier} ${userLevel} ${isEligible ? '— проходишь' : '— не дотягиваешь'}\n\n`;
+    message += `🕯 Слова Главгоблина: знания — за звёзды, уважение — за послушание.`;
+  }
 
   const buttons = [];
-  if (ownsPlus) {
-    // User has plus subscription - show both buttons
-    buttons.push(Markup.button.callback('🔗 Войти (Расширенный)', `oldMonths_join_${period}_plus`));
-    buttons.push(Markup.button.callback('🔗 Войти (Обычный)', `oldMonths_join_${period}_regular`));
-  } else if (ownsRegular) {
-    // User has only regular subscription - show only regular button
-    buttons.push(Markup.button.callback('🔗 Войти (Обычный)', `oldMonths_join_${period}_regular`));
-  }
-  if (!ownsRegular && !ownsPlus) {
-    // Show choices for Regular / Plus if available
+  
+  if (isAdmin) {
+    // Admin users get direct access to both groups if they exist
     const monthsShape = await getMonths();
     const hasRegular = !!(monthsShape.list[year] && monthsShape.list[year][month] && monthsShape.list[year][month].regular);
     const hasPlus = !!(monthsShape.list[year] && monthsShape.list[year][month] && monthsShape.list[year][month].plus);
-    const rpg = require('../../../configs/rpg');
-    const priceReg = (rpg.prices.regularStars || process.env.REGULAR_PRICE) * 3;
-    const pricePlus = (rpg.prices.plusStars || process.env.PLUS_PRICE) * 3;
-    if (isEligible) {
-      if (hasRegular) buttons.push(Markup.button.callback(`🛒 Купить доступ (Обычный, ${priceReg}⭐)`, `oldMonths_buy_${period}_regular`));
-      if (hasPlus) buttons.push(Markup.button.callback(`🛒 Купить доступ (Расширенный, ${pricePlus}⭐)`, `oldMonths_buy_${period}_plus`));
-      if (!hasRegular && !hasPlus) buttons.push(Markup.button.callback('🔒 Недоступно', 'noop'));
-    } else {
-      buttons.push(Markup.button.callback('🔒 Доступ только с WOOD 1+', 'noop'));
+    
+    if (hasPlus) {
+      buttons.push(Markup.button.callback('🔗 Войти (Расширенный)', `oldMonths_join_${period}_plus`));
+    }
+    if (hasRegular) {
+      buttons.push(Markup.button.callback('🔗 Войти (Обычный)', `oldMonths_join_${period}_regular`));
+    }
+    if (!hasRegular && !hasPlus) {
+      buttons.push(Markup.button.callback('🔒 Архив недоступен', 'noop'));
+    }
+  } else {
+    // Regular user logic
+    if (ownsPlus) {
+      // User has plus subscription - show both buttons
+      buttons.push(Markup.button.callback('🔗 Войти (Расширенный)', `oldMonths_join_${period}_plus`));
+      buttons.push(Markup.button.callback('🔗 Войти (Обычный)', `oldMonths_join_${period}_regular`));
+    } else if (ownsRegular) {
+      // User has only regular subscription - show only regular button
+      buttons.push(Markup.button.callback('🔗 Войти (Обычный)', `oldMonths_join_${period}_regular`));
+    }
+    if (!ownsRegular && !ownsPlus) {
+      // Show choices for Regular / Plus if available
+      const monthsShape = await getMonths();
+      const hasRegular = !!(monthsShape.list[year] && monthsShape.list[year][month] && monthsShape.list[year][month].regular);
+      const hasPlus = !!(monthsShape.list[year] && monthsShape.list[year][month] && monthsShape.list[year][month].plus);
+      const rpg = require('../../../configs/rpg');
+      const priceReg = (rpg.prices.regularStars || process.env.REGULAR_PRICE) * 3;
+      const pricePlus = (rpg.prices.plusStars || process.env.PLUS_PRICE) * 3;
+      if (isEligible) {
+        if (hasRegular) buttons.push(Markup.button.callback(`🛒 Купить доступ (Обычный, ${priceReg}⭐)`, `oldMonths_buy_${period}_regular`));
+        if (hasPlus) buttons.push(Markup.button.callback(`🛒 Купить доступ (Расширенный, ${pricePlus}⭐)`, `oldMonths_buy_${period}_plus`));
+        if (!hasRegular && !hasPlus) buttons.push(Markup.button.callback('🔒 Недоступно', 'noop'));
+      } else {
+        buttons.push(Markup.button.callback('🔒 Доступ только с WOOD 1+', 'noop'));
+      }
     }
   }
 

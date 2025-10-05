@@ -1,5 +1,5 @@
 const { Composer } = require('telegraf');
-const { hasUserPurchasedMonth, getMonthChatId } = require('../../db/helpers');
+const { hasUserPurchasedMonth, getMonthChatId, getUser } = require('../../db/helpers');
 const SETTINGS = require('../../../settings.json');
 
 module.exports = Composer.action(/^oldMonths_join_(\d{4}_\d{2})_(regular|plus)$/, async (ctx) => {
@@ -8,8 +8,12 @@ module.exports = Composer.action(/^oldMonths_join_(\d{4}_\d{2})_(regular|plus)$/
   const [, period, type] = ctx.match;
   const [year, month] = period.split('_');
 
+  // Check if user is admin - admins can join without ownership
+  const userData = await getUser(userId);
+  const isAdmin = userData?.roles?.includes('admin') || userData?.roles?.includes('adminPlus');
+  
   const owns = await hasUserPurchasedMonth(userId, year, month, type);
-  if (!owns) {
+  if (!owns && !isAdmin) {
     await ctx.answerCbQuery('🕯 Главгоблин ворчит: хочешь знаний — плати звёздами.');
     return;
   }
@@ -23,9 +27,10 @@ module.exports = Composer.action(/^oldMonths_join_(\d{4}_\d{2})_(regular|plus)$/
     const groupPeriod = `${year}_${month}`;
     const linkResult = await getOrCreateGroupInvitationLink(groupPeriod, type);
     if (linkResult?.success && linkResult.link) {
+      const accessType = isAdmin ? '⚙️ <b>Админский доступ</b>' : '✅ <b>Доступ открыт</b>';
       await ctx.replyWithHTML(
         `📚 <b>Архив</b>\n\n` +
-        `✅ <b>Доступ открыт</b>\n\n` +
+        `${accessType}\n\n` +
         `📅 <b>Период:</b> ${groupPeriod}\n` +
         `🔹 <b>Тип:</b> ${type === 'plus' ? 'Расширенный' : 'Обычный'}\n\n` +
         `🎯 <b>Внутри:</b>\n` +
