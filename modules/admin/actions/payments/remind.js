@@ -39,7 +39,7 @@ async function sendReminders(ctx, level) {
     const userData = allUsers.list[userId];
     // Check if user has goblin role, doesn't have admin roles, and hasn't purchased current month (regular or plus)
     const hasGoblinRole = userData.roles.includes('goblin');
-    const hasAdminRole = userData.roles.includes('admin') || userData.roles.includes('adminPlus');
+    const hasAdminRole = userData.roles.includes('super') || userData.roles.includes('admin') || userData.roles.includes('adminPolls') || userData.roles.includes('adminPlus');
     const hasCurrentRegular = userData.purchases.groups.regular.includes(current);
     const hasCurrentPlus = userData.purchases.groups.plus.includes(current);
     const isRejected = userData.roles.includes('rejected');

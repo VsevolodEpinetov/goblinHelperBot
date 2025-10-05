@@ -135,16 +135,12 @@ async function getUserMenu(ctx, userData) {
       const keyboard = [];
       let message = '⚙️ <b>Панель старейшин</b>\n\nВыберите действие:';
       keyboard.push([Markup.button.callback('🧭 Присоединиться к текущему месяцу', 'join_current_month')]);
-      keyboard.push([Markup.button.callback('📚 Старые месяцы', 'old_months')]);
+      keyboard.push([Markup.button.callback('📚 Старые месяцы', 'oldMonthsMenu')]);
       if (roles.includes('adminPlus')) {
         keyboard.push([Markup.button.callback('🧭 Присоединиться к текущему PLUS', 'join_current_plus')]);
       }
       if (roles.includes('adminPolls') || roles.includes('polls')) {
         keyboard.push([Markup.button.callback('🗳️ Голосования', 'adminPolls')]);
-      }
-      if (roles.includes('protector') || roles.includes('admin') || roles.includes('adminPlus')) {
-        keyboard.push([Markup.button.callback('📋 Заявки на вступление', 'adminPendingApplications')]);
-        keyboard.push([Markup.button.callback('🔍 Поиск заявки', 'searchRequest')]);
       }
       keyboard.push([Markup.button.callback('👤 Открыть пользовательское меню', 'refreshUserStatus')]);
       return { message, keyboard };
