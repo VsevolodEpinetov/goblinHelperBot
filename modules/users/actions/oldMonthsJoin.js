@@ -8,12 +8,22 @@ module.exports = Composer.action(/^oldMonths_join_(\d{4}_\d{2})_(regular|plus)$/
   const [, period, type] = ctx.match;
   const [year, month] = period.split('_');
 
-  // Check if user is admin - admins can join without ownership
+  // Check if user is admin - admins can join without ownership but with restrictions
   const userData = await getUser(userId);
-  const isAdmin = userData?.roles?.includes('admin') || userData?.roles?.includes('adminPlus');
+  const isAdmin = userData?.roles?.includes('admin');
+  const isAdminPlus = userData?.roles?.includes('adminPlus');
+  const isAnyAdmin = isAdmin || isAdminPlus;
   
   const owns = await hasUserPurchasedMonth(userId, year, month, type);
-  if (!owns && !isAdmin) {
+  
+  // Check admin access restrictions
+  if (isAnyAdmin && !owns) {
+    if (isAdmin && type === 'plus') {
+      await ctx.answerCbQuery('🕯 Главгоблин ворчит: обычные администраторы не могут входить в расширенные архивы.');
+      return;
+    }
+    // Allow admin access (either regular admin accessing regular, or adminPlus accessing anything)
+  } else if (!owns && !isAnyAdmin) {
     await ctx.answerCbQuery('🕯 Главгоблин ворчит: хочешь знаний — плати звёздами.');
     return;
   }
@@ -27,7 +37,7 @@ module.exports = Composer.action(/^oldMonths_join_(\d{4}_\d{2})_(regular|plus)$/
     const groupPeriod = `${year}_${month}`;
     const linkResult = await getOrCreateGroupInvitationLink(groupPeriod, type);
     if (linkResult?.success && linkResult.link) {
-      const accessType = isAdmin ? '⚙️ <b>Админский доступ</b>' : '✅ <b>Доступ открыт</b>';
+      const accessType = isAnyAdmin ? '⚙️ <b>Админский доступ</b>' : '✅ <b>Доступ открыт</b>';
       await ctx.replyWithHTML(
         `📚 <b>Архив</b>\n\n` +
         `${accessType}\n\n` +

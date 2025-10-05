@@ -15,7 +15,9 @@ module.exports = Composer.action(/^oldMonths_month_(\d{4}_\d{2})$/, async (ctx) 
 
   // Get user data to check admin status
   const userData = await getUser(userId);
-  const isAdmin = userData?.roles?.includes('admin') || userData?.roles?.includes('adminPlus');
+  const isAdmin = userData?.roles?.includes('admin');
+  const isAdminPlus = userData?.roles?.includes('adminPlus');
+  const isAnyAdmin = isAdmin || isAdminPlus;
 
   // Re-check ownership fresh from DB each time
   const ownsRegular = await hasUserPurchasedMonth(userId, year, month, 'regular');
@@ -29,8 +31,9 @@ module.exports = Composer.action(/^oldMonths_month_(\d{4}_\d{2})$/, async (ctx) 
   const isEligible = !!lvl; // any existing level qualifies (Wood 1+)
 
   let message = `📚 <b>Архив ${period}</b>\n\n`;
-  if (isAdmin) {
-    message += `⚙️ <b>Статус:</b> Администратор — прямой доступ\n`;
+  if (isAnyAdmin) {
+    const adminType = isAdminPlus ? 'Администратор PLUS' : 'Администратор';
+    message += `⚙️ <b>Статус:</b> ${adminType} — прямой доступ\n`;
     message += `📈 <b>Ты сейчас:</b> ${userTier} ${userLevel}\n\n`;
     message += `🕯 Слова Главгоблина: старейшины не платят — они управляют.`;
   } else {
@@ -42,20 +45,31 @@ module.exports = Composer.action(/^oldMonths_month_(\d{4}_\d{2})$/, async (ctx) 
 
   const buttons = [];
   
-  if (isAdmin) {
-    // Admin users get direct access to both groups if they exist
+  if (isAnyAdmin) {
+    // Admin users get direct access based on their level
     const monthsShape = await getMonths();
     const hasRegular = !!(monthsShape.list[year] && monthsShape.list[year][month] && monthsShape.list[year][month].regular);
     const hasPlus = !!(monthsShape.list[year] && monthsShape.list[year][month] && monthsShape.list[year][month].plus);
     
-    if (hasPlus) {
-      buttons.push(Markup.button.callback('🔗 Войти (Расширенный)', `oldMonths_join_${period}_plus`));
+    if (isAdminPlus) {
+      // AdminPlus can access both regular and plus
+      if (hasPlus) {
+        buttons.push(Markup.button.callback('🔗 Войти (Расширенный)', `oldMonths_join_${period}_plus`));
+      }
+      if (hasRegular) {
+        buttons.push(Markup.button.callback('🔗 Войти (Обычный)', `oldMonths_join_${period}_regular`));
+      }
+    } else if (isAdmin) {
+      // Regular admin can only access regular groups
+      if (hasRegular) {
+        buttons.push(Markup.button.callback('🔗 Войти (Обычный)', `oldMonths_join_${period}_regular`));
+      }
     }
-    if (hasRegular) {
-      buttons.push(Markup.button.callback('🔗 Войти (Обычный)', `oldMonths_join_${period}_regular`));
-    }
+    
     if (!hasRegular && !hasPlus) {
       buttons.push(Markup.button.callback('🔒 Архив недоступен', 'noop'));
+    } else if (isAdmin && !hasRegular) {
+      buttons.push(Markup.button.callback('🔒 Обычный архив недоступен', 'noop'));
     }
   } else {
     // Regular user logic
