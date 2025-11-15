@@ -6,51 +6,35 @@
  */
 
 exports.up = async function(knex) {
-  // Check if table exists
-  const tableExists = await knex.schema.hasTable('kickstarters');
-  
-  if (!tableExists) {
-    // Create table if it doesn't exist
-    await knex.schema.createTable('kickstarters', (table) => {
-      table.increments('id').primary();
-      table.string('name', 255).notNullable();
-      table.string('creator', 255).notNullable();
-      table.string('link', 500).nullable();
-      table.integer('cost').notNullable().defaultTo(0);
-      table.string('pledgeName', 255).nullable();
-      table.string('pledgeCost', 100).nullable();
-      table.timestamps(true, true);
+  // Try to fix the kickstarters table ID column
+  // Use DO block with exception handling to prevent transaction abort
+  await knex.raw(`
+    DO $$
+    BEGIN
+      -- Create sequence if it doesn't exist
+      IF NOT EXISTS (SELECT 1 FROM pg_sequences WHERE sequencename = 'kickstarters_id_seq') THEN
+        CREATE SEQUENCE kickstarters_id_seq;
+      END IF;
       
-      table.index(['name', 'creator']);
-    });
-  } else {
-    // Table exists - check if ID column needs fixing
-    const hasAutoIncrement = await knex.raw(`
-      SELECT column_default 
-      FROM information_schema.columns 
-      WHERE table_name = 'kickstarters' 
-      AND column_name = 'id'
-      AND column_default LIKE 'nextval%'
-    `);
-    
-    if (!hasAutoIncrement.rows || hasAutoIncrement.rows.length === 0 || !hasAutoIncrement.rows[0].column_default) {
-      // ID column exists but doesn't have auto-increment
-      // Try to alter it (this might fail if there's data, but that's okay - the code will handle it)
-      try {
-        await knex.raw(`
-          ALTER TABLE kickstarters 
-          ALTER COLUMN id TYPE SERIAL
-        `);
-      } catch (error) {
-        // If altering fails, the fallback code in helpers.js will handle it
-        console.log('Note: Could not alter kickstarters.id to SERIAL. Using fallback query method.');
-      }
-    }
-  }
+      -- Set sequence value to max(id) + 1 if table has data
+      PERFORM setval('kickstarters_id_seq', COALESCE((SELECT MAX(id) FROM kickstarters), 0) + 1, false);
+      
+      -- Set the column default to use the sequence
+      ALTER TABLE kickstarters 
+      ALTER COLUMN id SET DEFAULT nextval('kickstarters_id_seq');
+      
+      -- Make sure the sequence is owned by the column
+      ALTER SEQUENCE kickstarters_id_seq OWNED BY kickstarters.id;
+    EXCEPTION
+      WHEN OTHERS THEN
+        -- If anything fails, just log and continue
+        -- The code in helpers.js has a fallback method
+        RAISE NOTICE 'Could not set up auto-increment for kickstarters.id: %', SQLERRM;
+    END $$;
+  `);
   
-  // Ensure related tables exist
-  const photosTableExists = await knex.schema.hasTable('kickstarterPhotos');
-  if (!photosTableExists) {
+  // Ensure related tables exist (these are safe to run even if they exist)
+  if (!(await knex.schema.hasTable('kickstarterPhotos'))) {
     await knex.schema.createTable('kickstarterPhotos', (table) => {
       table.increments('id').primary();
       table.integer('kickstarterId').notNullable().references('id').inTable('kickstarters').onDelete('CASCADE');
@@ -62,8 +46,7 @@ exports.up = async function(knex) {
     });
   }
   
-  const filesTableExists = await knex.schema.hasTable('kickstarterFiles');
-  if (!filesTableExists) {
+  if (!(await knex.schema.hasTable('kickstarterFiles'))) {
     await knex.schema.createTable('kickstarterFiles', (table) => {
       table.increments('id').primary();
       table.integer('kickstarterId').notNullable().references('id').inTable('kickstarters').onDelete('CASCADE');
