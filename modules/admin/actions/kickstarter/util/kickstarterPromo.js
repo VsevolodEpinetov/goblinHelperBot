@@ -42,7 +42,7 @@ message += `\n\nЧернокнижник готов к переговорам. �
 
     // Create keyboard with purchase button
     const keyboard = Markup.inlineKeyboard([
-      [Markup.button.callback('🛒 Купить', `purchaseKickstarter_${kickstarterId}`)]
+      [Markup.button.callback('Провести ритуал', `purchaseKickstarter_${kickstarterId}`)]
     ]);
 
     // Send message to topic

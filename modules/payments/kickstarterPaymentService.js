@@ -57,14 +57,15 @@ async function createKickstarterInvoice(ctx, kickstarterId, userId) {
       description += `💰 Цена: ${discountedPrice}⭐`;
     }
 
+    // Use shortened field names to stay under Telegram's 128-byte payload limit
     const payload = JSON.stringify({
-      type: 'kickstarter',
-      ksId: kickstarterId,
-      userId: Number(userId),
+      t: 'ks', // type: 'kickstarter'
+      id: kickstarterId, // ksId
+      u: Number(userId), // userId
       ts: Date.now(),
-      basePrice: basePrice,
-      discountedPrice: discountedPrice,
-      hasDiscount: hasYears
+      bp: basePrice, // basePrice
+      dp: discountedPrice, // discountedPrice
+      d: hasYears // hasDiscount
     });
 
     const provider_token = ''; // Empty for Telegram Stars
@@ -113,7 +114,8 @@ async function createKickstarterInvoice(ctx, kickstarterId, userId) {
         console.log(`💰 Payment Invoice: Kickstarter ${kickstarterId} (${discountedPrice} stars${hasYears ? `, ${discountPercent}% discount` : ''}) for user ${userId}`);
       }
 
-      await ctx.telegram.sendInvoice(ctx.chat.id, invoiceParams);
+      // Send invoice to user's DM instead of the group
+      await ctx.telegram.sendInvoice(Number(userId), invoiceParams);
 
       return {
         success: true
@@ -141,11 +143,17 @@ async function processKickstarterPayment(ctx, paymentData) {
   try {
     const payload = JSON.parse(paymentData.invoice_payload);
     
-    if (payload.type !== 'kickstarter') {
+    if (payload.t !== 'ks') {
       throw new Error('Invalid payment type');
     }
-
-    const { ksId, userId, basePrice, discountedPrice, hasDiscount } = payload;
+    
+    // Extract values using shortened field names
+    const { id: ksId, u: userId, bp: basePrice, dp: discountedPrice, d: hasDiscount } = payload;
+    
+    // Validate required fields
+    if (!ksId || !userId) {
+      throw new Error('Invalid payload: missing required fields');
+    }
 
     // Verify payment amount
     const kickstarterData = await getKickstarter(ksId);

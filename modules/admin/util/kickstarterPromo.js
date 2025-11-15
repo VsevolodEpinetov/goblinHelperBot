@@ -33,7 +33,7 @@ async function sendKickstarterPromo(ctx, kickstarterData, kickstarterId) {
     }
 
     const keyboard = Markup.inlineKeyboard([
-      [Markup.button.callback('🛒 Купить', `purchaseKickstarter_${kickstarterId}`)]
+      [Markup.button.callback('Провести ритуал', `purchaseKickstarter_${kickstarterId}`)]
     ]);
 
     // Send message

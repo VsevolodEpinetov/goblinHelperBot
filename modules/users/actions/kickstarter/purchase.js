@@ -87,8 +87,10 @@ module.exports = Composer.action(/^purchaseKickstarter_(\d+)$/, async (ctx) => {
         Markup.button.callback('❌ Отмена', 'userKickstarters')
       ]);
 
-      await ctx.answerCbQuery();
-      await ctx.replyWithHTML(message, {
+      await ctx.answerCbQuery('Открываю меню оплаты...');
+      // Send payment menu to user's DM instead of the group
+      await ctx.telegram.sendMessage(userId, message, {
+        parse_mode: 'HTML',
         ...Markup.inlineKeyboard(keyboard)
       });
     } else {
@@ -97,7 +99,8 @@ module.exports = Composer.action(/^purchaseKickstarter_(\d+)$/, async (ctx) => {
       const result = await createKickstarterInvoice(ctx, kickstarterId, userId);
       
       if (!result.success) {
-        await ctx.reply(`❌ Ошибка создания счёта: ${result.error}`);
+        // Send error message to user's DM
+        await ctx.telegram.sendMessage(userId, `❌ Ошибка создания счёта: ${result.error}`);
       }
     }
   } catch (error) {

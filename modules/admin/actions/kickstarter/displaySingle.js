@@ -28,7 +28,7 @@ module.exports = Composer.action(/^showKickstarter_/g, async (ctx) => {
   let buttons = [];
   if (!hasKickstarter) {
     buttons = [
-      [Markup.button.callback('Купить', `purchaseKickstarter_${projectID}`)],
+      [Markup.button.callback('Провести ритуал', `purchaseKickstarter_${projectID}`)],
       [Markup.button.callback('←', `searchResultKickstarter`)]
     ];
   } else {
