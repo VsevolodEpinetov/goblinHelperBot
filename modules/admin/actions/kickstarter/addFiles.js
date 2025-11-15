@@ -1,16 +1,16 @@
 const { Composer } = require("telegraf");
 const util = require('../../../util');
 
-module.exports = Composer.action('searchKickstarter', async (ctx) => {
+module.exports = Composer.action(/^addFilesKickstarter_(\d+)$/, async (ctx) => {
   // Check for super user
   if (!util.isSuperUser(ctx.callbackQuery.from.id)) {
-    await ctx.answerCbQuery('❌ Только супер-пользователи могут искать кикстартеры');
+    await ctx.answerCbQuery('❌ Только супер-пользователи могут добавлять файлы');
     return;
   }
 
   // Check for DM context
   if (ctx.chat.type !== 'private') {
-    await ctx.answerCbQuery('❌ Поиск доступен только в личных сообщениях');
+    await ctx.answerCbQuery('❌ Добавление файлов доступно только в личных сообщениях');
     return;
   }
 
@@ -21,5 +21,7 @@ module.exports = Composer.action('searchKickstarter', async (ctx) => {
     return;
   }
 
-  ctx.scene.enter('ADMIN_SCENE_SEARCH_KICKSTARTER');
+  const ksId = parseInt(ctx.match[1]);
+  ctx.session.editingKickstarter = { id: ksId, field: 'addFiles', files: [] };
+  ctx.scene.enter('ADMIN_SCENE_ADD_KICKSTARTER_FILES');
 });

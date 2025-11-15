@@ -1,5 +1,6 @@
 const { processSubscriptionPayment } = require('./subscriptionPaymentService');
 const { processOldMonthPayment } = require('./oldMonthPaymentService');
+const { processKickstarterPayment } = require('./kickstarterPaymentService');
 const { getUser } = require('../db/helpers');
 const { getUserMenu } = require('../users/menuSystem');
 const { Markup } = require('telegraf');
@@ -43,6 +44,14 @@ const handleSuccessfulPayment = async (ctx) => {
         await ctx.reply('❌ Ошибка обработки покупки старого месяца');
       } else {
         await ctx.reply(`✅ Доступ к месяцу ${result.period} выдан`);
+      }
+      return;
+    }
+    if (payload.type === 'kickstarter') {
+      const result = await processKickstarterPayment(ctx, paymentData);
+      if (!result.success) {
+        console.error('❌ Kickstarter payment failed:', result.error);
+        await ctx.reply('❌ <b>Ошибка обработки платежа</b>\n\nПлатеж получен, но произошла ошибка при активации доступа.\nОбратись к администрации для решения проблемы.', { parse_mode: 'HTML' });
       }
       return;
     }

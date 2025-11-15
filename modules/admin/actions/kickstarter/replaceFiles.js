@@ -4,24 +4,27 @@ const SETTINGS = require('../../../../settings.json');
 const { getUser } = require('../../../db/helpers');
 const { hasPermission } = require('../../../rbac');
 
-module.exports = Composer.action(/^replaceFilesKickstarter_/g, async (ctx) => {
-  // Check if user has super user role or admin permissions
+module.exports = Composer.action(/^replaceFilesKickstarter_(\d+)$/, async (ctx) => {
+  // Check for super user
   if (!util.isSuperUser(ctx.callbackQuery.from.id)) {
-    const userData = await getUser(ctx.callbackQuery.from.id);
-    if (!userData || !hasPermission(userData.roles, 'admin:content:kickstarters:manage')) {
-      await ctx.reply('❌ У вас нет прав для редактирования файлов кикстартеров');
-      return;
-    }
+    await ctx.answerCbQuery('❌ Только супер-пользователи могут заменять файлы');
+    return;
   }
+
+  // Check for DM context
+  if (ctx.chat.type !== 'private') {
+    await ctx.answerCbQuery('❌ Замена файлов доступна только в личных сообщениях');
+    return;
+  }
+
   try {
     await ctx.deleteMessage(ctx.callbackQuery.message.message_id);
   } catch (e) {
-    await ctx.replyWithHTML(`Из-за ограничений телеграма тебе нужно использовать /start ещё раз. Старое сообщение останется, можешь его удалить вручную, если мешает.`)
+    await ctx.replyWithHTML(`Из-за ограничений телеграма тебе нужно использовать /start ещё раз. Старое сообщение останется, можешь его удалить вручную, если мешает.`);
     return;
   }
-  const ksId = ctx.callbackQuery.data.split('_')[1];
-  ctx.session.editingKickstarter = {};
-  ctx.session.editingKickstarter.id = ksId;
-  ctx.session.editingKickstarter.files = [];
+
+  const ksId = parseInt(ctx.match[1]);
+  ctx.session.editingKickstarter = { id: ksId, field: 'replaceFiles', files: [] };
   ctx.scene.enter('ADMIN_SCENE_REPLACE_KICKSTARTER_FILES');
 });

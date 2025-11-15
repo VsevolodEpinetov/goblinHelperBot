@@ -9,27 +9,30 @@ module.exports = Composer.action(/^showKickstarterFromGoblin_/g, async (ctx) => 
   const projectData = await getKickstarter(projectID);
   const userId = ctx.callbackQuery.from.id;
   const userData = await getUser(userId);
-  const scrolls = (Math.floor(userData.purchases.groups.plus.length / 3) * 2 - userData.purchases.scrollsSpent) || 0;
-
-  ctx.userSession.purchasing = {
-    type: 'kickstarter',
-    userId: userId,
-    ksId: projectID,
-    name: projectData.name,
-    price: projectData.cost
-  }
-
-  let buttons = [
-    Markup.button.callback(t('kickstarters.single.buy'), `sendPayment`)
-  ];
-
-  if (scrolls > 0 && projectData.cost < 500) {
+  
+  // Check if user already has this kickstarter
+  const hasKickstarter = userData.purchases.kickstarters.includes(String(projectID));
+  
+  let buttons = [];
+  if (!hasKickstarter) {
+    // Check for usable scrolls
+    const { getUsableScrolls } = require('../../../util/scrolls');
+    const usableScrolls = await getUsableScrolls(userId, projectData.cost);
+    
+    if (usableScrolls.length > 0) {
+      // Show purchase button - purchase.js will handle scroll choice
+      buttons = [
+        [Markup.button.callback(t('kickstarters.single.buy'), `purchaseKickstarter_${projectID}`)]
+      ];
+    } else {
+      buttons = [
+        [Markup.button.callback(t('kickstarters.single.buy'), `purchaseKickstarter_${projectID}`)]
+      ];
+    }
+  } else {
     buttons = [
-      [
-        Markup.button.callback(t('kickstarters.single.buy'), `sendPayment`),
-        Markup.button.callback(t('kickstarters.single.buyForScroll'), `getKickstarterForScroll_${userId}_${projectID}`)
-      ]
-    ]
+      [Markup.button.callback('✅ Уже куплено', 'myKickstarters')]
+    ];
   }
 
   if (util.isSuperUser(ctx.callbackQuery.from.id)) {

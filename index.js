@@ -19,7 +19,6 @@ const sessionInstance = new RedisSession();
 const SESSIONS = require('./modules/sessions.js');
 bot.use(
   SESSIONS.GLOBAL_SESSION,
-  SESSIONS.CHANNELS_SESSION,
   SESSIONS.USER_SESSION,
   SESSIONS.CHAT_SESSION,
   SESSIONS.POLLS_SESSION
@@ -63,7 +62,6 @@ bot.use(require('./modules/middleware/userTracker'));
 // --------------------------------------------------------------------------
 
 bot.use(require('./modules/polls'));
-// bot.use(require('./modules/indexator-creator'));
 
 bot.use(require('./modules/common'));
 
@@ -224,7 +222,8 @@ bot.catch((error, ctx) => {
 bot.launch({ dropPendingUpdates: true })
   .then(() => {
     console.log(`✅ Bot online: @${bot.botInfo.username}`);
-
+    // Make bot available globally for scrolls notifications and other utilities
+    globalThis.__bot = bot;
   })
   .catch((error) => {
     console.log('❌ Failed to launch bot:', error);

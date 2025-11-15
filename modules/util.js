@@ -49,7 +49,6 @@ function splitMenu (menu, rowSize = 5) {
 }
 
 function getUserMessage (ctx, userData) {
-  const scrolls = Math.floor(userData.purchases.groups.plus.length / 3) * 2 - userData.purchases.scrollsSpent;
   const currentPeriodInfo = getCurrentPeriod(ctx);
   let purchasedCurrent = userData.purchases.groups.regular.indexOf(currentPeriodInfo.period) > -1;
   let notPurchasedPart = '';
@@ -63,38 +62,45 @@ function getUserMessage (ctx, userData) {
   return  `Привет, ${userData.first_name}!\n\n` + 
           `🗓 <b>Текущий месяц: </b>${currentPeriodInfo.display}\n`+
           notPurchasedPart +
-          `💰 <b>Баланс: </b>${userData.purchases.balance}₽\n` +
-          `📜 <b>Свитки: </b>${scrolls}\n\n`+
+          `💰 <b>Баланс: </b>${userData.purchases.balance}₽\n\n`+
           `<i>Выбери один из пунктов меню</i>`;
 }
 
 // Enhanced UX Functions
-function createStatusCard(ctx, userData) {
-  const scrolls = Math.floor(userData.purchases.groups.plus.length / 3) * 2 - userData.purchases.scrollsSpent;
+async function createStatusCard(ctx, userData) {
   const currentPeriodInfo = getCurrentPeriod(ctx);
   const hasRegular = userData.purchases.groups.regular.indexOf(currentPeriodInfo.period) > -1;
   const hasPlus = userData.purchases.groups.plus.indexOf(currentPeriodInfo.period) > -1;
   
+  // Get scrolls from new system
+  const { getUserScrolls: getUserScrollsFromDB } = require('./util/scrolls');
+  const scrolls = await getUserScrollsFromDB(userData.id);
+  const totalScrolls = scrolls.reduce((total, scroll) => total + scroll.amount, 0);
+  
   // Calculate trends and status
   const balanceTrend = userData.purchases.balance > 0 ? "💰" : "💸";
-  const scrollStatus = scrolls > 0 ? "📜" : "📜";
+  const scrollStatus = totalScrolls > 0 ? "📜" : "📜";
   const monthStatus = hasRegular ? (hasPlus ? "✅" : "✅") : "⚠️";
   
   return `🎯 <b>СТАТУС АККАУНТА</b>\n\n` +
          `${monthStatus} <b>Текущий месяц:</b> ${currentPeriodInfo.display}\n` +
          `${hasRegular ? (hasPlus ? '✅ Оплачено с ➕' : '✅ Оплачено без ➕') : '⚠️ НЕ ОПЛАЧЕН'}\n\n` +
          `${balanceTrend} <b>Баланс:</b> ${userData.purchases.balance}₽\n` +
-         `${scrollStatus} <b>Свитки:</b> ${scrolls}\n\n` +
+         `${scrollStatus} <b>Свитки:</b> ${totalScrolls}\n\n` +
          `📊 <b>Активные подписки:</b> ${userData.purchases.groups.regular.length}\n` +
          `⭐ <b>Плюс подписки:</b> ${userData.purchases.groups.plus.length}\n` +
          `🎁 <b>Кикстартеры:</b> ${userData.purchases.kickstarters.length}`;
 }
 
-function createSmartMenu(ctx, userData) {
+async function createSmartMenu(ctx, userData) {
   const currentPeriodInfo = getCurrentPeriod(ctx);
   const hasCurrentMonth = userData.purchases.groups.regular.indexOf(currentPeriodInfo.period) > -1;
   const hasPlus = userData.purchases.groups.plus.indexOf(currentPeriodInfo.period) > -1;
-  const scrolls = Math.floor(userData.purchases.groups.plus.length / 3) * 2 - userData.purchases.scrollsSpent;
+  
+  // Get scrolls from new system
+  const { getUserScrolls: getUserScrollsFromDB } = require('./util/scrolls');
+  const scrolls = await getUserScrollsFromDB(userData.id);
+  const totalScrolls = scrolls.reduce((total, scroll) => total + scroll.amount, 0);
   
   // Primary actions based on current status
   let primaryActions = [];
@@ -105,7 +111,7 @@ function createSmartMenu(ctx, userData) {
     primaryActions.push(['⭐ Добавить ➕ к месяцу', 'addPlusToCurrentMonth']);
   }
   
-  if (scrolls > 0) {
+  if (totalScrolls > 0) {
     primaryActions.push(['📜 Использовать свиток', 'useScroll']);
   }
   
@@ -139,9 +145,9 @@ function createSmartMenu(ctx, userData) {
   };
 }
 
-function createInteractiveMenu(ctx, userData) {
-  const smartMenu = createSmartMenu(ctx, userData);
-  const statusCard = createStatusCard(ctx, userData);
+async function createInteractiveMenu(ctx, userData) {
+  const smartMenu = await createSmartMenu(ctx, userData);
+  const statusCard = await createStatusCard(ctx, userData);
   
   // Build the complete menu structure
   let allButtons = [];
@@ -232,8 +238,7 @@ function getAdminUserMenu (userId) {
       Markup.button.callback(`Коллекции`, `showUserCollections_${userId}`),
     ],
     [
-      Markup.button.callback(`Баланс`, `changeBalance_${userId}`),
-      Markup.button.callback(`Свитки`, `changeScrollsSpent_${userId}`)
+      Markup.button.callback(`Баланс`, `changeBalance_${userId}`)
     ],
     [
       Markup.button.callback(`🏆 Выдать достижение`, `grantAchievement_${userId}`)
@@ -251,12 +256,10 @@ function getAdminUserMenu (userId) {
 }
 
 async function getUserScrolls (ctx, userId) {
-  const userData = await getUser(userId);
-  if (!userData) return 0;
-  
-  const scrolls = Math.floor(userData.purchases.groups.plus.length / 3) * 2 - userData.purchases.scrollsSpent;
-
-  return scrolls;
+  const { getUserScrolls: getUserScrollsFromDB } = require('./util/scrolls');
+  const scrolls = await getUserScrollsFromDB(userId);
+  // Return total count of all scrolls
+  return scrolls.reduce((total, scroll) => total + scroll.amount, 0);
 }
 
 async function getUserDescription (ctx, userId) {
@@ -272,7 +275,7 @@ async function getUserDescription (ctx, userId) {
                   `<b>Имя:</b> ${userData.first_name} ${userData.last_name}\n` + 
                   `\n` + 
                   `<b>Роли:</b> ${userData.roles.join(", ")}\n` + 
-                  `<b>Месяцы:</b> ${userData.purchases.groups.regular.length}+${userData.purchases.groups.plus.length}${userData.purchases.groups.plus.length > 0 ? ` (${scrolls}📜)` : ''}\n` + 
+                  `<b>Месяцы:</b> ${userData.purchases.groups.regular.length}+${userData.purchases.groups.plus.length}${scrolls > 0 ? ` (${scrolls}📜)` : ''}\n` + 
                   `<b>Кикстартеры:</b> ${userData.purchases.kickstarters.length}\n` + 
                   `<b>Коллекции:</b> ${userData.purchases.collections.length}\n` + 
                   `<b>Баланс:</b> ${userData.purchases.balance}`;

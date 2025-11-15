@@ -26,7 +26,6 @@ async function getUser(userId) {
 		roles: roles.map(r => r.role),
 		purchases: {
 			balance: purchases?.balance || 0,
-			scrollsSpent: purchases?.scrollsSpent || 0,
 			groups: {
 				regular: regularGroups.map(g => g.period),
 				plus: plusGroups.map(g => g.period)
@@ -50,7 +49,6 @@ async function getAllUsers() {
 			roles: [],
 			purchases: { 
 				balance: 0, 
-				scrollsSpent: 0, 
 				groups: { regular: [], plus: [] }, 
 				kickstarters: [], 
 				collections: [] 
@@ -60,7 +58,7 @@ async function getAllUsers() {
 
 	// Load additional data in parallel
 	const [purchases, roles, groups, kickstarters] = await Promise.all([
-		knex('userPurchases').select('userId', 'balance', 'scrollsSpent'),
+		knex('userPurchases').select('userId', 'balance'),
 		knex('userRoles').select('userId', 'role'),
 		knex('userGroups').select('userId', 'period', 'type'),
 		knex('userKickstarters').select('userId', 'kickstarterId')
@@ -70,7 +68,6 @@ async function getAllUsers() {
 	for (const p of purchases) {
 		if (usersShape.list[p.userId]) {
 			usersShape.list[p.userId].purchases.balance = p.balance || 0;
-			usersShape.list[p.userId].purchases.scrollsSpent = p.scrollsSpent || 0;
 		}
 	}
 
@@ -117,11 +114,10 @@ async function updateUser(userId, userData) {
 			await trx('userPurchases')
 				.insert({
 					userId: userId,
-					balance: userData.purchases.balance || 0,
-					scrollsSpent: userData.purchases.scrollsSpent || 0
+					balance: userData.purchases.balance || 0
 				})
 				.onConflict('userId')
-				.merge(['balance', 'scrollsSpent']);
+				.merge(['balance']);
 
 			// Update roles (replace all)
 			await trx('userRoles').where('userId', userId).del();
@@ -418,6 +414,40 @@ async function getAllKickstartersWithPrices() {
 	return kickstarters;
 }
 
+// Kickstarter promo messages functions
+async function saveKickstarterPromoMessage(kickstarterId, messageId, chatId, topicId = null) {
+	await knex('kickstarterPromoMessages').insert({
+		kickstarterId: Number(kickstarterId),
+		messageId: Number(messageId),
+		chatId: Number(chatId),
+		topicId: topicId ? Number(topicId) : null
+	});
+}
+
+async function getKickstarterPromoMessages(kickstarterId) {
+	return await knex('kickstarterPromoMessages')
+		.where('kickstarterId', Number(kickstarterId))
+		.select('*')
+		.orderBy('createdAt', 'desc');
+}
+
+async function updateKickstarterPromoMessage(id, messageId, chatId, topicId = null) {
+	await knex('kickstarterPromoMessages')
+		.where('id', Number(id))
+		.update({
+			messageId: Number(messageId),
+			chatId: Number(chatId),
+			topicId: topicId ? Number(topicId) : null,
+			updatedAt: knex.fn.now()
+		});
+}
+
+async function deleteKickstarterPromoMessage(id) {
+	await knex('kickstarterPromoMessages')
+		.where('id', Number(id))
+		.del();
+}
+
 module.exports = {
 	getUser,
 	getAllUsers,
@@ -438,5 +468,9 @@ module.exports = {
 	addUserKickstarter,
 	hasUserPurchasedKickstarter,
 	getKickstarter,
+	saveKickstarterPromoMessage,
+	getKickstarterPromoMessages,
+	updateKickstarterPromoMessage,
+	deleteKickstarterPromoMessage,
 	knex
 };

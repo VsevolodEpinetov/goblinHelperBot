@@ -1,6 +1,5 @@
 const { Composer, Markup } = require("telegraf");
 const { getUser } = require('../../../db/helpers');
-const { t } = require('../../../../modules/i18n');
 
 module.exports = Composer.action('userKickstarters', async (ctx) => {
   try { await ctx.answerCbQuery(); } catch {}
@@ -8,24 +7,36 @@ module.exports = Composer.action('userKickstarters', async (ctx) => {
   try {
     const userData = await getUser(ctx.from.id);
     if (!userData) {
-      await ctx.editMessageText(t('kickstarters.menu.errors.userNotFound'), {
+      await ctx.editMessageText('❌ <b>Лицо не найдено в хрониках</b>\n\nДанные отсутствуют.', {
         parse_mode: 'HTML',
-        ...Markup.inlineKeyboard([[Markup.button.callback(t('kickstarters.menu.buttons.back'), 'refreshUserStatus')]])
+        ...Markup.inlineKeyboard([[Markup.button.callback('🔙 Назад', 'refreshUserStatus')]])
       });
       return;
     }
 
     const purchases = userData.purchases || {};
-    const scrolls = Math.floor((purchases.groups?.plus?.length || 0) / 3) * 2 - (purchases.scrollsSpent || 0);
     const purchasedKickstarters = purchases.kickstarters?.length || 0;
-    const availableKickstarters = 5; // Example number
     
-    const kickstarterMessage = `${t('kickstarters.menu.title')}\n\n` +
-      `${t('kickstarters.menu.abilities', { scrolls, purchased: purchasedKickstarters, available: availableKickstarters })}\n\n` +
-      `${t('kickstarters.menu.how')}\n\n` +
-      `${t('kickstarters.menu.whatIncluded')}\n\n` +
-      `📊 <b>Рекомендации:</b>\n` +
-      `${scrolls > 0 ? t('kickstarters.menu.recommend.canBuy') : t('kickstarters.menu.recommend.noScrolls')}`;
+    // Get scrolls from new system
+    const { getUserScrolls } = require('../../../util/scrolls');
+    const userScrolls = await getUserScrolls(ctx.from.id);
+    const totalScrolls = userScrolls.reduce((total, scroll) => total + scroll.amount, 0);
+    
+    const kickstarterMessage = 
+    '😈 <b>СДЕЛКИ С ДЕМОНАМИ</b>\n\n' +
+    'Когда гоблины хотят заполучить нечто особое — они заключают сделки. ' +
+    'Редкие кикстартеры, запретные коллекции, свежие релизы — всё это добывается здесь, в тени, по особым правилам.\n\n' +
+    '📜 <b>Твоя книга сделок:</b>\n' +
+    `• Заключено сделок: <b>${purchasedKickstarters}</b>\n` +
+    `• Свитков для новых сделок: <b>${totalScrolls}</b>\n\n` +
+    '🕯 <b>О свитках:</b>\n' +
+    'Свитки можно использовать для покупки кикстартеров вместо звёзд.\n\n' +
+    '💡 <b>Как это работает:</b>\n' +
+    '• Сделки открывают доступ к уникальным проектам\n' +
+    '• Некоторые приносят ранние файлы и материалы\n' +
+    '• А иные — целые кикстартеры, выкупленные ордой\n\n' +
+    '⚠️ <i>Не заключай сделку, если не готов. Демоны любят торговаться, но не прощают слабых.</i>';
+    
 
     const kickstarterKeyboard = [];
     
@@ -37,7 +48,7 @@ module.exports = Composer.action('userKickstarters', async (ctx) => {
     
     // Single back button
     kickstarterKeyboard.push([
-      Markup.button.callback(t('kickstarters.menu.buttons.back'), 'refreshUserStatus')
+      Markup.button.callback('🔙 Назад', 'refreshUserStatus')
     ]);
 
     await ctx.editMessageText(kickstarterMessage, {
@@ -47,9 +58,9 @@ module.exports = Composer.action('userKickstarters', async (ctx) => {
     
   } catch (error) {
     console.error('Error in userKickstarters:', error);
-    await ctx.editMessageText(t('kickstarters.menu.errors.generic'), {
+    await ctx.editMessageText('❌ <b>Произошла ошибка</b>\n\nПопробуй ещё раз позже.', {
       parse_mode: 'HTML',
-      ...Markup.inlineKeyboard([[Markup.button.callback(t('kickstarters.menu.buttons.back'), 'refreshUserStatus')]])
+      ...Markup.inlineKeyboard([[Markup.button.callback('🔙 Назад', 'refreshUserStatus')]])
     });
   }
 });

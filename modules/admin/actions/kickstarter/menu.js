@@ -1,47 +1,61 @@
 const { Composer, Markup } = require("telegraf");
 const util = require('../../../util');
 const SETTINGS = require('../../../../settings.json');
-const { getKickstarters, getUser } = require('../../../db/helpers');
-const { hasPermission } = require('../../../rbac');
+const { getKickstarters } = require('../../../db/helpers');
+const knex = require('../../../db/knex');
 
 module.exports = Composer.action('adminKickstarters', async (ctx) => {
-  // Check if user has super user role or admin permissions
+  // Check for super user
   if (!util.isSuperUser(ctx.callbackQuery.from.id)) {
-    const userData = await getUser(ctx.callbackQuery.from.id);
-    if (!userData || !hasPermission(userData.roles, 'admin:content:kickstarters:manage')) {
-      await ctx.reply('❌ У вас нет прав для управления кикстартерами');
-      return;
-    }
+    await ctx.answerCbQuery('❌ Только супер-пользователи могут управлять кикстартерами');
+    return;
   }
 
-  const kickstartersData = await getKickstarters();
+  // Check for DM context
+  if (ctx.chat.type !== 'private') {
+    await ctx.answerCbQuery('❌ Управление кикстартерами доступно только в личных сообщениях');
+    return;
+  }
 
-  if (!ctx.callbackQuery.message.photo) {
-    await ctx.editMessageText(`Меню работы с кикстартерами\n\nВсего кикстартеров в базе: ${kickstartersData.list.length}`, {
-      ...Markup.inlineKeyboard([
-        [
-          Markup.button.callback('+', 'adminAddKickstarter'),
-          Markup.button.callback('🔍', 'searchKickstarter'),
-          Markup.button.callback('✏️', 'adminEditKickstarter')
-        ],
-        [
-          Markup.button.callback('←', 'userMenu')
-        ]
-      ])
-    })
-  } else {
-    await ctx.deleteMessage();
-    await ctx.replyWithHTML(`Меню работы с кикстартерами\n\nВсего кикстартеров в базе: ${kickstartersData.list.length}`, {
-      ...Markup.inlineKeyboard([
-        [
-          Markup.button.callback('+', 'adminAddKickstarter'),
-          Markup.button.callback('🔍', 'searchKickstarter'),
-          Markup.button.callback('✏️', 'adminEditKickstarter')
-        ],
-        [
-          Markup.button.callback('←', 'userMenu')
-        ]
-      ])
-    })
+  try {
+    const kickstartersData = await getKickstarters();
+    
+    // Get stats
+    const totalKickstarters = kickstartersData.list.length;
+    const promoCount = await knex('kickstarterPromoMessages')
+      .countDistinct('kickstarterId as count')
+      .first();
+    const activePromos = promoCount?.count || 0;
+
+    const statsMessage = 
+      `📊 <b>Управление кикстартерами</b>\n\n` +
+      `📦 Всего кикстартеров: <b>${totalKickstarters}</b>\n` +
+      `📢 Активных промо: <b>${activePromos}</b>\n\n` +
+      `Выбери действие:`;
+
+    const keyboard = [
+      [
+        Markup.button.callback('➕ Добавить новый', 'adminAddKickstarter'),
+        Markup.button.callback('🔍 Поиск', 'searchKickstarter')
+      ],
+      [
+        Markup.button.callback('🔙 Назад', 'userMenu')
+      ]
+    ];
+
+    if (!ctx.callbackQuery.message.photo) {
+      await ctx.editMessageText(statsMessage, {
+        parse_mode: 'HTML',
+        ...Markup.inlineKeyboard(keyboard)
+      });
+    } else {
+      await ctx.deleteMessage();
+      await ctx.replyWithHTML(statsMessage, {
+        ...Markup.inlineKeyboard(keyboard)
+      });
+    }
+  } catch (error) {
+    console.error('Error in adminKickstarters menu:', error);
+    await ctx.answerCbQuery('❌ Ошибка при загрузке данных');
   }
 });

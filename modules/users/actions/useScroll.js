@@ -6,22 +6,31 @@ module.exports = Composer.action('useScroll', async (ctx) => {
   const userData = await getUser(ctx.callbackQuery.from.id);
   if (!userData) return;
 
-  const scrolls = Math.floor(userData.purchases.groups.plus.length / 3) * 2 - userData.purchases.scrollsSpent;
+  // Get scrolls from new system
+  const { getUserScrolls } = require('../../util/scrolls');
+  const userScrolls = await getUserScrolls(ctx.callbackQuery.from.id);
+  const totalScrolls = userScrolls.reduce((total, scroll) => total + scroll.amount, 0);
   
-  if (scrolls <= 0) {
+  if (totalScrolls <= 0) {
     await ctx.answerCbQuery('❌ У вас нет доступных свитков!');
     return;
   }
 
+  let scrollsList = '';
+  if (userScrolls.length > 0) {
+    scrollsList = userScrolls.map(s => `• ${s.name}: ${s.amount} шт.`).join('\n');
+  }
+
   const scrollMessage = `📜 <b>ИСПОЛЬЗОВАНИЕ СВИТКА</b>\n\n` +
-    `📜 <b>Доступно свитков:</b> ${scrolls}\n\n` +
+    `📜 <b>Доступно свитков:</b> ${totalScrolls}\n\n` +
+    `${scrollsList ? `<b>Твои свитки:</b>\n${scrollsList}\n\n` : ''}` +
     `🚀 <b>Что можно купить за свиток:</b>\n` +
     `• <b>Кикстартер проект</b> - любой доступный проект\n` +
     `• <b>Эксклюзивный контент</b> - специальные материалы\n` +
     `• <b>Ранний доступ</b> - приоритет к новым релизам\n` +
     `• <b>Специальные предложения</b> - уникальные возможности\n\n` +
     `💡 <b>Как получить больше свитков:</b>\n` +
-    `Покупайте ➕ подписки! За каждые 3 месяца ➕ вы получаете 2 свитка.`;
+    `Свитки выдаются администрацией за различные достижения и активность.`;
 
   const scrollKeyboard = [
     [

@@ -1,35 +1,36 @@
 const { Composer, Markup } = require("telegraf");
 const util = require('../../../util');
-const SETTINGS = require('../../../../settings.json');
-const { getUser } = require('../../../db/helpers');
-const { hasPermission } = require('../../../rbac');
 
 module.exports = Composer.action('adminAddKickstarter', async (ctx) => {
-  // Check if user has super user role or admin permissions
+  // Check for super user
   if (!util.isSuperUser(ctx.callbackQuery.from.id)) {
-    const userData = await getUser(ctx.callbackQuery.from.id);
-    if (!userData || !hasPermission(userData.roles, 'admin:content:kickstarters:manage')) {
-      await ctx.reply('❌ У вас нет прав для добавления кикстартеров');
-      return;
-    }
+    await ctx.answerCbQuery('❌ Только супер-пользователи могут добавлять кикстартеры');
+    return;
+  }
+
+  // Check for DM context
+  if (ctx.chat.type !== 'private') {
+    await ctx.answerCbQuery('❌ Добавление кикстартеров доступно только в личных сообщениях');
+    return;
   }
 
   ctx.session.kickstarter = {
     name: '',
     creator: '',
-    link: [],
+    link: '',
     files: [],
     pledgeCost: 0,
     cost: 0,
-    tags: [],
     photos: [],
     pledgeName: ''
-  }
+  };
+
   try {
     await ctx.deleteMessage(ctx.callbackQuery.message.message_id);
   } catch (e) {
-    await ctx.replyWithHTML(`Из-за ограничений телеграма тебе нужно использовать /start ещё раз. Старое сообщение останется, можешь его удалить вручную, если мешает.`)
+    await ctx.replyWithHTML(`Из-за ограничений телеграма тебе нужно использовать /start ещё раз. Старое сообщение останется, можешь его удалить вручную, если мешает.`);
     return;
   }
+
   ctx.scene.enter('ADMIN_SCENE_ADD_KICKSTARTER_LINK');
 });

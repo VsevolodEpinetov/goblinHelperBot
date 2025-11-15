@@ -1,87 +1,120 @@
 const { Scenes, Markup } = require("telegraf");
-const SETTINGS = require('../../../../settings.json');
-const { splitMenu, isSuperUser } = require("../../../util");
-const { getKickstarters } = require('../../../db/helpers');
+const util = require('../../../util');
+const knex = require('../../../db/knex');
 
-const searchKickstarterString = new Scenes.BaseScene('SCENE_SEARCH_STRING');
+const searchKickstarterString = new Scenes.BaseScene('ADMIN_SCENE_SEARCH_KICKSTARTER');
 
 searchKickstarterString.enter(async (ctx) => {
-  await ctx.replyWithHTML(`Пришли <b>строку</b> не менее 4 символов, по которой будет идти поиск проекта.\n\n<i>Поиск идёт по полям:\n— Название\n— Автор\n— Теги (мои)\n— Ссылка на проект</i>`).then(nctx => {
-    ctx.session.toRemove = nctx.message_id;
-    ctx.session.chatID = nctx.chat.id;
-  });
+  if (!util.isSuperUser(ctx.from.id) || ctx.chat.type !== 'private') {
+    await ctx.reply('❌ Доступ запрещён');
+    return ctx.scene.leave();
+  }
+
+  const message = await ctx.replyWithHTML(
+    `Пришли <b>строку</b> для поиска кикстартера.\n\n` +
+    `<i>Поиск идёт по полям:\n` +
+    `— Название пледжа\n` +
+    `— Ссылка на проект\n` +
+    `— Автор</i>`,
+    Markup.inlineKeyboard([
+      [Markup.button.callback('❌ Отмена', 'cancelKickstarterSearch')]
+    ])
+  );
+  ctx.session.toRemove = message.message_id;
+  ctx.session.chatID = message.chat.id;
+});
+
+searchKickstarterString.action('cancelKickstarterSearch', async (ctx) => {
+  await ctx.answerCbQuery('Отменено');
+  await ctx.scene.leave();
+  await ctx.reply('❌ Поиск отменён');
 });
 
 searchKickstarterString.on('text', async (ctx) => {
-  const searchString = ctx.message.text.toLowerCase();
-  if (ctx.message.text.length < 4) {
-    await ctx.replyWithHTML(`Минимум 4 символа. Пришли новую <b>строку</b>`).then(nctx => {
-      ctx.session.toRemove = nctx.message_id;
-      ctx.session.chatID = nctx.chat.id;
-    });
-    return;
+  if (!util.isSuperUser(ctx.from.id) || ctx.chat.type !== 'private') {
+    await ctx.reply('❌ Доступ запрещён');
+    return ctx.scene.leave();
   }
 
-  let results = [];
+  const searchString = ctx.message.text.toLowerCase().trim();
+  
+  if (searchString.length < 2) {
+    await ctx.reply('❌ Минимум 2 символа для поиска');
+    return;
+  }
 
   await ctx.deleteMessage(ctx.message.message_id);
   await ctx.deleteMessage(ctx.session.toRemove);
 
-  const kickstartersData = await getKickstarters();
+  try {
+    // Search in database: pledgeName, link, creator
+    const kickstarters = await knex('kickstarters')
+      .select('id', 'name', 'creator', 'pledgeName', 'link')
+      .where((builder) => {
+        builder
+          .whereRaw('LOWER(??) LIKE ?', ['pledgeName', `%${searchString}%`])
+          .orWhereRaw('LOWER(??) LIKE ?', ['link', `%${searchString}%`])
+          .orWhereRaw('LOWER(??) LIKE ?', ['creator', `%${searchString}%`]);
+      })
+      .orderBy('id', 'desc');
 
-  kickstartersData.list.forEach((project, id) => {
-    for (const key in project) {
-      if (results.indexOf(id) < 0) {
-        if (typeof project[key] == 'object') {
-          project[key].forEach(d => {
-            if (d.toLowerCase().indexOf(searchString) > -1 && results.indexOf(id) < 0) {
-              results.push(id);
-            }
-          })
-        } else {
-          if (project[key].toLowerCase().indexOf(searchString) > -1 && results.indexOf(id) < 0) {
-            results.push(id);
-          }
-        }
-      }
+    if (kickstarters.length === 0) {
+      await ctx.replyWithHTML(
+        `❌ Не найдено кикстартеров по запросу: <b>${ctx.message.text}</b>`,
+        Markup.inlineKeyboard([
+          [Markup.button.callback('🔍 Поиск снова', 'searchKickstarter')],
+          [Markup.button.callback('🔙 Назад', 'adminKickstarters')]
+        ])
+      );
+      return ctx.scene.leave();
     }
-  });
 
-  let message = `Не было найдено ни одного кикстартера, отправить запрос?`;
-  let menu = [
-    Markup.button.callback('Отправить запрос', `sendRequest`),
-    Markup.button.callback('Не надо', `cancel`)
-  ]
+    // Store results in session
+    ctx.session.searchResults = kickstarters.map(ks => ks.id);
 
-  ctx.userSession.results = results;
+    // Build message with results (handle Telegram 4096 char limit)
+    let message = `🔍 <b>Найдено кикстартеров:</b> ${kickstarters.length}\n\n`;
+    const buttons = [];
 
-  if (results.length > 0) {
-    message = `Найдено ${results.length} проектов\n\n`;
-    menu = [];
-    results.forEach((ksID, id) => {
-      message += `${id + 1}. ${kickstartersData.list[ksID].creator} - ${kickstartersData.list[ksID].name}\n`
-      menu.push(Markup.button.callback(id + 1, `showKickstarter_${id}`))
-    })
+    kickstarters.forEach((ks, index) => {
+      const line = `${index + 1}. ${ks.name} - ${ks.creator}\n`;
+      if (message.length + line.length > 4000) {
+        // Split message if too long
+        const tempMessage = message;
+        message = line;
+        // Send previous part
+        ctx.replyWithHTML(tempMessage);
+      } else {
+        message += line;
+      }
+      buttons.push(Markup.button.callback(String(index + 1), `adminSelectKickstarter_${index}`));
+    });
 
-    message += `\nКакой проект вывести?`
+    message += `\nВыбери кикстартер:`;
+
+    // Split buttons into rows of 5
+    const buttonRows = [];
+    for (let i = 0; i < buttons.length; i += 5) {
+      buttonRows.push(buttons.slice(i, i + 5));
+    }
+
+    await ctx.replyWithHTML(
+      message,
+      Markup.inlineKeyboard([
+        ...buttonRows,
+        [
+          Markup.button.callback('🔍 Поиск снова', 'searchKickstarter'),
+          Markup.button.callback('🔙 Назад', 'adminKickstarters')
+        ]
+      ])
+    );
+
+    await ctx.scene.leave();
+  } catch (error) {
+    console.error('Error searching kickstarters:', error);
+    await ctx.reply('❌ Ошибка при поиске');
+    await ctx.scene.leave();
   }
-
-  let bottomButtonAction = isSuperUser(ctx.message.from.id) ? 'adminKickstarters' : 'userKickstarters';
-
-  menu = splitMenu(menu, 6);
-
-  ctx.replyWithHTML(message, {
-    ...Markup.inlineKeyboard([
-      ...menu,
-      [
-        Markup.button.callback('←', bottomButtonAction),
-        Markup.button.callback('🔍', 'searchKickstarter')
-      ]
-    ])
-  })
-
-  ctx.scene.leave();
-
 });
 
 module.exports = searchKickstarterString;

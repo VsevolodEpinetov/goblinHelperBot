@@ -103,6 +103,11 @@ composer.on('message', async (ctx, next) => {
         await processOldMonthPayment(ctx, sp);
         return; // prevent legacy handler
       }
+      if (parsed && parsed.type === 'kickstarter') {
+        const { processKickstarterPayment } = require('./kickstarterPaymentService');
+        await processKickstarterPayment(ctx, sp);
+        return; // prevent legacy handler
+      }
     }
   } catch (e) {
     console.log('stars.js: JSON payload parse/routing error, falling back to legacy flow', e.message);

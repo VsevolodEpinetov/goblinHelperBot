@@ -68,6 +68,11 @@ const enhancedActionPaths = [
   './actions/oldMonthsBuyCompat',
   './actions/months/menu',
   './actions/kickstarter/menu',
+  './actions/kickstarter/myKickstarters',
+  './actions/kickstarter/browseKickstarters',
+  './actions/kickstarter/purchase',
+  './actions/kickstarter/purchaseWithScroll',
+  './actions/kickstarter/purchaseWithStars',
   // Raid management actions
   './actions/userCreatedRaids',
   './actions/userParticipatedRaids',

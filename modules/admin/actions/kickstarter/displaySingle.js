@@ -22,31 +22,20 @@ module.exports = Composer.action(/^showKickstarter_/g, async (ctx) => {
     return;
   }
   
-  const scrolls = (Math.floor(userData.purchases.groups.plus.length / 3) * 2 - userData.purchases.scrollsSpent) || 0;
-
-  ctx.userSession.purchasing = {
-    type: 'kickstarter',
-    userId: userId,
-    ksId: projectID,
-    name: projectData.name,
-    price: projectData.cost
-  }
-
-  let buttons = [
-    Markup.button.callback('Купить', `sendPayment`),
-    Markup.button.callback('←', `searchResultKickstarter`),
-  ];
-
-  if (scrolls > 0 && projectData.cost < 500) {
+  // Check if user already has this kickstarter
+  const hasKickstarter = userData.purchases.kickstarters.includes(String(projectID));
+  
+  let buttons = [];
+  if (!hasKickstarter) {
     buttons = [
-      [
-        Markup.button.callback('Купить', `sendPayment`),
-        Markup.button.callback(`Купить за 📜`, `getKickstarterForScroll_${userId}_${projectID}`)
-      ],
-      [
-        Markup.button.callback('←', `searchResultKickstarter`)
-      ]
-    ]
+      [Markup.button.callback('Купить', `purchaseKickstarter_${projectID}`)],
+      [Markup.button.callback('←', `searchResultKickstarter`)]
+    ];
+  } else {
+    buttons = [
+      [Markup.button.callback('✅ Уже куплено', 'userKickstarters')],
+      [Markup.button.callback('←', `searchResultKickstarter`)]
+    ];
   }
 
   if (util.isSuperUser(ctx.callbackQuery.from.id)) {

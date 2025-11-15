@@ -1,4 +1,4 @@
-let GLOBAL_SESSION, CHANNELS_SESSION, USER_SESSION, CHAT_SESSION, POLLS_SESSION;
+let GLOBAL_SESSION, USER_SESSION, CHAT_SESSION, POLLS_SESSION;
 
 const useRedis = process.env.USE_REDIS_SESSIONS !== 'false';
 
@@ -13,11 +13,6 @@ if (useRedis) {
   // Lots session removed - replaced with raids
 
   // months, settings, users, kickstarters sessions removed - now using PostgreSQL
-
-  const channelsSession = new RedisSession({
-    property: 'channelsSession',
-    getSessionKey: () => { return "channels" }
-  })
 
   const polls = new RedisSession({
     property: 'polls',
@@ -35,7 +30,6 @@ if (useRedis) {
   })
 
   GLOBAL_SESSION = globalSession;
-  CHANNELS_SESSION = channelsSession;
   USER_SESSION = userSession;
   CHAT_SESSION = chatSession;
   POLLS_SESSION = polls;
@@ -48,7 +42,6 @@ if (useRedis) {
   }
 
   GLOBAL_SESSION = memorySession('globalSession');
-  CHANNELS_SESSION = memorySession('channelsSession');
   USER_SESSION = memorySession('userSession');
   CHAT_SESSION = memorySession('chatSession');
   POLLS_SESSION = memorySession('polls');
@@ -65,7 +58,6 @@ if (useRedis) {
 
 module.exports = {
   GLOBAL_SESSION: GLOBAL_SESSION,
-  CHANNELS_SESSION: CHANNELS_SESSION,
   USER_SESSION: USER_SESSION,
   CHAT_SESSION: CHAT_SESSION,
   POLLS_SESSION: POLLS_SESSION
