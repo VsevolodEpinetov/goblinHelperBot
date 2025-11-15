@@ -358,15 +358,46 @@ async function addKickstarter(kickstarterData) {
 	const trx = await knex.transaction();
 	
 	try {
+		// Get max ID before insert to help identify the new record
+		const maxIdBefore = await trx('kickstarters').max('id as maxId').first();
+		const maxIdValue = maxIdBefore?.maxId || 0;
+		
 		// Insert main kickstarter record
-		const [kickstarterId] = await trx('kickstarters').insert({
+		// Note: Some PostgreSQL setups don't support .returning() properly
+		// So we insert and then query for the ID
+		await trx('kickstarters').insert({
 			name: kickstarterData.name,
 			creator: kickstarterData.creator,
 			link: kickstarterData.link,
 			cost: kickstarterData.cost,
 			pledgeName: kickstarterData.pledgeName,
 			pledgeCost: kickstarterData.pledgeCost
-		}).returning('id');
+		});
+		
+		// Query for the inserted record to get the ID
+		// First try to find by ID > maxId (should be the new record)
+		let inserted = await trx('kickstarters')
+			.where('id', '>', maxIdValue)
+			.where('name', kickstarterData.name)
+			.where('creator', kickstarterData.creator)
+			.orderBy('id', 'desc')
+			.first();
+		
+		// Fallback: if that doesn't work, just get the most recent matching record
+		if (!inserted || !inserted.id) {
+			inserted = await trx('kickstarters')
+				.where('name', kickstarterData.name)
+				.where('creator', kickstarterData.creator)
+				.where('link', kickstarterData.link || '')
+				.orderBy('id', 'desc')
+				.first();
+		}
+		
+		if (!inserted || !inserted.id) {
+			throw new Error('Failed to get kickstarter ID after insert');
+		}
+		
+		const kickstarterId = inserted.id;
 		
 		// Insert photos if any
 		if (kickstarterData.photos && kickstarterData.photos.length > 0) {
@@ -388,12 +419,12 @@ async function addKickstarter(kickstarterData) {
 			await trx('kickstarterFiles').insert(fileInserts);
 		}
 		
-	await trx.commit();
-	return kickstarterId;
-} catch (error) {
-	await trx.rollback();
-	throw error;
-}
+		await trx.commit();
+		return kickstarterId;
+	} catch (error) {
+		await trx.rollback();
+		throw error;
+	}
 }
 
 // Helper function to update kickstarter price
