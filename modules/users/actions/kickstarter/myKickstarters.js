@@ -24,9 +24,10 @@ module.exports = Composer.action('myKickstarters', async (ctx) => {
 
     if (purchasedKickstarters.length === 0) {
       await ctx.editMessageText(
-        '📚 <b>Мои кикстартеры</b>\n\n' +
-        'У тебя пока нет купленных кикстартеров.\n\n' +
-        'Используй кнопку "🔍 Найти новые" чтобы найти доступные проекты.',
+        '📚 <b>Твои сделки</b>\n\n' +
+        'В твоём гримуаре пока нет заключённых сделок.\n' +
+        'Чернокнижник ждёт, когда ты выберешь свою первую.\n\n' +
+        'Используй кнопку «🔍 Найти новые», чтобы увидеть доступные ритуалы.',
         {
           parse_mode: 'HTML',
           ...Markup.inlineKeyboard([
@@ -37,9 +38,10 @@ module.exports = Composer.action('myKickstarters', async (ctx) => {
       );
       return;
     }
+    
 
-    let message = `📚 <b>Мои кикстартеры</b>\n\n`;
-    message += `Всего куплено: <b>${purchasedKickstarters.length}</b>\n\n`;
+    let message = `📚 <b>Мои сделки</b>\n\n`;
+    message += `Всего проведено ритуалов: <b>${purchasedKickstarters.length}</b>\n\n`;
     
     const buttons = [];
     const maxButtons = 10; // Limit to prevent message overflow
@@ -58,9 +60,9 @@ module.exports = Composer.action('myKickstarters', async (ctx) => {
     });
 
     if (purchasedKickstarters.length > maxButtons) {
-      message += `\n<i>Показано ${maxButtons} из ${purchasedKickstarters.length}. Выбери кикстартер для получения файлов:</i>`;
+      message += `\n<i>Показано ${maxButtons} из ${purchasedKickstarters.length}. Выбери сделку для получения файлов:</i>`;
     } else {
-      message += `\n<i>Выбери кикстартер для получения файлов:</i>`;
+      message += `\n<i>Выбери сделку для получения файлов:</i>`;
     }
 
     buttons.push([

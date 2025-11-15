@@ -34,9 +34,9 @@ async function createKickstarterInvoice(ctx, kickstarterId, userId) {
                     (userInfo.first_name ? `${userInfo.first_name} ${userInfo.last_name || ''}`.trim() : `User ${userInfo.id}`);
 
     // Create invoice
-    const title = `Кикстартер: ${kickstarterData.name}`;
+    const title = `Ритуал: ${kickstarterData.name}`;
     let description = `${kickstarterData.name}\n\n`;
-    description += `Автор: ${kickstarterData.creator}\n`;
+    description += `Источник: ${kickstarterData.creator}\n`;
     if (kickstarterData.pledgeName) {
       description += `Пледж: ${kickstarterData.pledgeName}\n`;
     }

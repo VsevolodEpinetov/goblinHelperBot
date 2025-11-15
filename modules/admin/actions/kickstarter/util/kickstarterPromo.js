@@ -20,20 +20,25 @@ async function sendKickstarterPromo(ctx, kickstarterData, kickstarterId) {
       };
     }
 
-    // Build promo message
-    let message = `🚀 <b>Новый кикстартер доступен!</b>\n\n`;
-    message += `<b>${kickstarterData.name}</b>\n`;
-    message += `Автор: <b>${kickstarterData.creator}</b>\n`;
-    
-    if (kickstarterData.pledgeName) {
-      message += `Пледж: <b>${kickstarterData.pledgeName}</b>\n`;
-    }
-    
-    message += `\n💰 Цена: <b>${kickstarterData.cost}⭐</b>\n`;
-    
-    if (kickstarterData.link) {
-      message += `\n🔗 <a href="${kickstarterData.link}">Ссылка на проект</a>`;
-    }
+// Build promo message
+let message = `😈 <b>Новая сделка с демоном доступна</b>\n\n`;
+message += `<b>${kickstarterData.name}</b>\n`;
+message += `Источник силы: <b>${kickstarterData.creator}</b>\n`;
+
+if (kickstarterData.pledgeName) {
+  message += `Форма дара: <b>${kickstarterData.pledgeName}</b>\n`;
+}
+
+message += `\n💰 Цена сделки: <b>${kickstarterData.cost}⭐</b>\n`;
+message += `Для ритуала понадобится свиток подходящего Круга или оплата услуг Чернокнижника.\n`;
+
+if (kickstarterData.link) {
+  message += `\n🔗 <a href="${kickstarterData.link}">Посмотреть описание проекта</a>`;
+}
+
+message += `\n\nЧернокнижник готов к переговорам. Решайся сам, смертный.`;
+
+
 
     // Create keyboard with purchase button
     const keyboard = Markup.inlineKeyboard([

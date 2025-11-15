@@ -12,21 +12,21 @@ module.exports = Composer.action(/^purchaseKickstarterWithScroll_(\d+)_(.+)$/, a
     // Get kickstarter data
     const kickstarterData = await getKickstarter(kickstarterId);
     if (!kickstarterData) {
-      await ctx.answerCbQuery('❌ Кикстартер не найден');
+      await ctx.answerCbQuery('❌ Демон молчит. Эта сделка в свитках не значится.');
       return;
     }
 
     // Check if user already has this kickstarter
     const alreadyHas = await hasUserPurchasedKickstarter(userId, kickstarterId);
     if (alreadyHas) {
-      await ctx.answerCbQuery('✅ У тебя уже есть доступ к этому кикстартеру');
+      await ctx.answerCbQuery('🧐 Эта сделка уже в твоём гримуаре.');
       return;
     }
 
     // Remove scroll
     const scrollRemoved = await removeScrolls(userId, scrollId, 1, `Покупка кикстартера: ${kickstarterData.name}`);
     if (!scrollRemoved) {
-      await ctx.answerCbQuery('❌ Не удалось использовать свиток');
+      await ctx.answerCbQuery('❌ Печать Круга не раскрылась. Ритуал не состоялся.');
       return;
     }
 
@@ -35,7 +35,7 @@ module.exports = Composer.action(/^purchaseKickstarterWithScroll_(\d+)_(.+)$/, a
 
     // Send files to user
     if (kickstarterData.files && kickstarterData.files.length > 0) {
-      await ctx.answerCbQuery('Отправляю файлы...');
+      await ctx.answerCbQuery('Отправляю дары...');
       
       for (const fileId of kickstarterData.files) {
         try {
@@ -47,20 +47,20 @@ module.exports = Composer.action(/^purchaseKickstarterWithScroll_(\d+)_(.+)$/, a
     }
 
     // Send confirmation message
-    let message = `✅ <b>Покупка успешна!</b>\n\n`;
-    message += `Ты получил доступ к кикстартеру:\n`;
+    let message = `😈 <b>Сделка совершена</b>\n\n`;
+    message += `Чернокнижник завершил ритуал, и демон передал добычу по сделке:\n`;
     message += `<b>${kickstarterData.name}</b>\n`;
-    message += `Автор: <b>${kickstarterData.creator}</b>\n\n`;
+    message += `Источник силы: <b>${kickstarterData.creator}</b>\n\n`;
     
     if (kickstarterData.files && kickstarterData.files.length > 0) {
-      message += `📁 Файлы отправлены выше`;
+      message += `📁 Дары демона отправлены выше`;
     } else {
-      message += `📁 Файлы отсутствуют`;
+      message += `📁 Демон не оставил файлов (пока)`;
     }
 
     await ctx.replyWithHTML(message, {
       ...Markup.inlineKeyboard([
-        [Markup.button.callback('📚 Мои кикстартеры', 'userKickstarters')],
+        [Markup.button.callback('📚 Мои сделки', 'userKickstarters')],
         [Markup.button.callback('🏠 В начало', 'userMenu')]
       ])
     });

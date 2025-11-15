@@ -30,30 +30,32 @@ module.exports = Composer.action('browseKickstarters', async (ctx) => {
       }))
       .sort((a, b) => b.id - a.id); // Sort by ID descending (newest first)
 
-    if (availableKickstarters.length === 0) {
-      await ctx.editMessageText(
-        '🔍 <b>Доступные кикстартеры</b>\n\n' +
-        'Нет доступных кикстартеров для покупки.\n\n' +
-        'Все проекты уже в твоей коллекции!',
-        {
-          parse_mode: 'HTML',
-          ...Markup.inlineKeyboard([
-            [Markup.button.callback('📚 Мои кикстартеры', 'myKickstarters')],
-            [Markup.button.callback('🔙 Назад', 'userKickstarters')]
-          ])
-        }
-      );
-      return;
-    }
+      if (availableKickstarters.length === 0) {
+        await ctx.editMessageText(
+          '🔍 <b>Сделки с демонами</b>\n\n' +
+          'Все доступные сделки уже заключены.\n' +
+          'Демоны пока не предлагают ничего нового.\n\n' +
+          'Вся добыча уже лежит в твоём гримуаре.',
+          {
+            parse_mode: 'HTML',
+            ...Markup.inlineKeyboard([
+              [Markup.button.callback('📚 Мои сделки', 'myKickstarters')],
+              [Markup.button.callback('🔙 Назад', 'userKickstarters')]
+            ])
+          }
+        );
+        return;
+      }
+      
 
-    let message = `🔍 <b>Доступные кикстартеры</b>\n\n`;
-    message += `Найдено проектов: <b>${availableKickstarters.length}</b>\n\n`;
+    let message = `🔍 <b>Доступные сделки</b>\n\n`;
+    message += `Найдено сделок: <b>${availableKickstarters.length}</b>\n\n`;
     
     const buttons = [];
     const maxDisplay = 10; // Limit to prevent message overflow
     
     availableKickstarters.slice(0, maxDisplay).forEach((ks, index) => {
-      message += `${index + 1}. <b>${ks.name}</b>\n   Автор: ${ks.creator}\n   Цена: ${ks.cost}⭐\n\n`;
+      message += `${index + 1}. <b>${ks.name}</b>\n   Источник: ${ks.creator}\n   Цена: ${ks.cost}⭐\n\n`;
       buttons.push([
         Markup.button.callback(
           `${index + 1}. ${ks.name} - ${ks.cost}⭐`,
@@ -63,13 +65,13 @@ module.exports = Composer.action('browseKickstarters', async (ctx) => {
     });
 
     if (availableKickstarters.length > maxDisplay) {
-      message += `\n<i>Показано ${maxDisplay} из ${availableKickstarters.length}. Выбери проект для покупки:</i>`;
+      message += `\n<i>Показано ${maxDisplay} из ${availableKickstarters.length}. Выбери сделку для покупки:</i>`;
     } else {
-      message += `\n<i>Выбери проект для покупки:</i>`;
+      message += `\n<i>Выбери сделку для покупки:</i>`;
     }
 
     buttons.push([
-      Markup.button.callback('📚 Мои кикстартеры', 'myKickstarters'),
+      Markup.button.callback('📚 Мои сделки', 'myKickstarters'),
       Markup.button.callback('🔙 Назад', 'userKickstarters')
     ]);
 

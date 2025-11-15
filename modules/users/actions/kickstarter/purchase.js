@@ -11,14 +11,14 @@ module.exports = Composer.action(/^purchaseKickstarter_(\d+)$/, async (ctx) => {
     // Get kickstarter data
     const kickstarterData = await getKickstarter(kickstarterId);
     if (!kickstarterData) {
-      await ctx.answerCbQuery('❌ Кикстартер не найден');
+      await ctx.answerCbQuery('❌ Демон молчит. Эта сделка в свитках не значится.');
       return;
     }
 
     // Check if user already has this kickstarter
     const alreadyHas = await hasUserPurchasedKickstarter(userId, kickstarterId);
     if (alreadyHas) {
-      await ctx.answerCbQuery('✅ У тебя уже есть доступ к этому кикстартеру');
+      await ctx.answerCbQuery('🧐 Эта сделка уже в твоём гримуаре.');
       return;
     }
 
@@ -34,17 +34,20 @@ module.exports = Composer.action(/^purchaseKickstarter_(\d+)$/, async (ctx) => {
 
     if (usableScrolls.length > 0) {
       // User has scrolls - offer choice
-      let message = `🛒 <b>Покупка кикстартера</b>\n\n`;
+      let message = `😈 <b>Сделка с демоном</b>\n\n`;
       message += `<b>${kickstarterData.name}</b>\n`;
-      message += `Автор: <b>${kickstarterData.creator}</b>\n`;
-      message += `Цена: <b>${kickstarterData.cost}⭐</b>\n\n`;
-      message += `📜 У тебя есть свитки, которые можно использовать:\n\n`;
-
+      message += `Источник силы: <b>${kickstarterData.creator}</b>\n`;
+      message += `Цена ритуала: <b>${kickstarterData.cost}⭐</b>\n\n`;
+      
+      message += `📜 <b>Доступные свитки Кругов</b>\n`;
+      message += `Ты можешь заменить звёзды свитком достаточной силы:\n\n`;
+      
       usableScrolls.forEach((scroll, index) => {
-        message += `${index + 1}. <b>${scroll.scrollDef.name}</b> (${scroll.amount} шт.)\n`;
+        message += `${index + 1}. <b>${scroll.scrollDef.name}</b> — ${scroll.amount} шт.\n`;
       });
-
-      message += `\nВыбери способ оплаты:`;
+      
+      message += `\nВыбери, чем оплатить ритуал:`; 
+      
 
       const keyboard = [];
       

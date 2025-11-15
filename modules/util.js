@@ -89,7 +89,7 @@ async function createStatusCard(ctx, userData) {
          `${scrollStatus} <b>Свитки:</b> ${totalScrolls}\n\n` +
          `📊 <b>Активные подписки:</b> ${userData.purchases.groups.regular.length}\n` +
          `⭐ <b>Плюс подписки:</b> ${userData.purchases.groups.plus.length}\n` +
-         `🎁 <b>Кикстартеры:</b> ${userData.purchases.kickstarters.length}`;
+         `😈 <b>Сделки с демонами:</b> ${userData.purchases.kickstarters.length}`;
 }
 
 async function createSmartMenu(ctx, userData) {
@@ -118,7 +118,7 @@ async function createSmartMenu(ctx, userData) {
   // Always available actions
   const standardActions = [
     ['📅 Подписки', 'userMonths'],
-    ['🚀 Кикстартеры', 'userKickstarters'],
+    ['😈 Сделки с демонами', 'userKickstarters'],
     ['⚔️ Мои рейды', 'userRaids'],
     ['💰 Баланс и свитки', 'userBalanceScrolls'],
     ['📊 Статистика', 'userStats']

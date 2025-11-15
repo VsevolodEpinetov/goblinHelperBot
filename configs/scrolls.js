@@ -12,23 +12,23 @@ module.exports = {
   scrolls: [
     {
       id: 'common',
-      name: 'Обычный свиток',
-      priceThreshold: 500 // Can be used for items up to 500 stars
+      name: 'Свиток Малого Круга',
+      priceThreshold: 150 // Can be used for items up to 150 stars
     },
     {
       id: 'rare',
-      name: 'Редкий свиток',
-      priceThreshold: 1000 // Can be used for items up to 1000 stars
+      name: 'Свиток Срединного Круга',
+      priceThreshold: 300 // Can be used for items up to 300 stars
     },
     {
       id: 'epic',
-      name: 'Эпический свиток',
-      priceThreshold: 2000 // Can be used for items up to 2000 stars
+      name: 'Свиток Старшего Круга',
+      priceThreshold: 450 // Can be used for items up to 450 stars
     },
     {
       id: 'legendary',
-      name: 'Легендарный свиток',
-      priceThreshold: 5000 // Can be used for items up to 5000 stars
+      name: 'Свиток Безымянного Круга',
+      priceThreshold: 700 // Can be used for items up to 700 stars
     }
   ]
 };
