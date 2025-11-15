@@ -2,6 +2,7 @@ const { Composer, Markup } = require("telegraf");
 const { getKickstarter, getUser, hasUserPurchasedKickstarter } = require('../../../db/helpers');
 const { getUsableScrolls } = require('../../../util/scrolls');
 const { createKickstarterInvoice } = require('../../../payments/kickstarterPaymentService');
+const { hasYearsOfService, getAchievementMultiplier, YEARS_OF_SERVICE } = require('../../../loyalty/achievementsService');
 
 module.exports = Composer.action(/^purchaseKickstarter_(\d+)$/, async (ctx) => {
   try {
@@ -29,15 +30,28 @@ module.exports = Composer.action(/^purchaseKickstarter_(\d+)$/, async (ctx) => {
       return;
     }
 
-    // Check for usable scrolls
-    const usableScrolls = await getUsableScrolls(userId, kickstarterData.cost);
+    // Calculate price with achievement discounts
+    const hasYears = await hasYearsOfService(Number(userId));
+    const achievementMultiplier = hasYears ? getAchievementMultiplier(YEARS_OF_SERVICE) : 1.0;
+    const basePrice = kickstarterData.cost;
+    const discountedPrice = Math.round(basePrice * achievementMultiplier);
+    const discountPercent = hasYears ? Math.round((1 - achievementMultiplier) * 100) : 0;
+
+    // Check for usable scrolls (use discounted price for scroll threshold check)
+    const usableScrolls = await getUsableScrolls(userId, discountedPrice);
 
     if (usableScrolls.length > 0) {
       // User has scrolls - offer choice
       let message = `😈 <b>Сделка с демоном</b>\n\n`;
       message += `<b>${kickstarterData.name}</b>\n`;
       message += `Источник силы: <b>${kickstarterData.creator}</b>\n`;
-      message += `Цена ритуала: <b>${kickstarterData.cost}⭐</b>\n\n`;
+      
+      if (hasYears && discountPercent > 0) {
+        message += `Цена ритуала: ~~${basePrice}⭐~~ <b>${discountedPrice}⭐</b>\n`;
+        message += `🏅 Скидка «За выслугу лет»: −${discountPercent}%\n\n`;
+      } else {
+        message += `Цена ритуала: <b>${discountedPrice}⭐</b>\n\n`;
+      }
       
       message += `📜 <b>Доступные свитки Кругов</b>\n`;
       message += `Ты можешь заменить звёзды свитком достаточной силы:\n\n`;
@@ -61,9 +75,12 @@ module.exports = Composer.action(/^purchaseKickstarter_(\d+)$/, async (ctx) => {
         ]);
       });
 
-      // Add stars payment button
+      // Add stars payment button (show discounted price)
+      const priceLabel = hasYears && discountPercent > 0 
+        ? `⭐ Оплатить ${discountedPrice}⭐ (было ${basePrice}⭐)`
+        : `⭐ Оплатить ${discountedPrice}⭐`;
       keyboard.push([
-        Markup.button.callback(`⭐ Оплатить ${kickstarterData.cost}⭐`, `purchaseKickstarterWithStars_${kickstarterId}`)
+        Markup.button.callback(priceLabel, `purchaseKickstarterWithStars_${kickstarterId}`)
       ]);
 
       keyboard.push([

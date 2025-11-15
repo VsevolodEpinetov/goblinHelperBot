@@ -1,5 +1,6 @@
 const knex = require('../db/knex');
 const { getKickstarter, getUser, hasUserPurchasedKickstarter, addUserKickstarter } = require('../db/helpers');
+const { hasYearsOfService, getAchievementMultiplier, YEARS_OF_SERVICE } = require('../loyalty/achievementsService');
 const SETTINGS = require('../../settings.json');
 
 /**
@@ -33,6 +34,13 @@ async function createKickstarterInvoice(ctx, kickstarterId, userId) {
     const userName = userInfo.username ? `@${userInfo.username}` : 
                     (userInfo.first_name ? `${userInfo.first_name} ${userInfo.last_name || ''}`.trim() : `User ${userInfo.id}`);
 
+    // Apply achievement discounts
+    const hasYears = await hasYearsOfService(Number(userId));
+    const achievementMultiplier = hasYears ? getAchievementMultiplier(YEARS_OF_SERVICE) : 1.0;
+    const basePrice = kickstarterData.cost;
+    const discountedPrice = Math.round(basePrice * achievementMultiplier);
+    const discountPercent = hasYears ? Math.round((1 - achievementMultiplier) * 100) : 0;
+
     // Create invoice
     const title = `Ритуал: ${kickstarterData.name}`;
     let description = `${kickstarterData.name}\n\n`;
@@ -41,13 +49,22 @@ async function createKickstarterInvoice(ctx, kickstarterId, userId) {
       description += `Пледж: ${kickstarterData.pledgeName}\n`;
     }
     description += `\n👤 Пользователь: ${userName} (${userId})\n`;
-    description += `💰 Цена: ${kickstarterData.cost}⭐`;
+    
+    if (hasYears && discountPercent > 0) {
+      description += `💰 Цена: ~~${basePrice}⭐~~ <b>${discountedPrice}⭐</b>\n`;
+      description += `🏅 Скидка «За выслугу лет»: −${discountPercent}%`;
+    } else {
+      description += `💰 Цена: ${discountedPrice}⭐`;
+    }
 
     const payload = JSON.stringify({
       type: 'kickstarter',
       ksId: kickstarterId,
       userId: Number(userId),
-      ts: Date.now()
+      ts: Date.now(),
+      basePrice: basePrice,
+      discountedPrice: discountedPrice,
+      hasDiscount: hasYears
     });
 
     const provider_token = ''; // Empty for Telegram Stars
@@ -57,7 +74,7 @@ async function createKickstarterInvoice(ctx, kickstarterId, userId) {
     const prices = [
       {
         label: 'Кикстартер',
-        amount: kickstarterData.cost
+        amount: discountedPrice
       }
     ];
 
@@ -91,9 +108,9 @@ async function createKickstarterInvoice(ctx, kickstarterId, userId) {
 
       if (isTestMode) {
         invoiceParams.start_parameter = `test_ks_${kickstarterId}_${Date.now()}`;
-        console.log(`🧪 Test Payment: Kickstarter ${kickstarterId} for user ${userId}`);
+        console.log(`🧪 Test Payment: Kickstarter ${kickstarterId} for user ${userId} (${discountedPrice} stars${hasYears ? `, ${discountPercent}% discount` : ''})`);
       } else {
-        console.log(`💰 Payment Invoice: Kickstarter ${kickstarterId} (${kickstarterData.cost} stars) for user ${userId}`);
+        console.log(`💰 Payment Invoice: Kickstarter ${kickstarterId} (${discountedPrice} stars${hasYears ? `, ${discountPercent}% discount` : ''}) for user ${userId}`);
       }
 
       await ctx.telegram.sendInvoice(ctx.chat.id, invoiceParams);
@@ -128,7 +145,7 @@ async function processKickstarterPayment(ctx, paymentData) {
       throw new Error('Invalid payment type');
     }
 
-    const { ksId, userId } = payload;
+    const { ksId, userId, basePrice, discountedPrice, hasDiscount } = payload;
 
     // Verify payment amount
     const kickstarterData = await getKickstarter(ksId);
@@ -136,10 +153,24 @@ async function processKickstarterPayment(ctx, paymentData) {
       throw new Error('Kickstarter not found');
     }
 
-    if (paymentData.total_amount < kickstarterData.cost) {
+    // Calculate expected price (use discounted price from payload if available, otherwise recalculate)
+    let expectedPrice;
+    if (discountedPrice !== undefined) {
+      expectedPrice = discountedPrice;
+    } else {
+      // Fallback: recalculate discount if payload doesn't have it
+      const hasYears = await hasYearsOfService(Number(userId));
+      const achievementMultiplier = hasYears ? getAchievementMultiplier(YEARS_OF_SERVICE) : 1.0;
+      const basePriceToUse = basePrice || kickstarterData.cost;
+      expectedPrice = Math.round(basePriceToUse * achievementMultiplier);
+    }
+
+    if (paymentData.total_amount < expectedPrice) {
       console.error('Payment amount mismatch:', {
-        expected: kickstarterData.cost,
-        received: paymentData.total_amount
+        expected: expectedPrice,
+        received: paymentData.total_amount,
+        basePrice: basePrice || kickstarterData.cost,
+        hasDiscount: hasDiscount || false
       });
       throw new Error('Payment amount mismatch');
     }
