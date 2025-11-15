@@ -2,7 +2,7 @@ const { Scenes, Markup } = require("telegraf");
 const util = require('../../../util');
 const knex = require('../../../db/knex');
 const { addKickstarter } = require('../../../db/helpers');
-const { sendKickstarterPromo } = require('./util/kickstarterPromo');
+const { sendKickstarterPromo } = require('../../actions/kickstarter/util/kickstarterPromo');
 
 const currentStageName = 'ADMIN_SCENE_ADD_KICKSTARTER_FILES'
 

@@ -111,7 +111,7 @@ const resendPromo = Composer.action(/^resendKickstarterPromo_(\d+)$/, async (ctx
 
   const kickstarterId = parseInt(ctx.callbackQuery.data.split('_')[1]);
   const { getKickstarter } = require('../../../db/helpers');
-  const { sendKickstarterPromo } = require('../../scenes/kickstarters/util/kickstarterPromo');
+  const { sendKickstarterPromo } = require('./util/kickstarterPromo');
 
   await ctx.answerCbQuery('Отправляю промо...');
 

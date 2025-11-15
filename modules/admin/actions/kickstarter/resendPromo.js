@@ -1,7 +1,7 @@
 const { Composer, Markup } = require("telegraf");
 const util = require('../../../util');
 const { getKickstarter } = require('../../../db/helpers');
-const { sendKickstarterPromo } = require('../util/kickstarterPromo');
+const { sendKickstarterPromo } = require('./util/kickstarterPromo');
 
 module.exports = Composer.action(/^adminResendKickstarterPromo_(\d+)$/, async (ctx) => {
   // Check for super user
