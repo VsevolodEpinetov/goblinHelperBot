@@ -32,7 +32,8 @@ function getTierDisplayInfo(tier) {
 
 function computeXpFromSpending(totalUnits) {
   if (!totalUnits || totalUnits <= 0) return 0;
-  return Math.floor(XP_A * Math.pow(totalUnits, XP_B));
+  // New formula: 1.3 XP per star spent (simple linear formula)
+  return Math.floor(totalUnits * 1.3);
 }
 
 function computeDeltaXp(oldUnits, deltaUnits) {

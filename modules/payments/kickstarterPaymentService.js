@@ -196,6 +196,22 @@ async function processKickstarterPayment(ctx, paymentData) {
     // Grant kickstarter access
     await addUserKickstarter(userId, ksId);
 
+    // Grant XP for kickstarter purchase (1.3 XP per star spent)
+    try {
+      const { applyXpGain } = require('../loyalty/xpService');
+      // Calculate XP using the actual stars paid (1.3 XP per star via computeXpFromSpending)
+      const starsSpent = paymentData.total_amount;
+      await applyXpGain(Number(userId), starsSpent, 'spending_payment', {
+        kickstarterId: ksId,
+        kickstarterName: kickstarterData.name,
+        starsSpent: starsSpent,
+        description: `Kickstarter purchase: ${kickstarterData.name}`,
+        hasDiscount: hasDiscount || false
+      });
+    } catch (xpErr) {
+      console.error('⚠️ Loyalty XP apply error for kickstarter payment (non-fatal):', xpErr);
+    }
+
     // Send files to user
     if (kickstarterData.files && kickstarterData.files.length > 0) {
       for (const fileId of kickstarterData.files) {

@@ -65,12 +65,15 @@ handlers.action(/^raid_close_(\d+)$/, async (ctx) => {
 
       // Loyalty: grant XP on raid completion to creator and participants
       try {
-        const { applyDirectXp } = require('../../loyalty/xpService');
+        const { grantXp } = require('../../loyalty/rpgUtils');
+        const rpgConfig = require('../../../configs/rpg');
         const creatorId = raid.created_by;
-        await applyDirectXp(Number(creatorId), 75, 'raid_create', { raidId });
+        // Grant XP to creator (50 XP from config)
+        await grantXp(Number(creatorId), rpgConfig.xpSources.raids.createRaid, 'raid_create', { raidId });
+        // Grant XP to participants (100 XP from config)
         const participantIds = (raid.participants || []).map(p => p.user_id);
         for (const pid of participantIds) {
-          await applyDirectXp(Number(pid), 50, 'raid_complete', { raidId });
+          await grantXp(Number(pid), rpgConfig.xpSources.raids.completeRaid, 'raid_complete', { raidId });
         }
       } catch (xpErr) {
         console.error('⚠️ Loyalty XP apply error on raid close (non-fatal):', xpErr);

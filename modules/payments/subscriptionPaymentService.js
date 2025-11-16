@@ -248,17 +248,19 @@ async function processSubscriptionPayment(ctx, paymentData) {
       let description;
       
       if (isUpgrade) {
-        // For upgrades, calculate XP based on the upgrade amount only
+        // For upgrades, calculate XP based on the upgrade amount only (actual stars difference)
         const regularBasePrice = parseInt(rpgConfig.prices.regularStars || process.env.REGULAR_PRICE);
         const plusBasePrice = parseInt(rpgConfig.prices.plusStars || process.env.PLUS_PRICE);
         const upgradeBasePrice = plusBasePrice - regularBasePrice;
-        // XP is calculated from base units, not discounted price
+        // XP is calculated from base stars, not discounted price (1.3 XP per star)
         deltaUnits = upgradeBasePrice;
         description = 'Subscription upgrade payment';
       } else {
-        // For full payments, use the full subscription base units (no discount applied to XP)
-        const baseUnits = getSubscriptionBaseUnits(subscriptionType);
-        deltaUnits = baseUnits;
+        // For full payments, use the actual base stars price (not discounted)
+        // XP is calculated as baseStars * 1.3
+        const regularBasePrice = parseInt(rpgConfig.prices.regularStars || process.env.REGULAR_PRICE);
+        const plusBasePrice = parseInt(rpgConfig.prices.plusStars || process.env.PLUS_PRICE);
+        deltaUnits = subscriptionType === 'plus' ? plusBasePrice : regularBasePrice;
         description = 'Subscription payment';
       }
       

@@ -55,6 +55,7 @@ bot.use(stage.middleware());
 bot.use(require('./modules/middleware/cleanLogger'));
 bot.use(require('./modules/middleware/banned'));
 bot.use(require('./modules/middleware/userTracker'));
+bot.use(require('./modules/middleware/messageXp'));
 
 
 // --------------------------------------------------------------------------

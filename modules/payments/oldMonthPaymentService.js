@@ -78,12 +78,14 @@ async function processOldMonthPayment(ctx, paymentData) {
     // Increment month paid counter
     await knex('months').where('period', period).where('type', monthType).increment('counterPaid', 1);
 
-    // Apply XP from spending 
+    // Apply XP from spending (1.3 XP per star, base price * 3 for old month)
     try {
-      const { applyXpGain, getSubscriptionBaseUnits } = require('../loyalty/xpService');
-      const baseUnits = getSubscriptionBaseUnits(monthType === 'plus' ? 'plus' : 'regular');
-      const deltaUnits = baseUnits * 3;
-      await applyXpGain(Number(userId), deltaUnits, 'spending_payment', { period, old_month: true, description: 'Old month purchase' });
+      const { applyXpGain } = require('../loyalty/xpService');
+      const regularBasePrice = parseInt(rpgConfig.prices.regularStars || process.env.REGULAR_PRICE);
+      const plusBasePrice = parseInt(rpgConfig.prices.plusStars || process.env.PLUS_PRICE);
+      const baseStars = monthType === 'plus' ? plusBasePrice : regularBasePrice;
+      const deltaStars = baseStars * 3; // Old month costs 3x base price
+      await applyXpGain(Number(userId), deltaStars, 'spending_payment', { period, old_month: true, description: 'Old month purchase' });
     } catch (e) {
       console.error('⚠️ Loyalty XP apply error for old month:', e);
     }

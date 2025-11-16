@@ -190,8 +190,8 @@ const xpSources = {
     enabled: true,
     xpPerMessage: 1, // XP gained per message
     cooldownMinutes: 1, // Minimum time between XP-earning messages
-    dailyLimit: 50, // Max XP from messages per day
-    weeklyLimit: 300, // Max XP from messages per week
+    dailyLimit: 7, // Max XP from messages per day
+    weeklyLimit: 52, // Max XP from messages per week
     description: 'Активность в чатах',
     // Only count messages in specific groups
     allowedGroupIds: process.env.MAIN_GROUP_ID ? [Number(process.env.MAIN_GROUP_ID)] : []

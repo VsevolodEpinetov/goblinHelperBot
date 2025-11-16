@@ -31,11 +31,13 @@ module.exports = Composer.action(/^confirmPayment_/g, async (ctx) => {
         await addUserToGroup(userId, year, month, groupType);
         await incrementMonthCounter(year, month, groupType, 'paid');
         
-        // Grant XP for subscription confirmation
+        // Grant XP for subscription confirmation (1.3 XP per base star price)
         try {
-          const baseUnits = getSubscriptionBaseUnits(groupType);
+          const regularBasePrice = parseInt(rpgConfig.prices.regularStars || process.env.REGULAR_PRICE);
+          const plusBasePrice = parseInt(rpgConfig.prices.plusStars || process.env.PLUS_PRICE);
+          const baseStars = groupType === 'plus' ? plusBasePrice : regularBasePrice;
           const period = `${year}-${month}`;
-          await applyXpGain(Number(userId), baseUnits, 'admin_payment_confirm', {
+          await applyXpGain(Number(userId), baseStars, 'admin_payment_confirm', {
             subscriptionType: groupType,
             period: period,
             description: `Admin confirmed ${groupType} subscription for ${period}`,
@@ -71,11 +73,11 @@ module.exports = Composer.action(/^confirmPayment_/g, async (ctx) => {
       if (!alreadyHasKickstarter) {
         await addUserKickstarter(userId, ksId);
         
-        // Grant XP for kickstarter confirmation
+        // Grant XP for kickstarter confirmation (1.3 XP per star, use kickstarter cost)
         try {
           const kickstarterData = await getKickstarter(ksId);
-          const ksUnits = rpgConfig.baseUnits.ksPerBackingCapUnits || 300; // Default kickstarter units
-          await applyXpGain(Number(userId), ksUnits, 'admin_kickstarter_confirm', {
+          const ksCost = kickstarterData?.cost ? parseInt(kickstarterData.cost) : 350; // Use actual cost or default
+          await applyXpGain(Number(userId), ksCost, 'admin_kickstarter_confirm', {
             kickstarterId: ksId,
             kickstarterName: kickstarterData?.name || 'Unknown',
             description: `Admin confirmed kickstarter access: ${kickstarterData?.name || 'Unknown'}`,

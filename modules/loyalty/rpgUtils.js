@@ -180,13 +180,11 @@ async function grantXp(userId, amount, source, metadata = {}) {
       }
     });
 
-    // Send notifications (non-blocking)
+    // Send notifications for ALL XP gains (non-blocking)
     if (amount > 0 && rpgConfig.notifications.xpGain.enabled) {
-      if (amount >= rpgConfig.notifications.xpGain.minXpToNotify) {
-        sendXpGainNotification(userId, amount, source, metadata).catch(err =>
-          console.error('[RPG] Failed to send XP gain notification:', err)
-        );
-      }
+      sendXpGainNotification(userId, amount, source, metadata).catch(err =>
+        console.error('[RPG] Failed to send XP gain notification:', err)
+      );
     }
 
     if (leveledUp && rpgConfig.notifications.levelUp.enabled) {
