@@ -18,6 +18,7 @@ composer.command('buy', async (ctx) => {
   // Get user data to check for discounts
   const { getUser } = require('../db/helpers');
   const { hasYearsOfService, getAchievementMultiplier, YEARS_OF_SERVICE } = require('../loyalty/achievementsService');
+  const { applyTestUserPricing } = require('./pricingUtils');
   
   const userData = await getUser(ctx.from.id);
   if (!userData) {
@@ -34,8 +35,12 @@ composer.command('buy', async (ctx) => {
   const achievementMultiplier = hasYears ? getAchievementMultiplier(YEARS_OF_SERVICE) : 1.0;
   const discountPercent = hasYears ? Math.round((1 - achievementMultiplier) * 100) : 0;
   
-  const regularPrice = Math.round(regularBasePrice * achievementMultiplier);
-  const plusPrice = Math.round(plusBasePrice * achievementMultiplier);
+  let regularPrice = Math.round(regularBasePrice * achievementMultiplier);
+  let plusPrice = Math.round(plusBasePrice * achievementMultiplier);
+  
+  // Apply test user pricing (overrides all other discounts)
+  regularPrice = applyTestUserPricing(Number(ctx.from.id), regularPrice);
+  plusPrice = applyTestUserPricing(Number(ctx.from.id), plusPrice);
   
   // Create buttons with discounted prices
   const regularLabel = hasYears ? `Обычная — ~~${regularBasePrice}⭐~~ ${regularPrice}⭐` : `Обычная — ${regularPrice}⭐`;

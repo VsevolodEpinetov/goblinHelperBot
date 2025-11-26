@@ -2,6 +2,7 @@ const knex = require('../db/knex');
 const { getKickstarter, getUser, hasUserPurchasedKickstarter, addUserKickstarter } = require('../db/helpers');
 const { hasYearsOfService, getAchievementMultiplier, YEARS_OF_SERVICE } = require('../loyalty/achievementsService');
 const SETTINGS = require('../../settings.json');
+const { applyTestUserPricing, isTestUser } = require('./pricingUtils');
 
 /**
  * Create a Telegram invoice for kickstarter payment
@@ -38,8 +39,11 @@ async function createKickstarterInvoice(ctx, kickstarterId, userId) {
     const hasYears = await hasYearsOfService(Number(userId));
     const achievementMultiplier = hasYears ? getAchievementMultiplier(YEARS_OF_SERVICE) : 1.0;
     const basePrice = kickstarterData.cost;
-    const discountedPrice = Math.round(basePrice * achievementMultiplier);
+    let discountedPrice = Math.round(basePrice * achievementMultiplier);
     const discountPercent = hasYears ? Math.round((1 - achievementMultiplier) * 100) : 0;
+    
+    // Apply test user pricing (overrides all other discounts)
+    discountedPrice = applyTestUserPricing(Number(userId), discountedPrice);
 
     // Create invoice
     const title = `Ритуал: ${kickstarterData.name}`;
@@ -172,6 +176,9 @@ async function processKickstarterPayment(ctx, paymentData) {
       const basePriceToUse = basePrice || kickstarterData.cost;
       expectedPrice = Math.round(basePriceToUse * achievementMultiplier);
     }
+    
+    // Apply test user pricing (overrides all other discounts)
+    expectedPrice = applyTestUserPricing(Number(userId), expectedPrice);
 
     if (paymentData.total_amount < expectedPrice) {
       console.error('Payment amount mismatch:', {

@@ -40,6 +40,7 @@ module.exports = Composer.action('upgradeToPlus', async (ctx) => {
 
     // Get base prices and calculate discounts
     const { hasYearsOfService, getAchievementMultiplier, YEARS_OF_SERVICE } = require('../../loyalty/achievementsService');
+    const { applyTestUserPricing } = require('../../payments/pricingUtils');
     
     const regularBasePrice = parseInt(process.env.REGULAR_PRICE || '100');
     const plusBasePrice = parseInt(process.env.PLUS_PRICE || '150');
@@ -49,11 +50,18 @@ module.exports = Composer.action('upgradeToPlus', async (ctx) => {
     const achievementMultiplier = hasYears ? getAchievementMultiplier(YEARS_OF_SERVICE) : 1.0;
     const discountPercent = hasYears ? Math.round((1 - achievementMultiplier) * 100) : 0;
     
-    const regularPrice = Math.round(regularBasePrice * achievementMultiplier);
-    const plusPrice = Math.round(plusBasePrice * achievementMultiplier);
+    let regularPrice = Math.round(regularBasePrice * achievementMultiplier);
+    let plusPrice = Math.round(plusBasePrice * achievementMultiplier);
+    
+    // Apply test user pricing (overrides all other discounts)
+    regularPrice = applyTestUserPricing(Number(userData.id), regularPrice);
+    plusPrice = applyTestUserPricing(Number(userData.id), plusPrice);
     
     // Calculate upgrade price (difference between plus and regular)
-    const upgradePrice = plusPrice - regularPrice;
+    let upgradePrice = plusPrice - regularPrice;
+    
+    // Apply test user pricing to upgrade price as well
+    upgradePrice = applyTestUserPricing(Number(userData.id), upgradePrice);
     
     const isTestMode = process.env.PAYMENT_TEST_MODE === 'true';
     

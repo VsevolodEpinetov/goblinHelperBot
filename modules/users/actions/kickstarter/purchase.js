@@ -3,6 +3,7 @@ const { getKickstarter, getUser, hasUserPurchasedKickstarter } = require('../../
 const { getUsableScrolls } = require('../../../util/scrolls');
 const { createKickstarterInvoice } = require('../../../payments/kickstarterPaymentService');
 const { hasYearsOfService, getAchievementMultiplier, YEARS_OF_SERVICE } = require('../../../loyalty/achievementsService');
+const { applyTestUserPricing, isTestUser } = require('../../../payments/pricingUtils');
 
 module.exports = Composer.action(/^purchaseKickstarter_(\d+)$/, async (ctx) => {
   try {
@@ -34,8 +35,11 @@ module.exports = Composer.action(/^purchaseKickstarter_(\d+)$/, async (ctx) => {
     const hasYears = await hasYearsOfService(Number(userId));
     const achievementMultiplier = hasYears ? getAchievementMultiplier(YEARS_OF_SERVICE) : 1.0;
     const basePrice = kickstarterData.cost;
-    const discountedPrice = Math.round(basePrice * achievementMultiplier);
+    let discountedPrice = Math.round(basePrice * achievementMultiplier);
     const discountPercent = hasYears ? Math.round((1 - achievementMultiplier) * 100) : 0;
+    
+    // Apply test user pricing (overrides all other discounts)
+    discountedPrice = applyTestUserPricing(Number(userId), discountedPrice);
 
     // Check for usable scrolls (use discounted price for scroll threshold check)
     const usableScrolls = await getUsableScrolls(userId, discountedPrice);

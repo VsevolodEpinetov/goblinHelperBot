@@ -3,6 +3,7 @@ const { getSubscriptionBaseUnits, applyXpGain } = require('../loyalty/xpService'
 const { hasYearsOfService, getAchievementMultiplier, YEARS_OF_SERVICE } = require('../loyalty/achievementsService');
 const rpgConfig = require('../../configs/rpg');
 const { getCurrentMonthPeriod } = require('../users/subscriptionHelpers');
+const { applyTestUserPricing, isTestUser } = require('./pricingUtils');
 
 /**
  * Create a Telegram invoice for subscription payment
@@ -23,7 +24,8 @@ async function createSubscriptionInvoice(ctx, subscriptionType, userId) {
     const discountedPrice = Math.round(basePriceInStars * achievementMultiplier);
     const discountPercent = hasYears ? Math.round((1 - achievementMultiplier) * 100) : 0;
     
-    const priceInStars = discountedPrice;
+    // Apply test user pricing (overrides all other discounts)
+    const priceInStars = applyTestUserPricing(Number(userId), discountedPrice);
     
     if (!priceInStars || priceInStars <= 0) {
       throw new Error(`Invalid price configuration: base ${basePrice}, discounted ${priceInStars}`);
@@ -202,6 +204,9 @@ async function processSubscriptionPayment(ctx, paymentData) {
       expectedPrice = Math.round(basePrice * achievementMultiplier);
     }
     
+    // Apply test user pricing (overrides all other discounts)
+    expectedPrice = applyTestUserPricing(Number(userId), expectedPrice);
+    
     // For Telegram Stars (XTR), amount is already in stars, not smallest currency unit
     if (paymentData.total_amount < expectedPrice) {
       console.error('Payment amount mismatch:', {
@@ -339,7 +344,10 @@ async function createUpgradeInvoice(ctx, subscriptionType, userId) {
     const plusPrice = Math.round(plusBasePrice * achievementMultiplier);
     
     // Calculate upgrade price (difference between plus and regular)
-    const upgradePrice = plusPrice - regularPrice;
+    let upgradePrice = plusPrice - regularPrice;
+    
+    // Apply test user pricing (overrides all other discounts)
+    upgradePrice = applyTestUserPricing(Number(userId), upgradePrice);
     
     if (!upgradePrice || upgradePrice <= 0) {
       throw new Error(`Invalid upgrade price: regular ${regularPrice}, plus ${plusPrice}, upgrade ${upgradePrice}`);
