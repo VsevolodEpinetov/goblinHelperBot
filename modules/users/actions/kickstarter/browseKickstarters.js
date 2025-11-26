@@ -1,7 +1,9 @@
 const { Composer, Markup } = require("telegraf");
 const { getKickstarters, getUser } = require('../../../db/helpers');
 
-module.exports = Composer.action('browseKickstarters', async (ctx) => {
+const ITEMS_PER_PAGE = 5; // Safe limit for Telegram's 4096 character limit
+
+async function handleBrowseKickstarters(ctx, page = 1) {
   try {
     await ctx.answerCbQuery();
     
@@ -30,46 +32,70 @@ module.exports = Composer.action('browseKickstarters', async (ctx) => {
       }))
       .sort((a, b) => b.id - a.id); // Sort by ID descending (newest first)
 
-      if (availableKickstarters.length === 0) {
-        await ctx.editMessageText(
-          '🔍 <b>Сделки с демонами</b>\n\n' +
-          'Все доступные сделки уже заключены.\n' +
-          'Демоны пока не предлагают ничего нового.\n\n' +
-          'Вся добыча уже лежит в твоём гримуаре.',
-          {
-            parse_mode: 'HTML',
-            ...Markup.inlineKeyboard([
-              [Markup.button.callback('📚 Мои сделки', 'myKickstarters')],
-              [Markup.button.callback('🔙 Назад', 'userKickstarters')]
-            ])
-          }
-        );
-        return;
-      }
-      
+    if (availableKickstarters.length === 0) {
+      await ctx.editMessageText(
+        '🔍 <b>Сделки с демонами</b>\n\n' +
+        'Все доступные сделки уже заключены.\n' +
+        'Демоны пока не предлагают ничего нового.\n\n' +
+        'Вся добыча уже лежит в твоём гримуаре.',
+        {
+          parse_mode: 'HTML',
+          ...Markup.inlineKeyboard([
+            [Markup.button.callback('📚 Мои сделки', 'myKickstarters')],
+            [Markup.button.callback('🔙 Назад', 'userKickstarters')]
+          ])
+        }
+      );
+      return;
+    }
 
+    // Pagination calculations
+    const totalPages = Math.ceil(availableKickstarters.length / ITEMS_PER_PAGE);
+    const currentPage = Math.max(1, Math.min(page, totalPages)); // Clamp page between 1 and totalPages
+    const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+    const endIndex = startIndex + ITEMS_PER_PAGE;
+    const pageKickstarters = availableKickstarters.slice(startIndex, endIndex);
+
+    // Build message
     let message = `🔍 <b>Доступные сделки</b>\n\n`;
-    message += `Найдено сделок: <b>${availableKickstarters.length}</b>\n\n`;
+    message += `Найдено сделок: <b>${availableKickstarters.length}</b>\n`;
+    message += `Страница <b>${currentPage}</b> из <b>${totalPages}</b>\n\n`;
     
     const buttons = [];
-    const maxDisplay = 10; // Limit to prevent message overflow
     
-    availableKickstarters.slice(0, maxDisplay).forEach((ks, index) => {
-      message += `${index + 1}. <b>${ks.name}</b>\n   Источник: ${ks.creator}\n   Цена: ${ks.cost}⭐\n\n`;
+    pageKickstarters.forEach((ks, index) => {
+      const globalIndex = startIndex + index;
+      message += `${globalIndex + 1}. <b>${ks.name}</b>\n   Источник: ${ks.creator}\n   Цена: ${ks.cost}⭐\n`;
+      
+      // Add link if available
+      if (ks.link) {
+        message += `   🔗 <a href="${ks.link}">Посмотреть описание проекта</a>\n`;
+      }
+      
+      message += `\n`;
+      
       buttons.push([
         Markup.button.callback(
-          `${index + 1}. ${ks.name} - ${ks.cost}⭐`,
+          `${globalIndex + 1}. ${ks.name} - ${ks.cost}⭐`,
           `purchaseKickstarter_${ks.id}`
         )
       ]);
     });
 
-    if (availableKickstarters.length > maxDisplay) {
-      message += `\n<i>Показано ${maxDisplay} из ${availableKickstarters.length}. Выбери сделку для покупки:</i>`;
-    } else {
-      message += `\n<i>Выбери сделку для покупки:</i>`;
-    }
+    message += `\n<i>Выбери сделку для покупки:</i>`;
 
+    // Add pagination buttons (always show both)
+    const paginationButtons = [];
+    const prevPage = currentPage > 1 ? currentPage - 1 : currentPage;
+    const nextPage = currentPage < totalPages ? currentPage + 1 : currentPage;
+    
+    paginationButtons.push(
+      Markup.button.callback('◀️ Предыдущая', `browseKickstarters_page_${prevPage}`),
+      Markup.button.callback('Следующая ▶️', `browseKickstarters_page_${nextPage}`)
+    );
+    buttons.push(paginationButtons);
+
+    // Add navigation buttons
     buttons.push([
       Markup.button.callback('📚 Мои сделки', 'myKickstarters'),
       Markup.button.callback('🔙 Назад', 'userKickstarters')
@@ -88,5 +114,21 @@ module.exports = Composer.action('browseKickstarters', async (ctx) => {
       ])
     });
   }
+}
+
+// Handle initial action (page 1)
+const browseKickstartersHandler = Composer.action('browseKickstarters', async (ctx) => {
+  await handleBrowseKickstarters(ctx, 1);
 });
+
+// Handle pagination actions (browseKickstarters_page_X)
+const browseKickstartersPageHandler = Composer.action(/^browseKickstarters_page_(\d+)$/, async (ctx) => {
+  const page = parseInt(ctx.match[1], 10);
+  await handleBrowseKickstarters(ctx, page);
+});
+
+module.exports = Composer.compose([
+  browseKickstartersHandler,
+  browseKickstartersPageHandler
+]);
 
