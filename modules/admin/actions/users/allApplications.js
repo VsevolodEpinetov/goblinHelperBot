@@ -626,6 +626,9 @@ const userManagementHandler = Composer.action(/^admin_manage_user_(\d+)$/g, asyn
         Markup.button.callback('🏆 Достижения', `admin_user_achievements_${userId}`)
       ]);
       keyboard.push([
+        Markup.button.callback('📜 Свитки', `admin_user_scrolls_${userId}`)
+      ]);
+      keyboard.push([
         Markup.button.callback('🚫 Забанить', `admin_ban_user_${userId}`)
       ]);
     }
@@ -905,6 +908,8 @@ const userActionHandler = Composer.action(/^admin_(approve|reject|super_approve|
   }
 });
 
+const scrollsManagement = require('./scrollsManagement');
+
 module.exports = Composer.compose([
   allApplicationsHandler,
   filterHandler,
@@ -912,5 +917,6 @@ module.exports = Composer.compose([
   searchMessageHandler,
   changeRolesHandler,
   userManagementHandler,
-  userActionHandler
+  userActionHandler,
+  scrollsManagement
 ]);
