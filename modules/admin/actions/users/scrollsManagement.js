@@ -1,5 +1,5 @@
 const { Composer, Markup } = require("telegraf");
-const knex = require('../../../modules/db/knex');
+const knex = require('../../../../modules/db/knex');
 const { getUser } = require('../../../db/helpers');
 const { getUserScrolls, giveScroll } = require('../../../util/scrolls');
 const scrollsConfig = require('../../../../configs/scrolls');
