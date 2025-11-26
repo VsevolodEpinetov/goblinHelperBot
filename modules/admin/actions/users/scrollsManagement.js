@@ -208,11 +208,11 @@ const adminUserAddScroll = Composer.action(/^admin_user_add_scroll_\d+_\w+$/g, a
 
     // Build success message
     const username = userData.username ? `@${userData.username}` : userData.first_name || `ID: ${userId}`;
-    let message = `✅ <b>Свиток добавлен!</b>\n\n`;
+    let message = `✅ <b>Свиток успешно добавлен!</b>\n\n`;
     message += `👤 <b>Пользователь:</b> ${username}\n`;
     message += `🆔 <b>ID:</b> ${userId}\n\n`;
-    message += `successfully added that scroll! New amount: ${newAmount}\n\n`;
-    message += `📜 <b>${scrollDef.name}</b>\n\n`;
+    message += `📜 <b>${scrollDef.name}</b>\n`;
+    message += `📊 <b>Новое количество:</b> ${newAmount} шт.\n\n`;
     message += `Выберите тип свитка для добавления:\n`;
 
     // Build keyboard with scroll buttons (same as add scrolls menu)
