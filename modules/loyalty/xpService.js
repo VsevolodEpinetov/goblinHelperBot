@@ -41,22 +41,38 @@ function computeDeltaXp(oldUnits, deltaUnits) {
   const sNew = sOld + Number(deltaUnits || 0);
   const xpOld = computeXpFromSpending(sOld);
   const xpNew = computeXpFromSpending(sNew);
-  return xpNew - xpOld;
+  const deltaXp = xpNew - xpOld;
+  
+  // Validate result is not NaN
+  if (isNaN(deltaXp)) {
+    console.error('⚠️ NaN in computeDeltaXp:', { oldUnits, deltaUnits, sOld, sNew, xpOld, xpNew });
+    return 0; // Return 0 instead of NaN to prevent cascading errors
+  }
+  
+  return deltaXp;
 }
 
 function getTierAndLevel(totalXp) {
-  const tier = TIERS.find(t => totalXp >= t.min && totalXp <= t.max) || TIERS[TIERS.length - 1];
-  if (tier.name === 'legend') {
+  // Ensure totalXp is a valid number
+  const xp = Number(totalXp);
+  if (isNaN(xp) || xp < 0) {
+    // Default to wood tier if invalid XP
+    const defaultTier = TIERS[0];
+    return { tier: defaultTier.devName, level: 1, nextLevelAt: defaultTier.minXp + (defaultTier.maxXp - defaultTier.minXp + 1) / 10 };
+  }
+
+  const tier = TIERS.find(t => xp >= t.minXp && (t.maxXp === null || xp <= t.maxXp)) || TIERS[TIERS.length - 1];
+  if (tier.devName === 'legend') {
     // Legend: level is 1 + extra per 10k beyond 160k (arbitrary simple rule)
-    const extra = Math.max(0, Math.floor((totalXp - 160000) / 10000));
+    const extra = Math.max(0, Math.floor((xp - 160000) / 10000));
     return { tier: 'legend', level: 1 + extra, nextLevelAt: null };
   }
-  const span = tier.max - tier.min + 1;
-  const step = Math.floor(span / 10);
-  const within = Math.max(0, totalXp - tier.min);
+  const span = tier.maxXp - tier.minXp + 1;
+  const step = Math.max(1, Math.floor(span / 10)); // Ensure step is at least 1 to avoid division by zero
+  const within = Math.max(0, xp - tier.minXp);
   const level = Math.min(10, Math.floor(within / step) + 1);
-  const nextLevelAt = Math.min(tier.max, tier.min + level * step);
-  return { tier: tier.name, level, nextLevelAt };
+  const nextLevelAt = Math.min(tier.maxXp, tier.minXp + level * step);
+  return { tier: tier.devName, level, nextLevelAt };
 }
 
 async function ensureUserLevelRow(userId) {
@@ -69,11 +85,43 @@ async function ensureUserLevelRow(userId) {
 }
 
 async function applyXpGain(userId, deltaUnits, source, metadata = {}) {
+  // Validate deltaUnits is a valid number
+  const deltaUnitsNum = Number(deltaUnits);
+  if (isNaN(deltaUnitsNum)) {
+    console.error('⚠️ Invalid deltaUnits in applyXpGain:', deltaUnits, 'for user:', userId);
+    throw new Error(`Invalid deltaUnits: ${deltaUnits}`);
+  }
+
   const row = await ensureUserLevelRow(userId);
-  const newUnits = Number(row.total_spending_units || 0) + Number(deltaUnits || 0);
-  const deltaXp = computeDeltaXp(row.total_spending_units, deltaUnits);
+  const newUnits = Number(row.total_spending_units || 0) + deltaUnitsNum;
+  const deltaXp = computeDeltaXp(row.total_spending_units, deltaUnitsNum);
   const newTotalXp = Number(row.total_xp || 0) + deltaXp;
+  
+  // Validate newTotalXp is a valid number before calculating tier/level
+  if (isNaN(newTotalXp)) {
+    console.error('⚠️ Invalid newTotalXp calculated:', { 
+      oldXp: row.total_xp, 
+      deltaXp, 
+      newTotalXp,
+      userId,
+      deltaUnits: deltaUnitsNum
+    });
+    throw new Error(`Invalid newTotalXp calculation: ${newTotalXp}`);
+  }
+  
   const { tier, level, nextLevelAt } = getTierAndLevel(newTotalXp);
+
+  // Validate tier and level are valid before database update
+  if (!tier || isNaN(level) || level < 1) {
+    console.error('⚠️ Invalid tier/level calculated:', { 
+      tier, 
+      level, 
+      newTotalXp,
+      userId,
+      deltaUnits: deltaUnitsNum
+    });
+    throw new Error(`Invalid tier/level calculation: tier=${tier}, level=${level}`);
+  }
 
   await knex.transaction(async trx => {
     await trx('user_levels')

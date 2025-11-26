@@ -55,7 +55,7 @@ async function createKickstarterInvoice(ctx, kickstarterId, userId) {
     description += `\n👤 Пользователь: ${userName} (${userId})\n`;
     
     if (hasYears && discountPercent > 0) {
-      description += `💰 Цена: ~~${basePrice}⭐~~ <b>${discountedPrice}⭐</b>\n`;
+      description += `💰 Цена: ${discountedPrice}⭐ (вместо ${basePrice}⭐)\n`;
       description += `🏅 Скидка «За выслугу лет»: −${discountPercent}%`;
     } else {
       description += `💰 Цена: ${discountedPrice}⭐`;
