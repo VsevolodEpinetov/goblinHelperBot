@@ -5,7 +5,7 @@ const ITEMS_PER_PAGE = 5; // Safe limit for Telegram's 4096 character limit
 
 async function handleBrowseKickstarters(ctx, page = 1) {
   try {
-    await ctx.answerCbQuery();
+    try { await ctx.answerCbQuery(); } catch {}
     
     const userId = ctx.from.id;
     const userData = await getUser(userId);
@@ -91,6 +91,7 @@ async function handleBrowseKickstarters(ctx, page = 1) {
     
     paginationButtons.push(
       Markup.button.callback('◀️ Предыдущая', `browseKickstarters_page_${prevPage}`),
+      Markup.button.callback(`Страница ${currentPage}`, `browseKickstarters_page_${currentPage}_noop`),
       Markup.button.callback('Следующая ▶️', `browseKickstarters_page_${nextPage}`)
     );
     buttons.push(paginationButtons);
@@ -101,10 +102,20 @@ async function handleBrowseKickstarters(ctx, page = 1) {
       Markup.button.callback('🔙 Назад', 'userKickstarters')
     ]);
 
-    await ctx.editMessageText(message, {
-      parse_mode: 'HTML',
-      ...Markup.inlineKeyboard(buttons)
-    });
+    // Try to edit message, handle "message is not modified" error gracefully
+    try {
+      await ctx.editMessageText(message, {
+        parse_mode: 'HTML',
+        ...Markup.inlineKeyboard(buttons)
+      });
+    } catch (editError) {
+      if (editError.message && editError.message.includes('message is not modified')) {
+        // Message content is the same (e.g., clicking prev on page 1), just answer the query
+        try { await ctx.answerCbQuery(); } catch {}
+      } else {
+        throw editError;
+      }
+    }
   } catch (error) {
     console.error('Error in browseKickstarters:', error);
     await ctx.editMessageText('❌ <b>Произошла ошибка</b>\n\nПопробуй ещё раз позже.', {
@@ -121,6 +132,12 @@ const browseKickstartersHandler = Composer.action('browseKickstarters', async (c
   await handleBrowseKickstarters(ctx, 1);
 });
 
+// Handle no-op action for current page button (does nothing) - must be before page handler
+const browseKickstartersNoopHandler = Composer.action(/^browseKickstarters_page_\d+_noop$/, async (ctx) => {
+  try { await ctx.answerCbQuery(); } catch {}
+  // Do nothing - just answer the callback query
+});
+
 // Handle pagination actions (browseKickstarters_page_X)
 const browseKickstartersPageHandler = Composer.action(/^browseKickstarters_page_(\d+)$/, async (ctx) => {
   const page = parseInt(ctx.match[1], 10);
@@ -129,6 +146,7 @@ const browseKickstartersPageHandler = Composer.action(/^browseKickstarters_page_
 
 module.exports = Composer.compose([
   browseKickstartersHandler,
+  browseKickstartersNoopHandler,
   browseKickstartersPageHandler
 ]);
 
