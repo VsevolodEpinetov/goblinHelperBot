@@ -15,13 +15,13 @@ module.exports = Composer.action(/^adminFindNonPayers_/, async (ctx) => {
 
     // Parse year and month from callback data (format: adminFindNonPayers_2025_10)
     const parts = callbackData.split('_');
-    if (parts.length < 4) {
+    if (parts.length < 3) {
       await ctx.reply('Ошибка: неверный формат данных');
       return;
     }
 
-    const year = parts[2];
-    const month = parts[3];
+    const year = parts[1];
+    const month = parts[2];
     const period = `${year}_${month}`;
 
     // Get all users with role 'goblin'
