@@ -85,6 +85,9 @@ module.exports = Composer.action(/^adminMonths_/, async (ctx) => {
             Markup.button.callback('Ссылка на плюсовую', `adminAddLinkPlus_${year}_${month}`)
           ],
           [
+            Markup.button.callback('Find non-payers', `adminFindNonPayers_${year}_${month}`)
+          ],
+          [
             Markup.button.callback('←', `adminMonths_show_${year}`),
             Markup.button.callback('В начало', `userMenu`),
           ]
