@@ -2,7 +2,7 @@ const { Scenes, Markup } = require("telegraf");
 const util = require('../../../util');
 
 const currentStageName = 'ADMIN_SCENE_ADD_KICKSTARTER_PLEDGE_NAME'
-const nextStageName = 'ADMIN_SCENE_ADD_KICKSTARTER_PLEDGE_COST'
+const nextStageName = 'ADMIN_SCENE_ADD_KICKSTARTER_COST'
 
 const adminAddKickstarterPledgeName = new Scenes.BaseScene(currentStageName);
 
