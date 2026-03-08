@@ -3,8 +3,14 @@ const { getUser } = require('../../db/helpers');
 const { grantAchievement, hasAchievement } = require('../../loyalty/achievementsService');
 const achievementsConfig = require('../../../configs/achievements');
 const notifications = require('../../../configs/notifications');
+const { ensureRoles } = require('../../rbac');
+
+const SUPER_ROLES = ['super'];
 
 module.exports = Composer.action(/^grantAchievement_/, async (ctx) => {
+  const check = await ensureRoles(ctx, SUPER_ROLES);
+  if (!check.allowed) return;
+
   try { 
     await ctx.answerCbQuery(); 
   } catch {}

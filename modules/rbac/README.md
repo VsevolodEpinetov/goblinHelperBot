@@ -1,239 +1,106 @@
 # RBAC (Role-Based Access Control) System
 
-This module provides a comprehensive role-based access control system for the Telegram bot, allowing fine-grained permission management.
+This module provides role-based access control for the Telegram bot. Access is determined only by **roles**; there are no permission strings. Each command or action checks at the start whether the user has one of the allowed roles.
 
 ## Overview
 
-The RBAC system consists of three main components:
+The RBAC system consists of:
 
-1. **Permissions Configuration** (`permissions.js`) - Defines what each role can do
-2. **Middleware** (`middleware/rbac.js`) - Provides permission checking middleware
-3. **Role Manager** (`roleManager.js`) - Utilities for managing user roles
+1. **Middleware** (`middleware/rbac.js`) – `ensureRoles` (inline helper), `requireRoles`, `requireAdmin`, `requireSuperAdmin`
+2. **Role Manager** (`roleManager.js`) – Utilities for managing user roles in the database
 
-## Roles and Permissions
-
-### Role Hierarchy
+## Role hierarchy
 
 ```
-user (level 1) - Basic user with limited access
-├── goblin (level 2) - Premium user with extended access
+user (level 1) - Basic user
+├── goblin (level 2) - Premium user
 ├── polls (level 3) - Polls administrator
+├── adminPolls (level 3) - Admin with polls access
+├── protector (level 3) - Can manage requests and applications
 ├── admin (level 4) - Regular administrator
 ├── adminPlus (level 5) - Extended administrator
-└── super (level 6) - Super administrator with full access
+└── super (level 6) - Super administrator
 ```
 
-### Permission Structure
+## Usage
 
-Permissions follow the format: `category:action:resource`
+### Inline check at start of command/action
 
-Examples:
-- `user:profile:view` - View user profile
-- `admin:users:view` - View users (admin only)
-- `admin:content:months:manage` - Manage content months
-- `admin:super:roles:manage` - Manage roles (super admin only)
-
-## Usage Examples
-
-### 1. Basic Permission Checking
+Use `ensureRoles(ctx, allowedRoles, options)` at the beginning of a handler. It loads the user, checks roles, and replies with an error if not allowed.
 
 ```javascript
-const { hasPermission } = require('../rbac');
+const { ensureRoles } = require('../rbac');
 
-// Check if user has specific permission
-if (hasPermission(userRoles, 'admin:users:view')) {
-  // User can view users
-}
+const POLLS_ROLES = ['polls', 'adminPolls', 'admin', 'adminPlus', 'super'];
+
+module.exports = Composer.action('adminPolls', async (ctx) => {
+  const check = await ensureRoles(ctx, POLLS_ROLES, { errorMessage: '❌ Нет прав' });
+  if (!check.allowed) return;
+  // check.userData is available if you need it
+  // ... rest of handler
+});
 ```
 
-### 2. Using Middleware
+### Middleware
+
+Use `requireRoles`, `requireAdmin`, or `requireSuperAdmin` when you want the check to run as middleware before the handler.
 
 ```javascript
-const { requirePermission, requireAdmin } = require('../rbac');
+const { requireRoles, requireAdmin, requireSuperAdmin } = require('../rbac');
 
-// Require specific permission
-bot.command('manage_users', 
-  requirePermission('admin:users:view'),
-  async (ctx) => {
-    // Only users with admin:users:view permission can access this
-  }
+// Any of these roles
+bot.command('manage_users',
+  requireRoles(['admin', 'adminPlus', 'super'], '❌ Требуются права администратора'),
+  async (ctx) => { /* ... */ }
 );
 
-// Require admin role
-bot.command('admin_panel', 
-  requireAdmin(),
-  async (ctx) => {
-    // Only admins can access this
-  }
-);
+// Shorthand for admin roles
+bot.command('admin_panel', requireAdmin(), async (ctx) => { /* ... */ });
+
+// Super only
+bot.command('super_cmd', requireSuperAdmin(), async (ctx) => { /* ... */ });
 ```
 
-### 3. Role Management
+### Role management
 
 ```javascript
-const { 
-  addUserRole, 
-  removeUserRole, 
-  promoteToAdmin 
+const {
+  addUserRole,
+  removeUserRole,
+  getUserRoles,
+  setUserRoles,
+  userHasRole,
+  getUsersWithRole,
+  getAdminUsers,
+  getPollsAdminUsers,
+  getProtectorUsers,
+  promoteToAdmin,
+  demoteAdmin,
+  getRoleHierarchy
 } = require('../rbac');
 
-// Add role to user
 await addUserRole(userId, 'admin');
-
-// Remove role from user
 await removeUserRole(userId, 'admin');
-
-// Promote user to admin
-await promoteToAdmin(userId, 'adminPlus');
+const roles = await getUserRoles(userId);
+const hasAdmin = await userHasRole(userId, 'admin');
 ```
 
-## Available Middleware Functions
+## API summary
 
-### `requirePermission(permission, errorMessage)`
-Checks if user has a specific permission.
+| Function | Description |
+|----------|-------------|
+| `ensureRoles(ctx, allowedRoles, options)` | Inline check. Returns `{ allowed, userData }`. Replies and returns `{ allowed: false }` if user has none of the roles. |
+| `requireRoles(allowedRoles, errorMessage)` | Middleware: only allows users with one of the roles. |
+| `requireAdmin(errorMessage)` | Middleware: allows `admin`, `adminPlus`, `super`. |
+| `requireSuperAdmin(errorMessage)` | Middleware: allows only `super`. |
 
-```javascript
-bot.command('example', 
-  requirePermission('admin:users:view', '❌ Недостаточно прав'),
-  async (ctx) => {
-    // Command logic here
-  }
-);
-```
-
-### `requireAdmin(errorMessage)`
-Checks if user has any admin permissions.
-
-```javascript
-bot.command('admin_only', 
-  requireAdmin('❌ Требуются права администратора'),
-  async (ctx) => {
-    // Admin-only command
-  }
-);
-```
-
-### `requireSuperAdmin(errorMessage)`
-Checks if user is a super admin.
-
-```javascript
-bot.command('super_admin', 
-  requireSuperAdmin('❌ Требуются права супер-администратора'),
-  async (ctx) => {
-    // Super admin only command
-  }
-);
-```
-
-### `requireAnyPermission(permissions, errorMessage)`
-Checks if user has any of the specified permissions.
-
-```javascript
-bot.command('any_admin', 
-  requireAnyPermission(['admin:users:view', 'admin:content:manage']),
-  async (ctx) => {
-    // User needs at least one of these permissions
-  }
-);
-```
-
-### `requireAllPermissions(permissions, errorMessage)`
-Checks if user has all of the specified permissions.
-
-```javascript
-bot.command('full_admin', 
-  requireAllPermissions(['admin:users:view', 'admin:content:manage']),
-  async (ctx) => {
-    // User needs all of these permissions
-  }
-);
-```
-
-## Role Management Functions
-
-### `addUserRole(userId, role)`
-Adds a role to a user.
-
-### `removeUserRole(userId, role)`
-Removes a role from a user.
-
-### `getUserRoles(userId)`
-Gets all roles for a user.
-
-### `setUserRoles(userId, roles)`
-Sets all roles for a user (replaces existing).
-
-### `userHasRole(userId, role)`
-Checks if user has a specific role.
-
-### `getUsersWithRole(role)`
-Gets all users with a specific role.
-
-### `getAdminUsers()`
-Gets all users with admin permissions.
-
-### `getPollsAdminUsers()`
-Gets all users with polls admin permissions.
-
-### `promoteToAdmin(userId, adminType)`
-Promotes a user to admin role.
-
-### `demoteAdmin(userId)`
-Demotes an admin user.
-
-## Permission Categories
-
-### User Permissions
-- `user:profile:view` - View own profile
-- `user:profile:edit` - Edit own profile
-- `user:payments:view` - View own payments
-- `user:payments:request` - Request payment codes
-
-### Goblin Permissions
-- `goblin:premium:access` - Access premium features
-- `goblin:files:download` - Download files
-- `goblin:groups:plus` - Access plus groups
-
-### Admin Permissions
-- `admin:users:view` - View users
-- `admin:users:edit` - Edit users
-- `admin:users:roles:manage` - Manage user roles
-- `admin:content:months:manage` - Manage content months
-- `admin:content:kickstarters:manage` - Manage kickstarters
-- `admin:payments:view` - View payments
-- `admin:payments:confirm` - Confirm payments
-- `admin:polls:*` - All polls management
-
-### Super Admin Permissions
-- `admin:super:roles:manage` - Manage all roles
-- `admin:super:permissions:manage` - Manage permissions
-- `admin:super:users:promote` - Promote users to admin
-- `admin:system:database:manage` - Database management
-- `admin:system:maintenance:mode` - Maintenance mode
-
-## Best Practices
-
-1. **Always check permissions** before allowing sensitive operations
-2. **Use middleware** for consistent permission checking
-3. **Follow the principle of least privilege** - only grant necessary permissions
-4. **Log permission changes** for audit purposes
-5. **Test permission boundaries** thoroughly
-
-## Example Implementation
-
-See `modules/admin/commands/rbacExample.js` for a complete example of how to use the RBAC system in practice.
+Role manager: `addUserRole`, `removeUserRole`, `getUserRoles`, `setUserRoles`, `userHasRole`, `getUsersWithRole`, `getAdminUsers`, `getPollsAdminUsers`, `getProtectorUsers`, `promoteToAdmin`, `demoteAdmin`, `getRoleHierarchy`.
 
 ## Configuration
 
-The system is designed to work with your existing database structure. Make sure you have:
+- `users` table and `userRoles` table with `userId` and `role` columns.
+- No permission tables; access is determined only by presence of roles.
 
-- `users` table with user information
-- `userRoles` table with user-role relationships
-- Proper indexes on `userId` and `role` columns
+## Example
 
-## Security Notes
-
-- Permissions are checked on every request
-- Role changes require appropriate permissions
-- Super admin actions are logged
-- No permission escalation is possible without proper authorization
+See `modules/admin/commands/rbacExample.js` for a full example using role checks and role management.

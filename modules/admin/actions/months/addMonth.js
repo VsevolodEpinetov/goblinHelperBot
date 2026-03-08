@@ -1,8 +1,14 @@
 const { Composer, Markup } = require("telegraf");
 const util = require('../../../util');
 const SETTINGS = require('../../../../settings.json');
+const { ensureRoles } = require('../../../rbac');
+
+const SUPER_ROLES = ['super'];
 
 module.exports = Composer.action(/^monthsAdd_/g, async (ctx) => {
+  const check = await ensureRoles(ctx, SUPER_ROLES);
+  if (!check.allowed) return;
+
   ctx.session.year = ctx.callbackQuery.data.split('_')[1];
   try {
     await ctx.deleteMessage(ctx.callbackQuery.message.message_id);

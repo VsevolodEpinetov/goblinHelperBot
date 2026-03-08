@@ -1,17 +1,15 @@
 const { Composer } = require("telegraf");
 const SETTINGS = require('../../../settings.json')
 const util = require('../../util')
-const { hasPermission } = require('../../rbac')
-const { getUser } = require('../../db/helpers')
+const { ensureRoles } = require('../../rbac')
+
+const POLLS_ROLES = ['polls', 'adminPolls', 'admin', 'adminPlus', 'super'];
 
 module.exports = Composer.command('count', async (ctx) => {
   util.log(ctx)
-  
-  // Check permissions using new RBAC system
-  const userData = await getUser(ctx.message.from.id);
-  if (!userData || !hasPermission(userData.roles, 'admin:polls:results')) {
-    return;
-  }
+
+  const check = await ensureRoles(ctx, POLLS_ROLES);
+  if (!check.allowed) return;
 
   if (!ctx.message.reply_to_message) {
     ctx.reply('Ты промахнулся')

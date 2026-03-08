@@ -1,16 +1,13 @@
 const { Composer } = require("telegraf");
-const { getUser } = require('../../db/helpers');
-const { hasPermission } = require('../../rbac');
+const { ensureRoles } = require('../../rbac');
+
+const REQUESTS_ROLES = ['protector', 'admin', 'adminPlus', 'super'];
 
 module.exports = Composer.action('searchRequest', async (ctx) => {
   try { await ctx.answerCbQuery(); } catch {}
-  
-  // Check permissions
-  const userData = await getUser(ctx.callbackQuery.from.id);
-  if (!userData || !hasPermission(userData.roles, 'admin:requests:view')) {
-    await ctx.reply('❌ У вас нет прав для поиска заявок');
-    return;
-  }
+
+  const check = await ensureRoles(ctx, REQUESTS_ROLES, { errorMessage: '❌ У вас нет прав для поиска заявок' });
+  if (!check.allowed) return;
 
   // Check if user is in REQUESTS_GROUP_ID
   if (ctx.chat.id.toString() !== process.env.REQUESTS_GROUP_ID) {

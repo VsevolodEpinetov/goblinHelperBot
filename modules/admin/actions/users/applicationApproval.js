@@ -2,8 +2,10 @@ const { Composer, Markup } = require("telegraf");
 const { t } = require('../../../../modules/i18n');
 const knex = require('../../../../modules/db/knex');
 const { getUser, updateUser } = require('../../../db/helpers');
-const { hasPermission } = require('../../../rbac');
+const { ensureRoles } = require('../../../rbac');
 const SETTINGS = require('../../../../settings.json');
+
+const APPLICATIONS_ROLES = ['protector', 'admin', 'adminPlus', 'super'];
 
 // Create a composer that combines all application approval actions
 const applicationApprovalComposer = new Composer();
@@ -13,13 +15,9 @@ applicationApprovalComposer.action(/^apply_protector_allow_\d+$/, async (ctx) =>
   const userId = ctx.callbackQuery.data.split('_').pop();
   try { await ctx.answerCbQuery(); } catch {}
   
-  // Check permissions
-  const userData = await getUser(ctx.callbackQuery.from.id);
-  if (!userData || !hasPermission(userData.roles, 'admin:applications:approve')) {
-    await ctx.reply('❌ У вас нет прав для одобрения заявок');
-    return;
-  }
-  
+  const check = await ensureRoles(ctx, APPLICATIONS_ROLES, { errorMessage: '❌ У вас нет прав для одобрения заявок' });
+  if (!check.allowed) return;
+
   try {
     // Update application status to approved
     await knex('applications')
@@ -63,14 +61,10 @@ applicationApprovalComposer.action(/^apply_protector_allow_\d+$/, async (ctx) =>
 applicationApprovalComposer.action(/^apply_protector_deny_\d+$/, async (ctx) => {
   const userId = ctx.callbackQuery.data.split('_').pop();
   try { await ctx.answerCbQuery(); } catch {}
-  
-  // Check permissions
-  const userData = await getUser(ctx.callbackQuery.from.id);
-  if (!userData || !hasPermission(userData.roles, 'admin:applications:deny')) {
-    await ctx.reply('❌ У вас нет прав для отклонения заявок');
-    return;
-  }
-  
+
+  const check = await ensureRoles(ctx, APPLICATIONS_ROLES, { errorMessage: '❌ У вас нет прав для отклонения заявок' });
+  if (!check.allowed) return;
+
   try {
     // Get application data first
     const application = await knex('applications')
@@ -134,14 +128,10 @@ applicationApprovalComposer.action(/^apply_protector_deny_\d+$/, async (ctx) => 
 applicationApprovalComposer.action(/^admin_final_approve_\d+$/, async (ctx) => {
   const userId = ctx.callbackQuery.data.split('_').pop();
   try { await ctx.answerCbQuery(); } catch {}
-  
-  // Check permissions
-  const userData = await getUser(ctx.callbackQuery.from.id);
-  if (!userData || !hasPermission(userData.roles, 'admin:applications:approve')) {
-    await ctx.reply('❌ У вас нет прав для финального одобрения заявок');
-    return;
-  }
-  
+
+  const check = await ensureRoles(ctx, APPLICATIONS_ROLES, { errorMessage: '❌ У вас нет прав для финального одобрения заявок' });
+  if (!check.allowed) return;
+
   try {
     // Update application status to approved
     await knex('applications')
@@ -197,14 +187,10 @@ applicationApprovalComposer.action(/^admin_final_approve_\d+$/, async (ctx) => {
 applicationApprovalComposer.action(/^admin_final_deny_\d+$/, async (ctx) => {
   const userId = ctx.callbackQuery.data.split('_').pop();
   try { await ctx.answerCbQuery(); } catch {}
-  
-  // Check permissions
-  const userData = await getUser(ctx.callbackQuery.from.id);
-  if (!userData || !hasPermission(userData.roles, 'admin:applications:deny')) {
-    await ctx.reply('❌ У вас нет прав для финального отклонения заявок');
-    return;
-  }
-  
+
+  const check = await ensureRoles(ctx, APPLICATIONS_ROLES, { errorMessage: '❌ У вас нет прав для финального отклонения заявок' });
+  if (!check.allowed) return;
+
   try {
     // Update application status to rejected
     await knex('applications')

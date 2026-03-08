@@ -1,20 +1,15 @@
 const { Composer } = require("telegraf");
-const { getUser } = require('../../db/helpers');
-const { hasPermission } = require('../../rbac');
+const { ensureRoles } = require('../../rbac');
+
+const REQUESTS_ROLES = ['protector', 'admin', 'adminPlus', 'super'];
 
 module.exports = Composer.command('requests', async (ctx) => {
-  // Check if command is executed in REQUESTS_GROUP_ID
   if (ctx.chat.id.toString() !== process.env.REQUESTS_GROUP_ID) {
-    return; // Silently ignore if not in the requests group
-  }
-
-  // Check permissions
-  const userData = await getUser(ctx.message.from.id);
-  if (!userData || !hasPermission(userData.roles, 'admin:requests:view')) {
-    await ctx.reply('❌ У вас нет прав для работы с заявками');
     return;
   }
 
-  // Enter the requests scene
+  const check = await ensureRoles(ctx, REQUESTS_ROLES, { errorMessage: '❌ У вас нет прав для работы с заявками' });
+  if (!check.allowed) return;
+
   await ctx.scene.enter('REQUESTS_SCENE');
 });

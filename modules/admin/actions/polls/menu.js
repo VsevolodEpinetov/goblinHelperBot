@@ -1,17 +1,14 @@
 const { Composer, Markup } = require("telegraf");
 const util = require('../../../util');
 const SETTINGS = require('../../../../settings.json');
-const { hasPermission } = require('../../../rbac');
-const { getUser } = require('../../../db/helpers');
+const { ensureRoles } = require('../../../rbac');
 const { getStats } = require('../../../db/polls');
 
+const POLLS_ROLES = ['polls', 'adminPolls', 'admin', 'adminPlus', 'super'];
+
 module.exports = Composer.action('adminPolls', async (ctx) => {
-  // Check permissions using new RBAC system
-  const userData = await getUser(ctx.callbackQuery.from.id);
-  if (!userData || !hasPermission(userData.roles, 'admin:polls:create')) {
-    await ctx.answerCbQuery('❌ У вас нет прав для работы с голосованиями');
-    return;
-  }
+  const check = await ensureRoles(ctx, POLLS_ROLES, { errorMessage: '❌ У вас нет прав для работы с голосованиями' });
+  if (!check.allowed) return;
 
   const userId = ctx.callbackQuery.from.id;
   

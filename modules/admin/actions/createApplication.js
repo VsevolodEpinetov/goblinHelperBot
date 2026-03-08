@@ -1,18 +1,15 @@
 const { Composer } = require("telegraf");
-const { getUser } = require('../../db/helpers');
-const { hasPermission } = require('../../rbac');
+const { ensureRoles } = require('../../rbac');
 const knex = require('../../db/knex');
+
+const APPLICATIONS_ROLES = ['protector', 'admin', 'adminPlus', 'super'];
 
 module.exports = Composer.action(/^create_application_\d+$/g, async (ctx) => {
   const userId = ctx.callbackQuery.data.split('_').pop();
   try { await ctx.answerCbQuery(); } catch {}
-  
-  // Check permissions
-  const userData = await getUser(ctx.callbackQuery.from.id);
-  if (!userData || !hasPermission(userData.roles, 'admin:applications:manage')) {
-    await ctx.reply('❌ У вас нет прав для создания заявок');
-    return;
-  }
+
+  const check = await ensureRoles(ctx, APPLICATIONS_ROLES, { errorMessage: '❌ У вас нет прав для создания заявок' });
+  if (!check.allowed) return;
   
   try {
     // Check if application already exists

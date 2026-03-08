@@ -2,8 +2,14 @@ const { Composer, Markup } = require("telegraf");
 const util = require('../../../util');
 const SETTINGS = require('../../../../settings.json');
 const { getUser } = require('../../../db/helpers');
+const { ensureRoles } = require('../../../rbac');
+
+const SUPER_ROLES = ['super'];
 
 module.exports = Composer.action(/^showUserMonths_/g, async (ctx) => {
+  const check = await ensureRoles(ctx, SUPER_ROLES);
+  if (!check.allowed) return;
+
   const userId = ctx.callbackQuery.data.split('_')[1];
   const userData = await getUser(userId);
   

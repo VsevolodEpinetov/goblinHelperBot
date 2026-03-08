@@ -1,19 +1,16 @@
 const { Composer, Markup } = require("telegraf");
 const { t } = require('../../../../modules/i18n');
 const knex = require('../../../../modules/db/knex');
-const { getUser } = require('../../../db/helpers');
-const { hasPermission } = require('../../../rbac');
+const { ensureRoles } = require('../../../rbac');
 const SETTINGS = require('../../../../settings.json');
+
+const APPLICATIONS_ROLES = ['protector', 'admin', 'adminPlus', 'super'];
 
 module.exports = Composer.action('adminPendingApplications', async (ctx) => {
   try { await ctx.answerCbQuery(); } catch {}
-  
-  // Check permissions
-  const userData = await getUser(ctx.callbackQuery.from.id);
-  if (!userData || !hasPermission(userData.roles, 'admin:applications:view')) {
-    await ctx.reply('❌ У вас нет прав для просмотра заявок');
-    return;
-  }
+
+  const check = await ensureRoles(ctx, APPLICATIONS_ROLES, { errorMessage: '❌ У вас нет прав для просмотра заявок' });
+  if (!check.allowed) return;
   
   try {
     // Get users without any roles (pending applications)

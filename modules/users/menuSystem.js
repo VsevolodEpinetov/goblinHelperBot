@@ -12,7 +12,6 @@ const {
   getDepartedMenu,
   markInvitationUsed
 } = require('./menus');
-const { hasPermission } = require('../rbac/permissions');
 const { userHasRole } = require('../rbac/roleManager');
 const { hasAchievement } = require('../loyalty/achievementsService');
 
@@ -69,7 +68,7 @@ async function checkMenuPermission(userId, userRoles, menuType, requiredAchievem
     
     switch (menuType) {
       case 'super':
-        return userRoles.includes('super') && hasPermission(userRoles, 'admin:super:roles:manage');
+        return userRoles.includes('super');
       
       case 'admin':
         return (userRoles.includes('admin') || userRoles.includes('adminPlus') || userRoles.includes('adminPolls'));

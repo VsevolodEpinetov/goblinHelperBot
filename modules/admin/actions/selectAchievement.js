@@ -4,9 +4,13 @@ const { grantAchievement, revokeAchievement, hasAchievement } = require('../../l
 const achievementsConfig = require('../../../configs/achievements');
 const notifications = require('../../../configs/notifications');
 const knex = require('../../db/knex');
+const { ensureRoles } = require('../../rbac');
 
-// Handler for admin_user_achievements_* callback - shows achievement management menu
+const SUPER_ROLES = ['super'];
+
 const adminUserAchievements = Composer.action(/^admin_user_achievements_\d+$/g, async (ctx) => {
+  const check = await ensureRoles(ctx, SUPER_ROLES);
+  if (!check.allowed) return;
   try { await ctx.answerCbQuery(); } catch {}
   
   const userId = ctx.callbackQuery.data.split('_').pop();
@@ -62,6 +66,8 @@ const adminUserAchievements = Composer.action(/^admin_user_achievements_\d+$/g, 
 
 // Handler for granting achievements
 const selectAchievement = Composer.action(/^selectAchievement_/, async (ctx) => {
+  const check = await ensureRoles(ctx, SUPER_ROLES);
+  if (!check.allowed) return;
   try { 
     await ctx.answerCbQuery(); 
   } catch {}
@@ -166,6 +172,8 @@ const selectAchievement = Composer.action(/^selectAchievement_/, async (ctx) => 
 
 // Handler for revoking achievements
 const revokeAchievementHandler = Composer.action(/^revokeAchievement_/, async (ctx) => {
+  const check = await ensureRoles(ctx, SUPER_ROLES);
+  if (!check.allowed) return;
   try { 
     await ctx.answerCbQuery(); 
   } catch {}

@@ -2,9 +2,14 @@ const { Composer } = require('telegraf');
 const { getMonthChatId } = require('../../db/helpers');
 const { getCurrentPeriod } = require('../../users/menuSystem');
 const { createInvitationLink } = require('../../invitationService');
+const { ensureRoles } = require('../../rbac');
+
+const SUPER_ROLES = ['super'];
 
 module.exports = Composer.action('join_current_month', async (ctx) => {
   try {
+    const check = await ensureRoles(ctx, SUPER_ROLES);
+    if (!check.allowed) return;
     await ctx.answerCbQuery();
     
     // Get current period

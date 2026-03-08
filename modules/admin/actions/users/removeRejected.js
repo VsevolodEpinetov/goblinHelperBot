@@ -2,8 +2,14 @@ const { Composer, Markup } = require("telegraf");
 const util = require('../../../util');
 const SETTINGS = require('../../../../settings.json');
 const { getAllUsers, updateUser } = require('../../../db/helpers');
+const { ensureRoles } = require('../../../rbac');
+
+const SUPER_ROLES = ['super'];
 
 module.exports = Composer.action('removeRejected', async (ctx) => {
+  const check = await ensureRoles(ctx, SUPER_ROLES);
+  if (!check.allowed) return;
+
   const usersData = await getAllUsers();
   const users = JSON.parse(JSON.stringify(usersData.list));
   let totalAmountOfUsers = Object.keys(users).length;

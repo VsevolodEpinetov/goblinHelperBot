@@ -1,5 +1,4 @@
 const knex = require('../db/knex');
-const { hasPermission, getUserPermissions } = require('./permissions');
 
 /**
  * Role Manager Utility

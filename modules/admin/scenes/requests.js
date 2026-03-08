@@ -1,6 +1,5 @@
 const { Scenes, Markup } = require("telegraf");
 const { getUser } = require('../../db/helpers');
-const { hasPermission } = require('../../rbac');
 const knex = require('../../db/knex');
 
 const requestsScene = new Scenes.BaseScene('REQUESTS_SCENE');

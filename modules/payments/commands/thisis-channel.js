@@ -13,6 +13,17 @@ module.exports = Composer.on('channel_post', async (ctx, next) => {
     return next();
   }
 
+  // Verify an authorized admin is a channel admin (channel posts are anonymous)
+  try {
+    const admins = await ctx.telegram.getChatAdministrators(channelID);
+    const adminIds = admins.map(a => a.user.id.toString());
+    if (!adminIds.includes(SETTINGS.CHATS.EPINETOV) && !adminIds.includes(SETTINGS.CHATS.GLAVGOBLIN)) {
+      return next();
+    }
+  } catch {
+    return next();
+  }
+
   // Check if message has the expected format after 'thisis '
   const thisisIndex = messageText.indexOf('thisis ');
   const afterThisis = messageText.substring(thisisIndex + 7); // 7 is length of 'thisis '

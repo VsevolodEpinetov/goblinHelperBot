@@ -1,17 +1,14 @@
 const { Composer, Markup } = require("telegraf");
 const util = require('../../../util');
 const SETTINGS = require('../../../../settings.json');
-const { hasPermission } = require('../../../rbac');
-const { getUser } = require('../../../db/helpers');
+const { ensureRoles } = require('../../../rbac');
 const { getDynamicStudios } = require('../../../db/polls');
 
+const POLLS_ROLES = ['polls', 'adminPolls', 'admin', 'adminPlus', 'super'];
+
 module.exports = Composer.action('adminPollsStudios', async (ctx) => {
-  // Check permissions using new RBAC system
-  const userData = await getUser(ctx.callbackQuery.from.id);
-  if (!userData || !hasPermission(userData.roles, 'admin:polls:edit')) {
-    await ctx.answerCbQuery('❌ У вас нет прав для управления добавленными студиями');
-    return;
-  }
+  const check = await ensureRoles(ctx, POLLS_ROLES, { errorMessage: '❌ У вас нет прав для управления добавленными студиями' });
+  if (!check.allowed) return;
   // Get dynamic studios from database
   const dynamicStudios = await getDynamicStudios();
   const studioNames = dynamicStudios.map(s => s.name);

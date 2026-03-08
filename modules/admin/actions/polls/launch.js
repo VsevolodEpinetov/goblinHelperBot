@@ -2,16 +2,14 @@ const { Composer, Markup } = require("telegraf");
 const util = require('../../../util');
 const SETTINGS = require('../../../../settings.json');
 const { getSetting, getUser } = require('../../../db/helpers');
-const { hasPermission } = require('../../../rbac');
+const { ensureRoles } = require('../../../rbac');
 const { getAllStudios, getStats } = require('../../../db/polls');
 
+const POLLS_ROLES = ['polls', 'adminPolls', 'admin', 'adminPlus', 'super'];
+
 module.exports = Composer.action('adminPollsStart', async (ctx) => {
-  // Check permissions using new RBAC system
-  const userData = await getUser(ctx.callbackQuery.from.id);
-  if (!userData || !hasPermission(userData.roles, 'admin:polls:launch')) {
-    await ctx.answerCbQuery('❌ У вас нет прав для запуска голосований');
-    return;
-  }
+  const check = await ensureRoles(ctx, POLLS_ROLES, { errorMessage: '❌ У вас нет прав для запуска голосований' });
+  if (!check.allowed) return;
   // Get polls chat settings from environment variables
   const mainGroupId = process.env.MAIN_GROUP_ID;
   const pollsTopicId = process.env.POLLS_TOPIC_ID;

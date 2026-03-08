@@ -1,8 +1,6 @@
 const { Composer, Markup } = require("telegraf");
 const util = require('../../../util');
 const SETTINGS = require('../../../../settings.json');
-const { getUser } = require('../../../db/helpers');
-const { hasPermission } = require('../../../rbac');
 
 module.exports = Composer.action(/^replaceFilesKickstarter_(\d+)$/, async (ctx) => {
   // Check for super user

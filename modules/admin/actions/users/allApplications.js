@@ -3,6 +3,9 @@ const { t } = require('../../../../modules/i18n');
 const knex = require('../../../../modules/db/knex');
 const SETTINGS = require('../../../../settings.json');
 const { getUser } = require('../../../db/helpers');
+const { ensureRoles } = require('../../../rbac');
+
+const SUPER_ROLES = ['super'];
 
 // Determine highest role among approved roles
 function getHighestRole(roles) {
@@ -13,9 +16,8 @@ function getHighestRole(roles) {
 
 // Main handler for all applications view
 const allApplicationsHandler = Composer.action('adminAllApplications', async (ctx) => {
-  console.log('🎯 adminAllApplications action triggered!');
-  console.log('🎯 Callback data:', ctx.callbackQuery?.data);
-  console.log('🎯 User ID:', ctx.from?.id);
+  const check = await ensureRoles(ctx, SUPER_ROLES);
+  if (!check.allowed) return;
   
   try { await ctx.answerCbQuery(); } catch {}
   
@@ -171,9 +173,8 @@ const allApplicationsHandler = Composer.action('adminAllApplications', async (ct
 
 // Handle status filters
 const filterHandler = Composer.action(/^admin_filter_(prereg|pending|rejected|approved|other)$/g, async (ctx) => {
-  console.log('🎯 admin_filter action triggered!');
-  console.log('🎯 Callback data:', ctx.callbackQuery?.data);
-  console.log('🎯 User ID:', ctx.from?.id);
+  const check = await ensureRoles(ctx, SUPER_ROLES);
+  if (!check.allowed) return;
   
   const status = ctx.callbackQuery.data.split('_')[2];
   try { await ctx.answerCbQuery(); } catch {}
@@ -290,15 +291,8 @@ const filterHandler = Composer.action(/^admin_filter_(prereg|pending|rejected|ap
 
 // Handle user search
 const searchHandler = Composer.action('admin_search_user', async (ctx) => {
-  // CRITICAL SECURITY FIX: Only allow search in admin DMs
-  if (ctx.chat.id.toString() !== SETTINGS.CHATS.EPINETOV) {
-    await ctx.answerCbQuery('❌ Поиск пользователей доступен только в личных сообщениях с администратором');
-    return;
-  }
-  
-  console.log('🎯 admin_search_user action triggered!');
-  console.log('🎯 Callback data:', ctx.callbackQuery?.data);
-  console.log('🎯 User ID:', ctx.from?.id);
+  const check = await ensureRoles(ctx, SUPER_ROLES);
+  if (!check.allowed) return;
   
   try { await ctx.answerCbQuery(); } catch {}
   
@@ -321,22 +315,16 @@ const searchHandler = Composer.action('admin_search_user', async (ctx) => {
 
 // Handle search results (this will be triggered by a message handler)
 const searchMessageHandler = Composer.hears(/^[0-9@a-zA-Z_]+$/, async (ctx, next) => {
-  // CRITICAL SECURITY FIX: Only allow search in admin DMs
-  if (ctx.chat.id.toString() !== SETTINGS.CHATS.EPINETOV) {
-    return next();
-  }
+  const check = await ensureRoles(ctx, SUPER_ROLES, { errorMessage: null });
+  if (!check.allowed) return next();
   
-  // Skip if it's a command (starts with /)
   if (ctx.message.text.startsWith('/')) {
     return next();
   }
   
-  // Skip if user is not in search mode (you might want to add a session flag for this)
-  // For now, we'll be more restrictive and only handle specific search patterns
   if (!ctx.message.text.match(/^[0-9@a-zA-Z_]{3,}$/)) {
     return next();
   }
-  // Only process if we're in search mode (you might want to add a session flag for this)
   const searchQuery = ctx.message.text.trim();
   
   try {
@@ -466,10 +454,10 @@ const searchMessageHandler = Composer.hears(/^[0-9@a-zA-Z_]+$/, async (ctx, next
 // Handle user management interface
 // Handler for role management
 const changeRolesHandler = Composer.action(/^admin_change_roles_(\d+)$/g, async (ctx) => {
+  const check = await ensureRoles(ctx, SUPER_ROLES);
+  if (!check.allowed) return;
+
   const userId = ctx.callbackQuery.data.split('_')[3];
-  console.log('🎯 admin_change_roles action triggered!');
-  console.log('🎯 User ID for role management:', userId);
-  
   try { await ctx.answerCbQuery(); } catch {}
   
   // Set the user ID in session for the scene
@@ -480,10 +468,10 @@ const changeRolesHandler = Composer.action(/^admin_change_roles_(\d+)$/g, async 
 });
 
 const userManagementHandler = Composer.action(/^admin_manage_user_(\d+)$/g, async (ctx) => {
+  const check = await ensureRoles(ctx, SUPER_ROLES);
+  if (!check.allowed) return;
+
   const userId = ctx.callbackQuery.data.split('_')[3];
-  console.log('🎯 admin_manage_user action triggered!');
-  console.log('🎯 User ID to manage:', userId);
-  
   try { await ctx.answerCbQuery(); } catch {}
   
   try {
@@ -659,7 +647,9 @@ const userManagementHandler = Composer.action(/^admin_manage_user_(\d+)$/g, asyn
 
 // Handle user actions
 const userActionHandler = Composer.action(/^admin_(approve|reject|super_approve|ban|delete|downgrade)_user_(\d+)$/g, async (ctx) => {
-  // Extract action and userId more robustly
+  const roleCheck = await ensureRoles(ctx, SUPER_ROLES);
+  if (!roleCheck.allowed) return;
+
   const parts = ctx.callbackQuery.data.split('_');
   let action, userId;
   

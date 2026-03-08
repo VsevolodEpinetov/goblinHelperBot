@@ -2,6 +2,9 @@ const { Composer, Markup } = require('telegraf');
 const { getUser } = require('../../db/helpers');
 const knex = require('../../db/knex');
 const SETTINGS = require('../../../settings.json');
+const { ensureRoles } = require('../../rbac');
+
+const SUPER_ROLES = ['super'];
 
 const starsCommand = Composer.command('stars', async (ctx) => {
   // Check if user is super admin
@@ -110,6 +113,8 @@ const starsCommand = Composer.command('stars', async (ctx) => {
 
 // Action handlers for the buttons
 const refreshAction = Composer.action('refreshStarsBalance', async (ctx) => {
+  const check = await ensureRoles(ctx, SUPER_ROLES);
+  if (!check.allowed) return;
   try { await ctx.answerCbQuery('🔄 Обновляем...'); } catch {}
   
   // Re-run the stars command logic
@@ -117,6 +122,8 @@ const refreshAction = Composer.action('refreshStarsBalance', async (ctx) => {
 });
 
 const withdrawalAction = Composer.action('requestStarsWithdrawal', async (ctx) => {
+  const check = await ensureRoles(ctx, SUPER_ROLES);
+  if (!check.allowed) return;
   try { await ctx.answerCbQuery(); } catch {}
   
   const withdrawalInfo = `💸 <b>Запрос на вывод звёзд</b>\n\n` +
@@ -136,6 +143,8 @@ const withdrawalAction = Composer.action('requestStarsWithdrawal', async (ctx) =
 });
 
 const statsAction = Composer.action('detailedStarsStats', async (ctx) => {
+  const check = await ensureRoles(ctx, SUPER_ROLES);
+  if (!check.allowed) return;
   try { await ctx.answerCbQuery(); } catch {}
   
   try {

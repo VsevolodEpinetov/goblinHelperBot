@@ -5,8 +5,14 @@ const knex = require('../../../../modules/db/knex');
 const { getUser, updateUser, addUserToGroup, incrementMonthCounter, addUserKickstarter, getKickstarter, hasUserPurchasedKickstarter, hasUserPurchasedMonth } = require('../../../db/helpers');
 const { applyXpGain, getSubscriptionBaseUnits } = require('../../../loyalty/xpService');
 const rpgConfig = require('../../../../configs/rpg');
+const { ensureRoles } = require('../../../rbac');
+
+const SUPER_ROLES = ['super'];
 
 module.exports = Composer.action(/^confirmPayment_/g, async (ctx) => {
+  const check = await ensureRoles(ctx, SUPER_ROLES);
+  if (!check.allowed) return;
+
   const data = ctx.callbackQuery.data.split('_');
   const userId = data[1];
   const type = data[2];

@@ -386,9 +386,7 @@ function isAdmin (telegramUserID) {
     return true;
   }
 
-  // Check if user has any admin role using the new RBAC system
-  // Note: This is a synchronous check, so we can't use async getUser here
-  // For proper role checking, use hasPermission(userRoles, 'admin:users:view') instead
+  // Check if user has any admin role via RBAC (use ensureRoles/requireAdmin in handlers)
   return false;
 }
 

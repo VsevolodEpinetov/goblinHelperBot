@@ -3,9 +3,13 @@ const knex = require('../../../../modules/db/knex');
 const { getUser } = require('../../../db/helpers');
 const { getUserScrolls, giveScroll } = require('../../../util/scrolls');
 const scrollsConfig = require('../../../../configs/scrolls');
+const { ensureRoles } = require('../../../rbac');
 
-// Handler for admin_user_scrolls_* - shows available and spent scrolls
+const SUPER_ROLES = ['super'];
+
 const adminUserScrolls = Composer.action(/^admin_user_scrolls_\d+$/g, async (ctx) => {
+  const check = await ensureRoles(ctx, SUPER_ROLES);
+  if (!check.allowed) return;
   try { await ctx.answerCbQuery(); } catch {}
   
   const userId = ctx.callbackQuery.data.split('_').pop();
@@ -107,6 +111,8 @@ const adminUserScrolls = Composer.action(/^admin_user_scrolls_\d+$/g, async (ctx
 
 // Handler for admin_user_add_scrolls_* - shows menu to select scroll type to add
 const adminUserAddScrolls = Composer.action(/^admin_user_add_scrolls_\d+$/g, async (ctx) => {
+  const check = await ensureRoles(ctx, SUPER_ROLES);
+  if (!check.allowed) return;
   try { await ctx.answerCbQuery(); } catch {}
   
   const userId = ctx.callbackQuery.data.split('_').pop();
@@ -168,6 +174,8 @@ const adminUserAddScrolls = Composer.action(/^admin_user_add_scrolls_\d+$/g, asy
 
 // Handler for admin_user_add_scroll_*_* - adds one scroll and shows success
 const adminUserAddScroll = Composer.action(/^admin_user_add_scroll_\d+_\w+$/g, async (ctx) => {
+  const check = await ensureRoles(ctx, SUPER_ROLES);
+  if (!check.allowed) return;
   try { await ctx.answerCbQuery(); } catch {}
   
   const parts = ctx.callbackQuery.data.split('_');

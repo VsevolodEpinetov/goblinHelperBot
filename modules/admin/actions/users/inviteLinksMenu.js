@@ -1,7 +1,13 @@
 const { Composer, Markup } = require('telegraf');
 const knex = require('../../../../modules/db/knex');
+const { ensureRoles } = require('../../../rbac');
+
+const SUPER_ROLES = ['super'];
 
 module.exports = Composer.action('adminInviteLinksMenu', async (ctx) => {
+  const check = await ensureRoles(ctx, SUPER_ROLES);
+  if (!check.allowed) return;
+
 	await ctx.answerCbQuery().catch(() => {});
 	const rows = await knex('invitationLinks')
 		.select('id', 'userId', 'groupPeriod', 'groupType', 'createdAt', 'usedAt')

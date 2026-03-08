@@ -1,7 +1,12 @@
 const { Composer, Markup } = require("telegraf");
 const { getOrCreateGroupInvitationLink, notifyUsersOfNewLink } = require('../../archive/archiveService');
+const { ensureRoles } = require('../../rbac');
+
+const SUPER_ROLES = ['super'];
 
 module.exports = Composer.action(/^createNewLink_(.+)_(.+)$/, async (ctx) => {
+  const check = await ensureRoles(ctx, SUPER_ROLES);
+  if (!check.allowed) return;
   try { await ctx.answerCbQuery(); } catch {}
   
   try {
