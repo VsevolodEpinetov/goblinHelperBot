@@ -19,8 +19,8 @@ module.exports = async (ctx) => {
     }
 
     // Check if user is participating
-    const isParticipating = raid.participants.some(p => p.user_id === ctx.from.id);
-    const isCreator = raid.created_by === ctx.from.id;
+    const isParticipating = raid.participants.some(p => Number(p.user_id) === ctx.from.id);
+    const isCreator = Number(raid.created_by) === ctx.from.id;
 
     // Calculate price per person
     const participantCount = raid.participants.length;

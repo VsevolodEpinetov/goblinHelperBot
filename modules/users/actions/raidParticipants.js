@@ -13,7 +13,7 @@ module.exports = Composer.action(/^raidParticipants_(\d+)$/, async (ctx) => {
     if (!raid) { await ctx.answerCbQuery(t('raids.common.notFound'), { show_alert: true }); return; }
     
     // Check if user is the creator
-    if (raid.created_by !== userId) { await ctx.answerCbQuery(t('raids.common.noPermission'), { show_alert: true }); return; }
+    if (Number(raid.created_by) !== Number(userId)) { await ctx.answerCbQuery(t('raids.common.noPermission'), { show_alert: true }); return; }
     
     const participantCount = raid.participants ? raid.participants.length : 0;
     

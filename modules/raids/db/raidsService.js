@@ -242,8 +242,7 @@ class RaidsService {
       }
 
       // Only creator or admin can close
-      if (raid.created_by !== userId) {
-        // Check if user is admin (you might want to add admin check here)
+      if (Number(raid.created_by) !== Number(userId)) {
         return { success: false, error: 'Not authorized to close this raid' };
       }
 

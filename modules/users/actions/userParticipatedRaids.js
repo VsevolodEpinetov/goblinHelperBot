@@ -8,7 +8,7 @@ module.exports = Composer.action('userParticipatedRaids', async (ctx) => {
     // Get user's participated raids (where they're not the creator)
     const allUserRaids = await raidsService.getUserRaids(userId, {});
     console.log('🔍 All user raids:', allUserRaids.length);
-    const participatedRaids = allUserRaids.filter(raid => raid.created_by !== userId);
+    const participatedRaids = allUserRaids.filter(raid => Number(raid.created_by) !== Number(userId));
     console.log('🔍 Participated raids:', participatedRaids.length);
     
     if (participatedRaids.length === 0) {

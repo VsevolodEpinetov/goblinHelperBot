@@ -16,7 +16,7 @@ module.exports = Composer.action(/^excludeParticipant_(\d+)_(\d+)$/, async (ctx)
     }
     
     // Check if user is the creator
-    if (raid.created_by !== userId) {
+    if (Number(raid.created_by) !== Number(userId)) {
       await ctx.answerCbQuery('❌ Вы не можете управлять этим рейдом', { show_alert: true });
       return;
     }
