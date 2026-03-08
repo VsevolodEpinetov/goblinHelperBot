@@ -21,7 +21,6 @@ module.exports = Composer.action(/^sendFilesKickstarter_/g, async (ctx) => {
     await ctx.replyWithHTML(`Из-за ограничений телеграма тебе нужно использовать /start ещё раз. Старое сообщение останется, можешь его удалить вручную, если мешает.`)
     return;
   }
-  const ksId = ctx.callbackQuery.data.split('_')[2];
   const userId = ctx.callbackQuery.data.split('_')[1];
   const ksData = await getKickstarter(ksId);
   
