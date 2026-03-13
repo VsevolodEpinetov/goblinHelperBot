@@ -31,7 +31,7 @@ module.exports = Composer.action(/^showKickstarterFromGoblin_/g, async (ctx) => 
     }
   } else {
     buttons = [
-      [Markup.button.callback('✅ Уже куплено', 'myKickstarters')]
+      [Markup.button.callback('📥 Получить файлы', `sendFilesKickstarter_${userId}_${projectID}`)]
     ];
   }
 

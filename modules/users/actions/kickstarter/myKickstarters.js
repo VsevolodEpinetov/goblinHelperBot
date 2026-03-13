@@ -5,7 +5,7 @@ const ITEMS_PER_PAGE = 5; // Safe limit for Telegram's 4096 character limit
 
 async function handleMyKickstarters(ctx, page = 1) {
   try {
-    try { await ctx.answerCbQuery(); } catch {}
+    try { await ctx.answerCbQuery(); } catch { }
 
     const userId = ctx.from.id;
     const userData = await getUser(userId);
@@ -97,19 +97,29 @@ async function handleMyKickstarters(ctx, page = 1) {
     } catch (editError) {
       if (editError.message && editError.message.includes('message is not modified')) {
         // Message content is the same (e.g., clicking prev on page 1), just answer the query
-        try { await ctx.answerCbQuery(); } catch {}
+        try { await ctx.answerCbQuery(); } catch { }
       } else {
         throw editError;
       }
     }
   } catch (error) {
     console.error('Error in myKickstarters:', error);
-    await ctx.editMessageText('❌ <b>Произошла ошибка</b>\n\nПопробуй ещё раз позже.', {
+    const errorPayload = {
       parse_mode: 'HTML',
       ...Markup.inlineKeyboard([
         [Markup.button.callback('🔙 Назад', 'userKickstarters')]
       ])
-    });
+    };
+    try {
+      await ctx.editMessageText('❌ <b>Произошла ошибка</b>\n\nПопробуй ещё раз позже.', errorPayload);
+    } catch (editError) {
+      if (editError.message && editError.message.includes('no text in the message to edit')) {
+        await ctx.deleteMessage(ctx.callbackQuery?.message?.message_id).catch(() => {});
+        await ctx.replyWithHTML('❌ <b>Произошла ошибка</b>\n\nПопробуй ещё раз позже.', errorPayload);
+      } else {
+        throw editError;
+      }
+    }
   }
 }
 
@@ -120,7 +130,7 @@ const myKickstartersHandler = Composer.action('myKickstarters', async (ctx) => {
 
 // Handle no-op action for current page button (does nothing) - must be before page handler
 const myKickstartersNoopHandler = Composer.action(/^myKickstarters_page_\d+_noop$/, async (ctx) => {
-  try { await ctx.answerCbQuery(); } catch {}
+  try { await ctx.answerCbQuery(); } catch { }
   // Do nothing - just answer the callback query
 });
 
