@@ -141,7 +141,7 @@ async function getUserMenu(ctx, userData) {
       if (roles.includes('adminPolls') || roles.includes('polls')) {
         keyboard.push([Markup.button.callback('🗳️ Голосования', 'adminPolls')]);
       }
-      keyboard.push([Markup.button.callback('👤 Открыть пользовательское меню', 'refreshUserStatus')]);
+      keyboard.push([Markup.button.callback('👤 Открыть пользовательское меню', 'openUserMenu')]);
       return { message, keyboard };
     }
   }
