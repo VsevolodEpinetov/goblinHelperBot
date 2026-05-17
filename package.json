@@ -18,9 +18,12 @@
     "gen:locale-types": "tsx scripts/gen-locale-types.ts",
     "migrate": "knex migrate:latest",
     "migrate:rollback": "knex migrate:rollback",
+    "migrate:test": "cross-env NODE_ENV=test knex migrate:latest",
     "seed": "knex seed:run",
     "db:status": "knex migrate:status",
-    "db:list": "knex migrate:list"
+    "db:list": "knex migrate:list",
+    "audit": "tsx scripts/pre-migration-audit.ts",
+    "test:integration": "vitest run tests/integration"
   },
   "dependencies": {
     "@notionhq/client": "^2.2.15",
@@ -46,6 +49,7 @@
     "@typescript-eslint/eslint-plugin": "^7.13.0",
     "@typescript-eslint/parser": "^7.13.0",
     "@vitest/coverage-v8": "^1.6.0",
+    "cross-env": "^7.0.3",
     "eslint": "^8.57.0",
     "eslint-import-resolver-typescript": "^4.4.4",
     "eslint-plugin-import": "^2.29.1",
