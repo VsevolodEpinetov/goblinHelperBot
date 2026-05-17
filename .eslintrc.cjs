@@ -104,7 +104,7 @@ module.exports = {
     },
     {
       // Meta config files (not part of tsconfig project) — disable typed linting
-      files: ['.eslintrc.cjs', 'knexfile.js', '*.config.js', '*.config.cjs'],
+      files: ['.eslintrc.cjs', 'knexfile.js', '*.config.js', '*.config.cjs', '*.config.ts'],
       parserOptions: {
         project: null,
       },
