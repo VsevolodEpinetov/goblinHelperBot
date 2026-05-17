@@ -33,35 +33,59 @@ module.exports = {
         alphabetize: { order: 'asc' },
       },
     ],
-    // Feature boundary enforcement: features may not import siblings' internals
+    // Feature boundary enforcement + restrict direct knex/@db/client imports
     'no-restricted-imports': [
       'error',
       {
         patterns: [
           {
-            group: ['@features/*/repo', '@features/*/repo.*', '@features/*/service', '@features/*/service.*'],
+            group: [
+              '@features/*/repo',
+              '@features/*/repo.*',
+              '@features/*/service',
+              '@features/*/service.*',
+            ],
             message:
               "Features must not import sibling features' internal repo/service modules. Import the feature's public surface via @features/<name> instead.",
           },
         ],
-      },
-    ],
-    // Only repo.ts files may import knex directly
-    'no-restricted-syntax': [
-      'error',
-      {
-        selector:
-          'ImportDeclaration[source.value=/knex|@db\\/client/]:not([source.value=/repo\\.ts$/])',
-        message: "Direct knex imports are only allowed in repo.ts files. Use the feature's repo layer.",
+        paths: [
+          {
+            name: 'knex',
+            message:
+              "Direct knex imports are only allowed in repo.ts files. Use the feature's repo layer.",
+          },
+          {
+            name: '@db/client',
+            message:
+              "Direct db client imports are only allowed in repo.ts files. Use the feature's repo layer.",
+          },
+        ],
       },
     ],
   },
   overrides: [
     {
-      // repo.ts files are allowed to import knex/db
+      // repo.ts files, the db layer, and scripts may import knex/db directly.
       files: ['src/features/**/repo.ts', 'src/db/**', 'scripts/**'],
       rules: {
-        'no-restricted-syntax': 'off',
+        'no-restricted-imports': [
+          'error',
+          {
+            patterns: [
+              {
+                group: [
+                  '@features/*/repo',
+                  '@features/*/repo.*',
+                  '@features/*/service',
+                  '@features/*/service.*',
+                ],
+                message:
+                  "Features must not import sibling features' internal repo/service modules. Import the feature's public surface via @features/<name> instead.",
+              },
+            ],
+          },
+        ],
       },
     },
     {
@@ -69,7 +93,6 @@ module.exports = {
       files: ['**/*.test.ts', '**/*.spec.ts', 'tests/**'],
       rules: {
         'no-restricted-imports': 'off',
-        'no-restricted-syntax': 'off',
       },
     },
     {
