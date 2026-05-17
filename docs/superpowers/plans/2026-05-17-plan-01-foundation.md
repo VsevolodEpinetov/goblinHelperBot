@@ -142,7 +142,7 @@ Expected: install completes without errors. `npm ls typescript` shows `typescrip
     "module": "commonjs",
     "lib": ["ES2022"],
     "moduleResolution": "node",
-    "rootDir": "./src",
+    "rootDir": ".",
     "outDir": "./dist",
     "strict": true,
     "noImplicitAny": true,
