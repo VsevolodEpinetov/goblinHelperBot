@@ -141,4 +141,23 @@ dev-debug.log
 
 # Task files
 # tasks.json
-# tasks/ 
+# tasks/
+
+# TypeScript build
+dist/
+*.tsbuildinfo
+
+# Test coverage
+coverage/
+
+# Generated files
+src/core/i18n-keys.generated.ts
+
+# Environment
+.env
+.env.local
+
+# Editor
+.vscode/
+.idea/
+

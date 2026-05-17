@@ -1,15 +1,24 @@
 {
+  "name": "goblin-helper-bot",
+  "version": "2.0.0",
+  "type": "commonjs",
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
-    "dev:old": "node indexf.js",
+    "start:new": "node dist/index.js",
+    "dev:new": "tsx watch src/index.ts",
+    "build": "tsc -p tsconfig.build.json",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint . --ext .ts,.tsx,.js,.cjs",
+    "lint:fix": "eslint . --ext .ts,.tsx,.js,.cjs --fix",
+    "format": "prettier --write \"src/**/*.{ts,tsx,json}\" \"tests/**/*.ts\"",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "gen:locale-types": "tsx scripts/gen-locale-types.ts",
     "migrate": "knex migrate:latest",
     "migrate:rollback": "knex migrate:rollback",
     "seed": "knex seed:run",
-    "seed:roles": "knex seed:run --specific=001_initial_roles.js",
-    "seed:admins": "knex seed:run --specific=002_setup_admin_roles.js",
-    "setup:rbac": "node scripts/setup_rbac.js",
-    "test:rbac": "node test_rbac.js",
     "db:status": "knex migrate:status",
     "db:list": "knex migrate:list"
   },
@@ -22,14 +31,29 @@
     "dotenv": "^16.6.1",
     "form-data": "^4.0.0",
     "knex": "^3.1.0",
+    "lru-cache": "^11.0.0",
     "pg": "^8.13.1",
+    "pino": "^9.0.0",
     "redis": "^4.7.1",
     "telegraf": "^4.16.3",
     "telegraf-session-redis-upd": "^5.1.4",
     "telegraf-throttler": "^0.6.0",
-    "yandex-disk": "^0.0.8"
+    "yandex-disk": "^0.0.8",
+    "zod": "^3.23.0"
   },
   "devDependencies": {
-    "nodemon": "^3.1.10"
+    "@types/node": "^20.14.0",
+    "@typescript-eslint/eslint-plugin": "^7.13.0",
+    "@typescript-eslint/parser": "^7.13.0",
+    "@vitest/coverage-v8": "^1.6.0",
+    "eslint": "^8.57.0",
+    "eslint-plugin-import": "^2.29.1",
+    "lefthook": "^1.6.0",
+    "nodemon": "^3.1.10",
+    "pino-pretty": "^11.0.0",
+    "prettier": "^3.3.0",
+    "tsx": "^4.15.0",
+    "typescript": "^5.5.0",
+    "vitest": "^1.6.0"
   }
 }
