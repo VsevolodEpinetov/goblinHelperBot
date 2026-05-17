@@ -177,6 +177,7 @@ Expected: install completes without errors. `npm ls typescript` shows `typescrip
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
+    "rootDir": "./src",
     "sourceMap": false,
     "removeComments": true
   },
@@ -184,6 +185,8 @@ Expected: install completes without errors. `npm ls typescript` shows `typescrip
   "exclude": ["node_modules", "dist", "modules", "tests", "**/*.test.ts", "**/*.spec.ts"]
 }
 ```
+
+`rootDir` is narrowed to `./src` here (the base config uses `"."` so `scripts/` is in scope for typecheck). This keeps the build emit clean: `src/index.ts → dist/index.js` rather than `dist/src/index.js`.
 
 - [ ] **Step 5: Update `.gitignore`**
 
