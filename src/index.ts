@@ -11,9 +11,15 @@ import { logger } from './core/observability';
 import { connectRedis, disconnectRedis } from './core/redis';
 import { router } from './core/router';
 import { sessionMiddleware } from './core/sessions';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import * as _achievementsFeature from './features/achievements';
 import * as commonFeature from './features/common';
+import * as loyaltyFeature from './features/loyalty';
 import * as pollsFeature from './features/polls';
 import * as promoFeature from './features/promo';
+// scrolls and achievements expose services only; no routes to register here
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import * as _scrollsFeature from './features/scrolls';
 
 async function main(): Promise<void> {
   const cfg = getConfig();
@@ -34,6 +40,7 @@ async function main(): Promise<void> {
   commonFeature.register(bot);
   pollsFeature.register(bot);
   promoFeature.register(bot);
+  loyaltyFeature.register(bot);
 
   await bot.launch({ dropPendingUpdates: true });
   logger.info({ username: bot.botInfo?.username }, 'Bot online');
