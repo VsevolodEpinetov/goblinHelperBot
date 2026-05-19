@@ -112,3 +112,6 @@ export function createRouter(): Router {
     },
   };
 }
+
+/** Process-wide router. Feature modules call `router.on(...)` to register. */
+export const router: Router = createRouter();
