@@ -9,7 +9,11 @@ import { rbacMiddleware } from './core/middleware/rbac';
 import { userTrackerMiddleware } from './core/middleware/user-tracker';
 import { logger } from './core/observability';
 import { connectRedis, disconnectRedis } from './core/redis';
+import { router } from './core/router';
 import { sessionMiddleware } from './core/sessions';
+import * as commonFeature from './features/common';
+import * as pollsFeature from './features/polls';
+import * as promoFeature from './features/promo';
 
 async function main(): Promise<void> {
   const cfg = getConfig();
@@ -25,8 +29,11 @@ async function main(): Promise<void> {
   bot.use(bannedMiddleware);
   bot.use(userTrackerMiddleware);
   bot.use(rbacMiddleware);
+  bot.use(router.middleware());
 
-  // Features are registered here in Plans 04+. For now, no commands or actions.
+  commonFeature.register(bot);
+  pollsFeature.register(bot);
+  promoFeature.register(bot);
 
   await bot.launch({ dropPendingUpdates: true });
   logger.info({ username: bot.botInfo?.username }, 'Bot online');
