@@ -17,6 +17,7 @@ import * as commonFeature from './features/common';
 import * as loyaltyFeature from './features/loyalty';
 import * as pollsFeature from './features/polls';
 import * as promoFeature from './features/promo';
+import { createRaidStage, register as registerRaids } from './features/raids';
 // scrolls and achievements expose services only; no routes to register here
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import * as _scrollsFeature from './features/scrolls';
@@ -32,6 +33,8 @@ async function main(): Promise<void> {
   bot.use(errorMiddleware);
   bot.use(loggerMiddleware);
   bot.use(sessionMiddleware);
+  const raidStage = createRaidStage();
+  bot.use(raidStage.middleware() as Parameters<typeof bot.use>[0]);
   bot.use(bannedMiddleware);
   bot.use(userTrackerMiddleware);
   bot.use(rbacMiddleware);
@@ -41,6 +44,7 @@ async function main(): Promise<void> {
   pollsFeature.register(bot);
   promoFeature.register(bot);
   loyaltyFeature.register(bot);
+  registerRaids(bot);
 
   await bot.launch({ dropPendingUpdates: true });
   logger.info({ username: bot.botInfo?.username }, 'Bot online');
