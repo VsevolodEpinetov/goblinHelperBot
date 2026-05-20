@@ -1,4 +1,5 @@
 import 'dotenv/config';
+import { Scenes } from 'telegraf';
 
 import { bot } from './core/bot';
 import { getConfig } from './core/config';
@@ -14,6 +15,7 @@ import { sessionMiddleware } from './core/sessions';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import * as _achievementsFeature from './features/achievements';
 import * as commonFeature from './features/common';
+import { getKickstarterScenes, register as registerKickstarters } from './features/kickstarters';
 import * as loyaltyFeature from './features/loyalty';
 import * as pollsFeature from './features/polls';
 import * as promoFeature from './features/promo';
@@ -33,8 +35,11 @@ async function main(): Promise<void> {
   bot.use(errorMiddleware);
   bot.use(loggerMiddleware);
   bot.use(sessionMiddleware);
-  const raidStage = createRaidStage();
-  bot.use(raidStage.middleware() as Parameters<typeof bot.use>[0]);
+  const combinedStage = new Scenes.Stage<Scenes.SceneContext>([
+    ...Array.from(createRaidStage().scenes.values()),
+    ...getKickstarterScenes(),
+  ]);
+  bot.use(combinedStage.middleware() as Parameters<typeof bot.use>[0]);
   bot.use(bannedMiddleware);
   bot.use(userTrackerMiddleware);
   bot.use(rbacMiddleware);
@@ -45,6 +50,7 @@ async function main(): Promise<void> {
   promoFeature.register(bot);
   loyaltyFeature.register(bot);
   registerRaids(bot);
+  registerKickstarters(bot);
 
   await bot.launch({ dropPendingUpdates: true });
   logger.info({ username: bot.botInfo?.username }, 'Bot online');
