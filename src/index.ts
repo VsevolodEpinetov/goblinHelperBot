@@ -17,12 +17,14 @@ import * as _achievementsFeature from './features/achievements';
 import * as commonFeature from './features/common';
 import { getKickstarterScenes, register as registerKickstarters } from './features/kickstarters';
 import * as loyaltyFeature from './features/loyalty';
+import * as paymentsFeature from './features/payments';
 import * as pollsFeature from './features/polls';
 import * as promoFeature from './features/promo';
 import { createRaidStage, register as registerRaids } from './features/raids';
 // scrolls and achievements expose services only; no routes to register here
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import * as _scrollsFeature from './features/scrolls';
+import * as subscriptionsFeature from './features/subscriptions';
 
 async function main(): Promise<void> {
   const cfg = getConfig();
@@ -38,6 +40,7 @@ async function main(): Promise<void> {
   const combinedStage = new Scenes.Stage<Scenes.SceneContext>([
     ...Array.from(createRaidStage().scenes.values()),
     ...getKickstarterScenes(),
+    paymentsFeature.sbpScene,
   ]);
   bot.use(combinedStage.middleware() as Parameters<typeof bot.use>[0]);
   bot.use(bannedMiddleware);
@@ -51,6 +54,8 @@ async function main(): Promise<void> {
   loyaltyFeature.register(bot);
   registerRaids(bot);
   registerKickstarters(bot);
+  paymentsFeature.register(bot);
+  subscriptionsFeature.register(bot);
 
   await bot.launch({ dropPendingUpdates: true });
   logger.info({ username: bot.botInfo?.username }, 'Bot online');
