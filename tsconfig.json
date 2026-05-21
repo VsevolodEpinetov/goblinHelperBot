@@ -29,5 +29,5 @@
     "baseUrl": "."
   },
   "include": ["src/**/*", "tests/**/*", "scripts/**/*"],
-  "exclude": ["node_modules", "dist", "modules", "index.js", "indexf.js", "INTEGRATION_EXAMPLES.js"]
+  "exclude": ["node_modules", "dist"]
 }

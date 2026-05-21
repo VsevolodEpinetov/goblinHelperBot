@@ -1,15 +1,8 @@
 node_modules
 dist
 coverage
-modules
-backups
-configs
 src/db/migrations/legacy
 seeds
 locales
 docs
-index.js
-indexf.js
-INTEGRATION_EXAMPLES.js
-scripts/*.js
 src/core/i18n-keys.generated.ts
