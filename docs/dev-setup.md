@@ -19,16 +19,15 @@
 
 | Command                       | What it does                                  |
 | ----------------------------- | --------------------------------------------- |
-| `npm run dev:new`             | Run the new TS bot in watch mode (Plan 03+)   |
+| `npm run dev`                 | Run the bot in watch mode                     |
 | `npm run build`               | Compile TS to `dist/`                         |
-| `npm start:new`               | Run the compiled new bot                      |
+| `npm start`                   | Run the compiled bot                          |
 | `npm run lint`                | ESLint check                                  |
 | `npm run lint:fix`            | ESLint auto-fix                               |
 | `npm run typecheck`           | tsc --noEmit                                  |
 | `npm test`                    | Vitest one-shot                               |
 | `npm run test:watch`          | Vitest watch mode                             |
 | `npm run gen:locale-types`    | Regenerate `src/core/i18n-keys.generated.ts`  |
-| `npm run start` / `npm run dev` | Run the legacy JS bot (still in place)      |
 
 ## Layout
 
@@ -37,9 +36,6 @@
 - `src/db/` — knex client + migrations (filled in Plan 02)
 - `src/features/` — feature folders (filled in Plans 03–08)
 - `tests/` — unit + integration
-
-The legacy JavaScript codebase (`index.js`, `modules/`) stays in place
-until the cutover plan executes; nothing in `src/` interferes with it.
 
 ## Tips when writing code
 
