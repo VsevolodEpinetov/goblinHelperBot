@@ -15,6 +15,7 @@ import { sessionMiddleware } from './core/sessions';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import * as _achievementsFeature from './features/achievements';
 import * as commonFeature from './features/common';
+import * as invitationsFeature from './features/invitations';
 import { getKickstarterScenes, register as registerKickstarters } from './features/kickstarters';
 import * as loyaltyFeature from './features/loyalty';
 import * as onboardingFeature from './features/onboarding';
@@ -59,6 +60,7 @@ async function main(): Promise<void> {
   paymentsFeature.register(bot);
   subscriptionsFeature.register(bot);
   onboardingFeature.register(bot);
+  invitationsFeature.register(bot);
 
   await bot.launch({ dropPendingUpdates: true });
   logger.info({ username: bot.botInfo?.username }, 'Bot online');
