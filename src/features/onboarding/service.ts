@@ -1,0 +1,109 @@
+import { bot } from '../../core/bot';
+import { logger } from '../../core/observability';
+import { db, type DbConn } from '../../db/client';
+import { addRole, removeRole, replaceRole } from '../../db/repos/user-roles-mutations';
+
+import {
+  getApplicationByUserId,
+  insertApplication,
+  setApplicationStatus,
+  type ApplicationRow,
+  type ApplicationStatus,
+} from './repo';
+
+export function canSubmit(existing: ApplicationRow | undefined): boolean {
+  if (!existing) return true;
+  return existing.status === 'rejected';
+}
+
+export interface SubmitInput {
+  userId: number;
+  username: string | null;
+  firstName: string | null;
+  lastName: string | null;
+}
+
+export type SubmitResult =
+  | { status: 'submitted'; applicationId: number }
+  | { status: 'already_pending'; applicationId: number }
+  | { status: 'already_approved'; applicationId: number };
+
+/** Submit an application + add the `pending` role atomically. */
+export async function submit(input: SubmitInput): Promise<SubmitResult> {
+  return db.transaction(async (trx) => submitInTrx(trx, input));
+}
+
+async function submitInTrx(trx: DbConn, input: SubmitInput): Promise<SubmitResult> {
+  const existing = await getApplicationByUserId(trx, input.userId);
+  if (existing) {
+    if (existing.status === 'pending') {
+      return { status: 'already_pending', applicationId: existing.id };
+    }
+    if (existing.status === 'approved') {
+      return { status: 'already_approved', applicationId: existing.id };
+    }
+    // rejected → allow re-apply: flip status back to pending
+    await setApplicationStatus(trx, existing.id, 'pending');
+    await removeRole(trx, input.userId, 'rejected');
+    await addRole(trx, input.userId, 'pending');
+    return { status: 'submitted', applicationId: existing.id };
+  }
+  const id = await insertApplication(trx, input);
+  await addRole(trx, input.userId, 'pending');
+  return { status: 'submitted', applicationId: id };
+}
+
+export type ReviewResult = 'approved' | 'rejected' | 'not_found' | 'not_pending';
+
+/** Approve an application: status → 'approved', `pending`→`preapproved`, DM the user. */
+export async function approve(applicationId: number, reviewerId: number): Promise<ReviewResult> {
+  const outcome = await db.transaction(async (trx) => {
+    const app = await trx('applications').where('id', applicationId).first();
+    if (!app) return { result: 'not_found' as const };
+    if (app.status !== 'pending') return { result: 'not_pending' as const };
+    await setApplicationStatus(trx, applicationId, 'approved');
+    await replaceRole(trx, app.user_id, 'pending', 'preapproved');
+    return { result: 'approved' as const, userId: app.user_id as number };
+  });
+
+  if (outcome.result === 'approved') {
+    void notifyApproval(outcome.userId).catch((err) =>
+      logger.debug({ err }, 'notifyApproval failed'),
+    );
+    logger.info({ applicationId, reviewerId, userId: outcome.userId }, 'application approved');
+  }
+  return outcome.result;
+}
+
+/** Reject an application: status → 'rejected', `pending`→`rejected`, DM the user. */
+export async function reject(applicationId: number, reviewerId: number): Promise<ReviewResult> {
+  const outcome = await db.transaction(async (trx) => {
+    const app = await trx('applications').where('id', applicationId).first();
+    if (!app) return { result: 'not_found' as const };
+    if (app.status !== 'pending') return { result: 'not_pending' as const };
+    await setApplicationStatus(trx, applicationId, 'rejected');
+    await replaceRole(trx, app.user_id, 'pending', 'rejected');
+    return { result: 'rejected' as const, userId: app.user_id as number };
+  });
+
+  if (outcome.result === 'rejected') {
+    void notifyRejection(outcome.userId).catch((err) =>
+      logger.debug({ err }, 'notifyRejection failed'),
+    );
+    logger.info({ applicationId, reviewerId, userId: outcome.userId }, 'application rejected');
+  }
+  return outcome.result;
+}
+
+async function notifyApproval(userId: number): Promise<void> {
+  await bot.telegram.sendMessage(
+    userId,
+    '✅ Твоя заявка одобрена. Теперь можно купить доступ командой /buy.',
+  );
+}
+
+async function notifyRejection(userId: number): Promise<void> {
+  await bot.telegram.sendMessage(userId, '🙅 К сожалению, твоя заявка отклонена.');
+}
+
+export type { ApplicationRow, ApplicationStatus };
