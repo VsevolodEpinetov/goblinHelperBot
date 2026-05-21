@@ -1,0 +1,105 @@
+# Cutover Runbook
+
+## Pre-flight (T-24h)
+
+- [ ] `git status` clean on `rewrite` branch.
+- [ ] `npm ci && npm run build && npm test` — all green.
+- [ ] `.env` populated with:
+      `TOKEN`, `DB_HOST`, `DB_PORT`, `DB_NAME`, `DB_USER`, `DB_PASSWORD`,
+      `REDIS_HOST`, `REDIS_PORT`, optional `REDIS_PASSWORD`,
+      `ADMIN_NOTIFICATIONS_CHAT`, optional `SENTRY_DSN`, optional `TEST_USER_ID`.
+- [ ] PostgreSQL reachable; user has `CREATE` on the target schema.
+- [ ] Redis reachable.
+- [ ] Run `npm run audit` against the production DB; resolve any anomalies it
+      reports (duplicate achievements, stale `paymentTracking.pending` > 30 days,
+      `userGroups` rows lacking `paymentTracking`).
+
+## Backup (T-1h)
+
+- [ ] `pg_dump -h $DB_HOST -U $DB_USER -d $DB_NAME -Fc -f goblin_$(date +%Y%m%d_%H%M%S).dump`
+- [ ] Verify the dump file size is non-zero and reasonable.
+- [ ] Copy the dump to a SECOND location (USB, cloud) — this is your only recovery.
+
+## Stop the legacy bot
+
+- [ ] Stop the running legacy process (whatever process manager you use:
+      `pm2 stop bot`, `systemctl stop goblin-bot`, or kill it directly).
+- [ ] Confirm it's not running: no replies to a test `/start`.
+
+## Migrate
+
+- [ ] `npm run migrate` — applies migrations 017–022.
+- [ ] Watch for the per-migration log lines. If any migration fails, the
+      transaction rolls back and the DB is left at the previous state.
+- [ ] If a migration fails: restore from the dump, investigate, fix, re-try.
+
+## Smoke-check the migrated schema
+
+- [ ] `psql ... -c "SELECT COUNT(*) FROM users"` — same count as pre-migration.
+- [ ] `psql ... -c "SELECT COUNT(*) FROM user_groups"` — same count.
+- [ ] `psql ... -c "SELECT COUNT(*) FROM payment_tracking"` — same count.
+- [ ] `psql ... -c "SELECT DISTINCT source FROM payment_tracking"` — should
+      include `'stars'` (backfilled by migration 019).
+- [ ] `psql ... -c "\d users"` — column names are snake_case
+      (`first_name`, `created_at`, etc.).
+- [ ] `psql ... -c "SELECT 1 FROM user_loyalty LIMIT 1"` — should error
+      "relation does not exist" (dropped by migration 021).
+
+## Start the new bot
+
+- [ ] `npm start` (or your process-manager start command pointing at
+      `node dist/index.js`).
+- [ ] Tail logs for 5 minutes.
+- [ ] In Telegram, send `/start` from a test account. Verify response.
+- [ ] If staff, send `/admin` — verify the admin menu opens.
+- [ ] Send a small Telegram Stars test payment (e.g., for an old month or
+      a kickstarter that costs <50 stars). Verify:
+      - `pre_checkout_query` accepted
+      - `successful_payment` processed
+      - DM confirmation received
+      - `payment_tracking` row with `status='completed'` and the
+        `telegram_payment_charge_id` set.
+
+## Soak (T+1h to T+24h)
+
+- [ ] Monitor logs for `error.unhandled`, `payments.precheckout_rejected`,
+      `payments.unknown_payload` counters.
+- [ ] Watch `metrics.snapshot()` (admin command `/admin metrics` if exposed,
+      otherwise via SQL on the metrics counters that are logged hourly).
+
+## Rollback criteria
+
+Rollback if ANY of the following are observed within the first 24h:
+
+- A payment succeeds in Telegram but the user did NOT get access.
+- Any user is in `user_groups` they did not pay for.
+- Any double-charge (two `payment_tracking` rows with the same
+  `telegram_payment_charge_id` — should be impossible due to UNIQUE, but
+  watch anyway).
+- Significant data corruption (counters dropping, NULLs where there shouldn't be).
+
+UI glitches, missing admin commands, or one-off errors are NOT rollback
+criteria — fix forward.
+
+## Rollback procedure
+
+1. Stop the new bot: `npm stop` / `pm2 stop` / `systemctl stop`.
+2. Drop the migrated DB or restore from the pre-migration dump:
+   ```
+   psql ... -c "DROP DATABASE goblin_bot"
+   psql ... -c "CREATE DATABASE goblin_bot"
+   pg_restore -h $DB_HOST -U $DB_USER -d $DB_NAME goblin_<dump>.dump
+   ```
+3. Check out the `legacy` tag (created automatically by the rewrite branch
+   merge OR manually before cutover): `git checkout legacy`.
+4. Start the legacy bot.
+5. Telegram payments that arrived during the rollback window may be lost;
+   manually reconcile from `payment_tracking` audit if any did.
+
+Estimated recovery time: 15–30 minutes.
+
+## Post-cutover (T+1w)
+
+- [ ] Archive the legacy code branch.
+- [ ] Tag the cutover commit (`git tag -a cutover -m "..."`).
+- [ ] Update on-call docs if any.
