@@ -14,6 +14,7 @@ import { router } from './core/router';
 import { sessionMiddleware } from './core/sessions';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import * as _achievementsFeature from './features/achievements';
+import * as adminFeature from './features/admin';
 import * as commonFeature from './features/common';
 import * as invitationsFeature from './features/invitations';
 import { getKickstarterScenes, register as registerKickstarters } from './features/kickstarters';
@@ -42,6 +43,7 @@ async function main(): Promise<void> {
   const combinedStage = new Scenes.Stage<Scenes.SceneContext>([
     ...Array.from(createRaidStage().scenes.values()),
     ...getKickstarterScenes(),
+    ...adminFeature.getAdminScenes(),
     paymentsFeature.sbpScene,
     onboardingFeature.onboardingScene,
   ]);
@@ -61,6 +63,7 @@ async function main(): Promise<void> {
   subscriptionsFeature.register(bot);
   onboardingFeature.register(bot);
   invitationsFeature.register(bot);
+  adminFeature.register(bot);
 
   await bot.launch({ dropPendingUpdates: true });
   logger.info({ username: bot.botInfo?.username }, 'Bot online');
