@@ -17,6 +17,7 @@ import * as _achievementsFeature from './features/achievements';
 import * as commonFeature from './features/common';
 import { getKickstarterScenes, register as registerKickstarters } from './features/kickstarters';
 import * as loyaltyFeature from './features/loyalty';
+import * as onboardingFeature from './features/onboarding';
 import * as paymentsFeature from './features/payments';
 import * as pollsFeature from './features/polls';
 import * as promoFeature from './features/promo';
@@ -41,6 +42,7 @@ async function main(): Promise<void> {
     ...Array.from(createRaidStage().scenes.values()),
     ...getKickstarterScenes(),
     paymentsFeature.sbpScene,
+    onboardingFeature.onboardingScene,
   ]);
   bot.use(combinedStage.middleware() as Parameters<typeof bot.use>[0]);
   bot.use(bannedMiddleware);
@@ -56,6 +58,7 @@ async function main(): Promise<void> {
   registerKickstarters(bot);
   paymentsFeature.register(bot);
   subscriptionsFeature.register(bot);
+  onboardingFeature.register(bot);
 
   await bot.launch({ dropPendingUpdates: true });
   logger.info({ username: bot.botInfo?.username }, 'Bot online');
