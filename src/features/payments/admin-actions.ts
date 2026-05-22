@@ -5,7 +5,7 @@ import { requireRoles } from '../../core/permissions';
 import { db } from '../../db/client';
 import { dispatchNotifications, grantXpInTrx } from '../loyalty';
 
-import { markCompleted, markFailed } from './repo';
+import { markFailed } from './repo';
 
 export function registerPaymentAdminActions(bot: Telegraf): void {
   bot.action(/^sbp:confirm:(\d+)$/, requireRoles('admin', 'super'), async (ctx) => {
@@ -17,36 +17,56 @@ export function registerPaymentAdminActions(bot: Telegraf): void {
     const paymentId = Number(raw);
     try {
       const result = await db.transaction(async (trx) => {
-        const payment = await trx('payment_tracking').where('id', paymentId).first();
-        if (!payment) return { ok: false as const, reason: 'not_found' as const };
-        if (payment.status === 'completed') {
+        // Stable chargeId per payment row, so the partial UNIQUE on
+        // telegram_payment_charge_id (migration 019) backs up the atomic
+        // claim below.
+        const chargeId = `sbp:${paymentId}`;
+
+        // Atomic test-and-set: only the first concurrent admin claim wins.
+        // Returning the row means we successfully flipped pending→completed.
+        const claimed = await trx('payment_tracking')
+          .where({ id: paymentId, status: 'pending' })
+          .update({
+            status: 'completed',
+            telegram_payment_charge_id: chargeId,
+            completed_at: trx.fn.now(),
+          })
+          .returning(['user_id', 'period', 'subscription_type']);
+
+        if (claimed.length === 0) {
+          // Either the row doesn't exist or it was already completed/failed.
+          const existing = await trx('payment_tracking').where('id', paymentId).first();
+          if (!existing) return { ok: false as const, reason: 'not_found' as const };
           return { ok: false as const, reason: 'already_completed' as const };
         }
 
-        // Use the admin-confirmation timestamp as charge id (SBP has no real Telegram charge).
-        const chargeId = `sbp:${paymentId}:${Date.now()}`;
+        const row = claimed[0] as {
+          user_id: number;
+          period: string;
+          subscription_type: 'regular' | 'plus';
+        };
+
         await trx('user_groups')
           .insert({
-            user_id: payment.user_id,
-            period: payment.period,
-            type: payment.subscription_type,
+            user_id: row.user_id,
+            period: row.period,
+            type: row.subscription_type,
           })
           .onConflict(['user_id', 'period', 'type'])
           .ignore();
-        await markCompleted(trx, paymentId, chargeId);
         await trx('months')
-          .where({ period: payment.period, type: payment.subscription_type })
+          .where({ period: row.period, type: row.subscription_type })
           .increment('counter_paid', 1);
 
-        const xpAmount = payment.subscription_type === 'plus' ? 1600 : 600;
+        const xpAmount = row.subscription_type === 'plus' ? 1600 : 600;
         const xp = await grantXpInTrx(trx, {
-          userId: payment.user_id,
+          userId: row.user_id,
           amount: xpAmount,
           source: 'payment_sub_sbp',
           externalId: chargeId,
-          description: `SBP подписка ${payment.subscription_type} за ${payment.period}`,
+          description: `SBP подписка ${row.subscription_type} за ${row.period}`,
         });
-        return { ok: true as const, userId: payment.user_id as number, xp };
+        return { ok: true as const, userId: row.user_id, xp };
       });
 
       if (result.ok) {

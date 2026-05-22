@@ -37,8 +37,20 @@ export function decodePayload(input: string): PaymentPayloadT | null {
 }
 
 export interface ProcessResult {
-  status: 'processed' | 'already_processed' | 'unknown_payload';
+  /**
+   * - `processed`: first-time successful payment; access/XP granted.
+   * - `already_processed`: same chargeId already completed — harmless Telegram retry, no action.
+   * - `refund_required`: fresh Stars consumed but content/access cannot be granted
+   *   (user already owns the kickstarter, or upgrade payload sent without owning regular).
+   *   Caller MUST issue `refundStarPayment(userId, chargeId)`.
+   * - `unknown_payload`: schema-invalid payload; nothing inserted; logged.
+   */
+  status: 'processed' | 'already_processed' | 'refund_required' | 'unknown_payload';
   paymentId?: number;
+  /** Set when status === 'refund_required'. Recipient of the refund. */
+  refundUserId?: number;
+  /** Human-readable reason, for logs and the DM to the refunded user. */
+  refundReason?: string;
 }
 
 /** Common pre-flight idempotency check used by all process* functions. */
@@ -127,6 +139,39 @@ export async function processUpgradePayment(
       return { status: 'already_processed', paymentId: guard.paymentId };
     }
 
+    // Upgrade payload must correspond to an existing regular subscription
+    // for that period. Otherwise the user is paying the upgrade-delta price
+    // for what should cost the full plus price (or replaying a stale payload).
+    const regularRow = await trx('user_groups')
+      .where({ user_id: payload.userId, period: payload.period, type: 'regular' })
+      .first();
+    if (!regularRow) {
+      logger.warn(
+        { payload, chargeId },
+        'upgrade payment without prior regular ownership — refunding',
+      );
+      const paymentId = await insertPending(trx, {
+        userId: payload.userId,
+        type: 'upgrade',
+        subscriptionType: 'plus',
+        period: payload.period,
+        amount,
+        currency,
+        invoiceMessageId: null,
+        isUpgrade: true,
+        source,
+      });
+      // Mark failed so the row isn't mistaken for a successful upgrade.
+      await trx('payment_tracking').where('id', paymentId).update({ status: 'failed' });
+      metrics.incr('payments.upgrade_invalid_state');
+      return {
+        status: 'refund_required',
+        paymentId,
+        refundUserId: payload.userId,
+        refundReason: 'нет обычной подписки для апгрейда',
+      };
+    }
+
     const paymentId = await insertPending(trx, {
       userId: payload.userId,
       type: 'upgrade',
@@ -176,9 +221,12 @@ export async function processKickstarterPayment(
     }
 
     if (await hasUserPurchasedKickstarter(trx, payload.userId, payload.kickstarterId)) {
-      logger.warn({ payload }, 'kickstarter Stars payment: user already owns');
-      // Still record the payment tracking row so we have an audit trail, but
-      // mark it completed without re-issuing the purchase row.
+      logger.warn(
+        { payload, chargeId },
+        'kickstarter Stars payment: user already owns — refunding',
+      );
+      // Record an audit trail row marked `failed` so we know this Stars charge
+      // was refunded. The successful_payment handler will issue the refund.
       const paymentId = await insertPending(trx, {
         userId: payload.userId,
         type: 'ks',
@@ -190,8 +238,14 @@ export async function processKickstarterPayment(
         isUpgrade: false,
         source: 'stars',
       });
-      await markCompleted(trx, paymentId, chargeId);
-      return { status: 'already_processed', paymentId };
+      await trx('payment_tracking').where('id', paymentId).update({ status: 'failed' });
+      metrics.incr('payments.kickstarter_already_owned');
+      return {
+        status: 'refund_required',
+        paymentId,
+        refundUserId: payload.userId,
+        refundReason: 'кикстартер уже куплен',
+      };
     }
 
     const paymentId = await insertPending(trx, {
