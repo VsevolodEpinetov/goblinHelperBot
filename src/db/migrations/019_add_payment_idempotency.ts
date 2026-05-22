@@ -29,8 +29,20 @@ export async function up(knex: Knex): Promise<void> {
       });
     }
 
-    // Backfill source='stars' for any pre-existing rows (no-op if already set).
-    await trx('payment_tracking').whereNull('source').update({ source: 'stars' });
+    // Backfill source for any pre-existing rows. Use currency as the
+    // discriminator: XTR → 'stars', RUB → 'sbp', anything else → 'manual'.
+    // This is more accurate than the previous blanket 'stars' default, which
+    // would have miscategorised legacy SBP payments and broken refund
+    // eligibility downstream.
+    await trx('payment_tracking')
+      .whereNull('source')
+      .where('currency', 'XTR')
+      .update({ source: 'stars' });
+    await trx('payment_tracking')
+      .whereNull('source')
+      .where('currency', 'RUB')
+      .update({ source: 'sbp' });
+    await trx('payment_tracking').whereNull('source').update({ source: 'manual' });
 
     // Partial UNIQUE on telegram_payment_charge_id — skip NULLs so legacy
     // rows without a charge id do not block one another.

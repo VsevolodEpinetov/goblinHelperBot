@@ -11,10 +11,21 @@ export async function up(knex: Knex): Promise<void> {
       )
     `);
 
+    // Idempotent ADD CONSTRAINT: skip if it already exists. PostgreSQL's
+    // ADD CONSTRAINT has no IF NOT EXISTS clause, so we check pg_constraint
+    // and use a DO block.
     await trx.raw(`
-      ALTER TABLE user_achievements
-      ADD CONSTRAINT user_achievements_user_id_achievement_type_unique
-      UNIQUE (user_id, achievement_type)
+      DO $$
+      BEGIN
+        IF NOT EXISTS (
+          SELECT 1 FROM pg_constraint
+          WHERE conname = 'user_achievements_user_id_achievement_type_unique'
+        ) THEN
+          ALTER TABLE user_achievements
+          ADD CONSTRAINT user_achievements_user_id_achievement_type_unique
+          UNIQUE (user_id, achievement_type);
+        END IF;
+      END $$;
     `);
   });
 }
