@@ -13,6 +13,22 @@
 - [ ] Run `npm run audit` against the production DB; resolve any anomalies it
       reports (duplicate achievements, stale `paymentTracking.pending` > 30 days,
       `userGroups` rows lacking `paymentTracking`).
+- [ ] **Schema introspection for the migration-018 manifest.** The legacy
+      `helpers.js` source-of-truth was deleted in this rewrite, so a few tables
+      had their RENAMES manifest built from inference rather than direct
+      inspection. Run these against production and cross-check every camelCase
+      column against `src/db/migrations/018_rename_camelcase_to_snakecase.ts`.
+      Any column listed by psql that is NOT in the manifest will stay camelCase
+      after the migration and be invisible to the new code:
+      ```
+      psql ... -c '\d+ "userPurchases"'
+      psql ... -c '\d+ "userRoles"'
+      psql ... -c '\d+ "userGroups"'
+      psql ... -c '\d+ "userKickstarters"'
+      ```
+      Pay particular attention to `createdAt` / `updatedAt` timestamps —
+      the legacy pattern added these to most tables. If any are missing
+      from the 018 manifest, add them before running `npm run migrate`.
 
 ## Backup (T-1h)
 
@@ -42,8 +58,13 @@
       include `'stars'` (backfilled by migration 019).
 - [ ] `psql ... -c "\d users"` — column names are snake_case
       (`first_name`, `created_at`, etc.).
-- [ ] `psql ... -c "SELECT 1 FROM user_loyalty LIMIT 1"` — should error
-      "relation does not exist" (dropped by migration 021).
+- [ ] `psql ... -c 'SELECT 1 FROM "userLoyalty" LIMIT 1'` — should error
+      "relation does not exist" (dropped by migration 021; note the
+      double quotes — the legacy table name is camelCase, not snake_case,
+      and PostgreSQL needs the quotes to preserve the case).
+- [ ] `psql ... -c '\d+ "user_groups"'` and the same for `"user_roles"`,
+      `"user_purchases"`, `"user_kickstarters"` — every column should be
+      snake_case now. Any leftover camelCase column = migration 018 missed it.
 
 ## Start the new bot
 
