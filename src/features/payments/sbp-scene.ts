@@ -49,17 +49,32 @@ sbpScene.on('photo', async (ctx) => {
     return;
   }
 
-  const paymentId = await insertPending(db, {
-    userId: ctx.from.id,
-    type: 'sub',
-    subscriptionType: draft.tier,
-    period: draft.period,
-    amount: draft.amount ?? 0,
-    currency: 'RUB',
-    invoiceMessageId: null,
-    isUpgrade: false,
-    source: 'sbp',
-  });
+  // Reuse an existing pending row for the same (user, period, tier) instead of
+  // stacking multiple. If the user submits twice (re-enters the scene, sends
+  // another screenshot), the admin sees one row, not many.
+  const existing = await db('payment_tracking')
+    .where({
+      user_id: ctx.from.id,
+      type: 'sub',
+      subscription_type: draft.tier,
+      period: draft.period,
+      source: 'sbp',
+      status: 'pending',
+    })
+    .first('id');
+  const paymentId: number =
+    existing?.id ??
+    (await insertPending(db, {
+      userId: ctx.from.id,
+      type: 'sub',
+      subscriptionType: draft.tier,
+      period: draft.period,
+      amount: draft.amount ?? 0,
+      currency: 'RUB',
+      invoiceMessageId: null,
+      isUpgrade: false,
+      source: 'sbp',
+    }));
 
   try {
     await bot.telegram.sendPhoto(draft.adminChatId, photo.file_id, {
