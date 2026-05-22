@@ -4,7 +4,9 @@ import { logger } from '../observability';
 
 interface RedisLike {
   incr(key: string): Promise<number>;
-  expire(key: string, seconds: number): Promise<void | number>;
+  // node-redis v4 returns Promise<boolean>; legacy clients return Promise<number>.
+  // The middleware doesn't use the return value, so accept anything.
+  expire(key: string, seconds: number): Promise<unknown>;
 }
 
 interface Options {
