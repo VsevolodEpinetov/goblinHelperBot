@@ -41,7 +41,7 @@ export async function openBuyScreen(ctx: Context): Promise<void> {
       return;
     case 'offer_upgrade':
       await ctx.reply(
-        `💎 Обычный архив за ${period} уже твой. Хочешь расширенный — докинь ${formatPrice(upgrade, 'XTR')} из казны, и я подыму тебя до полной двери.`,
+        `💎 Обычный архив за ${period} уже твой. Хочешь расширенный — докинь ${formatPrice(upgrade, 'XTR')}, и подыму тебя до полной двери.`,
         upgradeKeyboard(today, upgrade),
       );
       return;

@@ -48,7 +48,7 @@ Never use the plain word when the lair has its own. Stay inside the world:
 | an application (the document) | **свиток** (заявки) |
 | the user's history / record | **твоя тень / твои следы** |
 | approve / reject | **вердикт / приговор** ("совет допустил…", "совет отверг…") |
-| money / Telegram Stars | **звёзды**, paid from your **казна** |
+| money / Telegram Stars | **звёзды** — paid **into** the lair's **казна** (treasury). Money goes *into* the казна, never out: write «плати звёзды», «казна ждёт», never «из казны» (that reads as raiding the treasury). |
 | a calendar month | **цикл луны** |
 | current month's content bundle | **месячный архив** — the newest on the shelf, kept by the silent **библиотекарь** |
 | past months (re-buyable) | **старые архивы** |
