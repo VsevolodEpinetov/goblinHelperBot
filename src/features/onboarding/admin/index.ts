@@ -39,7 +39,7 @@ export function registerOnboardingAdmin(bot: Telegraf): void {
     }
     const roles = ctx.state.roles ?? [];
     if (!ADMIN_ROLES.some((r) => roles.includes(r))) {
-      await ctx.answerCbQuery?.('Нет прав');
+      await ctx.answerCbQuery?.('Не твоя печать, чужак');
       return;
     }
 
@@ -76,7 +76,7 @@ export function registerOnboardingAdmin(bot: Telegraf): void {
         case 'onAdminView': {
           const app = await getApplicationById(db, payload.id);
           if (!app) {
-            await ctx.answerCbQuery?.('Не найдено');
+            await ctx.answerCbQuery?.('Свиток не найден');
             break;
           }
           const userRoles = await getRolesForUser(db, app.userId);
@@ -89,20 +89,32 @@ export function registerOnboardingAdmin(bot: Telegraf): void {
         }
         case 'onAdminApprove': {
           const result = await approve(payload.id, ctx.from.id);
-          await ctx.answerCbQuery?.(result === 'approved' ? 'Одобрено' : `Status: ${result}`);
-          if (result === 'approved') await ctx.editMessageText('✅ Одобрено.');
+          if (result === 'approved') {
+            await ctx.answerCbQuery?.('Впущен');
+            await ctx.editMessageText('✅ Впущен в логово.');
+          } else if (result === 'not_found') {
+            await ctx.answerCbQuery?.('Свиток не найден');
+          } else {
+            await ctx.answerCbQuery?.('Уже решено');
+          }
           break;
         }
         case 'onAdminReject': {
           const result = await reject(payload.id, ctx.from.id);
-          await ctx.answerCbQuery?.(result === 'rejected' ? 'Отклонено' : `Status: ${result}`);
-          if (result === 'rejected') await ctx.editMessageText('🙅 Отклонено.');
+          if (result === 'rejected') {
+            await ctx.answerCbQuery?.('Отвергнут');
+            await ctx.editMessageText('🙅 Отвергнут советом.');
+          } else if (result === 'not_found') {
+            await ctx.answerCbQuery?.('Свиток не найден');
+          } else {
+            await ctx.answerCbQuery?.('Уже решено');
+          }
           break;
         }
       }
     } catch (err) {
       logger.error({ err, payload }, 'onboarding admin route failed');
-      await ctx.answerCbQuery?.('Ошибка');
+      await ctx.answerCbQuery?.('Сорвалось, повтори');
     }
   });
 }

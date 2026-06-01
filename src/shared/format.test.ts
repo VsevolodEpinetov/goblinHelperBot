@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { escapeHtml, formatPrice, formatUserDisplay } from './format';
+import { escapeHtml, formatPrice, formatUserDisplay, truncate } from './format';
 
 describe('format', () => {
   describe('escapeHtml', () => {
@@ -12,6 +12,22 @@ describe('format', () => {
 
     it('leaves safe strings unchanged', () => {
       expect(escapeHtml('hello world')).toBe('hello world');
+    });
+  });
+
+  describe('truncate', () => {
+    it('leaves short strings unchanged', () => {
+      expect(truncate('hello', 10)).toBe('hello');
+    });
+
+    it('leaves exact-length strings unchanged', () => {
+      expect(truncate('hello', 5)).toBe('hello');
+    });
+
+    it('truncates longer strings with an ellipsis, staying within max', () => {
+      const out = truncate('abcdefghij', 5);
+      expect(out).toBe('abcd…');
+      expect(out.length).toBe(5);
     });
   });
 

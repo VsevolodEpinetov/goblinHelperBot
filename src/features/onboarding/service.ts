@@ -2,8 +2,10 @@ import { bot } from '../../core/bot';
 import { logger } from '../../core/observability';
 import { db, type DbConn } from '../../db/client';
 import { addRole, removeRole, replaceRole } from '../../db/repos/user-roles-mutations';
+import { escapeHtml, truncate } from '../../shared/format';
 import { archiveKeyboard } from '../subscriptions';
 
+import { verdictKeyboard } from './menus';
 import {
   getApplicationByUserId,
   insertApplication,
@@ -41,9 +43,26 @@ export type SubmitResult =
   | { status: 'already_pending'; applicationId: number }
   | { status: 'already_approved'; applicationId: number };
 
-/** Submit an application + add the `pending` role atomically. */
+const ADMIN_NOTIFICATIONS_CHAT = process.env.ADMIN_NOTIFICATIONS_CHAT ?? '';
+
+/** Submit an application + add the `pending` role atomically, then announce it to the совет. */
 export async function submit(input: SubmitInput): Promise<SubmitResult> {
-  return db.transaction(async (trx) => submitInTrx(trx, input));
+  const result = await db.transaction(async (trx) => submitInTrx(trx, input));
+  if (result.status === 'submitted') {
+    // Fire-and-forget after commit: the row must exist before the совет taps a verdict.
+    void notifyAdminsNewApplication({
+      id: result.applicationId,
+      userId: input.userId,
+      username: input.username,
+      tale: input.tale,
+    }).catch((err) =>
+      logger.error(
+        { err, applicationId: result.applicationId },
+        'notify admins (new application) failed',
+      ),
+    );
+  }
+  return result;
 }
 
 async function submitInTrx(trx: DbConn, input: SubmitInput): Promise<SubmitResult> {
@@ -122,6 +141,38 @@ async function notifyRejection(userId: number): Promise<void> {
     userId,
     '💀 Совет вынес вердикт: не в этот раз. Имя твоё не высекли на камне. Так решили старейшины.',
   );
+}
+
+/** Announce a freshly-submitted свиток to the совет's chat, with verdict buttons. */
+async function notifyAdminsNewApplication(app: {
+  id: number;
+  userId: number;
+  username: string | null;
+  tale: string;
+}): Promise<void> {
+  if (!ADMIN_NOTIFICATIONS_CHAT) {
+    logger.warn(
+      { applicationId: app.id },
+      'ADMIN_NOTIFICATIONS_CHAT not set; new application not announced to the совет',
+    );
+    return;
+  }
+  const who = escapeHtml(app.username ? `@${app.username}` : `id:${app.userId}`);
+  const tale = escapeHtml(truncate(app.tale, 3500));
+  const text = [
+    `🔔 <b>Новый свиток #${app.id}</b>`,
+    '',
+    `Чужак ${who} просится в логово.`,
+    '',
+    'Его слова:',
+    tale,
+    '',
+    'Совет, выноси вердикт.',
+  ].join('\n');
+  await bot.telegram.sendMessage(ADMIN_NOTIFICATIONS_CHAT, text, {
+    parse_mode: 'HTML',
+    ...verdictKeyboard(app.id),
+  });
 }
 
 export type { ApplicationRow, ApplicationStatus };

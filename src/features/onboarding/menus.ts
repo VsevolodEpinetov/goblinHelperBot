@@ -73,15 +73,15 @@ export function adminPagination(
 export function adminFilterRow(): ReturnType<typeof Markup.button.callback>[] {
   return [
     Markup.button.callback(
-      '⏳ Pending',
+      '⏳ На рассмотрении',
       router.encode(onboardingAdminCallback, { a: 'onAdminFilter', status: 'pending', page: 0 }),
     ),
     Markup.button.callback(
-      '✅ Approved',
+      '✅ Впущенные',
       router.encode(onboardingAdminCallback, { a: 'onAdminFilter', status: 'approved', page: 0 }),
     ),
     Markup.button.callback(
-      '🙅 Rejected',
+      '🙅 Отвергнутые',
       router.encode(onboardingAdminCallback, { a: 'onAdminFilter', status: 'rejected', page: 0 }),
     ),
   ];
@@ -95,11 +95,11 @@ export function adminViewKeyboard(
   if (app.status === 'pending') {
     rows.push([
       Markup.button.callback(
-        '✅ Approve',
+        '✅ Впустить',
         router.encode(onboardingAdminCallback, { a: 'onAdminApprove', id: app.id }),
       ),
       Markup.button.callback(
-        '🙅 Reject',
+        '🙅 Отвергнуть',
         router.encode(onboardingAdminCallback, { a: 'onAdminReject', id: app.id }),
       ),
     ]);
@@ -111,4 +111,20 @@ export function adminViewKeyboard(
     ),
   ]);
   return Markup.inlineKeyboard(rows);
+}
+
+/** Inline [Впустить] [Отвергнуть] row for the new-application notification. */
+export function verdictKeyboard(appId: number): ReturnType<typeof Markup.inlineKeyboard> {
+  return Markup.inlineKeyboard([
+    [
+      Markup.button.callback(
+        '✅ Впустить',
+        router.encode(onboardingAdminCallback, { a: 'onAdminApprove', id: appId }),
+      ),
+      Markup.button.callback(
+        '🙅 Отвергнуть',
+        router.encode(onboardingAdminCallback, { a: 'onAdminReject', id: appId }),
+      ),
+    ],
+  ]);
 }

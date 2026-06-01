@@ -74,6 +74,13 @@ export function registerOnboardingCommands(bot: Telegraf): void {
         break;
       case 'onApplyStart':
         await ctx.answerCbQuery?.();
+        if (!ctx.from.username) {
+          await ctx.reply(
+            '🔒 Главгоблин не торгует с безымянными. Поставь себе публичный <b>username</b> в настройках Telegram и возвращайся к обряду.',
+            { parse_mode: 'HTML' },
+          );
+          return;
+        }
         await (ctx as unknown as Scenes.SceneContext).scene.enter(ONBOARDING_SCENE_ID);
         break;
     }

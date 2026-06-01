@@ -10,6 +10,16 @@ export function escapeHtml(input: string): string {
   return input.replace(/[&<>"']/g, (ch) => HTML_ESCAPES[ch] ?? ch);
 }
 
+/**
+ * Clamp a string to `max` characters, appending an ellipsis when cut. Used to
+ * keep user-provided text within Telegram's 4096-char message limit. Call this
+ * BEFORE escapeHtml so the ellipsis (not an entity) is what gets counted.
+ */
+export function truncate(input: string, max: number): string {
+  if (input.length <= max) return input;
+  return `${input.slice(0, max - 1)}…`;
+}
+
 export type Currency = 'XTR' | 'RUB' | 'USD' | 'EUR';
 
 const CURRENCY_SYMBOL: Record<Currency, string> = {
