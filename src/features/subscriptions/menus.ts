@@ -1,6 +1,7 @@
 import { Markup } from 'telegraf';
 
 import { router } from '../../core/router';
+import { formatPrice } from '../../shared/format';
 import type { Period } from '../../shared/period';
 
 import { subscriptionsCallback } from './schemas';
@@ -8,11 +9,12 @@ import { subscriptionsCallback } from './schemas';
 export function buyKeyboard(
   period: Period,
   sbpAllowed: boolean,
+  prices: { regular: number; plus: number },
 ): ReturnType<typeof Markup.inlineKeyboard> {
   const rows: ReturnType<typeof Markup.button.callback>[][] = [
     [
       Markup.button.callback(
-        'Обычная (⭐)',
+        `🪙 Обычный — ${formatPrice(prices.regular, 'XTR')}`,
         router.encode(subscriptionsCallback, {
           a: 'subBuy',
           year: period.year,
@@ -21,7 +23,7 @@ export function buyKeyboard(
         }),
       ),
       Markup.button.callback(
-        'Плюс (⭐)',
+        `💎 Расширенный — ${formatPrice(prices.plus, 'XTR')}`,
         router.encode(subscriptionsCallback, {
           a: 'subBuy',
           year: period.year,
@@ -34,7 +36,7 @@ export function buyKeyboard(
   if (sbpAllowed) {
     rows.push([
       Markup.button.callback(
-        'Обычная (СБП)',
+        '🪙 Обычный (СБП)',
         router.encode(subscriptionsCallback, {
           a: 'subSbp',
           year: period.year,
@@ -43,7 +45,7 @@ export function buyKeyboard(
         }),
       ),
       Markup.button.callback(
-        'Плюс (СБП)',
+        '💎 Расширенный (СБП)',
         router.encode(subscriptionsCallback, {
           a: 'subSbp',
           year: period.year,
@@ -56,11 +58,14 @@ export function buyKeyboard(
   return Markup.inlineKeyboard(rows);
 }
 
-export function upgradeKeyboard(period: Period): ReturnType<typeof Markup.inlineKeyboard> {
+export function upgradeKeyboard(
+  period: Period,
+  delta: number,
+): ReturnType<typeof Markup.inlineKeyboard> {
   return Markup.inlineKeyboard([
     [
       Markup.button.callback(
-        'Апгрейд до Plus',
+        `💎 Расширить — ${formatPrice(delta, 'XTR')}`,
         router.encode(subscriptionsCallback, {
           a: 'subUpgrade',
           year: period.year,

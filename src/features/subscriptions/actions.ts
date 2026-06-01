@@ -7,21 +7,9 @@ import { db } from '../../db/client';
 import { formatPeriod } from '../../shared/period';
 import { SBP_SCENE_ID, sendStarsInvoice, type SbpDraft } from '../payments';
 
+import { basePrice, isTestUser, upgradeBaseDelta } from './pricing';
 import { openBuyScreen } from './routes';
 import { subscriptionsCallback } from './schemas';
-
-// Base prices read from env. Kept as direct env reads to avoid expanding the
-// global config surface for variables only used by this feature.
-function getBasePrice(tier: 'regular' | 'plus'): number {
-  const reg = Number(process.env.REGULAR_PRICE ?? 350);
-  const plus = Number(process.env.PLUS_PRICE ?? 1000);
-  return tier === 'plus' ? plus : reg;
-}
-
-function getTestUserId(): number | undefined {
-  const v = process.env.TEST_USER_ID;
-  return v ? Number(v) : undefined;
-}
 
 const ADMIN_NOTIFICATIONS_CHAT = process.env.ADMIN_NOTIFICATIONS_CHAT ?? '';
 
@@ -31,8 +19,7 @@ export function registerSubscriptionActions(): void {
       await ctx.answerCbQuery?.();
       return;
     }
-    const testUserId = getTestUserId();
-    const isTestUser = testUserId !== undefined && ctx.from.id === testUserId;
+    const isTest = isTestUser(ctx.from.id);
 
     switch (payload.a) {
       case 'subOpen':
@@ -46,9 +33,12 @@ export function registerSubscriptionActions(): void {
           await sendStarsInvoice(
             ctx,
             { t: 'sub', userId: ctx.from.id, period, tier: payload.tier },
-            getBasePrice(payload.tier),
-            { title: `Подписка ${payload.tier} ${period}`, description: `${period}` },
-            isTestUser,
+            basePrice(payload.tier),
+            {
+              title: `Месячный архив за ${period}`,
+              description: payload.tier === 'plus' ? 'Расширенный' : 'Обычный',
+            },
+            isTest,
           );
           await ctx.answerCbQuery?.();
         } catch (err) {
@@ -60,13 +50,12 @@ export function registerSubscriptionActions(): void {
       case 'subUpgrade': {
         const period = formatPeriod({ year: payload.year, month: payload.month });
         try {
-          const upgradeDelta = getBasePrice('plus') - getBasePrice('regular');
           await sendStarsInvoice(
             ctx,
             { t: 'upgrade', userId: ctx.from.id, period },
-            upgradeDelta,
-            { title: `Апгрейд до Plus ${period}`, description: `${period}` },
-            isTestUser,
+            upgradeBaseDelta(),
+            { title: `Расширение архива за ${period}`, description: `${period}` },
+            isTest,
           );
           await ctx.answerCbQuery?.();
         } catch (err) {
@@ -104,7 +93,7 @@ export function registerSubscriptionActions(): void {
             { t: 'ks', userId: ctx.from.id, kickstarterId: payload.id },
             ks.cost,
             { title: ks.name, description: `Kickstarter #${ks.id}` },
-            isTestUser,
+            isTest,
           );
           await ctx.answerCbQuery?.();
         } catch (err) {
