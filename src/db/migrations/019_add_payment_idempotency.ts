@@ -44,6 +44,23 @@ export async function up(knex: Knex): Promise<void> {
       .update({ source: 'sbp' });
     await trx('payment_tracking').whereNull('source').update({ source: 'manual' });
 
+    // Resolve historical duplicates BEFORE creating the UNIQUE index. The
+    // legacy bot stamped a single Telegram charge id onto several of a user's
+    // payment rows (same user/period/tier — verified against the prod dump).
+    // A Telegram charge id is globally unique per real payment, so the extra
+    // rows reflect no additional money. Keep the earliest (MIN id) per charge
+    // id and drop the rest. Mirrors the dedupe in migration 020. NULL charge
+    // ids (legacy pre-charge-id rows) are left untouched.
+    await trx.raw(`
+      DELETE FROM payment_tracking
+      WHERE telegram_payment_charge_id IS NOT NULL
+        AND id NOT IN (
+          SELECT MIN(id) FROM payment_tracking
+          WHERE telegram_payment_charge_id IS NOT NULL
+          GROUP BY telegram_payment_charge_id
+        )
+    `);
+
     // Partial UNIQUE on telegram_payment_charge_id — skip NULLs so legacy
     // rows without a charge id do not block one another.
     await trx.raw(

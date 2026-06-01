@@ -1,4 +1,8 @@
 import 'dotenv/config';
+// Register a CommonJS TS hook so knex's runtime `require()` of the .ts
+// migration files works inside the vitest process (knex bypasses vitest's
+// own transform). Scoped to integration tests, which are the only importers.
+import 'tsx/cjs';
 
 import knexLib from 'knex';
 import type { Knex } from 'knex';

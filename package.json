@@ -15,12 +15,12 @@
     "test:coverage": "vitest run --coverage",
     "test:integration": "vitest run tests/integration",
     "gen:locale-types": "tsx scripts/gen-locale-types.ts",
-    "migrate": "knex --knexfile knexfile.ts migrate:latest",
-    "migrate:rollback": "knex --knexfile knexfile.ts migrate:rollback",
-    "migrate:test": "cross-env NODE_ENV=test knex --knexfile knexfile.ts migrate:latest",
-    "seed": "knex --knexfile knexfile.ts seed:run",
-    "db:status": "knex --knexfile knexfile.ts migrate:status",
-    "db:list": "knex --knexfile knexfile.ts migrate:list",
+    "migrate": "tsx node_modules/knex/bin/cli.js --knexfile knexfile.ts migrate:latest",
+    "migrate:rollback": "tsx node_modules/knex/bin/cli.js --knexfile knexfile.ts migrate:rollback",
+    "migrate:test": "cross-env NODE_ENV=test tsx node_modules/knex/bin/cli.js --knexfile knexfile.ts migrate:latest",
+    "seed": "tsx node_modules/knex/bin/cli.js --knexfile knexfile.ts seed:run",
+    "db:status": "tsx node_modules/knex/bin/cli.js --knexfile knexfile.ts migrate:status",
+    "db:list": "tsx node_modules/knex/bin/cli.js --knexfile knexfile.ts migrate:list",
     "audit": "tsx scripts/pre-migration-audit.ts"
   },
   "dependencies": {

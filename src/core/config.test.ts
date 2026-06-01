@@ -45,4 +45,41 @@ describe('config', () => {
     expect(loadConfig({ TOKEN: 't', USE_REDIS_SESSIONS: 'false' }).useRedisSessions).toBe(false);
     expect(loadConfig({ TOKEN: 't', USE_REDIS_SESSIONS: 'true' }).useRedisSessions).toBe(true);
   });
+
+  describe('DB_* / PG* libpq fallback', () => {
+    it('falls back to PG* vars when DB_* are absent', () => {
+      const cfg = loadConfig({
+        TOKEN: 't',
+        PGHOST: 'db.example.com',
+        PGPORT: '6543',
+        PGDATABASE: 'goblin_prod',
+        PGUSER: 'glav',
+        PGPASSWORD: 'secret',
+      });
+      expect(cfg.dbHost).toBe('db.example.com');
+      expect(cfg.dbPort).toBe(6543);
+      expect(cfg.dbName).toBe('goblin_prod');
+      expect(cfg.dbUser).toBe('glav');
+      expect(cfg.dbPassword).toBe('secret');
+    });
+
+    it('prefers DB_* over PG* when both are set', () => {
+      const cfg = loadConfig({
+        TOKEN: 't',
+        DB_HOST: 'primary',
+        PGHOST: 'fallback',
+        DB_NAME: 'db_name',
+        PGDATABASE: 'pg_name',
+      });
+      expect(cfg.dbHost).toBe('primary');
+      expect(cfg.dbName).toBe('db_name');
+    });
+
+    it('falls back to built-in defaults when neither DB_* nor PG* are set', () => {
+      const cfg = loadConfig({ TOKEN: 't' });
+      expect(cfg.dbHost).toBe('localhost');
+      expect(cfg.dbName).toBe('goblin_bot');
+      expect(cfg.dbPort).toBe(5432);
+    });
+  });
 });

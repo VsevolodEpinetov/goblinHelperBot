@@ -42,7 +42,18 @@ export interface Config {
 export function loadConfig(
   env: NodeJS.ProcessEnv | Record<string, string | undefined> = process.env,
 ): Config {
-  const parsed = ConfigSchema.parse(env);
+  // Fall back to the standard libpq env vars (PGHOST/PGPORT/…) when our own
+  // DB_* names are absent. This lets the same .env serve both local dev and a
+  // production box that already uses the libpq convention. DB_* win when set.
+  const withDbFallback = {
+    ...env,
+    DB_HOST: env.DB_HOST ?? env.PGHOST,
+    DB_PORT: env.DB_PORT ?? env.PGPORT,
+    DB_NAME: env.DB_NAME ?? env.PGDATABASE,
+    DB_USER: env.DB_USER ?? env.PGUSER,
+    DB_PASSWORD: env.DB_PASSWORD ?? env.PGPASSWORD,
+  };
+  const parsed = ConfigSchema.parse(withDbFallback);
   return {
     botToken: parsed.TOKEN,
     dbHost: parsed.DB_HOST,

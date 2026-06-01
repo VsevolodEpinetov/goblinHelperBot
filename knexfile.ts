@@ -2,12 +2,16 @@ import 'dotenv/config';
 
 import type { Knex } from 'knex';
 
+// Fall back to the standard libpq env vars (PGHOST/PGPORT/…) when our own
+// DB_* names are absent, so the same .env works locally and on a prod box that
+// uses the libpq convention. DB_* take precedence when set. Keep this in sync
+// with src/core/config.ts.
 const baseConnection = {
-  host: process.env.DB_HOST ?? 'localhost',
-  port: process.env.DB_PORT ? Number(process.env.DB_PORT) : 5432,
-  database: process.env.DB_NAME ?? 'goblin_bot',
-  user: process.env.DB_USER ?? 'goblin',
-  password: process.env.DB_PASSWORD ?? '',
+  host: process.env.DB_HOST ?? process.env.PGHOST ?? 'localhost',
+  port: Number(process.env.DB_PORT ?? process.env.PGPORT ?? 5432),
+  database: process.env.DB_NAME ?? process.env.PGDATABASE ?? 'goblin_bot',
+  user: process.env.DB_USER ?? process.env.PGUSER ?? 'goblin',
+  password: process.env.DB_PASSWORD ?? process.env.PGPASSWORD ?? '',
 };
 
 const migrationConfig: Knex.MigratorConfig = {

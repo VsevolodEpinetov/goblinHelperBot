@@ -161,3 +161,4 @@ src/core/i18n-keys.generated.ts
 .vscode/
 .idea/
 
+db_dumps/
