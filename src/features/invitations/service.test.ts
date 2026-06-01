@@ -92,6 +92,35 @@ describe('invitations.service.getOrCreateInvitationLink', () => {
     expect(result.status).toBe('no_chat');
   });
 
+  it('createMainGroupLink mints a one-time join-request link to the main group', async () => {
+    const client = buildClient();
+    const svc = makeService({
+      client,
+      getMonthChatId: vi.fn(),
+      findActiveLink: vi.fn(),
+      insertInvitation: vi.fn(),
+      mainGroupId: () => '-100999',
+    });
+    const result = await svc.createMainGroupLink(7);
+    expect(result.status).toBe('created');
+    if (result.status === 'created') {
+      expect(result.link).toMatch(/^https:\/\/t\.me\/\+abc/);
+    }
+    expect(client.calls.create).toBe(1);
+  });
+
+  it('createMainGroupLink reports no_main_group when MAIN_GROUP_ID is unset', async () => {
+    const client = buildClient();
+    const svc = makeService({
+      client,
+      getMonthChatId: vi.fn(),
+      findActiveLink: vi.fn(),
+      insertInvitation: vi.fn(),
+      mainGroupId: () => undefined,
+    });
+    expect((await svc.createMainGroupLink(7)).status).toBe('no_main_group');
+  });
+
   it('revokeInvitationLink passes the URL, NOT the period (the legacy bug)', async () => {
     const client = buildClient();
     const svc = makeService({

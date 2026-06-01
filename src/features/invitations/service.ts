@@ -31,7 +31,11 @@ export interface ServiceDeps {
   getMonthChatId: (period: string, type: GroupType) => Promise<string | null>;
   findActiveLink: typeof repoFindActive;
   insertInvitation: typeof repoInsert;
+  /** Returns the main community group chat id (MAIN_GROUP_ID), or undefined if unset. */
+  mainGroupId?: () => string | undefined;
 }
+
+export type MainGroupLinkResult = { status: 'created'; link: string } | { status: 'no_main_group' };
 
 export type GetOrCreateResult =
   | { status: 'created'; link: string; rowId: number }
@@ -45,6 +49,8 @@ export interface Service {
     type: GroupType;
   }): Promise<GetOrCreateResult>;
   revokeInvitationLink(input: { chatId: string; telegramInviteLink: string }): Promise<boolean>;
+  /** Mint a one-time join-request link to the main community group. */
+  createMainGroupLink(userId: number): Promise<MainGroupLinkResult>;
 }
 
 /** Factory; production code uses `service` below. */
@@ -87,6 +93,17 @@ export function makeService(deps: ServiceDeps): Service {
       }
     },
 
+    async createMainGroupLink(userId): Promise<MainGroupLinkResult> {
+      const chatId = deps.mainGroupId?.();
+      if (!chatId) return { status: 'no_main_group' };
+      const apiResult = await deps.client.createChatInviteLink(chatId, {
+        name: `u${userId}_main`,
+        createsJoinRequest: true,
+        memberLimit: 1,
+      });
+      return { status: 'created', link: apiResult.invite_link };
+    },
+
     async revokeInvitationLink({ chatId, telegramInviteLink }): Promise<boolean> {
       try {
         await deps.client.revokeChatInviteLink(chatId, telegramInviteLink);
@@ -117,4 +134,5 @@ export const service: Service = makeService({
   getMonthChatId: (period, type) => getMonthChatId(db, period, type),
   findActiveLink: repoFindActive,
   insertInvitation: repoInsert,
+  mainGroupId: () => process.env.MAIN_GROUP_ID,
 });

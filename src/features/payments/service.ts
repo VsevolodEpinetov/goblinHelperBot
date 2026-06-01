@@ -15,6 +15,25 @@ export function computeOldMonthMultiplier(): number {
   return OLD_MONTH_MULTIPLIER;
 }
 
+/**
+ * The month group a user should receive a one-time invite link to after a
+ * processed payment, or null when the payment grants no group access (e.g. a
+ * kickstarter purchase).
+ */
+export function accessGroupForPayload(
+  payload: PaymentPayloadT,
+): { period: string; type: 'regular' | 'plus' } | null {
+  switch (payload.t) {
+    case 'sub':
+    case 'old':
+      return { period: payload.period, type: payload.tier };
+    case 'upgrade':
+      return { period: payload.period, type: 'plus' };
+    case 'ks':
+      return null;
+  }
+}
+
 /** Serialise a typed payload to a JSON string. Throws if exceeds Telegram's limit. */
 export function encodePayload(payload: PaymentPayloadT): string {
   const json = JSON.stringify(payload);

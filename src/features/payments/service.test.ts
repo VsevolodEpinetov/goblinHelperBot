@@ -1,6 +1,11 @@
 import { describe, expect, it } from 'vitest';
 
-import { encodePayload, decodePayload, computeOldMonthMultiplier } from './service';
+import {
+  encodePayload,
+  decodePayload,
+  computeOldMonthMultiplier,
+  accessGroupForPayload,
+} from './service';
 
 describe('payments.service.encodePayload / decodePayload', () => {
   it('round-trips a subscription payload', () => {
@@ -21,6 +26,31 @@ describe('payments.service.encodePayload / decodePayload', () => {
 
   it('returns null for payloads that do not match the schema', () => {
     expect(decodePayload(JSON.stringify({ t: 'unknown' }))).toBeNull();
+  });
+});
+
+describe('payments.service.accessGroupForPayload', () => {
+  it('maps a subscription to its period + tier', () => {
+    expect(
+      accessGroupForPayload({ t: 'sub', userId: 1, period: '2026_05', tier: 'regular' }),
+    ).toEqual({ period: '2026_05', type: 'regular' });
+  });
+
+  it('maps an old-month purchase to its period + tier', () => {
+    expect(accessGroupForPayload({ t: 'old', userId: 1, period: '2025_09', tier: 'plus' })).toEqual(
+      { period: '2025_09', type: 'plus' },
+    );
+  });
+
+  it('maps an upgrade to the plus group for that period', () => {
+    expect(accessGroupForPayload({ t: 'upgrade', userId: 1, period: '2026_05' })).toEqual({
+      period: '2026_05',
+      type: 'plus',
+    });
+  });
+
+  it('returns null for a kickstarter (no group access)', () => {
+    expect(accessGroupForPayload({ t: 'ks', userId: 1, kickstarterId: 7 })).toBeNull();
   });
 });
 

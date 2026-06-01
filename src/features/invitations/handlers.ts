@@ -7,6 +7,8 @@ import { isStaff } from '../../shared/user-status';
 
 import { findLatestForUser, markUsed, type GroupType } from './repo';
 
+const MAIN_GROUP_ID = process.env.MAIN_GROUP_ID ?? '';
+
 interface MonthRow {
   id: number;
   period: string;
@@ -23,12 +25,39 @@ async function userHasAccess(userId: number, period: string, type: GroupType): P
   return !!row;
 }
 
+/** True if the user has paid for ANY period — i.e. belongs in the main group. */
+async function userHasAnyPaidAccess(userId: number): Promise<boolean> {
+  const row = await db('user_groups').where('user_id', userId).first();
+  return !!row;
+}
+
 export function registerInvitationHandlers(bot: Telegraf): void {
   bot.on('chat_join_request', async (ctx) => {
     const req = ctx.chatJoinRequest;
     if (!req) return;
     const userId = req.from.id;
     const chatId = String(req.chat.id);
+
+    // Main community group: approve any paying member (or staff). Same
+    // bot-guards-the-door model as the month archives, just keyed on "has the
+    // user paid for anything" rather than a specific period.
+    if (MAIN_GROUP_ID && chatId === MAIN_GROUP_ID) {
+      const roles = await getRolesForUser(db, userId);
+      const allowed = isStaff(roles) || (await userHasAnyPaidAccess(userId));
+      if (!allowed) {
+        logger.info({ userId }, 'main-group join: denied (no paid access)');
+        metrics.incr('invitations.main_join_denied');
+        return;
+      }
+      try {
+        await ctx.approveChatJoinRequest(userId);
+        metrics.incr('invitations.main_join_approved');
+        logger.info({ userId }, 'main-group join approved');
+      } catch (err) {
+        logger.error({ err, userId }, 'main-group join: approve failed');
+      }
+      return;
+    }
 
     const month = await findMonthByChatId(chatId);
     if (!month) {
