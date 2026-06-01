@@ -45,3 +45,23 @@ export function isStaff(roles: readonly string[]): boolean {
   const set = new Set(roles);
   return set.has('admin') || set.has('adminPlus') || set.has('super');
 }
+
+const APPROVED_ROLES = new Set([
+  'preapproved',
+  'alumni',
+  'regular',
+  'plus',
+  'admin',
+  'adminPlus',
+  'super',
+]);
+
+/**
+ * True if the user is past the gate — an approved member (paid, approved,
+ * alumnus, or staff), as opposed to a newbie/pending/rejected/banned outsider.
+ * Use this to authorize member-only callbacks: a hidden menu is not a security
+ * boundary, so every member callback must check this itself.
+ */
+export function isApprovedMember(roles: readonly string[]): boolean {
+  return roles.some((r) => APPROVED_ROLES.has(r));
+}

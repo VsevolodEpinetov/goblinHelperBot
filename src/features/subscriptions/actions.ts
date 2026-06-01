@@ -1,6 +1,7 @@
 import type { Context, Scenes } from 'telegraf';
 
 import { logger } from '../../core/observability';
+import { ensureApprovedMember } from '../../core/permissions';
 import { router } from '../../core/router';
 import { db } from '../../db/client';
 import { formatPeriod } from '../../shared/period';
@@ -35,6 +36,7 @@ export function registerSubscriptionActions(): void {
 
     switch (payload.a) {
       case 'subOpen':
+        if (!(await ensureApprovedMember(ctx as unknown as Context))) break;
         await openBuyScreen(ctx as unknown as Context);
         await ctx.answerCbQuery?.();
         break;

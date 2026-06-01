@@ -1,6 +1,10 @@
 import { Markup } from 'telegraf';
 
 import { router } from '../../core/router';
+import { ksCallback } from '../kickstarters/schemas';
+import { loyaltyCallback } from '../loyalty/schemas';
+import { raidsCallback } from '../raids/schemas';
+import { subscriptionsCallback } from '../subscriptions/schemas';
 
 import type { ApplicationRow } from './repo';
 import { onboardingAdminCallback, onboardingCallback } from './schemas';
@@ -126,5 +130,23 @@ export function verdictKeyboard(appId: number): ReturnType<typeof Markup.inlineK
         router.encode(onboardingAdminCallback, { a: 'onAdminReject', id: appId }),
       ),
     ],
+  ]);
+}
+
+/** The approved-member home hub shown on /start. Each button opens a feature
+ * screen via that feature's callback (which self-authorizes the caller). */
+export function memberHubKeyboard(): ReturnType<typeof Markup.inlineKeyboard> {
+  return Markup.inlineKeyboard([
+    [
+      Markup.button.callback(
+        '🪙 Месячный архив',
+        router.encode(subscriptionsCallback, { a: 'subOpen' }),
+      ),
+    ],
+    [
+      Markup.button.callback('👤 Профиль', router.encode(loyaltyCallback, { a: 'profile' })),
+      Markup.button.callback('🎯 Кикстартеры', router.encode(ksCallback, { a: 'ksList' })),
+    ],
+    [Markup.button.callback('⚔️ Рейды', router.encode(raidsCallback, { a: 'raidList' }))],
   ]);
 }

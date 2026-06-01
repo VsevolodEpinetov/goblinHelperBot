@@ -1,6 +1,7 @@
-import type { Scenes } from 'telegraf';
+import type { Context, Scenes } from 'telegraf';
 
 import { logger } from '../../core/observability';
+import { ensureApprovedMember } from '../../core/permissions';
 import { router } from '../../core/router';
 import { db } from '../../db/client';
 
@@ -30,6 +31,7 @@ export function registerKickstarterActions(): void {
 
     switch (payload.a) {
       case 'ksList': {
+        if (!(await ensureApprovedMember(ctx as unknown as Context))) break;
         const rows = await listKickstarters(db);
         const body =
           rows.length === 0 ? 'Пока пусто.' : rows.map(formatKickstarterShort).join('\n');

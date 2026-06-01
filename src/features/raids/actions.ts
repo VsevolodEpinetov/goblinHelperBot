@@ -1,12 +1,15 @@
+import type { Context } from 'telegraf';
+
 import { bot } from '../../core/bot';
 import { logger } from '../../core/observability';
+import { ensureApprovedMember } from '../../core/permissions';
 import { router } from '../../core/router';
 import { db } from '../../db/client';
 import { dispatchNotifications } from '../loyalty';
 
-import { formatRaidMessage } from './format';
+import { formatRaidMessage, formatRaidShortLine } from './format';
 import { creatorControlsKeyboard, publicRaidKeyboard } from './menus';
-import { getRaidById, getRaidParticipants } from './repo';
+import { getRaidById, getRaidParticipants, listRaids } from './repo';
 import { raidsCallback } from './schemas';
 import { cancelRaid, closeRaid, completeRaid, joinRaidAndAward, leaveRaidAtomic } from './service';
 
@@ -38,6 +41,15 @@ export function registerRaidActions(): void {
     }
 
     switch (payload.a) {
+      case 'raidList': {
+        if (!(await ensureApprovedMember(ctx as unknown as Context))) break;
+        const rows = await listRaids(db, { status: 'open', limit: 20 });
+        const body =
+          rows.length === 0 ? 'Открытых рейдов нет.' : rows.map(formatRaidShortLine).join('\n');
+        await ctx.reply(body);
+        await ctx.answerCbQuery?.();
+        break;
+      }
       case 'raidView': {
         const raid = await getRaidById(db, payload.id);
         if (!raid) {

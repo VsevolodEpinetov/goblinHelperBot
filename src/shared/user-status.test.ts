@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { getStatusDisplay, isMember, isStaff } from './user-status';
+import { getStatusDisplay, isApprovedMember, isMember, isStaff } from './user-status';
 
 describe('shared.user-status.getStatusDisplay', () => {
   it('returns "newbie" for empty roles', () => {
@@ -46,6 +46,23 @@ describe('shared.user-status.isMember', () => {
     expect(isMember(['pending'])).toBe(false);
     expect(isMember(['rejected'])).toBe(false);
     expect(isMember(['banned'])).toBe(false);
+  });
+});
+
+describe('shared.user-status.isApprovedMember', () => {
+  it('true for preapproved / alumni / paid / staff', () => {
+    expect(isApprovedMember(['preapproved'])).toBe(true);
+    expect(isApprovedMember(['alumni'])).toBe(true);
+    expect(isApprovedMember(['regular'])).toBe(true);
+    expect(isApprovedMember(['plus'])).toBe(true);
+    expect(isApprovedMember(['super'])).toBe(true);
+  });
+
+  it('false for newbie / pending / rejected / banned', () => {
+    expect(isApprovedMember([])).toBe(false);
+    expect(isApprovedMember(['pending'])).toBe(false);
+    expect(isApprovedMember(['rejected'])).toBe(false);
+    expect(isApprovedMember(['banned'])).toBe(false);
   });
 });
 

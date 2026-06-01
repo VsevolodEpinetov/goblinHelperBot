@@ -3,10 +3,10 @@ import type { Scenes, Telegraf } from 'telegraf';
 import { router } from '../../core/router';
 import { db } from '../../db/client';
 import { getRolesForUser } from '../../db/repos/user-roles';
+import { currentPeriod, formatPeriod } from '../../shared/period';
 import { getStatusDisplay } from '../../shared/user-status';
-import { archiveKeyboard } from '../subscriptions';
 
-import { aboutMenu, startMenuForNewbie } from './menus';
+import { aboutMenu, memberHubKeyboard, startMenuForNewbie } from './menus';
 import { ONBOARDING_SCENE_ID } from './scene';
 import { onboardingCallback } from './schemas';
 
@@ -22,12 +22,17 @@ export function registerOnboardingCommands(bot: Telegraf): void {
 
     switch (status.code) {
       case 'preapproved':
-      case 'alumni':
+      case 'alumni': {
+        const period = formatPeriod(currentPeriod());
+        const paid = !!(await db('user_groups').where({ user_id: ctx.from.id, period }).first());
         await ctx.reply(
-          '🪙 Свой пришёл. Заходи. Совет тебя впустил — теперь дело за казной: бери месячный архив по кнопке ниже.',
-          archiveKeyboard(),
+          paid
+            ? '🔥 С возвращением, свой. Архив за месяц уже твой — всё открыто. Выбирай кнопкой ниже: архив, профиль, кикстартеры или рейды.'
+            : '🪙 Ты свой, в логово пущен. Но казна пока пуста с твоей стороны — месячный архив за этот месяц ещё не взят. Жми кнопку ниже, бери архив. Профиль, кикстартеры и рейды — там же.',
+          memberHubKeyboard(),
         );
         return;
+      }
       case 'admin':
       case 'super':
         await ctx.reply('⚖️ Совет на пороге. Чего велишь, старейшина?');
