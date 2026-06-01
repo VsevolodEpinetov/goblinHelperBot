@@ -2,11 +2,13 @@ import { bot } from '../../core/bot';
 import { logger } from '../../core/observability';
 import { db, type DbConn } from '../../db/client';
 import { addRole, removeRole, replaceRole } from '../../db/repos/user-roles-mutations';
+import { archiveKeyboard } from '../subscriptions';
 
 import {
   getApplicationByUserId,
   insertApplication,
   setApplicationStatus,
+  updateApplicationTale,
   type ApplicationRow,
   type ApplicationStatus,
 } from './repo';
@@ -16,11 +18,22 @@ export function canSubmit(existing: ApplicationRow | undefined): boolean {
   return existing.status === 'rejected';
 }
 
+/**
+ * Normalize an applicant's free-text "tale": trim surrounding whitespace and
+ * collapse blank input to null. Callers treat null as "no tale written yet".
+ */
+export function normalizeTale(raw: string | null | undefined): string | null {
+  if (raw == null) return null;
+  const trimmed = raw.trim();
+  return trimmed.length === 0 ? null : trimmed;
+}
+
 export interface SubmitInput {
   userId: number;
   username: string | null;
   firstName: string | null;
   lastName: string | null;
+  tale: string;
 }
 
 export type SubmitResult =
@@ -42,8 +55,9 @@ async function submitInTrx(trx: DbConn, input: SubmitInput): Promise<SubmitResul
     if (existing.status === 'approved') {
       return { status: 'already_approved', applicationId: existing.id };
     }
-    // rejected → allow re-apply: flip status back to pending
+    // rejected → allow re-apply: flip status back to pending, refresh the tale
     await setApplicationStatus(trx, existing.id, 'pending');
+    await updateApplicationTale(trx, existing.id, input.tale);
     await removeRole(trx, input.userId, 'rejected');
     await addRole(trx, input.userId, 'pending');
     return { status: 'submitted', applicationId: existing.id };
@@ -98,12 +112,16 @@ export async function reject(applicationId: number, reviewerId: number): Promise
 async function notifyApproval(userId: number): Promise<void> {
   await bot.telegram.sendMessage(
     userId,
-    '✅ Твоя заявка одобрена. Теперь можно купить доступ командой /buy.',
+    '🔥 Совет щёлкнул печатью — тебя впустили в логово. Теперь дело за казной: жми кнопку да забирай месячный архив.',
+    archiveKeyboard(),
   );
 }
 
 async function notifyRejection(userId: number): Promise<void> {
-  await bot.telegram.sendMessage(userId, '🙅 К сожалению, твоя заявка отклонена.');
+  await bot.telegram.sendMessage(
+    userId,
+    '💀 Совет вынес вердикт: не в этот раз. Имя твоё не высекли на камне. Так решили старейшины.',
+  );
 }
 
 export type { ApplicationRow, ApplicationStatus };

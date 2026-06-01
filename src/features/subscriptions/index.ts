@@ -10,3 +10,4 @@ export function register(bot: Telegraf): void {
 
 export { decidePurchaseAction } from './service';
 export { getSubscriptionStatus, listUserSubscriptions } from './repo';
+export { archiveKeyboard } from './menus';

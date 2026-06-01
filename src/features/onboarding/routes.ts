@@ -4,12 +4,15 @@ import { router } from '../../core/router';
 import { db } from '../../db/client';
 import { getRolesForUser } from '../../db/repos/user-roles';
 import { getStatusDisplay } from '../../shared/user-status';
+import { archiveKeyboard } from '../subscriptions';
 
-import { aboutMenu, pendingMenu, startMenuForNewbie } from './menus';
+import { aboutMenu, startMenuForNewbie } from './menus';
 import { ONBOARDING_SCENE_ID } from './scene';
 import { onboardingCallback } from './schemas';
 
-const ABOUT_TEXT = `Этот бот раздаёт доступ к закрытым месяцам и принимает заявки на вступление. После одобрения админом ты сможешь оплатить доступ к текущему месяцу.`;
+const ABOUT_TEXT = `📜 Это логово Главгоблина — закрытый притон, где из месяца в месяц копятся сокровища. На полке всегда новый <b>месячный архив</b>, а сторожит их библиотекарь — молча, без записи и без входа чужакам.
+
+Сперва обряд допуска: совет читает твой свиток и выносит вердикт. Одобрят — платишь звёзды из своей казны за <b>месячный архив</b>. Не одобрят — ступай своей тропой.`;
 
 export function registerOnboardingCommands(bot: Telegraf): void {
   bot.command('start', async (ctx) => {
@@ -19,26 +22,37 @@ export function registerOnboardingCommands(bot: Telegraf): void {
 
     switch (status.code) {
       case 'preapproved':
+      case 'alumni':
+        await ctx.reply(
+          '🪙 Свой пришёл. Заходи. Совет тебя впустил — теперь дело за казной: бери месячный архив по кнопке ниже.',
+          archiveKeyboard(),
+        );
+        return;
       case 'admin':
       case 'super':
-      case 'alumni':
-        await ctx.reply(`${status.emoji} ${status.text}. Используй /buy для покупки доступа.`);
+        await ctx.reply('⚖️ Совет на пороге. Чего велишь, старейшина?');
         return;
       case 'pending':
-        await ctx.reply('⏳ Твоя заявка на рассмотрении.', { ...pendingMenu() });
+        await ctx.reply(
+          '⏳ Твой свиток уже наверху, у совета. Старейшины взвешивают твоё имя. Жди вердикта и не пинай меня — решат, я тебе сам принесу весть.',
+        );
         return;
       case 'rejected':
-        await ctx.reply('🙅 Твоя предыдущая заявка отклонена. Можешь подать заново.', {
-          ...startMenuForNewbie(),
-        });
+        await ctx.reply(
+          '💀 Совет уже отворачивался от тебя однажды. Но камень не высечен — хочешь, попробуй обряд снова. Дважды я объяснять не буду.',
+          { ...startMenuForNewbie() },
+        );
         return;
       case 'banned':
       case 'selfBanned':
-        // No menu; quietly refuse.
+        // No reply; the banned get silence.
         return;
       case 'newbie':
       default:
-        await ctx.reply('👋 Привет! Это закрытый бот.', { ...startMenuForNewbie() });
+        await ctx.reply(
+          '🌑 Ты набрёл на логово Главгоблина.\nЗдесь под замком копятся STL-сокровища. Двери открываются лишь тем, кого впустил совет. Хочешь — расскажу, что это за место, или сразу пройди обряд допуска.',
+          { ...startMenuForNewbie() },
+        );
     }
   });
 
@@ -49,11 +63,13 @@ export function registerOnboardingCommands(bot: Telegraf): void {
     }
     switch (payload.a) {
       case 'onAbout':
-        await ctx.editMessageText(ABOUT_TEXT, { ...aboutMenu() });
+        await ctx.editMessageText(ABOUT_TEXT, { parse_mode: 'HTML', ...aboutMenu() });
         await ctx.answerCbQuery?.();
         break;
       case 'onCancel':
-        await ctx.editMessageText('Главный экран.', { ...startMenuForNewbie() });
+        await ctx.editMessageText('🌑 Вернулись к воротам. Выбирай тропу, чужак.', {
+          ...startMenuForNewbie(),
+        });
         await ctx.answerCbQuery?.();
         break;
       case 'onApplyStart':

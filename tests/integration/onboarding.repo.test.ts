@@ -26,16 +26,18 @@ describe('onboarding.repo', () => {
     await cleanup();
   });
 
-  it('insertApplication + getApplicationByUserId round-trips', async () => {
+  it('insertApplication + getApplicationByUserId round-trips the tale', async () => {
     const id = await insertApplication(db, {
       userId: 1,
       username: 'u1',
       firstName: 'Alice',
       lastName: null,
+      tale: 'я гоблин из чащи, ищу сокровищ',
     });
     const app = await getApplicationByUserId(db, 1);
     expect(app?.id).toBe(id);
     expect(app?.status).toBe('pending');
+    expect(app?.tale).toBe('я гоблин из чащи, ищу сокровищ');
   });
 
   it('setApplicationStatus updates and updated_at', async () => {
@@ -44,6 +46,7 @@ describe('onboarding.repo', () => {
       username: 'u1',
       firstName: 'A',
       lastName: null,
+      tale: 'короткий свиток',
     });
     await setApplicationStatus(db, id, 'approved');
     const app = await getApplicationById(db, id);
@@ -51,7 +54,13 @@ describe('onboarding.repo', () => {
   });
 
   it('listApplications + countApplications filter by status', async () => {
-    await insertApplication(db, { userId: 1, username: 'u1', firstName: 'A', lastName: null });
+    await insertApplication(db, {
+      userId: 1,
+      username: 'u1',
+      firstName: 'A',
+      lastName: null,
+      tale: 'свиток',
+    });
     expect(await countApplications(db, { status: 'pending' })).toBe(1);
     expect(await countApplications(db, { status: 'approved' })).toBe(0);
 

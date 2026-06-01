@@ -1,6 +1,7 @@
 import { z } from 'zod';
 
 export const subscriptionsCallback = z.discriminatedUnion('a', [
+  z.object({ a: z.literal('subOpen') }),
   z.object({
     a: z.literal('subBuy'),
     year: z.number().int(),

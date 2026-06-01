@@ -28,13 +28,17 @@ export function listScreen(
 export function userCard(app: ApplicationRow, roles: readonly string[]): string {
   const display = getStatusDisplay(roles);
   const name = [app.firstName, app.lastName].filter(Boolean).join(' ') || '—';
+  const username = app.username ? `@${app.username}` : `id:${app.userId}`;
   return [
-    `<b>Заявка #${app.id}</b>`,
+    `📜 <b>Свиток #${app.id}</b>`,
     `${display.emoji} ${display.text}`,
     '',
-    `Пользователь: ${app.username ? `@${app.username}` : `id:${app.userId}`}`,
+    `Чужак: ${username}`,
     `Имя: ${name}`,
-    `Создана: ${app.createdAt.toLocaleString('ru-RU')}`,
-    `Статус заявки: ${app.status}`,
+    `Подан: ${app.createdAt.toLocaleString('ru-RU')}`,
+    `Состояние: ${app.status}`,
+    '',
+    'Его слова совету:',
+    app.tale ?? '—',
   ].join('\n');
 }

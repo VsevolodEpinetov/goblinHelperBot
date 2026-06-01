@@ -7,10 +7,15 @@ import { onboardingAdminCallback, onboardingCallback } from './schemas';
 
 export function startMenuForNewbie(): ReturnType<typeof Markup.inlineKeyboard> {
   return Markup.inlineKeyboard([
-    [Markup.button.callback('Что это такое?', router.encode(onboardingCallback, { a: 'onAbout' }))],
     [
       Markup.button.callback(
-        'Подать заявку',
+        '🌑 Что это за место',
+        router.encode(onboardingCallback, { a: 'onAbout' }),
+      ),
+    ],
+    [
+      Markup.button.callback(
+        '🔐 Пройти обряд допуска',
         router.encode(onboardingCallback, { a: 'onApplyStart' }),
       ),
     ],
@@ -21,16 +26,12 @@ export function aboutMenu(): ReturnType<typeof Markup.inlineKeyboard> {
   return Markup.inlineKeyboard([
     [
       Markup.button.callback(
-        'Подать заявку',
+        '🔐 Пройти обряд допуска',
         router.encode(onboardingCallback, { a: 'onApplyStart' }),
       ),
     ],
     [Markup.button.callback('« Назад', router.encode(onboardingCallback, { a: 'onCancel' }))],
   ]);
-}
-
-export function pendingMenu(): ReturnType<typeof Markup.inlineKeyboard> {
-  return Markup.inlineKeyboard([]);
 }
 
 export function adminListItemButton(

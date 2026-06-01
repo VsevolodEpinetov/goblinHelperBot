@@ -1,4 +1,4 @@
-import type { Scenes } from 'telegraf';
+import type { Context, Scenes } from 'telegraf';
 
 import { logger } from '../../core/observability';
 import { router } from '../../core/router';
@@ -6,6 +6,7 @@ import { db } from '../../db/client';
 import { formatPeriod } from '../../shared/period';
 import { SBP_SCENE_ID, sendStarsInvoice, type SbpDraft } from '../payments';
 
+import { openBuyScreen } from './routes';
 import { subscriptionsCallback } from './schemas';
 
 // Base prices read from env. Kept as direct env reads to avoid expanding the
@@ -33,6 +34,10 @@ export function registerSubscriptionActions(): void {
     const isTestUser = testUserId !== undefined && ctx.from.id === testUserId;
 
     switch (payload.a) {
+      case 'subOpen':
+        await openBuyScreen(ctx as unknown as Context);
+        await ctx.answerCbQuery?.();
+        break;
       case 'subBuy': {
         const period = formatPeriod({ year: payload.year, month: payload.month });
         try {

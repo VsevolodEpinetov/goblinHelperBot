@@ -70,3 +70,15 @@ export function upgradeKeyboard(period: Period): ReturnType<typeof Markup.inline
     ],
   ]);
 }
+
+/** A single «🪙 Взять архив» button that opens the buy screen (subOpen). */
+export function archiveKeyboard(): ReturnType<typeof Markup.inlineKeyboard> {
+  return Markup.inlineKeyboard([
+    [
+      Markup.button.callback(
+        '🪙 Взять архив',
+        router.encode(subscriptionsCallback, { a: 'subOpen' }),
+      ),
+    ],
+  ]);
+}

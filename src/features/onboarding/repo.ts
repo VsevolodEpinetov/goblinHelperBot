@@ -9,6 +9,7 @@ export interface ApplicationRow {
   firstName: string | null;
   lastName: string | null;
   status: ApplicationStatus;
+  tale: string | null;
   invitationCode: string | null;
   createdAt: Date;
   updatedAt: Date;
@@ -23,6 +24,7 @@ function rowToApp(row: Record<string, unknown> | undefined): ApplicationRow | un
     firstName: (row.first_name as string | null) ?? null,
     lastName: (row.last_name as string | null) ?? null,
     status: row.status as ApplicationStatus,
+    tale: (row.tale as string | null) ?? null,
     invitationCode: (row.invitation_code as string | null) ?? null,
     createdAt: row.created_at as Date,
     updatedAt: row.updated_at as Date,
@@ -50,6 +52,7 @@ export interface InsertApplicationInput {
   username: string | null;
   firstName: string | null;
   lastName: string | null;
+  tale: string | null;
 }
 
 export async function insertApplication(
@@ -62,6 +65,7 @@ export async function insertApplication(
       username: input.username,
       first_name: input.firstName,
       last_name: input.lastName,
+      tale: input.tale,
       status: 'pending',
     })
     .returning('id');
@@ -74,6 +78,14 @@ export async function setApplicationStatus(
   status: ApplicationStatus,
 ): Promise<void> {
   await conn('applications').where('id', id).update({ status, updated_at: conn.fn.now() });
+}
+
+export async function updateApplicationTale(
+  conn: DbConn,
+  id: number,
+  tale: string | null,
+): Promise<void> {
+  await conn('applications').where('id', id).update({ tale, updated_at: conn.fn.now() });
 }
 
 export interface ListFilter {
