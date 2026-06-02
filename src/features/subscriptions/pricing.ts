@@ -1,4 +1,5 @@
 import { computePrice } from '../../shared/pricing';
+import { computeOldMonthMultiplier } from '../payments';
 
 /** Base (pre-discount) Stars price for a tier, from env (defaults 350 / 1000). */
 export function basePrice(tier: 'regular' | 'plus'): number {
@@ -10,6 +11,11 @@ export function basePrice(tier: 'regular' | 'plus'): number {
 /** Base (pre-discount) delta for upgrading regular → plus. */
 export function upgradeBaseDelta(): number {
   return basePrice('plus') - basePrice('regular');
+}
+
+/** Base (pre-discount) price for a PAST month's archive — dearer (×multiplier). */
+export function oldBasePrice(tier: 'regular' | 'plus'): number {
+  return basePrice(tier) * computeOldMonthMultiplier();
 }
 
 /** Whether this user is the configured TEST_USER_ID (charged 1 star). */

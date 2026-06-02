@@ -7,8 +7,9 @@ import { db } from '../../db/client';
 import { formatPeriod } from '../../shared/period';
 import { SBP_SCENE_ID, sendStarsInvoice, type SbpDraft } from '../payments';
 
-import { basePrice, isTestUser, upgradeBaseDelta } from './pricing';
-import { openBuyScreen } from './routes';
+import { basePrice, isTestUser, oldBasePrice, upgradeBaseDelta } from './pricing';
+import { getSubscriptionStatus } from './repo';
+import { openBuyScreen, openOldArchiveMonth, openOldArchivesList } from './routes';
 import { subscriptionsCallback } from './schemas';
 
 const ADMIN_NOTIFICATIONS_CHAT = process.env.ADMIN_NOTIFICATIONS_CHAT ?? '';
@@ -27,6 +28,43 @@ export function registerSubscriptionActions(): void {
         await openBuyScreen(ctx as unknown as Context);
         await ctx.answerCbQuery?.();
         break;
+      case 'subOldList':
+        if (!(await ensureApprovedMember(ctx as unknown as Context))) break;
+        await openOldArchivesList(ctx as unknown as Context);
+        await ctx.answerCbQuery?.();
+        break;
+      case 'subOldMonth':
+        if (!(await ensureApprovedMember(ctx as unknown as Context))) break;
+        await openOldArchiveMonth(ctx as unknown as Context, payload.year, payload.month);
+        await ctx.answerCbQuery?.();
+        break;
+      case 'subOldBuy': {
+        if (!(await ensureApprovedMember(ctx as unknown as Context))) break;
+        const period = formatPeriod({ year: payload.year, month: payload.month });
+        const status = await getSubscriptionStatus(db, ctx.from.id, period);
+        const owned = status.hasPlus || (payload.tier === 'regular' && status.hasRegular);
+        if (owned) {
+          await ctx.answerCbQuery?.('Этот архив у тебя уже есть', { show_alert: true });
+          break;
+        }
+        try {
+          await sendStarsInvoice(
+            ctx,
+            { t: 'old', userId: ctx.from.id, period, tier: payload.tier },
+            oldBasePrice(payload.tier),
+            {
+              title: `Старый архив за ${period}`,
+              description: payload.tier === 'plus' ? 'Расширенный' : 'Обычный',
+            },
+            isTest,
+          );
+          await ctx.answerCbQuery?.();
+        } catch (err) {
+          logger.error({ err }, 'subOldBuy: invoice send failed');
+          await ctx.answerCbQuery?.('Не удалось создать счёт', { show_alert: true });
+        }
+        break;
+      }
       case 'subBuy': {
         const period = formatPeriod({ year: payload.year, month: payload.month });
         try {

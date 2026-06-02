@@ -44,3 +44,27 @@ export async function getMonthChatId(
   const row = await conn('months').where({ period, type: tier }).first('chat_id');
   return row?.chat_id ?? null;
 }
+
+/** Past periods that have content (a bound chat), newest first — buyable archives. */
+export async function listPurchasablePastPeriods(
+  conn: DbConn,
+  currentPeriod: string,
+  limit = 24,
+): Promise<string[]> {
+  const rows = await conn('months')
+    .whereNotNull('chat_id')
+    .andWhere('period', '<', currentPeriod)
+    .distinct('period')
+    .orderBy('period', 'desc')
+    .limit(limit);
+  return rows.map((r: { period: string }) => r.period);
+}
+
+/** Tiers that actually have content (a bound chat) for a given period. */
+export async function listAvailableTiers(
+  conn: DbConn,
+  period: string,
+): Promise<SubscriptionTier[]> {
+  const rows = await conn('months').where('period', period).whereNotNull('chat_id').select('type');
+  return rows.map((r: { type: SubscriptionTier }) => r.type);
+}

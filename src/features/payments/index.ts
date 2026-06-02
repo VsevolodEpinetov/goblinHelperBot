@@ -12,6 +12,7 @@ export {
   processUpgradePayment,
   processKickstarterPayment,
   processSuccessfulPayment,
+  computeOldMonthMultiplier,
 } from './service';
 
 export function register(bot: Telegraf): void {

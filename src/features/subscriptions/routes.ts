@@ -6,9 +6,15 @@ import { formatPrice } from '../../shared/format';
 import { currentPeriod, formatPeriod } from '../../shared/period';
 import { getUserAchievements } from '../achievements/service';
 
-import { buyKeyboard, upgradeKeyboard } from './menus';
-import { basePrice, finalPrice, isTestUser, upgradeBaseDelta } from './pricing';
-import { getSubscriptionStatus } from './repo';
+import {
+  buyKeyboard,
+  oldArchivesKeyboard,
+  oldMonthTierKeyboard,
+  oldMonthsListKeyboard,
+  upgradeKeyboard,
+} from './menus';
+import { basePrice, finalPrice, isTestUser, oldBasePrice, upgradeBaseDelta } from './pricing';
+import { getSubscriptionStatus, listAvailableTiers, listPurchasablePastPeriods } from './repo';
 import { decidePurchaseAction } from './service';
 
 /**
@@ -37,7 +43,10 @@ export async function openBuyScreen(ctx: Context): Promise<void> {
 
   switch (decision.action) {
     case 'already_plus':
-      await ctx.reply(`🔥 Расширенный архив за ${period} весь твой — ни звезды сверху не возьму.`);
+      await ctx.reply(
+        `🔥 Расширенный архив за ${period} весь твой — ни звезды сверху не возьму.`,
+        oldArchivesKeyboard(),
+      );
       return;
     case 'offer_upgrade':
       await ctx.reply(
@@ -58,6 +67,57 @@ export async function openBuyScreen(ctx: Context): Promise<void> {
       );
       return;
   }
+}
+
+/** List past archives the member can still buy. */
+export async function openOldArchivesList(ctx: Context): Promise<void> {
+  if (!ctx.from) return;
+  const current = formatPeriod(currentPeriod());
+  const periods = await listPurchasablePastPeriods(db, current);
+  if (periods.length === 0) {
+    await ctx.reply('📦 Старья пока нет — нечего со дна доставать.');
+    return;
+  }
+  await ctx.reply(
+    '📚 Старьё со дна полок. Выбери, какой архив тебе вытащить — старое стоит втрое против свежего.',
+    oldMonthsListKeyboard(periods),
+  );
+}
+
+/** Show the buyable tiers for one past archive. */
+export async function openOldArchiveMonth(
+  ctx: Context,
+  year: number,
+  month: number,
+): Promise<void> {
+  if (!ctx.from) return;
+  const target = { year, month };
+  const period = formatPeriod(target);
+  const available = await listAvailableTiers(db, period);
+  if (available.length === 0) {
+    await ctx.reply('📦 Этого архива нет на полках.');
+    return;
+  }
+  const status = await getSubscriptionStatus(db, ctx.from.id, period);
+  const achievements = (await getUserAchievements(ctx.from.id)).map((a) => a.type);
+  const sbpAllowed = canPayViaSbp(achievements);
+  const priceOpts = {
+    yearsOfService: achievements.includes('years_of_service'),
+    isTestUser: isTestUser(ctx.from.id),
+  };
+  const offers = status.hasPlus
+    ? []
+    : available
+        .filter((t) => !(t === 'regular' && status.hasRegular))
+        .map((t) => ({ tier: t, price: finalPrice(oldBasePrice(t), priceOpts) }));
+  if (offers.length === 0) {
+    await ctx.reply(`🔥 Архив за ${period} у тебя уже есть.`);
+    return;
+  }
+  await ctx.reply(
+    `🌑 Архив за ${period} поднял. Бери обычный или расширенный — цена тройная, старьё, на кнопках.`,
+    oldMonthTierKeyboard(target, offers, sbpAllowed),
+  );
 }
 
 export function registerSubscriptionCommands(bot: Telegraf): void {
