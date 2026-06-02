@@ -9,7 +9,7 @@ interface AchievementDefinition {
 
 export const ACHIEVEMENTS: Record<AchievementKey, AchievementDefinition> = {
   sbp_payment: {
-    displayName: 'SBP-плательщик',
+    displayName: 'Знаток людских банков',
     description:
       'Право платить через СБП/перевод с подтверждением скриншотом. Назначается админом вручную.',
   },

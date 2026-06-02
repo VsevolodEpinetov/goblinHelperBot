@@ -5,6 +5,7 @@ import { requireRoles } from '../../core/permissions';
 import { db } from '../../db/client';
 import { dispatchNotifications, grantXpInTrx } from '../loyalty';
 
+import { deliverAccessKeys } from './invite-delivery';
 import { markFailed } from './repo';
 
 export function registerPaymentAdminActions(bot: Telegraf): void {
@@ -66,13 +67,27 @@ export function registerPaymentAdminActions(bot: Telegraf): void {
           externalId: chargeId,
           description: `SBP подписка ${row.subscription_type} за ${row.period}`,
         });
-        return { ok: true as const, userId: row.user_id, xp };
+        return {
+          ok: true as const,
+          userId: row.user_id,
+          period: row.period,
+          type: row.subscription_type,
+          xp,
+        };
       });
 
       if (result.ok) {
         dispatchNotifications(result.userId, result.xp, 'payment_sub_sbp');
         await ctx.answerCbQuery('Подтверждено');
         await ctx.editMessageCaption(`SBP #${paymentId} — ✅ подтверждён`, {});
+        // Hand the buyer their archive key (+ main-group key on first payment),
+        // the same delivery the Stars path does.
+        await deliverAccessKeys({
+          telegram: ctx.telegram,
+          userId: result.userId,
+          period: result.period,
+          type: result.type,
+        });
       } else {
         await ctx.answerCbQuery(
           result.reason === 'already_completed' ? 'Уже подтверждён' : 'Не найден',

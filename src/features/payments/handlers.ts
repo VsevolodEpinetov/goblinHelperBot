@@ -1,14 +1,9 @@
-import { Markup, type Context, type Telegraf } from 'telegraf';
+import type { Context, Telegraf } from 'telegraf';
 
 import { logger, metrics } from '../../core/observability';
-import { db } from '../../db/client';
-import { escapeHtml } from '../../shared/format';
-import { service as invitationsService } from '../invitations/service';
-import { listUserSubscriptions } from '../subscriptions';
 
+import { deliverAccessKeys } from './invite-delivery';
 import { accessGroupForPayload, decodePayload, processSuccessfulPayment } from './service';
-
-const ADMIN_NOTIFICATIONS_CHAT = process.env.ADMIN_NOTIFICATIONS_CHAT ?? '';
 
 /**
  * Single source for both pre_checkout_query and successful_payment.
@@ -48,10 +43,20 @@ export function registerPaymentHandlers(bot: Telegraf): void {
       sp.telegram_payment_charge_id,
     );
     switch (result.status) {
-      case 'processed':
+      case 'processed': {
         await sendUserConfirmation(ctx, 'Платёж получен.');
-        await deliverInviteLink(ctx, sp.invoice_payload);
+        const payload = decodePayload(sp.invoice_payload);
+        const group = payload ? accessGroupForPayload(payload) : null;
+        if (payload && group) {
+          await deliverAccessKeys({
+            telegram: ctx.telegram,
+            userId: payload.userId,
+            period: group.period,
+            type: group.type,
+          });
+        }
         break;
+      }
       case 'already_processed':
         logger.info(
           { chargeId: sp.telegram_payment_charge_id },
@@ -109,78 +114,6 @@ async function issueRefund(
       'star payment refund FAILED — needs manual handling',
     );
   }
-}
-
-/**
- * After a processed group payment, DM the buyer their personal one-time invite
- * link (on a button). No-op for payments that grant no group access (e.g.
- * kickstarter). Best-effort: never throws back into the payment handler.
- */
-async function deliverInviteLink(ctx: Context, payloadJson: string): Promise<void> {
-  const payload = decodePayload(payloadJson);
-  if (!payload) return;
-  const group = accessGroupForPayload(payload);
-  if (!group) return;
-  try {
-    const result = await invitationsService.getOrCreateInvitationLink({
-      userId: payload.userId,
-      period: group.period,
-      type: group.type,
-    });
-    if (result.status === 'no_chat') {
-      await ctx.telegram.sendMessage(
-        payload.userId,
-        '🌑 Звёзды твои в казне, доступ за тобой записан — а вот дверь библиотекарь ещё не отпер. Добыча в целости, никуда не денется. Загляни позже через /start и жми кнопку, или жди — ключ придёт.',
-      );
-      // Alert the совет: a paid member is stuck because no chat is bound yet.
-      if (ADMIN_NOTIFICATIONS_CHAT) {
-        const who = escapeHtml(
-          ctx.from?.username ? `@${ctx.from.username}` : `id:${payload.userId}`,
-        );
-        await ctx.telegram.sendMessage(
-          ADMIN_NOTIFICATIONS_CHAT,
-          `⚠️ <b>Архив без двери</b>\nСвой ${who} оплатил ${group.period}/${group.type}, но чат месяца не привязан — ключ выдать некуда. Привяжи группу через /admin → Months.`,
-          { parse_mode: 'HTML' },
-        );
-      }
-      return;
-    }
-    // First paid period → also hand them the key to the main community group.
-    if (await isFirstPaidPeriod(payload.userId)) {
-      const main = await invitationsService.createMainGroupLink(payload.userId);
-      if (main.status === 'created') {
-        await ctx.telegram.sendMessage(
-          payload.userId,
-          `🔥 Ну всё, ты теперь свой. Логово тебя приняло.\nВнизу два ключа — каждый пускает только тебя и только раз.\nОдин — в главный зал логова, где собираются все. Второй — в месячный архив за ${group.period}, что ты взял.`,
-          Markup.inlineKeyboard([
-            [Markup.button.url('🏰 Войти в логово', main.link)],
-            [Markup.button.url('🔑 Открыть архив ключом', result.link)],
-          ]),
-        );
-        return;
-      }
-      logger.warn(
-        { userId: payload.userId },
-        'first paid period but MAIN_GROUP_ID unset — archive link only',
-      );
-    }
-
-    // Returning member (or main group not configured): archive link only.
-    await ctx.telegram.sendMessage(
-      payload.userId,
-      '🔑 Готово, свой. Твой личный ключ к месячному архиву — на кнопке ниже. Пустит только тебя и только раз. Не зевай.',
-      Markup.inlineKeyboard([[Markup.button.url('🔑 Открыть архив ключом', result.link)]]),
-    );
-  } catch (err) {
-    logger.error({ err, userId: payload.userId }, 'invite link delivery after payment failed');
-  }
-}
-
-/** Whether this is the user's first paid period (→ they need the main-group key). */
-async function isFirstPaidPeriod(userId: number): Promise<boolean> {
-  const subs = await listUserSubscriptions(db, userId);
-  const periods = new Set(subs.map((s) => s.period));
-  return periods.size <= 1;
 }
 
 async function sendUserConfirmation(ctx: Context, text: string): Promise<void> {
