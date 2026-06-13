@@ -1,28 +1,9 @@
 import { describe, expect, it } from 'vitest';
 
 import { TIERS, tierByName } from './loyalty-config';
-import { computeRank, xpForSpending } from './xp';
+import { computeRank } from './xp';
 
 describe('xp', () => {
-  describe('xpForSpending', () => {
-    it('converts spending units to XP using the 1.3 multiplier', () => {
-      expect(xpForSpending(100)).toBe(130);
-    });
-
-    it('rounds down when the result is fractional', () => {
-      // 7 * 1.3 = 9.1 → 9
-      expect(xpForSpending(7)).toBe(9);
-    });
-
-    it('returns 0 for 0 spending', () => {
-      expect(xpForSpending(0)).toBe(0);
-    });
-
-    it('throws on negative spending', () => {
-      expect(() => xpForSpending(-5)).toThrow(/non-negative/);
-    });
-  });
-
   describe('computeRank', () => {
     it('returns wood tier level 1 for 0 xp', () => {
       const rank = computeRank(0);

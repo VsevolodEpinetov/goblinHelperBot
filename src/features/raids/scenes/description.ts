@@ -3,16 +3,13 @@ import { Scenes } from 'telegraf';
 import { RAID_CHAIN, type RaidDraft } from '../scene-chain';
 import { validateRaidDescription } from '../service';
 
+import { attachWizardCancel, raidWizardCancelKb } from './_cancel';
+
 export const descriptionScene = new Scenes.BaseScene<Scenes.SceneContext>('raid:description');
+attachWizardCancel(descriptionScene);
 
 descriptionScene.enter(async (ctx) => {
-  await ctx.reply('Описание (10–2000 символов).');
-});
-
-descriptionScene.command('cancel', async (ctx) => {
-  ctx.scene.state = {};
-  await ctx.scene.leave();
-  await ctx.reply('Отменено.');
+  await ctx.reply('Описание (10–2000 символов).', raidWizardCancelKb);
 });
 
 descriptionScene.on('text', async (ctx) => {

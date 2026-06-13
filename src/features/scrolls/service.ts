@@ -3,6 +3,14 @@ import { db } from '../../db/client';
 
 import { adjustScrollAmount, getScrollBalance, insertScrollLog } from './repo';
 
+export const KNOWN_SCROLL_IDS = ['kickstarter'] as const;
+
+export type KnownScrollId = (typeof KNOWN_SCROLL_IDS)[number];
+
+export function isKnownScrollId(id: string): id is KnownScrollId {
+  return (KNOWN_SCROLL_IDS as readonly string[]).includes(id);
+}
+
 export interface GiveScrollInput {
   userId: number;
   scrollId: string;

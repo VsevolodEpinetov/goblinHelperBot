@@ -36,6 +36,8 @@ export interface GrantXpInput {
 
 export interface GrantXpResult {
   applied: boolean;
+  /** XP actually added by THIS grant (0 when not applied). */
+  gained: number;
   totalXp: number;
   tier: string;
   level: number;
@@ -70,6 +72,7 @@ export async function grantXpInTrx(trx: DbConn, input: GrantXpInput): Promise<Gr
     );
     return {
       applied: false,
+      gained: 0,
       totalXp: before?.totalXp ?? 0,
       tier: before?.currentTier ?? 'wood',
       level: before?.currentLevel ?? 1,
@@ -100,6 +103,7 @@ export async function grantXpInTrx(trx: DbConn, input: GrantXpInput): Promise<Gr
 
   return {
     applied: true,
+    gained: input.amount,
     totalXp: newTotalXp,
     tier: rank.tier.name,
     level: rank.level,

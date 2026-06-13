@@ -1,5 +1,6 @@
 import { Scenes } from 'telegraf';
 
+import { registerCancel } from '../../../../core/scenes';
 import { KS_ADD_CHAIN, type KsAddDraft } from '../add-chain';
 
 export const pledgeNameScene = new Scenes.BaseScene<Scenes.SceneContext>('ks:add:pledge-name');
@@ -8,11 +9,7 @@ pledgeNameScene.enter(async (ctx) => {
   await ctx.reply('Имя пледжа? "пропустить" если нет. Или /cancel.');
 });
 
-pledgeNameScene.command('cancel', async (ctx) => {
-  ctx.scene.state = {};
-  await ctx.scene.leave();
-  await ctx.reply('Отменено.');
-});
+registerCancel(pledgeNameScene, { text: 'Отменено.' });
 
 pledgeNameScene.on('text', async (ctx) => {
   const draft = ctx.scene.state as KsAddDraft;

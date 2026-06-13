@@ -1,4 +1,5 @@
 import { bot } from '../../core/bot';
+import { featureConfig } from '../../core/config';
 import { logger } from '../../core/observability';
 import { db } from '../../db/client';
 import { getMonthChatId } from '../subscriptions/repo';
@@ -69,7 +70,6 @@ export function makeService(deps: ServiceDeps): Service {
         const apiResult = await deps.client.createChatInviteLink(chatId, {
           name: `u${input.userId}_${input.period}_${input.type}`,
           createsJoinRequest: true,
-          memberLimit: 1,
         });
         const rowId = await deps.insertInvitation(db, {
           userId: input.userId,
@@ -99,7 +99,6 @@ export function makeService(deps: ServiceDeps): Service {
       const apiResult = await deps.client.createChatInviteLink(chatId, {
         name: `u${userId}_main`,
         createsJoinRequest: true,
-        memberLimit: 1,
       });
       return { status: 'created', link: apiResult.invite_link };
     },
@@ -134,5 +133,5 @@ export const service: Service = makeService({
   getMonthChatId: (period, type) => getMonthChatId(db, period, type),
   findActiveLink: repoFindActive,
   insertInvitation: repoInsert,
-  mainGroupId: () => process.env.MAIN_GROUP_ID,
+  mainGroupId: () => featureConfig().mainGroupId,
 });

@@ -1,5 +1,6 @@
 import { Scenes } from 'telegraf';
 
+import { registerCancel } from '../../../../core/scenes';
 import { validateCost } from '../../service';
 import { KS_ADD_CHAIN, type KsAddDraft } from '../add-chain';
 
@@ -9,11 +10,7 @@ pledgeCostScene.enter(async (ctx) => {
   await ctx.reply('Цена пледжа? "пропустить" если нет. Или /cancel.');
 });
 
-pledgeCostScene.command('cancel', async (ctx) => {
-  ctx.scene.state = {};
-  await ctx.scene.leave();
-  await ctx.reply('Отменено.');
-});
+registerCancel(pledgeCostScene, { text: 'Отменено.' });
 
 pledgeCostScene.on('text', async (ctx) => {
   const draft = ctx.scene.state as KsAddDraft;

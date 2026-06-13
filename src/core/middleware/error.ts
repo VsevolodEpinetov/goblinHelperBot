@@ -1,8 +1,11 @@
 import type { Context, MiddlewareFn } from 'telegraf';
 
+import { isApprovedMember } from '../../shared/user-status';
+import { homeKeyboard } from '../nav';
 import { logger, metrics } from '../observability';
 
-const USER_ERROR_MESSAGE = 'Произошла ошибка. Попробуй ещё раз через минуту.';
+const USER_ERROR_MESSAGE =
+  '🕯 Что-то хрустнуло в недрах логова — приказ не выполнен. Подожди минуту и попробуй снова.';
 
 export const errorMiddleware: MiddlewareFn<Context> = async (ctx, next) => {
   try {
@@ -18,9 +21,18 @@ export const errorMiddleware: MiddlewareFn<Context> = async (ctx, next) => {
       },
       'Unhandled error in middleware chain',
     );
-    if (ctx.from) {
+    if (ctx.callbackQuery) {
       try {
-        await ctx.reply(USER_ERROR_MESSAGE);
+        await ctx.answerCbQuery(USER_ERROR_MESSAGE, { show_alert: true });
+      } catch (replyErr) {
+        logger.warn({ replyErr }, 'Could not answer callback query with error message');
+      }
+    } else if (ctx.from && ctx.chat?.type === 'private') {
+      try {
+        // Members get a home button — an error is exactly when their menu is
+        // broken; outsiders just get the text (their recovery is /start anyway).
+        const member = isApprovedMember(ctx.state?.roles ?? []);
+        await ctx.reply(USER_ERROR_MESSAGE, member ? homeKeyboard() : undefined);
       } catch (replyErr) {
         logger.warn({ replyErr }, 'Could not send user-facing error message');
       }

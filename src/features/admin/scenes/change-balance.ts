@@ -1,5 +1,6 @@
 import { Scenes } from 'telegraf';
 
+import { backToUserKeyboard } from '../menus';
 import { adminSetBalance, parseBalanceInput } from '../service';
 
 interface State {
@@ -21,9 +22,10 @@ changeBalanceScene.enter(async (ctx) => {
 });
 
 changeBalanceScene.command('cancel', async (ctx) => {
+  const { userId } = ctx.scene.state as State;
   ctx.scene.state = {};
   await ctx.scene.leave();
-  await ctx.reply('Отменено.');
+  await ctx.reply('Отменено.', userId ? backToUserKeyboard(userId) : undefined);
 });
 
 changeBalanceScene.on('text', async (ctx) => {
@@ -35,7 +37,7 @@ changeBalanceScene.on('text', async (ctx) => {
   try {
     const balance = parseBalanceInput(ctx.message.text);
     await adminSetBalance(state.userId, balance);
-    await ctx.reply(`✅ Баланс установлен: ${balance}`);
+    await ctx.reply(`✅ Баланс установлен: ${balance}`, backToUserKeyboard(state.userId));
   } catch (err) {
     await ctx.reply((err as Error).message);
     return;

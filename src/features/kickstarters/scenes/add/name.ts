@@ -1,5 +1,6 @@
 import { Scenes } from 'telegraf';
 
+import { registerCancel } from '../../../../core/scenes';
 import { validateName } from '../../service';
 import { KS_ADD_CHAIN, type KsAddDraft } from '../add-chain';
 
@@ -9,11 +10,7 @@ nameScene.enter(async (ctx) => {
   await ctx.reply('Имя нового кикстартера? Или /cancel.');
 });
 
-nameScene.command('cancel', async (ctx) => {
-  ctx.scene.state = {};
-  await ctx.scene.leave();
-  await ctx.reply('Отменено.');
-});
+registerCancel(nameScene, { text: 'Отменено.' });
 
 nameScene.on('text', async (ctx) => {
   try {

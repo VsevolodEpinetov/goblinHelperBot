@@ -21,8 +21,17 @@ describe('period', () => {
     });
 
     it('returns month=12 for December', () => {
-      const period = periodFromDate(new Date('2026-12-31T23:59:59Z'));
+      const period = periodFromDate(new Date('2026-12-31T20:59:59Z'));
       expect(period).toEqual({ year: 2026, month: 12 });
+    });
+
+    it('uses Moscow time (UTC+3): the month flips at 21:00 UTC on the last day', () => {
+      expect(periodFromDate(new Date('2026-05-31T20:59:59Z'))).toEqual({ year: 2026, month: 5 });
+      expect(periodFromDate(new Date('2026-05-31T21:00:00Z'))).toEqual({ year: 2026, month: 6 });
+    });
+
+    it('rolls the year over at 21:00 UTC on December 31 (midnight MSK)', () => {
+      expect(periodFromDate(new Date('2026-12-31T21:00:00Z'))).toEqual({ year: 2027, month: 1 });
     });
   });
 

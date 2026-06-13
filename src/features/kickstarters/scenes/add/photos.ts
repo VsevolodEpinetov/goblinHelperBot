@@ -1,5 +1,6 @@
 import { Scenes } from 'telegraf';
 
+import { registerCancel } from '../../../../core/scenes';
 import { KS_ADD_CHAIN, type KsAddDraft } from '../add-chain';
 
 export const photosScene = new Scenes.BaseScene<Scenes.SceneContext>('ks:add:photos');
@@ -12,11 +13,7 @@ photosScene.enter(async (ctx) => {
   );
 });
 
-photosScene.command('cancel', async (ctx) => {
-  ctx.scene.state = {};
-  await ctx.scene.leave();
-  await ctx.reply('Отменено.');
-});
+registerCancel(photosScene, { text: 'Отменено.' });
 
 photosScene.on('photo', async (ctx) => {
   const draft = ctx.scene.state as KsAddDraft;

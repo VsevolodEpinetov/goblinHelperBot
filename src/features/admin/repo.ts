@@ -65,16 +65,19 @@ export async function listMonths(conn: DbConn, limit = 30): Promise<MonthSummary
   }));
 }
 
+/** Insert a month if absent. Never touches an existing row. Returns true when inserted. */
 export async function insertMonth(
   conn: DbConn,
   period: string,
   type: 'regular' | 'plus',
   chatId: string | null,
-): Promise<void> {
-  await conn('months')
+): Promise<boolean> {
+  const rows = await conn('months')
     .insert({ period, type, chat_id: chatId, counter_joined: 0, counter_paid: 0 })
     .onConflict(['period', 'type'])
-    .merge({ chat_id: chatId });
+    .ignore()
+    .returning('id');
+  return rows.length > 0;
 }
 
 export async function updateMonthChatId(

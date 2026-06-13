@@ -26,6 +26,15 @@ export interface Router {
 
 const MAX_CALLBACK_LEN = 64;
 const SEPARATOR = '|';
+const STALE_CALLBACK_TOAST = '🌑 Кнопка протухла — выкинь её. Жми /start, выдам свежие.';
+
+async function answerStale(ctx: Context): Promise<void> {
+  try {
+    await ctx.answerCbQuery(STALE_CALLBACK_TOAST);
+  } catch {
+    /* query expired or already answered */
+  }
+}
 
 function actionsOf(
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -63,9 +72,10 @@ export function createRouter(): Router {
       const rest: Record<string, unknown> = { ...(parsed as Record<string, unknown>) };
       delete rest.a;
       const encoded = `${action}${SEPARATOR}${JSON.stringify(rest)}`;
-      if (encoded.length > MAX_CALLBACK_LEN) {
+      const bytes = Buffer.byteLength(encoded, 'utf8');
+      if (bytes > MAX_CALLBACK_LEN) {
         throw new Error(
-          `Router: encoded callback_data exceeds ${MAX_CALLBACK_LEN} bytes (got ${encoded.length}): ${encoded}`,
+          `Router: encoded callback_data exceeds ${MAX_CALLBACK_LEN} bytes (got ${bytes}): ${encoded}`,
         );
       }
       return encoded;
@@ -83,14 +93,36 @@ export function createRouter(): Router {
         const restJson = idx >= 0 ? data.slice(idx + 1) : '{}';
 
         const entry = entries.get(action);
-        if (!entry) return next();
+        if (!entry) {
+          // Not ours — give later-registered bot.action handlers their shot,
+          // then answer whatever they left hanging so stale scene-local
+          // buttons never spin forever.
+          let answered = false;
+          const original = ctx.answerCbQuery?.bind(ctx);
+          if (original) {
+            ctx.answerCbQuery = async (...args: unknown[]) => {
+              answered = true;
+              return original(...args);
+            };
+          }
+          await next();
+          if (original && !answered) {
+            try {
+              await original(STALE_CALLBACK_TOAST);
+            } catch {
+              /* query expired or already answered */
+            }
+          }
+          return;
+        }
 
         let rest: unknown;
         try {
           rest = JSON.parse(restJson);
         } catch (err) {
           logger.warn({ err, data }, 'Router: failed to JSON.parse payload');
-          return next();
+          await answerStale(ctx);
+          return;
         }
         const merged = { a: action, ...(rest as Record<string, unknown>) };
         const parseResult = entry.schema.safeParse(merged);
@@ -99,7 +131,15 @@ export function createRouter(): Router {
             { data, error: parseResult.error.format() },
             'Router: payload failed schema validation',
           );
-          return next();
+          await answerStale(ctx);
+          return;
+        }
+
+        // Router callbacks are global navigation by definition (scene-local
+        // buttons are handled inside the stage and never reach here), so
+        // navigating away abandons any wizard still armed.
+        if (ctx.scene?.current) {
+          await ctx.scene.leave();
         }
 
         try {

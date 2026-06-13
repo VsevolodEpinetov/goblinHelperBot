@@ -1,1 +1,1 @@
-export { register, deleteThisMessageButton } from './routes';
+export { register } from './routes';

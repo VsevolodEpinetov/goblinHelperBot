@@ -96,6 +96,25 @@ export async function markFailed(conn: DbConn, paymentId: number): Promise<void>
   await conn('payment_tracking').where('id', paymentId).update({ status: 'failed' });
 }
 
+export interface PendingSbpItem extends PaymentTrackingRow {
+  username: string | null;
+}
+
+/** Pending SBP requests, oldest first — the admin review queue. */
+export async function listPendingSbp(conn: DbConn, limit = 10): Promise<PendingSbpItem[]> {
+  const rows = await conn('payment_tracking')
+    .leftJoin('users', 'users.id', 'payment_tracking.user_id')
+    .where('payment_tracking.status', 'pending')
+    .where('payment_tracking.source', 'sbp')
+    .orderBy('payment_tracking.created_at', 'asc')
+    .limit(limit)
+    .select('payment_tracking.*', 'users.username as username');
+  return rows.map((r: Record<string, unknown>) => ({
+    ...(rowToTracking(r) as PaymentTrackingRow),
+    username: (r.username as string | null) ?? null,
+  }));
+}
+
 /** Used by admin to look up payments for a user. */
 export async function listForUser(
   conn: DbConn,

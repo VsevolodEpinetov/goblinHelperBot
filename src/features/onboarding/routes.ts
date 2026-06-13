@@ -1,64 +1,121 @@
-import type { Scenes, Telegraf } from 'telegraf';
+import type { Context, Scenes, Telegraf } from 'telegraf';
 
+import { editOrReply } from '../../core/nav';
+import { ensureApprovedMember } from '../../core/permissions';
 import { router } from '../../core/router';
 import { db } from '../../db/client';
 import { getRolesForUser } from '../../db/repos/user-roles';
 import { currentPeriod, formatPeriod } from '../../shared/period';
-import { getStatusDisplay } from '../../shared/user-status';
+import { getStatusDisplay, isApprovedMember } from '../../shared/user-status';
+import { renderRaidCard } from '../raids/actions';
 
-import { aboutMenu, memberHubKeyboard, startMenuForNewbie } from './menus';
+import {
+  aboutMenu,
+  adminStartKeyboard,
+  memberHubKeyboard,
+  pendingStatusKeyboard,
+  startMenuForNewbie,
+} from './menus';
 import { ONBOARDING_SCENE_ID } from './scene';
 import { onboardingCallback } from './schemas';
 
-const ABOUT_TEXT = `📜 Это логово Главгоблина — закрытый притон, где из месяца в месяц копятся сокровища. На полке всегда новый <b>месячный архив</b>, а сторожит их библиотекарь — молча, без записи и без входа чужакам.
+const ABOUT_TEXT = `📜 Это логово Главгоблина — закрытый притон, где из луны в луну копятся сокровища. На полке всегда новый <b>месячный архив</b>, а сторожит их библиотекарь — молча, без записи и без входа чужакам.
 
-Сперва обряд допуска: совет читает твой свиток и выносит вердикт. Одобрят — платишь звёзды из своей казны за <b>месячный архив</b>. Не одобрят — ступай своей тропой.`;
+Сперва обряд допуска: совет читает твоё прошение и выносит вердикт. Одобрят — платишь звёзды в казну логова и забираешь <b>месячный архив</b>. Не одобрят — ступай своей тропой.`;
+
+const PENDING_TEXT =
+  '⏳ Прошение твоё уже наверху, у совета. Старейшины взвешивают твоё имя. Жди вердикта и не пинай меня — решат, я тебе сам принесу весть.';
+
+/**
+ * Render the правильный /start screen for the user's current standing. Used by
+ * the /start command (replies) and the onStatus refresh button (edits in place
+ * via editOrReply).
+ */
+async function renderStartByStatus(ctx: Context, roles: readonly string[]): Promise<void> {
+  if (!ctx.from) return;
+  const status = getStatusDisplay(roles);
+
+  switch (status.code) {
+    case 'preapproved':
+    case 'alumni': {
+      const period = formatPeriod(currentPeriod());
+      const paid = !!(await db('user_groups').where({ user_id: ctx.from.id, period }).first());
+      await editOrReply(
+        ctx,
+        paid
+          ? '🔥 С возвращением, свой. Месячный архив за этот цикл луны уже твой — всё открыто. Выбирай кнопкой ниже: архив, профиль, кикстартеры или рейды.'
+          : '🪙 Ты свой, в логово пущен. Только свежий месячный архив ещё не взят — казна логова пополнения от тебя не видела. Жми кнопку ниже, бери архив. Профиль, кикстартеры и рейды — там же.',
+        memberHubKeyboard(),
+      );
+      return;
+    }
+    case 'admin':
+    case 'super':
+      await editOrReply(
+        ctx,
+        '⚖️ Совет на пороге. Чего велишь, старейшина? Логово твоё — кнопки ниже, админка там же.',
+        adminStartKeyboard(),
+      );
+      return;
+    case 'friend':
+      await editOrReply(
+        ctx,
+        '🤝 А, это ты — гость самого Главгоблина. Платить тебе не велено: все архивы и главный зал открыты задаром. Бери, что нужно, не стесняйся.',
+        memberHubKeyboard(),
+      );
+      return;
+    case 'pending':
+      await editOrReply(ctx, PENDING_TEXT, pendingStatusKeyboard());
+      return;
+    case 'rejected':
+      await editOrReply(
+        ctx,
+        '💀 Совет уже отворачивался от тебя однажды. Но камень не высечен — хочешь, попробуй обряд снова. Дважды я объяснять не буду.',
+        { ...startMenuForNewbie() },
+      );
+      return;
+    case 'banned':
+    case 'selfBanned':
+      // No reply; the banned get silence.
+      return;
+    case 'newbie':
+    default:
+      await editOrReply(
+        ctx,
+        '🌑 Ты набрёл на логово Главгоблина.\nЗдесь под замком копятся STL-сокровища. Двери открываются лишь тем, кого впустил совет. Хочешь — расскажу, что это за место, или сразу пройди обряд допуска.',
+        { ...startMenuForNewbie() },
+      );
+  }
+}
+
+/**
+ * Deep-link payloads (t.me/<bot>?start=<payload>) — the bridge from group-chat
+ * cards into the bot's menus. Member-only; unknown payloads fall back to the
+ * regular /start screen. Returns true when the payload was handled.
+ */
+async function handleStartPayload(
+  ctx: Context,
+  payload: string,
+  roles: readonly string[],
+): Promise<boolean> {
+  if (!isApprovedMember(roles)) return false;
+  const raidMatch = /^raid_(\d+)$/.exec(payload);
+  if (raidMatch) {
+    await renderRaidCard(ctx, Number(raidMatch[1]));
+    return true;
+  }
+  return false;
+}
 
 export function registerOnboardingCommands(bot: Telegraf): void {
   bot.command('start', async (ctx) => {
     if (!ctx.from) return;
     const roles = ctx.state.roles ?? (await getRolesForUser(db, ctx.from.id));
-    const status = getStatusDisplay(roles);
 
-    switch (status.code) {
-      case 'preapproved':
-      case 'alumni': {
-        const period = formatPeriod(currentPeriod());
-        const paid = !!(await db('user_groups').where({ user_id: ctx.from.id, period }).first());
-        await ctx.reply(
-          paid
-            ? '🔥 С возвращением, свой. Архив за месяц уже твой — всё открыто. Выбирай кнопкой ниже: архив, профиль, кикстартеры или рейды.'
-            : '🪙 Ты свой, в логово пущен. Но казна пока пуста с твоей стороны — месячный архив за этот месяц ещё не взят. Жми кнопку ниже, бери архив. Профиль, кикстартеры и рейды — там же.',
-          memberHubKeyboard(),
-        );
-        return;
-      }
-      case 'admin':
-      case 'super':
-        await ctx.reply('⚖️ Совет на пороге. Чего велишь, старейшина?');
-        return;
-      case 'pending':
-        await ctx.reply(
-          '⏳ Твой свиток уже наверху, у совета. Старейшины взвешивают твоё имя. Жди вердикта и не пинай меня — решат, я тебе сам принесу весть.',
-        );
-        return;
-      case 'rejected':
-        await ctx.reply(
-          '💀 Совет уже отворачивался от тебя однажды. Но камень не высечен — хочешь, попробуй обряд снова. Дважды я объяснять не буду.',
-          { ...startMenuForNewbie() },
-        );
-        return;
-      case 'banned':
-      case 'selfBanned':
-        // No reply; the banned get silence.
-        return;
-      case 'newbie':
-      default:
-        await ctx.reply(
-          '🌑 Ты набрёл на логово Главгоблина.\nЗдесь под замком копятся STL-сокровища. Двери открываются лишь тем, кого впустил совет. Хочешь — расскажу, что это за место, или сразу пройди обряд допуска.',
-          { ...startMenuForNewbie() },
-        );
-    }
+    const payload = ctx.message.text.split(/\s+/)[1];
+    if (payload && (await handleStartPayload(ctx, payload, roles))) return;
+
+    await renderStartByStatus(ctx, roles);
   });
 
   router.on(onboardingCallback, async (ctx, payload) => {
@@ -67,6 +124,29 @@ export function registerOnboardingCommands(bot: Telegraf): void {
       return;
     }
     switch (payload.a) {
+      case 'onHome':
+        // ensureApprovedMember answers the callback with a denial when it fails,
+        // so just bail without answering again.
+        if (!(await ensureApprovedMember(ctx))) break;
+        await editOrReply(
+          ctx,
+          '🔥 Снова в логове, свой. Выбирай кнопкой ниже.',
+          memberHubKeyboard(),
+        );
+        await ctx.answerCbQuery?.();
+        break;
+      case 'onStatus': {
+        // The verdict may have landed since this message was sent — re-read the
+        // roles and re-render. Still pending → just a toast, the screen is right.
+        const roles = await getRolesForUser(db, ctx.from.id);
+        if (getStatusDisplay(roles).code === 'pending') {
+          await ctx.answerCbQuery?.('⏳ Старейшины всё ещё шепчутся — вердикта нет. Жди.');
+          break;
+        }
+        await renderStartByStatus(ctx, roles);
+        await ctx.answerCbQuery?.();
+        break;
+      }
       case 'onAbout':
         await ctx.editMessageText(ABOUT_TEXT, { parse_mode: 'HTML', ...aboutMenu() });
         await ctx.answerCbQuery?.();
@@ -81,8 +161,8 @@ export function registerOnboardingCommands(bot: Telegraf): void {
         await ctx.answerCbQuery?.();
         if (!ctx.from.username) {
           await ctx.reply(
-            '🔒 Главгоблин не торгует с безымянными. Поставь себе публичный <b>username</b> в настройках Telegram и возвращайся к обряду.',
-            { parse_mode: 'HTML' },
+            '🔒 Главгоблин не торгует с безымянными. Поставь себе публичный <b>username</b> в настройках Telegram и жми «Пройти обряд допуска» снова.',
+            { parse_mode: 'HTML', ...startMenuForNewbie() },
           );
           return;
         }

@@ -60,6 +60,24 @@ export async function listPurchasablePastPeriods(
   return rows.map((r: { period: string }) => r.period);
 }
 
+/**
+ * Every bound archive (period + tier), newest first — the full set a friend or
+ * staff member can reach without a payment record. Mirrors the shape of
+ * listUserSubscriptions so the «keys» menu renders it identically.
+ */
+export async function listAllArchives(
+  conn: DbConn,
+): Promise<Array<{ period: string; tier: SubscriptionTier }>> {
+  const rows = await conn('months')
+    .whereNotNull('chat_id')
+    .orderBy('period', 'desc')
+    .select('period', 'type');
+  return rows.map((r: { period: string; type: SubscriptionTier }) => ({
+    period: r.period,
+    tier: r.type,
+  }));
+}
+
 /** Tiers that actually have content (a bound chat) for a given period. */
 export async function listAvailableTiers(
   conn: DbConn,

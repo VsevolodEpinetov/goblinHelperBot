@@ -121,6 +121,39 @@ describe('invitations.service.getOrCreateInvitationLink', () => {
     expect((await svc.createMainGroupLink(7)).status).toBe('no_main_group');
   });
 
+  it('never combines createsJoinRequest with memberLimit (Telegram rejects that with 400)', async () => {
+    const seen: Array<{ createsJoinRequest?: boolean; memberLimit?: number }> = [];
+    const client: TelegramClient = {
+      async createChatInviteLink(_chatId, opts) {
+        seen.push(opts);
+        return {
+          invite_link: 'https://t.me/+shape',
+          creator: { id: 1 },
+          creates_join_request: opts.createsJoinRequest ?? false,
+          is_primary: false,
+          is_revoked: false,
+        };
+      },
+      async revokeChatInviteLink() {
+        return {};
+      },
+    };
+    const svc = makeService({
+      client,
+      getMonthChatId: vi.fn().mockResolvedValue('-100123'),
+      findActiveLink: vi.fn().mockResolvedValue(undefined),
+      insertInvitation: vi.fn().mockResolvedValue(1),
+      mainGroupId: () => '-100999',
+    });
+    await svc.getOrCreateInvitationLink({ userId: 1, period: '2026_05', type: 'regular' });
+    await svc.createMainGroupLink(1);
+    expect(seen).toHaveLength(2);
+    for (const opts of seen) {
+      expect(opts.createsJoinRequest).toBe(true);
+      expect(opts.memberLimit).toBeUndefined();
+    }
+  });
+
   it('revokeInvitationLink passes the URL, NOT the period (the legacy bug)', async () => {
     const client = buildClient();
     const svc = makeService({

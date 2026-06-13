@@ -1,14 +1,5 @@
 import { getNextTier, getTierByXp, type Tier } from './loyalty-config';
 
-const SPENDING_TO_XP_RATE = 1.3;
-
-export function xpForSpending(spendingUnits: number): number {
-  if (spendingUnits < 0) {
-    throw new Error('spendingUnits must be non-negative');
-  }
-  return Math.floor(spendingUnits * SPENDING_TO_XP_RATE);
-}
-
 export interface Rank {
   /** Tier the user is currently in. */
   tier: Tier;

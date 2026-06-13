@@ -109,11 +109,12 @@ export async function getRaidById(conn: DbConn, id: number): Promise<RaidRow | u
 /** List raids with optional status filter. Uses LEFT JOIN aggregation to avoid N+1. */
 export async function listRaids(
   conn: DbConn,
-  opts: { status?: RaidRow['status']; limit?: number } = {},
+  opts: { status?: RaidRow['status']; limit?: number; offset?: number } = {},
 ): Promise<RaidRow[]> {
   const q = conn('raids').orderBy('created_at', 'desc');
   if (opts.status) q.where('status', opts.status);
   if (opts.limit !== undefined) q.limit(opts.limit);
+  if (opts.offset !== undefined) q.offset(opts.offset);
   const rows = await q;
   return rows.map(rowToRaid) as RaidRow[];
 }
@@ -200,6 +201,15 @@ export async function updateRaidPublicMessage(
   await conn('raids').where('id', raidId).update({
     chat_id: chatId,
     message_id: messageId,
+    updated_at: conn.fn.now(),
+  });
+}
+
+/** Forget the stored group card (e.g. when a finished raid leaves the topic). */
+export async function clearRaidPublicMessage(conn: DbConn, raidId: number): Promise<void> {
+  await conn('raids').where('id', raidId).update({
+    chat_id: null,
+    message_id: null,
     updated_at: conn.fn.now(),
   });
 }

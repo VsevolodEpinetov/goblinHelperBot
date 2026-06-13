@@ -1,8 +1,8 @@
 import type { Context, MiddlewareFn } from 'telegraf';
 
-import { db } from '../../db/client';
-import { getRolesForUser } from '../../db/repos/user-roles';
 import { logger } from '../observability';
+
+import { getRolesCached } from './roles-cache';
 
 export function createRbacMiddleware(
   getRoles: (userId: number) => Promise<string[]>,
@@ -25,6 +25,4 @@ export function createRbacMiddleware(
   };
 }
 
-export const rbacMiddleware: MiddlewareFn<Context> = createRbacMiddleware((id) =>
-  getRolesForUser(db, id),
-);
+export const rbacMiddleware: MiddlewareFn<Context> = createRbacMiddleware(getRolesCached);

@@ -1,6 +1,13 @@
 import { describe, expect, it } from 'vitest';
 
-import { getStatusDisplay, isApprovedMember, isMember, isStaff } from './user-status';
+import {
+  getStatusDisplay,
+  hasAllArchiveAccess,
+  isApprovedMember,
+  isFriend,
+  isMember,
+  isStaff,
+} from './user-status';
 
 describe('shared.user-status.getStatusDisplay', () => {
   it('returns "newbie" for empty roles', () => {
@@ -34,6 +41,35 @@ describe('shared.user-status.getStatusDisplay', () => {
   it('returns "rejected" only when not also preapproved/admin', () => {
     expect(getStatusDisplay(['rejected']).code).toBe('rejected');
     expect(getStatusDisplay(['rejected', 'preapproved']).code).toBe('preapproved');
+  });
+
+  it('returns "friend" above preapproved, below staff', () => {
+    expect(getStatusDisplay(['friend']).code).toBe('friend');
+    expect(getStatusDisplay(['friend', 'preapproved']).code).toBe('friend');
+    expect(getStatusDisplay(['admin', 'friend']).code).toBe('admin');
+  });
+});
+
+describe('shared.user-status.isFriend / hasAllArchiveAccess', () => {
+  it('isFriend only for the friend role', () => {
+    expect(isFriend(['friend'])).toBe(true);
+    expect(isFriend(['preapproved'])).toBe(false);
+    expect(isFriend(['admin'])).toBe(false);
+  });
+
+  it('hasAllArchiveAccess for friends and staff, not paying members', () => {
+    expect(hasAllArchiveAccess(['friend'])).toBe(true);
+    expect(hasAllArchiveAccess(['admin'])).toBe(true);
+    expect(hasAllArchiveAccess(['super'])).toBe(true);
+    expect(hasAllArchiveAccess(['preapproved'])).toBe(false);
+    expect(hasAllArchiveAccess(['regular'])).toBe(false);
+    expect(hasAllArchiveAccess([])).toBe(false);
+  });
+
+  it('a friend is an approved member but NOT staff', () => {
+    expect(isApprovedMember(['friend'])).toBe(true);
+    expect(isStaff(['friend'])).toBe(false);
+    expect(isMember(['friend'])).toBe(true);
   });
 });
 

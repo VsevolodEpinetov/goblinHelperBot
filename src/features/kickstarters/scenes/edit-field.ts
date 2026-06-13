@@ -1,7 +1,11 @@
 import { Scenes } from 'telegraf';
 
 import { logger } from '../../../core/observability';
-import type { EditableField } from '../repo';
+import { registerCancel } from '../../../core/scenes';
+import { db } from '../../../db/client';
+import { formatKickstarterCard } from '../format';
+import { adminEditKeyboard } from '../menus';
+import { getKickstarterById, type EditableField } from '../repo';
 import { updateField } from '../service';
 
 export type Validator = (input: string) => string | number | null;
@@ -28,11 +32,7 @@ export function makeEditFieldScene(config: EditFieldConfig): Scenes.BaseScene<Sc
     await ctx.reply(config.prompt);
   });
 
-  scene.command('cancel', async (ctx) => {
-    ctx.scene.state = {};
-    await ctx.scene.leave();
-    await ctx.reply('Отменено.');
-  });
+  registerCancel(scene, { text: 'Отменено.' });
 
   scene.on('text', async (ctx) => {
     const state = ctx.scene.state as { kickstarterId?: number };
@@ -44,7 +44,6 @@ export function makeEditFieldScene(config: EditFieldConfig): Scenes.BaseScene<Sc
     try {
       const value = config.validate(ctx.message.text);
       await updateField(state.kickstarterId, config.field, value);
-      await ctx.reply('✅ Обновлено.');
     } catch (err) {
       const msg = err instanceof Error ? err.message : 'Неверный ввод.';
       await ctx.reply(msg);
@@ -52,6 +51,16 @@ export function makeEditFieldScene(config: EditFieldConfig): Scenes.BaseScene<Sc
       return; // Stay in scene so user can retry.
     }
     await ctx.scene.leave();
+    // Show the refreshed card with the edit menu so the admin can keep editing.
+    const ks = await getKickstarterById(db, state.kickstarterId);
+    if (ks) {
+      await ctx.reply(`✅ Обновлено.\n\n${formatKickstarterCard(ks)}`, {
+        parse_mode: 'HTML',
+        ...adminEditKeyboard(ks),
+      });
+    } else {
+      await ctx.reply('✅ Обновлено.');
+    }
   });
 
   return scene;

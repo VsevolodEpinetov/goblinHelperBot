@@ -1,5 +1,6 @@
 import { Scenes } from 'telegraf';
 
+import { registerCancel } from '../../../../core/scenes';
 import { validateLink } from '../../service';
 import { KS_ADD_CHAIN, type KsAddDraft } from '../add-chain';
 
@@ -9,11 +10,7 @@ linkScene.enter(async (ctx) => {
   await ctx.reply('Ссылка? "пропустить" если нет. Или /cancel.');
 });
 
-linkScene.command('cancel', async (ctx) => {
-  ctx.scene.state = {};
-  await ctx.scene.leave();
-  await ctx.reply('Отменено.');
-});
+registerCancel(linkScene, { text: 'Отменено.' });
 
 linkScene.on('text', async (ctx) => {
   try {

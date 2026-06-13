@@ -16,7 +16,7 @@ export const subscriptionsCallback = z.discriminatedUnion('a', [
     tier: z.enum(['regular', 'plus']),
   }),
   z.object({ a: z.literal('ksStars'), id: z.number().int() }),
-  z.object({ a: z.literal('subOldList') }),
+  z.object({ a: z.literal('subOldList'), p: z.number().int().optional() }),
   z.object({ a: z.literal('subOldMonth'), year: z.number().int(), month: z.number().int() }),
   z.object({
     a: z.literal('subOldBuy'),

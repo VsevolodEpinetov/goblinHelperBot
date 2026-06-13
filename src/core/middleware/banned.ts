@@ -1,10 +1,22 @@
 import type { Context, MiddlewareFn } from 'telegraf';
 
-import { db } from '../../db/client';
-import { isBanned as defaultIsBanned } from '../../db/repos/user-roles';
 import { logger, metrics } from '../observability';
 
-const ERROR_MESSAGE = 'Сейчас бот не может ответить. Попробуй позже.';
+import { isBannedCached } from './roles-cache';
+
+const ERROR_MESSAGE = '🌑 Логово молчит — не достучишься. Попробуй позже.';
+
+async function notify(ctx: Context): Promise<void> {
+  try {
+    if (ctx.callbackQuery) {
+      await ctx.answerCbQuery(ERROR_MESSAGE);
+    } else if (ctx.chat?.type === 'private') {
+      await ctx.reply(ERROR_MESSAGE);
+    }
+  } catch {
+    /* user-block from us, ignore */
+  }
+}
 
 export function createBannedMiddleware(
   isBannedFn: (userId: number) => Promise<boolean>,
@@ -15,27 +27,17 @@ export function createBannedMiddleware(
       const banned = await isBannedFn(ctx.from.id);
       if (banned) {
         metrics.incr('banned.blocked');
-        try {
-          await ctx.reply(ERROR_MESSAGE);
-        } catch {
-          /* user-block from us, ignore */
-        }
+        await notify(ctx);
         return;
       }
       return next();
     } catch (err) {
       metrics.incr('banned.db_error');
       logger.error({ err, userId: ctx.from.id }, 'banned middleware: DB error, failing CLOSED');
-      try {
-        await ctx.reply(ERROR_MESSAGE);
-      } catch {
-        /* ignore */
-      }
+      await notify(ctx);
       return;
     }
   };
 }
 
-export const bannedMiddleware: MiddlewareFn<Context> = createBannedMiddleware((id) =>
-  defaultIsBanned(db, id),
-);
+export const bannedMiddleware: MiddlewareFn<Context> = createBannedMiddleware(isBannedCached);

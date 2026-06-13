@@ -1,3 +1,5 @@
+import { escapeHtml } from '../../shared/format';
+
 export function parseStudioName(text: string): string | undefined {
   const lines = text
     .split('\n')
@@ -20,7 +22,7 @@ export interface PollLike {
 export function summarizePoll(poll: PollLike, totalChatMembers: number): string {
   const totalCount = Math.max(1, totalChatMembers);
   const lines: string[] = [];
-  lines.push(`📝 Результаты <b>${poll.question}</b>`);
+  lines.push(`📝 Результаты <b>${escapeHtml(poll.question)}</b>`);
   lines.push('');
   lines.push(`<i>Всего проголосовало: ${poll.total_voter_count}</i>`);
 
@@ -32,7 +34,7 @@ export function summarizePoll(poll: PollLike, totalChatMembers: number): string 
   for (const opt of poll.options) {
     if (opt.text === 'Пустой вариант') continue;
     const percent = Math.ceil((opt.voter_count / totalCount) * 100);
-    const label = opt.text.split(' - ')[0];
+    const label = escapeHtml(opt.text.split(' - ')[0] ?? opt.text);
     lines.push('');
     lines.push(`${label} - ${percent}%`);
   }

@@ -1,11 +1,11 @@
+import { featureConfig } from '../../core/config';
 import { computePrice } from '../../shared/pricing';
-import { computeOldMonthMultiplier } from '../payments';
+import { computeOldMonthMultiplier } from '../payments/service';
 
 /** Base (pre-discount) Stars price for a tier, from env (defaults 350 / 1000). */
 export function basePrice(tier: 'regular' | 'plus'): number {
-  const reg = Number(process.env.REGULAR_PRICE ?? 350);
-  const plus = Number(process.env.PLUS_PRICE ?? 1000);
-  return tier === 'plus' ? plus : reg;
+  const fc = featureConfig();
+  return tier === 'plus' ? fc.plusPrice : fc.regularPrice;
 }
 
 /** Base (pre-discount) delta for upgrading regular → plus. */
@@ -18,10 +18,42 @@ export function oldBasePrice(tier: 'regular' | 'plus'): number {
   return basePrice(tier) * computeOldMonthMultiplier();
 }
 
+/** RUB price for a tier paid via СБП, from env. Unset or invalid → undefined. */
+export function sbpBasePriceRub(tier: 'regular' | 'plus'): number | undefined {
+  const fc = featureConfig();
+  return tier === 'plus' ? fc.sbpPricePlusRub : fc.sbpPriceRegularRub;
+}
+
+/** Free-text СБП requisites (получатель/телефон/банк) from env, or undefined. */
+export function sbpRequisites(): string | undefined {
+  return featureConfig().sbpRequisites;
+}
+
+/**
+ * RUB amount for an СБП purchase, mirroring the Stars rules: a current-month
+ * plus on top of an owned regular costs the upgrade delta, past months cost
+ * ×multiplier (no delta, like the Stars old-archive flow). Undefined until the
+ * SBP_PRICE_*_RUB env vars are configured.
+ */
+export function sbpAmountRub(opts: {
+  tier: 'regular' | 'plus';
+  kind: 'sub' | 'old';
+  upgrade?: boolean;
+}): number | undefined {
+  if (opts.kind === 'sub' && opts.upgrade) {
+    const regular = sbpBasePriceRub('regular');
+    const plus = sbpBasePriceRub('plus');
+    return regular !== undefined && plus !== undefined ? plus - regular : undefined;
+  }
+  const base = sbpBasePriceRub(opts.tier);
+  if (base === undefined) return undefined;
+  return opts.kind === 'old' ? base * computeOldMonthMultiplier() : base;
+}
+
 /** Whether this user is the configured TEST_USER_ID (charged 1 star). */
 export function isTestUser(userId: number): boolean {
-  const v = process.env.TEST_USER_ID;
-  return v ? Number(v) === userId : false;
+  const id = featureConfig().testUserId;
+  return id !== undefined && id === userId;
 }
 
 /**

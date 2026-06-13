@@ -9,7 +9,7 @@ interface ParticipantDisplay {
   lastName: string | null;
 }
 
-const STATUS_LABEL: Record<RaidRow['status'], string> = {
+export const STATUS_LABEL: Record<RaidRow['status'], string> = {
   open: '🟢 Открыт',
   closed: '🔴 Закрыт',
   cancelled: '❌ Отменён',

@@ -63,6 +63,17 @@ describe('router', () => {
     expect(handler.mock.calls[0][1]).toEqual({ a: 'payMonth', year: 2026, month: 5 });
   });
 
+  it('measures the 64 limit in UTF-8 bytes, not UTF-16 chars', () => {
+    const router = createRouter();
+    const schema = z.discriminatedUnion('a', [
+      z.object({ a: z.literal('promo'), code: z.string() }),
+    ]);
+
+    // 25 Cyrillic chars → 50 bytes; total stays under 64 chars but over 64 bytes.
+    const cyrillic = 'ж'.repeat(25);
+    expect(() => router.encode(schema, { a: 'promo', code: cyrillic })).toThrow(/64 bytes/);
+  });
+
   it('throws when two schemas claim the same action discriminator', () => {
     const router = createRouter();
     const a = z.discriminatedUnion('a', [z.object({ a: z.literal('go') })]);
@@ -71,15 +82,69 @@ describe('router', () => {
     expect(() => router.on(b, async () => {})).toThrow(/duplicate/i);
   });
 
-  it('falls through (calls next) for unknown callback_data', async () => {
+  it('falls through (calls next) for unknown callback_data, then answers the stale button', async () => {
     const router = createRouter();
     const composer = new Composer();
     composer.use(router.middleware());
 
     const fallback = vi.fn();
     const ctx = makeFakeCtx({ callbackQuery: { data: 'totally-unknown' } });
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const answer = (ctx as any).answerCbQuery;
     await (composer.middleware() as any)(ctx, fallback);
     expect(fallback).toHaveBeenCalled();
+    expect(answer).toHaveBeenCalledWith(expect.stringContaining('/start'));
+  });
+
+  it('does not double-answer when a downstream handler answered the unknown callback', async () => {
+    const router = createRouter();
+    const composer = new Composer();
+    composer.use(router.middleware());
+
+    const ctx = makeFakeCtx({ callbackQuery: { data: 'sbp:confirm:5' } });
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const original = (ctx as any).answerCbQuery;
+    await (composer.middleware() as any)(ctx, async () => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      await (ctx as any).answerCbQuery('Подтверждено');
+    });
+    expect(original).toHaveBeenCalledTimes(1);
+    expect(original).toHaveBeenCalledWith('Подтверждено');
+  });
+
+  it('answers the stale toast when the payload fails schema validation', async () => {
+    const router = createRouter();
+    const schema = z.discriminatedUnion('a', [z.object({ a: z.literal('x'), n: z.number() })]);
+    router.on(schema, vi.fn());
+
+    const composer = new Composer();
+    composer.use(router.middleware());
+
+    const ctx = makeFakeCtx({ callbackQuery: { data: 'x|{"n":"not-a-number"}' } });
+    await (composer.middleware() as any)(ctx, async () => {});
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    expect((ctx as any).answerCbQuery).toHaveBeenCalledWith(expect.stringContaining('/start'));
+  });
+
+  it('leaves an active scene before dispatching a matched handler', async () => {
+    const router = createRouter();
+    const schema = z.discriminatedUnion('a', [z.object({ a: z.literal('home') })]);
+    const calls: string[] = [];
+    router.on(schema, () => {
+      calls.push('handler');
+    });
+
+    const composer = new Composer();
+    composer.use(router.middleware());
+
+    const ctx = makeFakeCtx({ callbackQuery: { data: router.encode(schema, { a: 'home' }) } });
+    const leave = vi.fn().mockImplementation(async () => {
+      calls.push('leave');
+    });
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (ctx as any).scene = { current: { id: 'raid:title' }, leave };
+    await (composer.middleware() as any)(ctx, async () => {});
+    expect(calls).toEqual(['leave', 'handler']);
   });
 
   it('falls through when there is no callback_query at all', async () => {

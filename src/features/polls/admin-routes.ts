@@ -1,17 +1,20 @@
+import { Markup } from 'telegraf';
 import type { Telegraf } from 'telegraf';
 
+import { answerThenEdit } from '../../core/nav';
+import { logger } from '../../core/observability';
 import { requireRoles } from '../../core/permissions';
 import { router } from '../../core/router';
 import { db } from '../../db/client';
 
 import { POLLS_ROLES } from './constants';
-import { adminMenu } from './menus';
+import { adminMenu, pollsMenuRow, pollsResetConfirm } from './menus';
 import { listCoreStudios, listDynamicStudios, resetCoreStudios, resetDynamicStudios } from './repo';
 import { pollsCallback } from './schemas';
 
 export function registerAdminRoutes(bot: Telegraf): void {
   bot.command('polls', requireRoles(...POLLS_ROLES), async (ctx) => {
-    await ctx.reply('Polls admin:', adminMenu());
+    await ctx.reply('⚖️ Опросы. Чего велишь, старейшина?', adminMenu());
   });
 
   router.on(pollsCallback, async (ctx, payload) => {
@@ -21,32 +24,77 @@ export function registerAdminRoutes(bot: Telegraf): void {
       return;
     }
 
-    switch (payload.a) {
-      case 'polCoreList': {
-        const rows = await listCoreStudios(db);
-        const body =
-          rows.length === 0 ? 'Core list is empty' : rows.map((r) => `• ${r.name}`).join('\n');
-        await ctx.editMessageText(body);
-        break;
+    try {
+      switch (payload.a) {
+        case 'polMenu': {
+          await answerThenEdit(ctx, '⚖️ Опросы. Чего велишь, старейшина?', adminMenu());
+          break;
+        }
+        case 'polCoreList': {
+          const rows = await listCoreStudios(db);
+          const body =
+            rows.length === 0
+              ? 'Основной список пуст — ни одной студии.'
+              : rows.map((r) => `• ${r.name}`).join('\n');
+          await answerThenEdit(ctx, body, Markup.inlineKeyboard([pollsMenuRow()]));
+          break;
+        }
+        case 'polDynList': {
+          const rows = await listDynamicStudios(db);
+          const body =
+            rows.length === 0
+              ? 'Динамический список пуст — ни одной студии.'
+              : rows.map((r) => `• ${r.name}`).join('\n');
+          await answerThenEdit(ctx, body, Markup.inlineKeyboard([pollsMenuRow()]));
+          break;
+        }
+        case 'polCoreReset': {
+          await answerThenEdit(
+            ctx,
+            '⚖️ Точно очистить основной список студий? Назад не вернёшь.',
+            pollsResetConfirm('core'),
+          );
+          break;
+        }
+        case 'polDynReset': {
+          await answerThenEdit(
+            ctx,
+            '⚖️ Точно очистить динамический список студий? Назад не вернёшь.',
+            pollsResetConfirm('dynamic'),
+          );
+          break;
+        }
+        case 'polCoreResetYes': {
+          const n = await resetCoreStudios(db);
+          await answerThenEdit(
+            ctx,
+            `Сделано, старейшина. Основной список очищен (строк: ${n}).`,
+            Markup.inlineKeyboard([pollsMenuRow()]),
+          );
+          break;
+        }
+        case 'polDynResetYes': {
+          const n = await resetDynamicStudios(db);
+          await answerThenEdit(
+            ctx,
+            `Сделано, старейшина. Динамический список очищен (строк: ${n}).`,
+            Markup.inlineKeyboard([pollsMenuRow()]),
+          );
+          break;
+        }
       }
-      case 'polDynList': {
-        const rows = await listDynamicStudios(db);
-        const body =
-          rows.length === 0 ? 'Dynamic list is empty' : rows.map((r) => `• ${r.name}`).join('\n');
-        await ctx.editMessageText(body);
-        break;
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : String(err);
+      if (msg.includes('message is not modified')) {
+        await ctx.answerCbQuery?.();
+        return;
       }
-      case 'polCoreReset': {
-        const n = await resetCoreStudios(db);
-        await ctx.editMessageText(`Core list cleared (${n} rows)`);
-        break;
-      }
-      case 'polDynReset': {
-        const n = await resetDynamicStudios(db);
-        await ctx.editMessageText(`Dynamic list cleared (${n} rows)`);
-        break;
+      logger.error({ err, payload }, 'polls admin route failed');
+      try {
+        await ctx.answerCbQuery?.('Сорвалось, повтори');
+      } catch {
+        /* already answered */
       }
     }
-    await ctx.answerCbQuery?.();
   });
 }

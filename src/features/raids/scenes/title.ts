@@ -3,16 +3,13 @@ import { Scenes } from 'telegraf';
 import { RAID_CHAIN, type RaidDraft } from '../scene-chain';
 import { validateRaidTitle } from '../service';
 
+import { attachWizardCancel, raidWizardCancelKb } from './_cancel';
+
 export const titleScene = new Scenes.BaseScene<Scenes.SceneContext>(RAID_CHAIN.steps[0]!);
+attachWizardCancel(titleScene);
 
 titleScene.enter(async (ctx) => {
-  await ctx.reply('Введи название рейда (до 255 символов). Или /cancel.');
-});
-
-titleScene.command('cancel', async (ctx) => {
-  ctx.scene.state = {};
-  await ctx.scene.leave();
-  await ctx.reply('Отменено.');
+  await ctx.reply('Введи название рейда (до 255 символов).', raidWizardCancelKb);
 });
 
 titleScene.on('text', async (ctx) => {

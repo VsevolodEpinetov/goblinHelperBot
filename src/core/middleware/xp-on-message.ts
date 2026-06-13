@@ -24,11 +24,10 @@ function dayKey(userId: number): string {
   return `xp:msg:day:${day}:${userId}`;
 }
 
+// Same UTC clock basis as dayKey: weeks are counted as whole 7-day blocks since epoch.
 function weekKey(userId: number): string {
-  const d = new Date();
-  const start = new Date(d.getFullYear(), 0, 1);
-  const week = Math.ceil(((d.getTime() - start.getTime()) / 86_400_000 + start.getDay() + 1) / 7);
-  return `xp:msg:week:${d.getFullYear()}:${week}:${userId}`;
+  const week = Math.floor(Date.now() / (7 * 86_400_000));
+  return `xp:msg:week:${week}:${userId}`;
 }
 
 const DAY_SECONDS = 86_400;
@@ -39,6 +38,8 @@ export function createXpOnMessage(opts: Options): MiddlewareFn<Context> {
   const allowed = new Set(opts.allowedChatIds);
   return async (ctx, next) => {
     try {
+      // Only genuine new messages earn XP — not edits, callback presses, etc.
+      if (!('message' in ctx.update)) return next();
       if (!ctx.from || !ctx.chat) return next();
       if (!allowed.has(ctx.chat.id)) return next();
 

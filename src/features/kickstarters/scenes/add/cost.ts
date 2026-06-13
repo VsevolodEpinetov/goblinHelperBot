@@ -1,5 +1,6 @@
 import { Scenes } from 'telegraf';
 
+import { registerCancel } from '../../../../core/scenes';
 import { validateCost } from '../../service';
 import { KS_ADD_CHAIN, type KsAddDraft } from '../add-chain';
 
@@ -9,11 +10,7 @@ costScene.enter(async (ctx) => {
   await ctx.reply('Цена в звёздах? Или /cancel.');
 });
 
-costScene.command('cancel', async (ctx) => {
-  ctx.scene.state = {};
-  await ctx.scene.leave();
-  await ctx.reply('Отменено.');
-});
+registerCancel(costScene, { text: 'Отменено.' });
 
 costScene.on('text', async (ctx) => {
   try {

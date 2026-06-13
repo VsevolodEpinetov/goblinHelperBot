@@ -25,10 +25,6 @@ describe('loyalty-config', () => {
       expect(tier.name).toBeTruthy();
       expect(tier.displayName).toBeTruthy();
       expect(tier.emoji).toBeTruthy();
-      expect(tier.discountPercent).toBeGreaterThanOrEqual(0);
-      expect(tier.discountPercent).toBeLessThanOrEqual(100);
-      expect(Array.isArray(tier.benefits)).toBe(true);
-      expect(tier.benefits.length).toBeGreaterThan(0);
     }
   });
 
@@ -67,7 +63,7 @@ describe('loyalty-config', () => {
 
   describe('tierByName', () => {
     it('returns the tier for a known devName', () => {
-      expect(tierByName('gold')?.displayName).toBe('Золотой');
+      expect(tierByName('gold')).toBe(TIERS.find((t) => t.name === 'gold'));
     });
 
     it('returns undefined for an unknown name', () => {

@@ -1,18 +1,19 @@
 import type { Context, Scenes } from 'telegraf';
 
+import { featureConfig } from '../../core/config';
 import { logger } from '../../core/observability';
 import { ensureApprovedMember } from '../../core/permissions';
 import { router } from '../../core/router';
 import { db } from '../../db/client';
-import { formatPeriod } from '../../shared/period';
+import { canPayViaSbp } from '../../shared/achievements';
+import { currentPeriod, formatPeriod, isHistoricalPeriod } from '../../shared/period';
+import { getUserAchievements } from '../achievements/service';
 import { SBP_SCENE_ID, sendStarsInvoice, type SbpDraft } from '../payments';
 
-import { basePrice, isTestUser, oldBasePrice, upgradeBaseDelta } from './pricing';
+import { basePrice, isTestUser, oldBasePrice, sbpAmountRub, upgradeBaseDelta } from './pricing';
 import { getSubscriptionStatus } from './repo';
 import { openBuyScreen, openOldArchiveMonth, openOldArchivesList } from './routes';
 import { subscriptionsCallback } from './schemas';
-
-const ADMIN_NOTIFICATIONS_CHAT = process.env.ADMIN_NOTIFICATIONS_CHAT ?? '';
 
 export function registerSubscriptionActions(): void {
   router.on(subscriptionsCallback, async (ctx, payload) => {
@@ -30,7 +31,7 @@ export function registerSubscriptionActions(): void {
         break;
       case 'subOldList':
         if (!(await ensureApprovedMember(ctx as unknown as Context))) break;
-        await openOldArchivesList(ctx as unknown as Context);
+        await openOldArchivesList(ctx as unknown as Context, payload.p ?? 0);
         await ctx.answerCbQuery?.();
         break;
       case 'subOldMonth':
@@ -66,7 +67,25 @@ export function registerSubscriptionActions(): void {
         break;
       }
       case 'subBuy': {
+        if (!(await ensureApprovedMember(ctx as unknown as Context))) break;
+        // Stale buy buttons survive the month flip — past months are sold
+        // through the old-archives flow at the 3x price, not the fresh one.
+        if (isHistoricalPeriod({ year: payload.year, month: payload.month })) {
+          await ctx.answerCbQuery?.(
+            'Этот месяц уже в старых архивах — цена там втрое. Веду туда.',
+            {
+              show_alert: true,
+            },
+          );
+          await openOldArchiveMonth(ctx as unknown as Context, payload.year, payload.month);
+          break;
+        }
         const period = formatPeriod({ year: payload.year, month: payload.month });
+        const buyStatus = await getSubscriptionStatus(db, ctx.from.id, period);
+        if (buyStatus.hasPlus || (payload.tier === 'regular' && buyStatus.hasRegular)) {
+          await ctx.answerCbQuery?.('Этот архив у тебя уже есть', { show_alert: true });
+          break;
+        }
         try {
           await sendStarsInvoice(
             ctx,
@@ -86,7 +105,30 @@ export function registerSubscriptionActions(): void {
         break;
       }
       case 'subUpgrade': {
+        if (!(await ensureApprovedMember(ctx as unknown as Context))) break;
         const period = formatPeriod({ year: payload.year, month: payload.month });
+        const upStatus = await getSubscriptionStatus(db, ctx.from.id, period);
+        if (upStatus.hasPlus) {
+          await ctx.answerCbQuery?.('Расширенный архив у тебя уже есть — второй не продам', {
+            show_alert: true,
+          });
+          break;
+        }
+        if (!upStatus.hasRegular) {
+          await ctx.answerCbQuery?.(
+            'Сначала возьми обычный архив — расширение кладётся только поверх него',
+            { show_alert: true },
+          );
+          break;
+        }
+        if (isHistoricalPeriod({ year: payload.year, month: payload.month })) {
+          await ctx.answerCbQuery?.(
+            'Этот месяц уже в старых архивах — расширение там, цена втрое. Веду туда.',
+            { show_alert: true },
+          );
+          await openOldArchiveMonth(ctx as unknown as Context, payload.year, payload.month);
+          break;
+        }
         try {
           await sendStarsInvoice(
             ctx,
@@ -103,22 +145,50 @@ export function registerSubscriptionActions(): void {
         break;
       }
       case 'subSbp': {
+        if (!(await ensureApprovedMember(ctx as unknown as Context))) break;
+        // The hidden СБП button is not the gate — re-check the achievement here.
+        const achievements = (await getUserAchievements(ctx.from.id)).map((a) => a.type);
+        if (!canPayViaSbp(achievements)) {
+          await ctx.answerCbQuery?.('СБП тебе пока не открыт — плати звёздами', {
+            show_alert: true,
+          });
+          break;
+        }
         const period = formatPeriod({ year: payload.year, month: payload.month });
-        const draft: SbpDraft = {
-          period,
-          tier: payload.tier,
-          amount: 0,
-          adminChatId: ADMIN_NOTIFICATIONS_CHAT,
-        };
-        if (!ADMIN_NOTIFICATIONS_CHAT) {
+        const sbpStatus = await getSubscriptionStatus(db, ctx.from.id, period);
+        if (sbpStatus.hasPlus || (payload.tier === 'regular' && sbpStatus.hasRegular)) {
+          await ctx.answerCbQuery?.('Этот архив у тебя уже есть', { show_alert: true });
+          break;
+        }
+        const adminChat = featureConfig().adminNotificationsChat;
+        if (!adminChat) {
           await ctx.answerCbQuery?.('SBP не настроен', { show_alert: true });
           break;
         }
+        const kind = period === formatPeriod(currentPeriod()) ? 'sub' : 'old';
+        const draft: SbpDraft = {
+          period,
+          tier: payload.tier,
+          kind,
+          amount: sbpAmountRub({
+            tier: payload.tier,
+            kind,
+            upgrade: payload.tier === 'plus' && sbpStatus.hasRegular,
+          }),
+          adminChatId: adminChat,
+        };
         await ctx.answerCbQuery?.();
+        // Drop the buy-screen buttons so they don't stay live behind the scene prompt.
+        try {
+          await ctx.editMessageReplyMarkup(undefined);
+        } catch {
+          /* message may be uneditable; ignore */
+        }
         await (ctx as unknown as Scenes.SceneContext).scene.enter(SBP_SCENE_ID, draft as object);
         break;
       }
       case 'ksStars': {
+        if (!(await ensureApprovedMember(ctx as unknown as Context))) break;
         const { getKickstarterById } = await import('../kickstarters/repo');
         const ks = await getKickstarterById(db, payload.id);
         if (!ks) {

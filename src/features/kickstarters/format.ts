@@ -14,7 +14,7 @@ export function formatKickstarterCard(
   lines.push(`💰 ${ks.cost} ⭐`);
   if (ks.pledgeName && ks.pledgeCost !== null) {
     lines.push('');
-    lines.push(`<b>Pledge: ${escapeHtml(ks.pledgeName)}</b>`);
+    lines.push(`<b>Пледж: ${escapeHtml(ks.pledgeName)}</b>`);
     lines.push(`💰 ${ks.pledgeCost} ⭐`);
   }
   if (ks.link) {

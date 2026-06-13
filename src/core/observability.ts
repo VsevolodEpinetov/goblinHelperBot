@@ -22,6 +22,8 @@ const registry: MetricsRegistry = {
   samples: new Map(),
 };
 
+const MAX_SAMPLES = 1_000;
+
 export const metrics = {
   incr(name: string, by = 1): void {
     registry.counters.set(name, (registry.counters.get(name) ?? 0) + by);
@@ -32,6 +34,7 @@ export const metrics = {
   recordMs(name: string, ms: number): void {
     const arr = registry.samples.get(name) ?? [];
     arr.push(ms);
+    if (arr.length > MAX_SAMPLES) arr.splice(0, arr.length - MAX_SAMPLES);
     registry.samples.set(name, arr);
   },
   getSamples(name: string): number[] {

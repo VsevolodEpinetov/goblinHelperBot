@@ -53,20 +53,18 @@ export async function down(knex: Knex): Promise<void> {
       t.integer('telegram_invite_link_member_limit').nullable();
     });
 
-    // Restore values from JSONB. Use the `->` operator (NOT `->>`) so a
-    // JSON null comes back as SQL NULL — `->>` would coerce JSON null to
-    // the string 'null', and NULLIF('null','')::bigint then throws.
-    // Casting via ::text in the middle is the standard pattern to convert
-    // jsonb scalars to the typed columns while preserving NULLs.
+    // Restore values from JSONB. Use the `->>` operator (NOT `->`) so a
+    // JSON null comes back as SQL NULL — `(... -> key)::text` would coerce
+    // JSON null to the string 'null', which then fails the typed casts.
     await trx.raw(`
       UPDATE invitation_links
       SET
         telegram_invite_link_name        = (telegram_metadata->>'name'),
-        telegram_invite_link_creator_id  = (telegram_metadata->'creator_id')::text::bigint,
-        telegram_invite_link_is_primary  = (telegram_metadata->'is_primary')::text::boolean,
-        telegram_invite_link_is_revoked  = (telegram_metadata->'is_revoked')::text::boolean,
-        telegram_invite_link_expire_date = (telegram_metadata->'expire_date')::text::timestamp,
-        telegram_invite_link_member_limit = (telegram_metadata->'member_limit')::text::int
+        telegram_invite_link_creator_id  = (telegram_metadata->>'creator_id')::bigint,
+        telegram_invite_link_is_primary  = (telegram_metadata->>'is_primary')::boolean,
+        telegram_invite_link_is_revoked  = (telegram_metadata->>'is_revoked')::boolean,
+        telegram_invite_link_expire_date = (telegram_metadata->>'expire_date')::timestamp,
+        telegram_invite_link_member_limit = (telegram_metadata->>'member_limit')::int
       WHERE telegram_metadata IS NOT NULL
     `);
 

@@ -27,8 +27,8 @@ export function registerUserRoutes(bot: Telegraf): void {
     await ephemeralReply(
       ctx,
       result === 'added'
-        ? `Added ${name} to core studios`
-        : `Studio ${name} already exists in core studios`,
+        ? `Записал «${name}» в основной список`
+        : `Студия «${name}» уже в основном списке`,
     );
   });
 
@@ -44,7 +44,7 @@ export function registerUserRoutes(bot: Telegraf): void {
     const result = await addDynamicStudio(db, name);
     await ephemeralReply(
       ctx,
-      result === 'added' ? `Added ${name} to polls` : `Studio ${name} already exists in polls`,
+      result === 'added' ? `Записал «${name}» в опросы` : `Студия «${name}» уже в опросах`,
     );
   });
 

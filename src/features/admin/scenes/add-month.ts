@@ -2,6 +2,7 @@ import { Scenes } from 'telegraf';
 
 import { db } from '../../../db/client';
 import { formatPeriod } from '../../../shared/period';
+import { backToMonthsKeyboard } from '../menus';
 import { insertMonth } from '../repo';
 import { parsePeriodKey } from '../service';
 
@@ -17,18 +18,27 @@ addMonthScene.enter(async (ctx) => {
 addMonthScene.command('cancel', async (ctx) => {
   ctx.scene.state = {};
   await ctx.scene.leave();
-  await ctx.reply('Отменено.');
+  await ctx.reply('Отменено.', backToMonthsKeyboard());
 });
 
 addMonthScene.on('text', async (ctx) => {
   try {
     const { year, month } = parsePeriodKey(ctx.message.text);
     const period = formatPeriod({ year, month });
-    await insertMonth(db, period, 'regular', null);
-    await insertMonth(db, period, 'plus', null);
-    await ctx.reply(
-      `✅ Добавлены ${period}/regular и ${period}/plus. Установи chat_id командой /admin → Months.`,
-    );
+    const created: string[] = [];
+    if (await insertMonth(db, period, 'regular', null)) created.push(`${period}/regular`);
+    if (await insertMonth(db, period, 'plus', null)) created.push(`${period}/plus`);
+    if (created.length === 0) {
+      await ctx.reply(
+        `📜 Месяц ${period} уже значится в архивах — ничего не менял.`,
+        backToMonthsKeyboard(),
+      );
+    } else {
+      await ctx.reply(
+        `✅ Высек на камне: ${created.join(', ')}. Осталось привязать chat_id — это за кнопкой ниже.`,
+        backToMonthsKeyboard(),
+      );
+    }
   } catch (err) {
     await ctx.reply((err as Error).message);
     return;

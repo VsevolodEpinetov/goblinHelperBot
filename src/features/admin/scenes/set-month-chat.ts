@@ -1,6 +1,7 @@
 import { Scenes } from 'telegraf';
 
 import { db } from '../../../db/client';
+import { backToMonthsKeyboard } from '../menus';
 import { updateMonthChatId } from '../repo';
 
 interface State {
@@ -25,7 +26,7 @@ setMonthChatScene.enter(async (ctx) => {
 setMonthChatScene.command('cancel', async (ctx) => {
   ctx.scene.state = {};
   await ctx.scene.leave();
-  await ctx.reply('Отменено.');
+  await ctx.reply('Отменено.', backToMonthsKeyboard());
 });
 
 setMonthChatScene.on('message', async (ctx) => {
@@ -44,7 +45,10 @@ setMonthChatScene.on('message', async (ctx) => {
     return;
   }
   await updateMonthChatId(db, state.period, state.tier, String(chatId));
-  await ctx.reply(`✅ chat_id для ${state.period}/${state.tier} установлен: ${chatId}`);
+  await ctx.reply(
+    `✅ chat_id для ${state.period}/${state.tier} установлен: ${chatId}`,
+    backToMonthsKeyboard(),
+  );
   ctx.scene.state = {};
   await ctx.scene.leave();
 });

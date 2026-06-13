@@ -3,16 +3,13 @@ import { Scenes } from 'telegraf';
 import { RAID_CHAIN, type RaidDraft } from '../scene-chain';
 import { validateRaidPrice } from '../service';
 
+import { attachWizardCancel, raidWizardCancelKb } from './_cancel';
+
 export const priceScene = new Scenes.BaseScene<Scenes.SceneContext>('raid:price');
+attachWizardCancel(priceScene);
 
 priceScene.enter(async (ctx) => {
-  await ctx.reply('Стоимость в рублях?');
-});
-
-priceScene.command('cancel', async (ctx) => {
-  ctx.scene.state = {};
-  await ctx.scene.leave();
-  await ctx.reply('Отменено.');
+  await ctx.reply('Стоимость в рублях?', raidWizardCancelKb);
 });
 
 priceScene.on('text', async (ctx) => {

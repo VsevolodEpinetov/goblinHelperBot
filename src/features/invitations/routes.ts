@@ -1,35 +1,73 @@
-import type { Telegraf } from 'telegraf';
+import { Markup } from 'telegraf';
+import type { Context, Telegraf } from 'telegraf';
 
+import { editOrReply } from '../../core/nav';
+import { requireApprovedMember } from '../../core/permissions';
+import { router } from '../../core/router';
 import { db } from '../../db/client';
-import { currentPeriod, formatPeriod } from '../../shared/period';
-import { listUserSubscriptions } from '../subscriptions/repo';
+import { getRolesForUser } from '../../db/repos/user-roles';
+import { hasAllArchiveAccess } from '../../shared/user-status';
+import { homeButton } from '../onboarding/menus';
+import { listAllArchives, listUserSubscriptions } from '../subscriptions/repo';
+import { subscriptionsCallback } from '../subscriptions/schemas';
 
-import { getLinkInline } from './menus';
+import { joinLinkKeyboard } from './menus';
+
+/**
+ * The archives a user can mint a key for: every bound archive for friends and
+ * staff (comped / by-office, no payment record), otherwise just the periods
+ * they've paid for. Shared by renderJoinLink and the pagination callback so
+ * both pages stay consistent.
+ */
+export async function accessiblePeriods(
+  userId: number,
+  roles: readonly string[],
+): Promise<Array<{ period: string; tier: 'regular' | 'plus' }>> {
+  return hasAllArchiveAccess(roles) ? listAllArchives(db) : listUserSubscriptions(db, userId);
+}
+
+/**
+ * Show the member their accessible periods as buttons; tapping one mints/returns
+ * its invite link. Shared by the /joinlink command and the 🚪 Ключ от ворот hub
+ * button so members never need to type the command.
+ */
+export async function renderJoinLink(ctx: Context): Promise<void> {
+  if (!ctx.from) return;
+  const roles = ctx.state.roles ?? (await getRolesForUser(db, ctx.from.id));
+  const subs = await accessiblePeriods(ctx.from.id, roles);
+  if (subs.length === 0) {
+    // Friends/staff with all-access but no archives exist yet vs a regular
+    // member who simply hasn't paid — different nudge.
+    if (hasAllArchiveAccess(roles)) {
+      await editOrReply(
+        ctx,
+        '📦 Архивов в логове пока нет — заглядывай позже, открою все двери разом.',
+        Markup.inlineKeyboard([[homeButton()]]),
+      );
+      return;
+    }
+    await editOrReply(
+      ctx,
+      '🌑 Оплаченных месяцев за тобой нет — и вход давать не во что. Возьми архив, тогда и поговорим.',
+      Markup.inlineKeyboard([
+        [
+          Markup.button.callback(
+            '🪙 Взять архив',
+            router.encode(subscriptionsCallback, { a: 'subOpen' }),
+          ),
+        ],
+        [homeButton()],
+      ]),
+    );
+    return;
+  }
+  await editOrReply(
+    ctx,
+    '🚪 За какой месяц дверь отпереть? Выбирай — вынесу ключ.',
+    joinLinkKeyboard(subs),
+  );
+}
 
 export function registerInvitationCommands(bot: Telegraf): void {
-  bot.command('joinlink', async (ctx) => {
-    if (!ctx.from) return;
-    const subs = await listUserSubscriptions(db, ctx.from.id);
-    if (subs.length === 0) {
-      await ctx.reply('У тебя пока нет купленных периодов.');
-      return;
-    }
-    // Prefer current period if owned; otherwise the most recent.
-    const today = currentPeriod();
-    const todayPeriod = formatPeriod(today);
-    const ownsCurrent = subs.find((s) => s.period === todayPeriod);
-    const target = ownsCurrent ?? subs[0]!;
-
-    const [yStr, mStr] = target.period.split('_');
-    if (!yStr || !mStr) {
-      await ctx.reply('Внутренняя ошибка: неверный период.');
-      return;
-    }
-    const year = Number(yStr);
-    const month = Number(mStr);
-    await ctx.reply(
-      `Запросить ссылку на ${target.period} (${target.tier}):`,
-      getLinkInline(year, month, target.tier),
-    );
-  });
+  bot.command('joinlink', requireApprovedMember(), (ctx) => renderJoinLink(ctx));
 }

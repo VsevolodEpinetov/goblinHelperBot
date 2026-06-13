@@ -13,12 +13,6 @@ export interface Tier {
   levels: number | null;
   /** XP per level for the open-ended top tier only. */
   levelStep?: number;
-  /** Flavor text shown in profile screens. */
-  description: string;
-  /** User-facing benefit strings shown in profile/help. */
-  benefits: readonly string[];
-  /** Discount applied at this tier (0–100). */
-  discountPercent: number;
 }
 
 /**
@@ -34,9 +28,6 @@ export const TIERS: readonly Tier[] = [
     xpMin: 0,
     xpMax: 1999,
     levels: 10,
-    description: 'Начало пути. Ты только учишься мастерству.',
-    benefits: ['Базовый доступ к контенту', 'Участие в опросах', 'Базовая поддержка'],
-    discountPercent: 0,
   },
   {
     name: 'bronze',
@@ -45,14 +36,6 @@ export const TIERS: readonly Tier[] = [
     xpMin: 2000,
     xpMax: 4999,
     levels: 10,
-    description: 'Базовое мастерство. Твои навыки растут.',
-    benefits: [
-      'Все преимущества Деревянного',
-      'Приоритетная поддержка',
-      'Доступ к эксклюзивному контенту',
-      '5% скидка на покупки',
-    ],
-    discountPercent: 5,
   },
   {
     name: 'silver',
@@ -61,15 +44,6 @@ export const TIERS: readonly Tier[] = [
     xpMin: 5000,
     xpMax: 9999,
     levels: 10,
-    description: 'Растущая сила. Ты становишься заметным.',
-    benefits: [
-      'Все преимущества Бронзового',
-      'Ранний доступ к новинкам',
-      'Возможность создавать опросы',
-      '10% скидка на покупки',
-      'Кастомный бейдж профиля',
-    ],
-    discountPercent: 10,
   },
   {
     name: 'gold',
@@ -78,15 +52,6 @@ export const TIERS: readonly Tier[] = [
     xpMin: 10000,
     xpMax: 19999,
     levels: 10,
-    description: 'Элитный статус. Ты среди лучших.',
-    benefits: [
-      'Все преимущества Серебряного',
-      'VIP канал поддержки',
-      'Доступ к бета-тестированию',
-      '15% скидка на покупки',
-      'Предложение новых функций',
-    ],
-    discountPercent: 15,
   },
   {
     name: 'platinum',
@@ -95,14 +60,6 @@ export const TIERS: readonly Tier[] = [
     xpMin: 20000,
     xpMax: 39999,
     levels: 10,
-    description: 'Премиум уровень. Ты настоящий мастер.',
-    benefits: [
-      'Все преимущества Золотого',
-      'Личный контакт с админом',
-      '20% скидка на покупки',
-      'Эксклюзивная роль в Discord',
-    ],
-    discountPercent: 20,
   },
   {
     name: 'diamond',
@@ -111,14 +68,6 @@ export const TIERS: readonly Tier[] = [
     xpMin: 40000,
     xpMax: 79999,
     levels: 10,
-    description: 'Легендарный статус. Твоё имя известно всем.',
-    benefits: [
-      'Все преимущества Платинового',
-      'Приглашение на ежегодную встречу',
-      '25% скидка на покупки',
-      'Признание легендарного статуса',
-    ],
-    discountPercent: 25,
   },
   {
     name: 'mithril',
@@ -127,14 +76,6 @@ export const TIERS: readonly Tier[] = [
     xpMin: 80000,
     xpMax: 159999,
     levels: 10,
-    description: 'Мастерский уровень. Ты легенда среди гоблинов.',
-    benefits: [
-      'Все преимущества Алмазного',
-      'Привилегии мастерского уровня',
-      '30% скидка на покупки',
-      'Доступ к секретным проектам',
-    ],
-    discountPercent: 30,
   },
   {
     name: 'legend',
@@ -144,15 +85,6 @@ export const TIERS: readonly Tier[] = [
     xpMax: null,
     levels: null,
     levelStep: 10000,
-    description: 'Верховное мастерство. Ты - истинная легенда.',
-    benefits: [
-      'Все преимущества Мифрилового',
-      'Признание высшего мастерства',
-      '35% скидка на покупки',
-      'Статус легендарного гоблина',
-      'Бесконечное развитие',
-    ],
-    discountPercent: 35,
   },
 ] as const;
 

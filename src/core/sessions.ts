@@ -1,8 +1,9 @@
 import { Redis } from '@telegraf/session/redis';
-import { session, type Context } from 'telegraf';
+import { Composer, session, type Context } from 'telegraf';
 
 import { getConfig } from './config';
 import { redis } from './redis';
+import { sceneSessionGuard } from './scenes';
 
 const cfg = getConfig();
 
@@ -11,6 +12,7 @@ interface SessionShape {
   chat?: Record<string, unknown>;
   scene?: Record<string, unknown>;
   polls?: Record<string, unknown>;
+  __scenes?: Record<string, unknown>;
 }
 
 function getSessionKey(ctx: Context): string | undefined {
@@ -41,8 +43,13 @@ const redisStore = Redis<SessionShape>({
 
 const store = cfg.useRedisSessions ? redisStore : inMemoryStore;
 
-export const sessionMiddleware = session({
-  store,
-  getSessionKey,
-  defaultSession: () => ({}),
-});
+// The guard composes AFTER session load and BEFORE the stage, so it can clear
+// or time-stamp scene state ahead of the scene handlers (see sceneSessionGuard).
+export const sessionMiddleware = Composer.compose<Context>([
+  session({
+    store,
+    getSessionKey,
+    defaultSession: () => ({}),
+  }),
+  sceneSessionGuard(),
+]);

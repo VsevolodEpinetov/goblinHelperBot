@@ -1,6 +1,6 @@
-import { logger } from '../../core/observability';
 import { db } from '../../db/client';
-import { grantXp } from '../loyalty';
+import { grantXpInTrx } from '../loyalty';
+import type { GrantXpResult } from '../loyalty/service';
 
 import {
   getRaidById,
@@ -20,23 +20,25 @@ const DESC_MAX = 2000;
 
 export function validateRaidTitle(input: string): string {
   const trimmed = input.trim();
-  if (trimmed.length === 0) throw new Error('Title cannot be empty');
-  if (trimmed.length > TITLE_MAX) throw new Error(`Title cannot exceed ${TITLE_MAX} chars`);
+  if (trimmed.length === 0)
+    throw new Error('Пустое название не пойдёт. Напиши, что за добычу берём.');
+  if (trimmed.length > TITLE_MAX) throw new Error(`Длинно слишком. Уложись в ${TITLE_MAX} знаков.`);
   return trimmed;
 }
 
 export function validateRaidDescription(input: string): string {
   const trimmed = input.trim();
-  if (trimmed.length < DESC_MIN) throw new Error(`Description must be at least ${DESC_MIN} chars`);
-  if (trimmed.length > DESC_MAX) throw new Error(`Description cannot exceed ${DESC_MAX} chars`);
+  if (trimmed.length < DESC_MIN)
+    throw new Error(`Маловато слов. Расскажи подробнее — хотя бы ${DESC_MIN} знаков.`);
+  if (trimmed.length > DESC_MAX) throw new Error(`Размахнулся. Уложись в ${DESC_MAX} знаков.`);
   return trimmed;
 }
 
 export function validateRaidPrice(input: string): number {
   const normalized = input.replace(',', '.').trim();
   const num = Number(normalized);
-  if (!Number.isFinite(num)) throw new Error('Price must be a number');
-  if (num < 0) throw new Error('Price must be non-negative');
+  if (!Number.isFinite(num)) throw new Error('Это не цена. Напиши число, можно с копейками.');
+  if (num < 0) throw new Error('Цена меньше нуля? Так не торгуют. Напиши по-честному.');
   return num;
 }
 
@@ -68,7 +70,7 @@ export function parseRaidDate(input: string, reference: Date = new Date()): Date
   return result;
 }
 
-/** Join + award XP. Idempotent via PRIMARY KEY (raid_id, user_id). */
+/** Join + award XP atomically. Idempotent via PRIMARY KEY (raid_id, user_id). */
 export async function joinRaidAndAward(
   raidId: number,
   user: {
@@ -77,22 +79,17 @@ export async function joinRaidAndAward(
     firstName: string | null;
     lastName: string | null;
   },
-): Promise<'joined' | 'already_joined'> {
+): Promise<{ result: 'joined' | 'already_joined'; xp: GrantXpResult | null }> {
   return db.transaction(async (trx) => {
     const result = await repoJoinRaid(trx, raidId, user);
-    if (result === 'joined') {
-      try {
-        await grantXp({
-          userId: user.userId,
-          amount: XP_FOR_JOIN,
-          source: 'raid_join',
-          externalId: `raid:${raidId}:user:${user.userId}`,
-        });
-      } catch (err) {
-        logger.warn({ err, raidId, userId: user.userId }, 'raid: grantXp for join failed');
-      }
-    }
-    return result;
+    if (result !== 'joined') return { result, xp: null };
+    const xp = await grantXpInTrx(trx, {
+      userId: user.userId,
+      amount: XP_FOR_JOIN,
+      source: 'raid_join',
+      externalId: `raid:${raidId}:user:${user.userId}`,
+    });
+    return { result, xp };
   });
 }
 
@@ -108,22 +105,22 @@ export async function closeRaid(raidId: number): Promise<RaidRow | undefined> {
   return getRaidById(db, raidId);
 }
 
-export async function completeRaid(raidId: number): Promise<RaidRow | undefined> {
-  const raid = await getRaidById(db, raidId);
-  if (!raid) return undefined;
-  await updateRaidStatus(db, raidId, 'completed');
-  // Award XP to creator for completion (idempotent via externalId)
-  try {
-    await grantXp({
+export async function completeRaid(
+  raidId: number,
+): Promise<{ raid: RaidRow; xp: GrantXpResult } | undefined> {
+  return db.transaction(async (trx) => {
+    const raid = await getRaidById(trx, raidId);
+    if (!raid) return undefined;
+    await updateRaidStatus(trx, raidId, 'completed');
+    // Award XP to creator for completion (idempotent via externalId)
+    const xp = await grantXpInTrx(trx, {
       userId: raid.createdBy,
       amount: XP_FOR_COMPLETE,
       source: 'raid_complete',
       externalId: `raid:${raidId}`,
     });
-  } catch (err) {
-    logger.warn({ err, raidId }, 'raid: grantXp for complete failed');
-  }
-  return { ...raid, status: 'completed' };
+    return { raid: { ...raid, status: 'completed' as const }, xp };
+  });
 }
 
 export async function cancelRaid(raidId: number): Promise<RaidRow | undefined> {

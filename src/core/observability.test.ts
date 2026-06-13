@@ -22,6 +22,14 @@ describe('observability metrics', () => {
     expect(samples).toEqual([50, 100]);
   });
 
+  it('caps samples at the most recent 1000', () => {
+    for (let i = 1; i <= 1010; i++) metrics.recordMs('handler.latency', i);
+    const samples = metrics.getSamples('handler.latency');
+    expect(samples).toHaveLength(1000);
+    expect(samples[0]).toBe(11);
+    expect(samples[999]).toBe(1010);
+  });
+
   it('resets on resetMetrics()', () => {
     metrics.incr('foo');
     resetMetrics();

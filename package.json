@@ -14,7 +14,6 @@
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
     "test:integration": "vitest run tests/integration",
-    "gen:locale-types": "tsx scripts/gen-locale-types.ts",
     "migrate": "tsx node_modules/knex/bin/cli.js --knexfile knexfile.ts migrate:latest",
     "migrate:rollback": "tsx node_modules/knex/bin/cli.js --knexfile knexfile.ts migrate:rollback",
     "migrate:test": "cross-env NODE_ENV=test tsx node_modules/knex/bin/cli.js --knexfile knexfile.ts migrate:latest",

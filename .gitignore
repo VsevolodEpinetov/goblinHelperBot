@@ -150,8 +150,9 @@ dist/
 # Test coverage
 coverage/
 
-# Generated files
-src/core/i18n-keys.generated.ts
+# Local artifacts
+bot-map.html
+.audit-details.json
 
 # Environment
 .env

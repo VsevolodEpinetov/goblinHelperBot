@@ -3,10 +3,14 @@ export interface Period {
   month: number;
 }
 
+/** The community lives in Moscow time (fixed UTC+3, no DST). */
+const MSK_OFFSET_MS = 3 * 60 * 60 * 1000;
+
 export function periodFromDate(date: Date): Period {
+  const msk = new Date(date.getTime() + MSK_OFFSET_MS);
   return {
-    year: date.getUTCFullYear(),
-    month: date.getUTCMonth() + 1,
+    year: msk.getUTCFullYear(),
+    month: msk.getUTCMonth() + 1,
   };
 }
 

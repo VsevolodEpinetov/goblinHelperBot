@@ -42,16 +42,33 @@ describe('polls.service.summarizePoll', () => {
     expect(result).toContain('Studio A');
     expect(result).toContain('Studio B');
     expect(result).not.toContain('Пустой вариант');
-    expect(result).toContain('%');
+    expect(result).toContain('50%');
+    expect(result).toContain('30%');
   });
 
-  it('shows the not-voted line only when there are pending voters', () => {
+  it('shows the computed not-voted count while votes are missing', () => {
     const result = summarizePoll({ question: 'q', total_voter_count: 4, options: [] }, 10);
-    expect(result).toContain('Ждём ещё 6');
+    expect(result).toMatch(/\b6\b/);
   });
 
   it('omits the not-voted line when everyone voted', () => {
-    const result = summarizePoll({ question: 'q', total_voter_count: 10, options: [] }, 10);
-    expect(result).not.toContain('Ждём');
+    const pending = summarizePoll({ question: 'q', total_voter_count: 4, options: [] }, 10);
+    const done = summarizePoll({ question: 'q', total_voter_count: 10, options: [] }, 10);
+    expect(done).not.toMatch(/\b6\b/);
+    expect(pending.split('\n')).toHaveLength(done.split('\n').length + 1);
+  });
+
+  it('escapes HTML in the question and option labels', () => {
+    const result = summarizePoll(
+      {
+        question: '<b>evil & co</b>',
+        total_voter_count: 1,
+        options: [{ text: 'A<1> & B - descr', voter_count: 1 }],
+      },
+      1,
+    );
+    expect(result).toContain('<b>&lt;b&gt;evil &amp; co&lt;/b&gt;</b>');
+    expect(result).toContain('A&lt;1&gt; &amp; B');
+    expect(result).not.toContain('<b>evil');
   });
 });

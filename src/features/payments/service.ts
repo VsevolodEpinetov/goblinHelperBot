@@ -5,11 +5,17 @@ import {
   hasUserPurchased as hasUserPurchasedKickstarter,
 } from '../kickstarters/repo';
 import { dispatchNotifications, grantXpInTrx } from '../loyalty';
+import { getSubscriptionStatus } from '../subscriptions/repo';
 
 import { findByChargeId, insertPending, markCompleted, type PaymentSource } from './repo';
 import { PaymentPayload, type PaymentPayloadT, MAX_PAYLOAD_BYTES } from './schemas';
 
 export const OLD_MONTH_MULTIPLIER = 3;
+
+/** XP for a paid month archive — single tariff for the Stars and SBP paths. */
+export function xpForSubscriptionPayment(type: string, tier: 'regular' | 'plus'): number {
+  return type === 'old' ? 300 : tier === 'plus' ? 1600 : 600;
+}
 
 export function computeOldMonthMultiplier(): number {
   return OLD_MONTH_MULTIPLIER;
@@ -99,6 +105,33 @@ export async function processSubscriptionPayment(
       return { status: 'already_processed', paymentId: guard.paymentId };
     }
 
+    // A stale invoice for an already-owned period (invoices stay payable
+    // forever) must not silently keep the money — mirror the kickstarter
+    // already-owned path and refund.
+    const owned = await getSubscriptionStatus(trx, payload.userId, payload.period);
+    if (owned.hasPlus || (payload.tier === 'regular' && owned.hasRegular)) {
+      logger.warn({ payload, chargeId }, 'subscription payment: period already owned — refunding');
+      const paymentId = await insertPending(trx, {
+        userId: payload.userId,
+        type: payload.t,
+        subscriptionType: payload.tier,
+        period: payload.period,
+        amount,
+        currency,
+        invoiceMessageId: null,
+        isUpgrade: false,
+        source,
+      });
+      await trx('payment_tracking').where('id', paymentId).update({ status: 'failed' });
+      metrics.incr('payments.sub_already_owned');
+      return {
+        status: 'refund_required',
+        paymentId,
+        refundUserId: payload.userId,
+        refundReason: 'этот архив у тебя уже есть, второй раз не продаю',
+      };
+    }
+
     const paymentId = await insertPending(trx, {
       userId: payload.userId,
       type: payload.t,
@@ -126,7 +159,7 @@ export async function processSubscriptionPayment(
       .increment('counter_paid', 1);
 
     // Grant XP (idempotent via external_id)
-    const xpAmount = payload.t === 'old' ? 300 : payload.tier === 'plus' ? 1600 : 600;
+    const xpAmount = xpForSubscriptionPayment(payload.t, payload.tier);
     const xpResult = await grantXpInTrx(trx, {
       userId: payload.userId,
       amount: xpAmount,
@@ -159,16 +192,15 @@ export async function processUpgradePayment(
     }
 
     // Upgrade payload must correspond to an existing regular subscription
-    // for that period. Otherwise the user is paying the upgrade-delta price
-    // for what should cost the full plus price (or replaying a stale payload).
-    const regularRow = await trx('user_groups')
-      .where({ user_id: payload.userId, period: payload.period, type: 'regular' })
-      .first();
-    if (!regularRow) {
-      logger.warn(
-        { payload, chargeId },
-        'upgrade payment without prior regular ownership — refunding',
-      );
+    // for that period (otherwise the user pays the delta for what should cost
+    // the full plus price) — and plus must NOT already be owned (a stale
+    // upgrade invoice re-paid buys nothing). Both are refund cases.
+    const status = await getSubscriptionStatus(trx, payload.userId, payload.period);
+    if (status.hasPlus || !status.hasRegular) {
+      const refundReason = status.hasPlus
+        ? 'расширенный архив у тебя уже есть, второй раз не продаю'
+        : 'нет обычной подписки для апгрейда';
+      logger.warn({ payload, chargeId, refundReason }, 'upgrade payment invalid — refunding');
       const paymentId = await insertPending(trx, {
         userId: payload.userId,
         type: 'upgrade',
@@ -187,7 +219,7 @@ export async function processUpgradePayment(
         status: 'refund_required',
         paymentId,
         refundUserId: payload.userId,
-        refundReason: 'нет обычной подписки для апгрейда',
+        refundReason,
       };
     }
 

@@ -1,9 +1,7 @@
 import type { Telegraf } from 'telegraf';
 
 import { logger } from '../../core/observability';
-import { router } from '../../core/router';
 
-import { commonCallback } from './schemas';
 import { rollDice } from './service';
 
 export function register(bot: Telegraf): void {
@@ -36,16 +34,4 @@ export function register(bot: Telegraf): void {
       { parse_mode: 'HTML' },
     );
   });
-
-  router.on(commonCallback, async (ctx) => {
-    try {
-      await ctx.deleteMessage();
-    } catch (err) {
-      logger.debug({ err }, 'deleteThisMessage failed');
-    }
-  });
-}
-
-export function deleteThisMessageButton(): string {
-  return router.encode(commonCallback, { a: 'del' });
 }

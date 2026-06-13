@@ -3,9 +3,19 @@ import { Markup } from 'telegraf';
 import { router } from '../../core/router';
 import { formatPrice } from '../../shared/format';
 import type { Period } from '../../shared/period';
+import { invitationsCallback } from '../invitations/schemas';
+import { homeRow } from '../onboarding/menus';
 
+import { sbpAmountRub } from './pricing';
 import type { SubscriptionTier } from './repo';
 import { subscriptionsCallback } from './schemas';
+
+/** «(СБП)» button label, with the RUB price when env-configured. */
+function sbpLabel(tier: SubscriptionTier, kind: 'sub' | 'old'): string {
+  const name = tier === 'plus' ? '💎 Расширенный' : '🪙 Обычный';
+  const amount = sbpAmountRub({ tier, kind });
+  return amount ? `${name} (СБП) — ${formatPrice(amount, 'RUB')}` : `${name} (СБП)`;
+}
 
 export function buyKeyboard(
   period: Period,
@@ -37,7 +47,7 @@ export function buyKeyboard(
   if (sbpAllowed) {
     rows.push([
       Markup.button.callback(
-        '🪙 Обычный (СБП)',
+        sbpLabel('regular', 'sub'),
         router.encode(subscriptionsCallback, {
           a: 'subSbp',
           year: period.year,
@@ -46,7 +56,7 @@ export function buyKeyboard(
         }),
       ),
       Markup.button.callback(
-        '💎 Расширенный (СБП)',
+        sbpLabel('plus', 'sub'),
         router.encode(subscriptionsCallback, {
           a: 'subSbp',
           year: period.year,
@@ -57,6 +67,7 @@ export function buyKeyboard(
     ]);
   }
   rows.push(oldArchivesRow());
+  rows.push(homeRow());
   return Markup.inlineKeyboard(rows);
 }
 
@@ -70,14 +81,29 @@ function oldArchivesRow(): ReturnType<typeof Markup.button.callback>[] {
   ];
 }
 
-/** Standalone «📚 Старые архивы» keyboard (for screens with no other buttons). */
-export function oldArchivesKeyboard(): ReturnType<typeof Markup.inlineKeyboard> {
-  return Markup.inlineKeyboard([oldArchivesRow()]);
+/** «🚪 Ключи от архивов» row — the «enter» half of the buy/enter pair, shown on
+ * screens where the member already owns something and the next job is getting in. */
+function archiveKeysRow(): ReturnType<typeof Markup.button.callback>[] {
+  return [
+    Markup.button.callback(
+      '🚪 Ключи от архивов',
+      router.encode(invitationsCallback, { a: 'inviteMenu' }),
+    ),
+  ];
 }
 
-/** List of past archives to choose from; each opens its tier screen. */
+/** Keyboard for the already-own-it screens: old archives + keys + home. */
+export function oldArchivesKeyboard(): ReturnType<typeof Markup.inlineKeyboard> {
+  return Markup.inlineKeyboard([oldArchivesRow(), archiveKeysRow(), homeRow()]);
+}
+
+export const OLD_ARCHIVES_PAGE_SIZE = 12;
+
+/** One page of past archives to choose from; each opens its tier screen. */
 export function oldMonthsListKeyboard(
   periods: readonly string[],
+  page = 0,
+  hasNext = false,
 ): ReturnType<typeof Markup.inlineKeyboard> {
   const rows: ReturnType<typeof Markup.button.callback>[][] = periods.map((p) => {
     const [y, m] = p.split('_');
@@ -92,9 +118,28 @@ export function oldMonthsListKeyboard(
       ),
     ];
   });
+  const pagination: ReturnType<typeof Markup.button.callback>[] = [];
+  if (page > 0) {
+    pagination.push(
+      Markup.button.callback(
+        '«',
+        router.encode(subscriptionsCallback, { a: 'subOldList', p: page - 1 }),
+      ),
+    );
+  }
+  if (hasNext) {
+    pagination.push(
+      Markup.button.callback(
+        'Ещё »',
+        router.encode(subscriptionsCallback, { a: 'subOldList', p: page + 1 }),
+      ),
+    );
+  }
+  if (pagination.length > 0) rows.push(pagination);
   rows.push([
     Markup.button.callback('« К текущему', router.encode(subscriptionsCallback, { a: 'subOpen' })),
   ]);
+  rows.push(homeRow());
   return Markup.inlineKeyboard(rows);
 }
 
@@ -122,7 +167,7 @@ export function oldMonthTierKeyboard(
     if (sbpAllowed) {
       row.push(
         Markup.button.callback(
-          `${label(o.tier)} (СБП)`,
+          sbpLabel(o.tier, 'old'),
           router.encode(subscriptionsCallback, {
             a: 'subSbp',
             year: period.year,
@@ -140,6 +185,7 @@ export function oldMonthTierKeyboard(
       router.encode(subscriptionsCallback, { a: 'subOldList' }),
     ),
   ]);
+  rows.push(homeRow());
   return Markup.inlineKeyboard(rows);
 }
 
@@ -159,10 +205,13 @@ export function upgradeKeyboard(
       ),
     ],
     oldArchivesRow(),
+    archiveKeysRow(),
+    homeRow(),
   ]);
 }
 
-/** A single «🪙 Взять архив» button that opens the buy screen (subOpen). */
+/** A single «🪙 Взять архив» button that opens the buy screen (subOpen), plus a
+ * way home. Shown after approval and after a payment. */
 export function archiveKeyboard(): ReturnType<typeof Markup.inlineKeyboard> {
   return Markup.inlineKeyboard([
     [
@@ -171,5 +220,6 @@ export function archiveKeyboard(): ReturnType<typeof Markup.inlineKeyboard> {
         router.encode(subscriptionsCallback, { a: 'subOpen' }),
       ),
     ],
+    homeRow(),
   ]);
 }

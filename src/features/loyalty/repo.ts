@@ -25,7 +25,7 @@ export interface XpTransactionRow {
 function rowToUserLevel(row: Record<string, unknown> | undefined): UserLevelRow | undefined {
   if (!row) return undefined;
   return {
-    userId: row.user_id as number,
+    userId: Number(row.user_id),
     currentTier: row.current_tier as string,
     currentLevel: row.current_level as number,
     totalXp: row.total_xp as number,
@@ -115,6 +115,33 @@ export interface LeaderboardEntry {
   lastName: string | null;
 }
 
+/** Display fields for mentioning a user in public RPG announcements. */
+export async function getUserBasic(
+  conn: DbConn,
+  userId: number,
+): Promise<{ username: string | null; firstName: string | null; lastName: string | null } | null> {
+  const row = await conn('users').where('id', userId).first('username', 'first_name', 'last_name');
+  if (!row) return null;
+  return {
+    username: (row.username as string | null) ?? null,
+    firstName: (row.first_name as string | null) ?? null,
+    lastName: (row.last_name as string | null) ?? null,
+  };
+}
+
+/** The user's 1-based leaderboard position, or null when they have no XP row.
+ * Ties share a rank (everyone with strictly more XP counts ahead). */
+export async function getUserRank(
+  conn: DbConn,
+  userId: number,
+): Promise<{ rank: number; totalXp: number } | null> {
+  const me = await conn('user_levels').where('user_id', userId).first('total_xp');
+  if (!me) return null;
+  const totalXp = me.total_xp as number;
+  const [ahead] = await conn('user_levels').where('total_xp', '>', totalXp).count('* as count');
+  return { rank: Number((ahead as { count: string | number }).count) + 1, totalXp };
+}
+
 export async function getLeaderboard(conn: DbConn, limit = 10): Promise<LeaderboardEntry[]> {
   const rows = await conn('user_levels as l')
     .leftJoin('users as u', 'u.id', 'l.user_id')
@@ -131,7 +158,7 @@ export async function getLeaderboard(conn: DbConn, limit = 10): Promise<Leaderbo
     .limit(limit);
 
   return rows.map((r: Record<string, unknown>) => ({
-    userId: r.user_id as number,
+    userId: Number(r.user_id),
     totalXp: r.total_xp as number,
     currentTier: r.current_tier as string,
     currentLevel: r.current_level as number,

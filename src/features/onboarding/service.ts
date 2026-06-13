@@ -1,4 +1,5 @@
 import { bot } from '../../core/bot';
+import { featureConfig } from '../../core/config';
 import { logger } from '../../core/observability';
 import { db, type DbConn } from '../../db/client';
 import { addRole, removeRole, replaceRole } from '../../db/repos/user-roles-mutations';
@@ -42,8 +43,6 @@ export type SubmitResult =
   | { status: 'submitted'; applicationId: number }
   | { status: 'already_pending'; applicationId: number }
   | { status: 'already_approved'; applicationId: number };
-
-const ADMIN_NOTIFICATIONS_CHAT = process.env.ADMIN_NOTIFICATIONS_CHAT ?? '';
 
 /** Submit an application + add the `pending` role atomically, then announce it to the совет. */
 export async function submit(input: SubmitInput): Promise<SubmitResult> {
@@ -150,7 +149,8 @@ async function notifyAdminsNewApplication(app: {
   username: string | null;
   tale: string;
 }): Promise<void> {
-  if (!ADMIN_NOTIFICATIONS_CHAT) {
+  const adminChat = featureConfig().adminNotificationsChat;
+  if (!adminChat) {
     logger.warn(
       { applicationId: app.id },
       'ADMIN_NOTIFICATIONS_CHAT not set; new application not announced to the совет',
@@ -160,7 +160,7 @@ async function notifyAdminsNewApplication(app: {
   const who = escapeHtml(app.username ? `@${app.username}` : `id:${app.userId}`);
   const tale = escapeHtml(truncate(app.tale, 3500));
   const text = [
-    `🔔 <b>Новый свиток #${app.id}</b>`,
+    `🔔 <b>Новое прошение #${app.id}</b>`,
     '',
     `Чужак ${who} просится в логово.`,
     '',
@@ -169,7 +169,7 @@ async function notifyAdminsNewApplication(app: {
     '',
     'Совет, выноси вердикт.',
   ].join('\n');
-  await bot.telegram.sendMessage(ADMIN_NOTIFICATIONS_CHAT, text, {
+  await bot.telegram.sendMessage(adminChat, text, {
     parse_mode: 'HTML',
     ...verdictKeyboard(app.id),
   });

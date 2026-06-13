@@ -1,5 +1,6 @@
 import { Scenes } from 'telegraf';
 
+import { registerCancel } from '../../../../core/scenes';
 import { KS_ADD_CHAIN, type KsAddDraft } from '../add-chain';
 
 export const filesScene = new Scenes.BaseScene<Scenes.SceneContext>('ks:add:files');
@@ -12,11 +13,7 @@ filesScene.enter(async (ctx) => {
   );
 });
 
-filesScene.command('cancel', async (ctx) => {
-  ctx.scene.state = {};
-  await ctx.scene.leave();
-  await ctx.reply('Отменено.');
-});
+registerCancel(filesScene, { text: 'Отменено.' });
 
 filesScene.on('document', async (ctx) => {
   const draft = ctx.scene.state as KsAddDraft;
