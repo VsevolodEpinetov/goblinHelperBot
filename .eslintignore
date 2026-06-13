@@ -1,0 +1,8 @@
+node_modules
+dist
+coverage
+src/db/migrations/legacy
+seeds
+locales
+docs
+src/core/i18n-keys.generated.ts

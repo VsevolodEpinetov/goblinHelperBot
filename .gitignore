@@ -141,4 +141,25 @@ dev-debug.log
 
 # Task files
 # tasks.json
-# tasks/ 
+# tasks/
+
+# TypeScript build
+dist/
+*.tsbuildinfo
+
+# Test coverage
+coverage/
+
+# Local artifacts
+bot-map.html
+.audit-details.json
+
+# Environment
+.env
+.env.local
+
+# Editor
+.vscode/
+.idea/
+
+db_dumps/

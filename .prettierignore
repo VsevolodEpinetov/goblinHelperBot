@@ -1,0 +1,7 @@
+node_modules
+dist
+coverage
+locales
+package-lock.json
+*.md
+.env*
