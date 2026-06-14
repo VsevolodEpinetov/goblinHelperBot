@@ -18,8 +18,11 @@ export interface ApplicationRow {
 function rowToApp(row: Record<string, unknown> | undefined): ApplicationRow | undefined {
   if (!row) return undefined;
   return {
-    id: row.id as number,
-    userId: row.user_id as number,
+    // `applications.id` / `user_id` are bigint columns; node-postgres returns
+    // int8 as a string. Coerce to number so the value matches the `number`
+    // type contract and survives the z.number() router-encode schemas.
+    id: Number(row.id),
+    userId: Number(row.user_id),
     username: (row.username as string | null) ?? null,
     firstName: (row.first_name as string | null) ?? null,
     lastName: (row.last_name as string | null) ?? null,
@@ -69,7 +72,7 @@ export async function insertApplication(
       status: 'pending',
     })
     .returning('id');
-  return row.id;
+  return Number(row.id);
 }
 
 export async function setApplicationStatus(

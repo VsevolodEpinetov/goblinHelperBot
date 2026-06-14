@@ -110,7 +110,7 @@ export function registerPaymentAdminActions(bot: Telegraf): void {
           return {
             ok: false as const,
             reason: 'already_owned' as const,
-            userId: row.user_id,
+            userId: Number(row.user_id),
             period: row.period,
           };
         }
@@ -130,7 +130,7 @@ export function registerPaymentAdminActions(bot: Telegraf): void {
         // Old archives grant the flat old-archive XP (matching the Stars 'old'
         // path); current-month subs grant the full tier XP.
         const xp = await grantXpInTrx(trx, {
-          userId: row.user_id,
+          userId: Number(row.user_id),
           amount: xpForSubscriptionPayment(row.type, row.subscription_type),
           source: 'payment_sub_sbp',
           externalId: chargeId,
@@ -138,7 +138,7 @@ export function registerPaymentAdminActions(bot: Telegraf): void {
         });
         return {
           ok: true as const,
-          userId: row.user_id,
+          userId: Number(row.user_id),
           period: row.period,
           type: row.subscription_type,
           xp,

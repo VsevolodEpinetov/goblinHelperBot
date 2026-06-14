@@ -24,7 +24,9 @@ export async function searchUsers(
   }
   const rows = await q;
   return rows.map((r: Record<string, unknown>) => ({
-    id: r.id as number,
+    // `users.id` is a bigint column; node-postgres returns int8 as a string.
+    // Coerce so it matches the `number` type and the z.number() admin schemas.
+    id: Number(r.id),
     username: (r.username as string | null) ?? null,
     firstName: (r.first_name as string | null) ?? null,
     lastName: (r.last_name as string | null) ?? null,
@@ -56,7 +58,7 @@ export interface MonthSummary {
 export async function listMonths(conn: DbConn, limit = 30): Promise<MonthSummary[]> {
   const rows = await conn('months').orderBy('period', 'desc').limit(limit);
   return rows.map((r: Record<string, unknown>) => ({
-    id: r.id as number,
+    id: Number(r.id),
     period: r.period as string,
     type: r.type as string,
     chatId: (r.chat_id as string | null) ?? null,

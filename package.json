@@ -20,7 +20,8 @@
     "seed": "tsx node_modules/knex/bin/cli.js --knexfile knexfile.ts seed:run",
     "db:status": "tsx node_modules/knex/bin/cli.js --knexfile knexfile.ts migrate:status",
     "db:list": "tsx node_modules/knex/bin/cli.js --knexfile knexfile.ts migrate:list",
-    "audit": "tsx scripts/pre-migration-audit.ts"
+    "audit": "tsx scripts/pre-migration-audit.ts",
+    "edit-texts": "node scripts/edit-texts-server.mjs"
   },
   "dependencies": {
     "@notionhq/client": "^2.2.15",

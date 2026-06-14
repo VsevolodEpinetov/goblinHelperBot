@@ -19,12 +19,12 @@ import {
 import { ONBOARDING_SCENE_ID } from './scene';
 import { onboardingCallback } from './schemas';
 
-const ABOUT_TEXT = `📜 Это логово Главгоблина — закрытый притон, где из луны в луну копятся сокровища. На полке всегда новый <b>месячный архив</b>, а сторожит их библиотекарь — молча, без записи и без входа чужакам.
+const ABOUT_TEXT = `📜 Это логово Главгоблина — закрытое ложе, где из луны в луну копятся сокровища. На полке всегда новый <b>месячный архив</b>, а следит за этим библиотекарь — молча, но строго без допуска чужаков.
 
-Сперва обряд допуска: совет читает твоё прошение и выносит вердикт. Одобрят — платишь звёзды в казну логова и забираешь <b>месячный архив</b>. Не одобрят — ступай своей тропой.`;
+Сперва обряд допуска: совет читает твоё прошение и выносит вердикт. Одобрят — платишь звёзды в казну логова и забираешь <b>месячный архив</b>. Не одобрят — ступай своей дорогой путник.`;
 
 const PENDING_TEXT =
-  '⏳ Прошение твоё уже наверху, у совета. Старейшины взвешивают твоё имя. Жди вердикта и не пинай меня — решат, я тебе сам принесу весть.';
+  '⏳ Прошение твоё уже наверху, у совета. Старейшины шепчутся. Жди вердикта и не пинай меня меня по чем зря — решат, я тебе сам принесу весть.';
 
 /**
  * Render the правильный /start screen for the user's current standing. Used by
@@ -43,8 +43,8 @@ async function renderStartByStatus(ctx: Context, roles: readonly string[]): Prom
       await editOrReply(
         ctx,
         paid
-          ? '🔥 С возвращением, свой. Месячный архив за этот цикл луны уже твой — всё открыто. Выбирай кнопкой ниже: архив, профиль, кикстартеры или рейды.'
-          : '🪙 Ты свой, в логово пущен. Только свежий месячный архив ещё не взят — казна логова пополнения от тебя не видела. Жми кнопку ниже, бери архив. Профиль, кикстартеры и рейды — там же.',
+          ? '🔥 С возвращением, гоблин! Месячный архив за этот цикл луны уже твой — всё открыто. Выбирай кнопкой ниже: архив, профиль, кикстартеры или рейды.'
+          : '🪙 Ты свой гоблин и в логово пущен. Только свежий месячный архив ещё не доступен — казна логова пополнения от тебя не видела. Жми кнопку ниже, бери архив. Профиль, кикстартеры и рейды — там же.',
         memberHubKeyboard(),
       );
       return;
@@ -70,7 +70,7 @@ async function renderStartByStatus(ctx: Context, roles: readonly string[]): Prom
     case 'rejected':
       await editOrReply(
         ctx,
-        '💀 Совет уже отворачивался от тебя однажды. Но камень не высечен — хочешь, попробуй обряд снова. Дважды я объяснять не буду.',
+        '💀 Совет уже отворачивался от тебя однажды. Но решение не на камне высечено — хочешь, попробуй обряд снова. Дважды я объяснять не буду.',
         { ...startMenuForNewbie() },
       );
       return;
@@ -82,7 +82,7 @@ async function renderStartByStatus(ctx: Context, roles: readonly string[]): Prom
     default:
       await editOrReply(
         ctx,
-        '🌑 Ты набрёл на логово Главгоблина.\nЗдесь под замком копятся STL-сокровища. Двери открываются лишь тем, кого впустил совет. Хочешь — расскажу, что это за место, или сразу пройди обряд допуска.',
+        '🌑 Ты набрёл на логово Главгоблина.\nЗдесь под замком копятся STL-сокровища. Двери открываются лишь тем, кого впустил совет. Хочешь — расскажу, что это за место, или можешь сразу перейти к обряду допуска.',
         { ...startMenuForNewbie() },
       );
   }
@@ -128,11 +128,7 @@ export function registerOnboardingCommands(bot: Telegraf): void {
         // ensureApprovedMember answers the callback with a denial when it fails,
         // so just bail without answering again.
         if (!(await ensureApprovedMember(ctx))) break;
-        await editOrReply(
-          ctx,
-          '🔥 Снова в логове, свой. Выбирай кнопкой ниже.',
-          memberHubKeyboard(),
-        );
+        await editOrReply(ctx, '🔥 С возвращением, гоблин. ', memberHubKeyboard());
         await ctx.answerCbQuery?.();
         break;
       case 'onStatus': {
@@ -152,7 +148,7 @@ export function registerOnboardingCommands(bot: Telegraf): void {
         await ctx.answerCbQuery?.();
         break;
       case 'onCancel':
-        await ctx.editMessageText('🌑 Вернулись к воротам. Выбирай тропу, чужак.', {
+        await ctx.editMessageText('🌑 Вернулись к началу. Выбирай тропу, чужак.', {
           ...startMenuForNewbie(),
         });
         await ctx.answerCbQuery?.();
@@ -161,7 +157,7 @@ export function registerOnboardingCommands(bot: Telegraf): void {
         await ctx.answerCbQuery?.();
         if (!ctx.from.username) {
           await ctx.reply(
-            '🔒 Главгоблин не торгует с безымянными. Поставь себе публичный <b>username</b> в настройках Telegram и жми «Пройти обряд допуска» снова.',
+            '🔒 Главгоблин не имеет дел с безымянными. Поставь себе публичный <b>username</b> в настройках Telegram и жми «Пройти обряд допуска» снова.',
             { parse_mode: 'HTML', ...startMenuForNewbie() },
           );
           return;

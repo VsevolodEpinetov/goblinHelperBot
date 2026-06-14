@@ -18,7 +18,7 @@ const TALE_MAX_LENGTH = 4096;
 
 const INTRO_TEXT = `📜 <b>Обряд допуска</b>
 
-Не молчи, чужак. Совет не впускает безымянных. Напиши о себе своими словами — кто ты, чего ищешь в логове и как набрёл на наши тропы.
+Не молчи, чужак. Совет не впускает безымянных. Напиши о себе — кто ты, чего ищешь в логове и как набрёл на наши тропы.
 
 Пиши сообщениями, хоть несколькими — я всё подошью в одно прошение. Закончил — жми «Подать прошение», и я отнесу его наверх, старейшинам. Передумал — «Уйти прочь».`;
 
@@ -37,10 +37,9 @@ onboardingScene.action('onboarding:cancel', async (ctx) => {
   await ctx.answerCbQuery();
   ctx.scene.state = {};
   await ctx.scene.leave();
-  await ctx.editMessageText(
-    '🌑 Отвернулся от совета — твоё право. Надумаешь вернуться — жми кнопку.',
-    { ...startMenuForNewbie() },
-  );
+  await ctx.editMessageText('🌑 Решил уйти — твоё право. Передумаешь — жми кнопку.', {
+    ...startMenuForNewbie(),
+  });
 });
 
 onboardingScene.action('onboarding:submit', async (ctx) => {
@@ -79,12 +78,12 @@ onboardingScene.action('onboarding:submit', async (ctx) => {
   switch (result.status) {
     case 'submitted':
       await ctx.editMessageText(
-        '📜 Прошение твоё записано и унесено совету. Теперь жди вердикта — старейшины не любят, когда их торопят.',
+        '📜 Прошение твоё записано и унесено совету. Терпеливо жди вердикта — старейшины не любят, когда их подгоняют.',
         { ...pendingStatusKeyboard() },
       );
       break;
     case 'already_pending':
-      await ctx.editMessageText('⏳ Твоё прошение уже наверху. Одно на брата — хватит. Жди.', {
+      await ctx.editMessageText('⏳ Твоё прошение уже наверху. Одного достаточно. Жди.', {
         ...pendingStatusKeyboard(),
       });
       break;
@@ -120,7 +119,7 @@ onboardingScene.on('text', async (ctx) => {
   }
   state.tale = combined;
   await ctx.reply(
-    '🕯 Подшил к прошению. Хочешь — добавь ещё сообщением. Закончил — жми «Подать прошение», передумал — «Уйти прочь».',
+    '🕯 Подшил к прошению. Хочешь — добавь ещё сообщение. Закончил — жми «Подать прошение», передумал — жми «Уйти прочь».',
     applyKeyboard(),
   );
 });

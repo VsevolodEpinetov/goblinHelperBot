@@ -11,7 +11,7 @@ import { getActiveCooldown, pickPromoFileForUser, recordPromoUsage } from './rep
 import { promoCallback } from './schemas';
 import { computeCooldownUntil, formatTimeRemaining } from './service';
 
-const NO_PROMOS = '🌑 Сундук с подачками пуст — всё растащили. Загляни позже.';
+const NO_PROMOS = '🌑 Сундук с гостинцами пуст — всё растащили. Загляни позже.';
 
 export function register(_bot: Telegraf): void {
   router.on(promoCallback, async (ctx) => {
@@ -25,7 +25,7 @@ export function register(_bot: Telegraf): void {
       const cooldown = await getActiveCooldown(db, ctx.from.id);
       if (cooldown) {
         await ctx.answerCbQuery?.(
-          `Рано пришёл — подачку ты уже хватал. Жди ещё ${formatTimeRemaining(cooldown)}.`,
+          `Рано пришёл — гостинец ты уже хватал. Жди ещё ${formatTimeRemaining(cooldown)}.`,
           { show_alert: true },
         );
         return;
@@ -55,10 +55,7 @@ export function register(_bot: Telegraf): void {
           break;
       }
       await recordPromoUsage(db, ctx.from.id, file.id, computeCooldownUntil());
-      await ctx.reply(
-        '🪙 Держи добычу и проваливай — заглянешь ещё, ворота на месте.',
-        Markup.inlineKeyboard([[homeButton()]]),
-      );
+      await ctx.reply('🪙 Держи гостинец и иди с миром. ', Markup.inlineKeyboard([[homeButton()]]));
     } catch (err) {
       logger.error({ err }, 'promo: delivery failed');
       try {

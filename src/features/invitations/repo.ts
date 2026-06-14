@@ -19,8 +19,9 @@ export interface InvitationLinkRow {
 function rowToInvite(row: Record<string, unknown> | undefined): InvitationLinkRow | undefined {
   if (!row) return undefined;
   return {
-    id: row.id as number,
-    userId: row.user_id as number,
+    // int8 ids come back as strings from node-postgres — coerce to the number contract.
+    id: Number(row.id),
+    userId: Number(row.user_id),
     groupPeriod: row.group_period as string,
     groupType: row.group_type as GroupType,
     telegramInviteLink: row.telegram_invite_link as string,
@@ -56,7 +57,7 @@ export async function insertInvitation(
       creates_join_request: input.createsJoinRequest,
     })
     .returning('id');
-  return row.id;
+  return Number(row.id);
 }
 
 /** Most recent UNUSED link for (user, period, type) — used so we can re-send it if the user lost it. */

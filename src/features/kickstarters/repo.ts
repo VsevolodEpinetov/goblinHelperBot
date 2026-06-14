@@ -19,7 +19,8 @@ export interface KickstarterAsset {
 function rowToKickstarter(row: Record<string, unknown> | undefined): KickstarterRow | undefined {
   if (!row) return undefined;
   return {
-    id: row.id as number,
+    // int8 ids come back as strings from node-postgres — coerce to the number contract.
+    id: Number(row.id),
     name: row.name as string,
     creator: (row.creator as string | null) ?? null,
     cost: Number(row.cost),
@@ -89,7 +90,7 @@ export async function createKickstarter(
       link: input.link,
     })
     .returning('id');
-  const id: number = row.id;
+  const id = Number(row.id);
 
   if (input.photoFileIds.length > 0) {
     await conn('kickstarter_photos').insert(

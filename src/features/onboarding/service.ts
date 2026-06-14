@@ -95,7 +95,7 @@ export async function approve(applicationId: number, reviewerId: number): Promis
     if (app.status !== 'pending') return { result: 'not_pending' as const };
     await setApplicationStatus(trx, applicationId, 'approved');
     await replaceRole(trx, app.user_id, 'pending', 'preapproved');
-    return { result: 'approved' as const, userId: app.user_id as number };
+    return { result: 'approved' as const, userId: Number(app.user_id) };
   });
 
   if (outcome.result === 'approved') {
@@ -115,7 +115,7 @@ export async function reject(applicationId: number, reviewerId: number): Promise
     if (app.status !== 'pending') return { result: 'not_pending' as const };
     await setApplicationStatus(trx, applicationId, 'rejected');
     await replaceRole(trx, app.user_id, 'pending', 'rejected');
-    return { result: 'rejected' as const, userId: app.user_id as number };
+    return { result: 'rejected' as const, userId: Number(app.user_id) };
   });
 
   if (outcome.result === 'rejected') {

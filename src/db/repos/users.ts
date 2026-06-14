@@ -31,7 +31,9 @@ export async function getUserById(conn: DbConn, id: number): Promise<UserRow | u
   const row = await conn('users').where('id', id).first();
   if (!row) return undefined;
   return {
-    id: row.id,
+    // `users.id` is a bigint column; node-postgres returns int8 as a string.
+    // Coerce so it matches the `number` type and the z.number() admin schemas.
+    id: Number(row.id),
     username: row.username,
     firstName: row.first_name,
     lastName: row.last_name,

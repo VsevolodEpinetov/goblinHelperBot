@@ -192,8 +192,8 @@ export function registerRaidActions(): void {
         const isComplete = payload.a === 'raidCompleteAsk';
         await ctx.editMessageText(
           isComplete
-            ? '🔥 Закрыть рейд как завершённый? Назад потом не отыграешь.'
-            : '💀 В топку рейд, насовсем? Обратно не вытащу.',
+            ? '🔥 Отметить рейд как завершённый? Решение окончательное и повернуть назад нельзя будет. '
+            : '💀 Сжечь все записи о неудачном рейде? Прям насовсем? Из огня вытаскивать свитки не буду. ',
           { ...raidConfirmKeyboard(payload.id, isComplete ? 'raidComplete' : 'raidCancel') },
         );
         await ctx.answerCbQuery?.();

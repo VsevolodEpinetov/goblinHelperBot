@@ -38,14 +38,16 @@ export interface RaidParticipant {
 function rowToRaid(row: Record<string, unknown> | undefined): RaidRow | undefined {
   if (!row) return undefined;
   return {
-    id: row.id as number,
+    // int8 ids come back as strings from node-postgres — coerce to the number
+    // contract. (chat_id / message_id stay strings by design — see below.)
+    id: Number(row.id),
     title: row.title as string,
     description: (row.description as string | null) ?? null,
     link: (row.link as string | null) ?? null,
     price: Number(row.price),
     currency: row.currency as string,
     status: row.status as RaidRow['status'],
-    createdBy: row.created_by as number,
+    createdBy: Number(row.created_by),
     createdByUsername: (row.created_by_username as string | null) ?? null,
     createdByFirstName: (row.created_by_first_name as string | null) ?? null,
     createdByLastName: (row.created_by_last_name as string | null) ?? null,
@@ -87,7 +89,7 @@ export async function createRaid(conn: DbConn, input: CreateRaidInput): Promise<
       created_by_last_name: input.createdByLastName,
     })
     .returning('id');
-  const id: number = row.id;
+  const id = Number(row.id);
 
   if (input.photoFileIds.length > 0) {
     await conn('raid_photos').insert(
@@ -122,8 +124,8 @@ export async function listRaids(
 export async function getRaidPhotos(conn: DbConn, raidId: number): Promise<RaidPhoto[]> {
   const rows = await conn('raid_photos').where('raid_id', raidId).orderBy('order_index', 'asc');
   return rows.map((r: Record<string, unknown>) => ({
-    id: r.id as number,
-    raidId: r.raid_id as number,
+    id: Number(r.id),
+    raidId: Number(r.raid_id),
     fileId: r.file_id as string,
     orderIndex: r.order_index as number,
   }));
@@ -135,8 +137,8 @@ export async function getRaidParticipants(
 ): Promise<RaidParticipant[]> {
   const rows = await conn('raid_participants').where('raid_id', raidId).orderBy('joined_at', 'asc');
   return rows.map((r: Record<string, unknown>) => ({
-    raidId: r.raid_id as number,
-    userId: r.user_id as number,
+    raidId: Number(r.raid_id),
+    userId: Number(r.user_id),
     username: (r.username as string | null) ?? null,
     firstName: (r.first_name as string | null) ?? null,
     lastName: (r.last_name as string | null) ?? null,

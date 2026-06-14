@@ -16,8 +16,9 @@ export async function listForUser(conn: DbConn, userId: number): Promise<Achieve
     .where('user_id', userId)
     .orderBy('unlocked_at', 'desc');
   return rows.map((r: Record<string, unknown>) => ({
-    id: r.id as number,
-    userId: r.user_id as number,
+    // int8 ids come back as strings from node-postgres — coerce to the number contract.
+    id: Number(r.id),
+    userId: Number(r.user_id),
     achievementType: r.achievement_type as string,
     data: r.achievement_data,
     unlockedAt: r.unlocked_at as Date,

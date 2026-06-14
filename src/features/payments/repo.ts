@@ -25,15 +25,16 @@ export interface PaymentTrackingRow {
 function rowToTracking(row: Record<string, unknown> | undefined): PaymentTrackingRow | undefined {
   if (!row) return undefined;
   return {
-    id: row.id as number,
-    userId: row.user_id as number,
+    // int8 ids come back as strings from node-postgres — coerce to the number contract.
+    id: Number(row.id),
+    userId: Number(row.user_id),
     type: row.type as string,
     subscriptionType: (row.subscription_type as string | null) ?? null,
     period: (row.period as string | null) ?? null,
     amount: Number(row.amount),
     currency: row.currency as string,
     status: row.status as PaymentStatus,
-    invoiceMessageId: (row.invoice_message_id as number | null) ?? null,
+    invoiceMessageId: row.invoice_message_id == null ? null : Number(row.invoice_message_id),
     telegramPaymentChargeId: (row.telegram_payment_charge_id as string | null) ?? null,
     isUpgrade: !!row.is_upgrade,
     source: (row.source as PaymentSource) ?? 'stars',
@@ -77,7 +78,7 @@ export async function insertPending(conn: DbConn, input: InsertPendingInput): Pr
       source: input.source,
     })
     .returning('id');
-  return row.id;
+  return Number(row.id);
 }
 
 export async function markCompleted(

@@ -64,5 +64,5 @@ export async function addPromoFile(
       uploaded_by: uploadedBy,
     })
     .returning('id');
-  return row.id;
+  return Number(row.id);
 }
