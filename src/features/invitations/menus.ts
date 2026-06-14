@@ -38,22 +38,34 @@ export function joinLinkKeyboard(
       ),
     ];
   });
+  // Newest periods sort first (repo orders by period desc), so page 0 is always
+  // the freshest. The «стр. N/M» counter makes it obvious the list is paged —
+  // tapping it just re-renders the current page (a harmless no-op).
+  const totalPages = maxPage + 1;
   const nav: ReturnType<typeof Markup.button.callback>[] = [];
-  if (current > 0) {
+  if (totalPages > 1) {
+    if (current > 0) {
+      nav.push(
+        Markup.button.callback(
+          '«',
+          router.encode(invitePageCallback, { a: 'invitePage', p: current - 1 }),
+        ),
+      );
+    }
     nav.push(
       Markup.button.callback(
-        '«',
-        router.encode(invitePageCallback, { a: 'invitePage', p: current - 1 }),
+        `стр. ${current + 1}/${totalPages}`,
+        router.encode(invitePageCallback, { a: 'invitePage', p: current }),
       ),
     );
-  }
-  if (start + JOIN_LINK_PAGE_SIZE < subs.length) {
-    nav.push(
-      Markup.button.callback(
-        '»',
-        router.encode(invitePageCallback, { a: 'invitePage', p: current + 1 }),
-      ),
-    );
+    if (current < maxPage) {
+      nav.push(
+        Markup.button.callback(
+          '»',
+          router.encode(invitePageCallback, { a: 'invitePage', p: current + 1 }),
+        ),
+      );
+    }
   }
   const mainRow = [
     Markup.button.callback(

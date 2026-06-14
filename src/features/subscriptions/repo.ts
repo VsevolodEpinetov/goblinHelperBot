@@ -29,6 +29,7 @@ export async function listUserSubscriptions(
   const rows = await conn('user_groups')
     .where('user_id', userId)
     .orderBy('period', 'desc')
+    .orderBy('type', 'asc')
     .select('period', 'type');
   return rows.map((r: { period: string; type: SubscriptionTier }) => ({
     period: r.period,
@@ -101,6 +102,7 @@ export async function listAllArchives(
   const rows = await conn('months')
     .whereNotNull('chat_id')
     .orderBy('period', 'desc')
+    .orderBy('type', 'asc')
     .select('period', 'type');
   return rows.map((r: { period: string; type: SubscriptionTier }) => ({
     period: r.period,
