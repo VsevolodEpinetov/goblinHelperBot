@@ -72,7 +72,7 @@ export function registerSubscriptionActions(): void {
         // through the old-archives flow at the 3x price, not the fresh one.
         if (isHistoricalPeriod({ year: payload.year, month: payload.month })) {
           await ctx.answerCbQuery?.(
-            'Этот месяц уже в старых архивах — цена там втрое. Веду туда.',
+            'Этот месяц уже в старых архивах — цена там втрое дороже. Веду туда.',
             {
               show_alert: true,
             },
@@ -109,7 +109,7 @@ export function registerSubscriptionActions(): void {
         const period = formatPeriod({ year: payload.year, month: payload.month });
         const upStatus = await getSubscriptionStatus(db, ctx.from.id, period);
         if (upStatus.hasPlus) {
-          await ctx.answerCbQuery?.('Расширенный архив у тебя уже есть — второй не продам', {
+          await ctx.answerCbQuery?.('Расширенный архив у тебя уже есть — второй не продаем', {
             show_alert: true,
           });
           break;
@@ -123,7 +123,7 @@ export function registerSubscriptionActions(): void {
         }
         if (isHistoricalPeriod({ year: payload.year, month: payload.month })) {
           await ctx.answerCbQuery?.(
-            'Этот месяц уже в старых архивах — расширение там, цена втрое. Веду туда.',
+            'Этот месяц уже в старых архивах — расширение там, цена втрое дороже. Веду туда.',
             { show_alert: true },
           );
           await openOldArchiveMonth(ctx as unknown as Context, payload.year, payload.month);

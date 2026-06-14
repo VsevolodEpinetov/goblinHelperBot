@@ -34,7 +34,7 @@ export function registerAdminActions(): void {
   router.on(adminCallback, async (ctx, payload) => {
     const roles = ctx.state.roles ?? [];
     if (!isStaff(roles)) {
-      await ctx.answerCbQuery?.('Нет прав');
+      await ctx.answerCbQuery?.('Не дозволено');
       return;
     }
 
@@ -76,7 +76,7 @@ export function registerAdminActions(): void {
         case 'adGrantAch': {
           const result = await adminGrantAchievement(payload.id, payload.key);
           await ctx.answerCbQuery?.(
-            result.alreadyHad ? 'Уже было' : result.applied ? '✅ Выдано' : 'Не выдано',
+            result.alreadyHad ? 'Уже было!' : result.applied ? '✅ Выдано' : '⛔️ Не выдано',
           );
           // Tell the member — achievements change their prices, they must know.
           if (result.applied && isKnownAchievement(payload.key)) {
@@ -106,13 +106,13 @@ export function registerAdminActions(): void {
             await ctx.answerCbQuery?.((e as Error).message, { show_alert: true });
             break;
           }
-          await ctx.answerCbQuery?.(payload.on ? '🤝 Теперь свой — друг логова' : 'Дружба отнята');
+          await ctx.answerCbQuery?.(payload.on ? '🤝 Теперь гоблин — друг логова' : '📉 Дружба кончилась');
           // Welcome the new friend by DM (grant only) — they should know access opened.
           if (payload.on) {
             try {
               await ctx.telegram.sendMessage(
                 payload.id,
-                '🤝 Главгоблин самолично впустил тебя — отныне ты <b>друг логова</b>. Звёзды можешь оставить себе: каждый архив и главный зал открыты тебе задаром. Бери добычу снизу.',
+                'Уже было!',
                 { parse_mode: 'HTML', ...Markup.inlineKeyboard([homeRow()]) },
               );
             } catch (dmErr) {
@@ -137,7 +137,7 @@ export function registerAdminActions(): void {
             String(ctx.chat.id),
           );
           await ctx.answerCbQuery?.('🔥 Готово');
-          let text = `🔥 Готово. Этот чат высечен на камне как <b>${tierWord(payload.tier)}</b> архив за <b>${escapeHtml(payload.period)}</b> — дверь сторожу, ключи кую, в продажу пущу.`;
+          let text = `🔥 Готово. Этот чат высечен на камне как <b>${tierWord(payload.tier)}</b> архив за <b>${escapeHtml(payload.period)}</b> — дверь сторожу, ключи выкую и в продажу пущу.`;
           if (movedFrom) {
             text += `\n👁‍🗨 Старую метку стёр — был <b>${tierWord(movedFrom.tier as 'regular' | 'plus')}</b> архивом за <b>${escapeHtml(movedFrom.period)}</b>, теперь служит новому.`;
           }
@@ -146,7 +146,7 @@ export function registerAdminActions(): void {
         }
         case 'bindCancel':
           await ctx.answerCbQuery?.();
-          await ctx.editMessageText('🌑 Брось. Ничего не метил, чат как был.');
+          await ctx.editMessageText('🌑 Брось. Ничего не отметил, чат такой как и был ранее.');
           break;
         case 'adMonths': {
           const months = await listMonths(db);
@@ -192,7 +192,7 @@ export function registerAdminActions(): void {
       }
     } catch (err) {
       logger.error({ err, payload }, 'admin action failed');
-      await ctx.answerCbQuery?.('Ошибка');
+      await ctx.answerCbQuery?.('🪛 Ошибка');
     }
   });
 }

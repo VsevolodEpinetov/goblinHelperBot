@@ -278,6 +278,7 @@ function page(items) {
 <main id="main"></main>
 <script>
 var DATA = ${JSON.stringify(items)};
+var BY_ID = {}; DATA.forEach(function(i){ BY_ID[i.id] = i; }); // id != array index (items are sorted after id assignment)
 var main = document.getElementById('main');
 var groups = DATA.reduce(function(a,i){ if(a.indexOf(i.group)<0)a.push(i.group); return a; }, []);
 function tokens(s){ var m = s.match(/\\$\\{[^}]*\\}|\\{[A-Za-z_][A-Za-z0-9_]*\\}/g) || []; return m.slice().sort().join('\\u0001'); }
@@ -328,7 +329,7 @@ document.getElementById('q').addEventListener('input', function(e){
 document.getElementById('save').addEventListener('click', function(){
   var btn=this; var changes=[];
   main.querySelectorAll('.item.changed').forEach(function(div){
-    var it = DATA[div.dataset.id]; var ta = div.querySelector('textarea');
+    var it = BY_ID[div.dataset.id]; var ta = div.querySelector('textarea');
     changes.push({ id: it.id, file: it.file, delim: it.delim, raw: it.raw, occ: it.occ, edited: ta.value });
   });
   if(!changes.length) return;

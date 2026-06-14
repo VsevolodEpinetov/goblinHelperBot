@@ -58,13 +58,13 @@ export async function sendXpGainNotification(
   // Don't double-notify when there's a level-up — the level-up message replaces it.
   const user = await userMention(userId);
   const announced = await announceToRpgTopic(
-    `⚔️ ${user} приволок в логово ${result.gained} опыта. Всего в его тени: ${result.totalXp}.`,
+    `⚔️ ${user} приволок в логово ${result.gained} опыта. Всего сейчас: ${result.totalXp}.`,
   );
   if (announced) return;
   try {
     await bot.telegram.sendMessage(
       userId,
-      `🪙 +${result.gained} опыта тебе, свой. Всего накопил: ${result.totalXp}.`,
+      `🪙 +${result.gained} опыта тебе, гоблин. Всего накопил: ${result.totalXp}.`,
     );
   } catch (err) {
     logger.debug({ err, userId, source }, 'sendXpGainNotification failed (probably blocked bot)');
@@ -80,12 +80,12 @@ export async function sendLevelUpNotification(userId: number, event: LevelUpEven
     const emoji = tier?.emoji ?? '';
     const display = tier?.displayName ?? event.toTier;
     await announceToRpgTopic(
-      `${emoji} Бей в барабаны! ${user} вознёсся в ${escapeHtml(display)} — уровень ${event.toLevel}!\nТакое высекают на камне. Старейшины запомнят.`,
+      `${emoji} Бей в барабаны! ${user} вознёсся в ${escapeHtml(display)} — уровень ${event.toLevel}!\\nТакое высекают на камне. Старейшины запомнят твои достижения.`,
     );
     try {
       await bot.telegram.sendMessage(
         userId,
-        `🎉 Растёшь, свой! Новый ранг: ${emoji} <b>${display}</b> (уровень ${event.toLevel}). Старейшины кивнули.`,
+        `🎉 Растёшь, гоблин! Новый ранг: ${emoji} <b>${display}</b> (уровень ${event.toLevel}). Старейшины кивнули.`,
         { parse_mode: 'HTML' },
       );
     } catch (err) {
@@ -101,7 +101,7 @@ export async function sendLevelUpNotification(userId: number, event: LevelUpEven
   try {
     await bot.telegram.sendMessage(
       userId,
-      `⬆️ Опыт капает — уровень ${event.to} ${emoji}. Так и до нового ранга дорастёшь, свой.`,
+      `⬆️ Опыт капает — уровень ${event.to} ${emoji}. Так и до нового ранга дорастёшь, гоблин.`,
     );
   } catch (err) {
     logger.debug({ err, userId, event }, 'sendLevelUpNotification DM failed');

@@ -21,19 +21,19 @@ async function precheckoutRejectionReason(payload: PaymentPayloadT): Promise<str
     case 'old': {
       const status = await getSubscriptionStatus(db, payload.userId, payload.period);
       if (status.hasPlus || (payload.tier === 'regular' && status.hasRegular)) {
-        return 'Этот архив у тебя уже есть — второй раз не продам.';
+        return 'Этот архив у тебя уже есть — второй раз не продаем.';
       }
       return null;
     }
     case 'upgrade': {
       const status = await getSubscriptionStatus(db, payload.userId, payload.period);
-      if (status.hasPlus) return 'Расширенный архив у тебя уже есть — второй раз не продам.';
+      if (status.hasPlus) return 'Расширенный архив у тебя уже есть — второй раз не продаем.';
       if (!status.hasRegular) return 'Сначала возьми обычный архив, потом расширяй.';
       return null;
     }
     case 'ks': {
       if (await hasUserPurchased(db, payload.userId, payload.kickstarterId)) {
-        return 'Этот кикстартер у тебя уже есть — второй раз не продам.';
+        return 'Этот кикстартер у тебя уже есть — второй раз не продаем.';
       }
       return null;
     }
@@ -127,7 +127,7 @@ export function registerPaymentHandlers(bot: Telegraf): void {
       }
       await sendUserConfirmation(
         ctx,
-        '🪙 Звёзды дошли, но в записях заело. Совет уже в курсе — разберут руками, своё получишь.',
+        '🪙 Звёзды дошли, но в записях что-то не то. Совет уже в курсе — разберут руками, своё получишь.',
       );
     }
   });
@@ -169,7 +169,7 @@ async function handleSuccessfulPayment(
           type: group.type,
         });
       } else {
-        await sendUserConfirmation(ctx, '🪙 Звёзды легли в казну, свой. Платёж принят.');
+        await sendUserConfirmation(ctx, '🪙 Звёзды легли в казну, гоблин. Платёж принят.');
       }
       break;
     }

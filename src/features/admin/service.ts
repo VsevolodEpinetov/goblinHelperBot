@@ -136,13 +136,13 @@ export interface RoleParty {
  * themselves. Super outranks all, but nobody can grant/remove `super` here.
  */
 export function assertCanModerateRole(actor: RoleParty, target: RoleParty, role: KnownRole): void {
-  if (actor.id === target.id) throw new Error('⚖️ Свои роли не трогай — закон совета.');
+  if (actor.id === target.id) throw new Error('⚖️ Свои роли не трогай — это указ совета.');
   const rank = highestRank(actor.roles);
   if (roleRank(role) >= rank) {
-    throw new Error(`⚖️ Роль "${role}" не ниже твоей — такую не выдам, закон совета.`);
+    throw new Error(`⚖️ Роль "${role}" не ниже твоей — такую не выдам, это указ совета.`);
   }
   if (highestRank(target.roles) >= rank) {
-    throw new Error('⚖️ Этот гоблин рангом не ниже тебя — его не трону, закон совета.');
+    throw new Error('⚖️ Этот гоблин рангом не ниже тебя — его не трону, указ совета.');
   }
 }
 

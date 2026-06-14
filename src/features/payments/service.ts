@@ -128,7 +128,7 @@ export async function processSubscriptionPayment(
         status: 'refund_required',
         paymentId,
         refundUserId: payload.userId,
-        refundReason: 'этот архив у тебя уже есть, второй раз не продаю',
+        refundReason: 'этот архив у тебя уже есть, второй раз не продаем',
       };
     }
 
@@ -198,7 +198,7 @@ export async function processUpgradePayment(
     const status = await getSubscriptionStatus(trx, payload.userId, payload.period);
     if (status.hasPlus || !status.hasRegular) {
       const refundReason = status.hasPlus
-        ? 'расширенный архив у тебя уже есть, второй раз не продаю'
+        ? 'расширенный архив у тебя уже есть, второй раз не продаем'
         : 'нет обычной подписки для апгрейда';
       logger.warn({ payload, chargeId, refundReason }, 'upgrade payment invalid — refunding');
       const paymentId = await insertPending(trx, {

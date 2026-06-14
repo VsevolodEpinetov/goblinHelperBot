@@ -63,7 +63,7 @@ export async function renderJoinLink(ctx: Context): Promise<void> {
   }
   await editOrReply(
     ctx,
-    '🚪 За какой месяц дверь отпереть? Выбирай — вынесу ключ.',
+    '🚪 За какой месяц дверь отпереть? Выбери и я вынесу ключ.',
     joinLinkKeyboard(subs),
   );
 }

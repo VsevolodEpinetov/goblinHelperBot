@@ -5,7 +5,7 @@ import { homeKeyboard } from '../nav';
 import { logger, metrics } from '../observability';
 
 const USER_ERROR_MESSAGE =
-  '🕯 Что-то хрустнуло в недрах логова — приказ не выполнен. Подожди минуту и попробуй снова.';
+  '🕯 Что-то треснуло в недрах логова — приказ не выполнен. Подожди минуту и попробуй снова.';
 
 export const errorMiddleware: MiddlewareFn<Context> = async (ctx, next) => {
   try {

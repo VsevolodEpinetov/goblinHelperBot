@@ -22,7 +22,7 @@ export function bindChatKeyboard(
     return Markup.inlineKeyboard([
       [
         Markup.button.callback(
-          `⚖️ Метить ${tierWord(tier)} ${period}`,
+          `⚖️ Отметить ${tierWord(tier)} ${period}`,
           router.encode(adminCallback, { a: 'bindHere', period, tier }),
         ),
       ],
@@ -136,7 +136,7 @@ export function userCard(
     ],
     [
       Markup.button.callback(
-        isFriendNow ? 'Отнять дружбу' : '🤝 Сделать другом',
+        isFriendNow ? '📉 Отнять дружбу' : '🤝 Сделать другом',
         router.encode(adminCallback, { a: 'adFriend', id: overview.id, on: !isFriendNow }),
       ),
     ],
@@ -151,7 +151,7 @@ export function monthsKeyboard(months: readonly MonthSummary[]): {
 } {
   if (months.length === 0) {
     return {
-      text: 'Месяцев нет.',
+      text: '📆 Месяцев нет',
       keyboard: Markup.inlineKeyboard([
         [
           Markup.button.callback(

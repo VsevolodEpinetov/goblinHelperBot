@@ -26,7 +26,7 @@ export interface Router {
 
 const MAX_CALLBACK_LEN = 64;
 const SEPARATOR = '|';
-const STALE_CALLBACK_TOAST = '🌑 Кнопка протухла — выкинь её. Жми /start, выдам свежие.';
+const STALE_CALLBACK_TOAST = '🌑 Кнопка протухла. Жми /start, выдам свежую.';
 
 async function answerStale(ctx: Context): Promise<void> {
   try {

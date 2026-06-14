@@ -25,7 +25,7 @@ export function register(_bot: Telegraf): void {
       const cooldown = await getActiveCooldown(db, ctx.from.id);
       if (cooldown) {
         await ctx.answerCbQuery?.(
-          `Рано пришёл — гостинец ты уже хватал. Жди ещё ${formatTimeRemaining(cooldown)}.`,
+          `Рано пришёл — гостинец ты уже брал. Жди ещё ${formatTimeRemaining(cooldown)}.`,
           { show_alert: true },
         );
         return;

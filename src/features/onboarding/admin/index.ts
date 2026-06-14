@@ -72,7 +72,7 @@ export function registerOnboardingAdmin(bot: Telegraf): void {
     }
     const roles = ctx.state.roles ?? [];
     if (!ADMIN_ROLES.some((r) => roles.includes(r))) {
-      await ctx.answerCbQuery?.('Не твоя печать, чужак');
+      await ctx.answerCbQuery?.('Не твоя печать, чужак.');
       return;
     }
 
@@ -80,7 +80,7 @@ export function registerOnboardingAdmin(bot: Telegraf): void {
       switch (payload.a) {
         case 'onAdminHub': {
           await ctx.editMessageText(
-            '⚔️ Зал совета открыт, старейшина. Командуй — всё хозяйство логова на кнопках ниже.',
+            '⚔️ Зал совета открыт, старейшина. Командуй — всё хозяйство логова по кнопкам ниже.',
             { ...adminHubKeyboard() },
           );
           await ctx.answerCbQuery?.();

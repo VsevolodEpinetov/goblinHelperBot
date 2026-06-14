@@ -92,7 +92,7 @@ export async function openBuyScreen(ctx: Context): Promise<void> {
     case 'buy_current':
       await editOrReply(
         ctx,
-        `🪙 Месячный архив за ${period} ещё не у тебя, свой. Выбирай дверь — обычный или расширенный, цена на кнопке. Звёзды в казну — добыча в лапы.`,
+        `🪙 Месячный архив за ${period} ещё не у тебя, гоблин. Выбирай дверь — обычный или расширенный, цена на кнопке. Звёзды в казну — добыча в лапы.`,
         buyKeyboard(today, sbpAllowed, prices),
       );
       return;
@@ -100,7 +100,7 @@ export async function openBuyScreen(ctx: Context): Promise<void> {
     case 'already_regular_old':
       await editOrReply(
         ctx,
-        '🌑 Старые месяцы на полке не держу — таскаю их только по запросу. Загляни в старьё кнопкой ниже.',
+        '🌑 Старые месяцы на полке не держу — достаю их только по запросу. Загляни в старьё по кнопке ниже.',
         oldArchivesKeyboard(),
       );
       return;
@@ -120,7 +120,7 @@ export async function openOldArchivesList(ctx: Context, page = 0): Promise<void>
   if (periods.length === 0) {
     await editOrReply(
       ctx,
-      '📦 Старья пока нет — нечего со дна доставать.',
+      '📦 Древностей пока нет — нечего со дна доставать.',
       backToCurrentKeyboard(),
     );
     return;
@@ -132,7 +132,7 @@ export async function openOldArchivesList(ctx: Context, page = 0): Promise<void>
   );
   await editOrReply(
     ctx,
-    '📚 Старьё с дальних полок. Тыкай, какой архив вытащить. Учти: за старое казна берёт втрое против свежего.',
+    '📚 Древности с дальних полок. Тыкай, какой архив вытащить. Учти: за такое казна берёт втрое больше против свежего.',
     oldMonthsListKeyboard(pageRows, page, hasNext),
   );
 }
@@ -169,7 +169,7 @@ export async function openOldArchiveMonth(
   }
   await editOrReply(
     ctx,
-    `🌑 Архив за ${period} поднял. Бери обычный или расширенный — цена тройная, старьё, на кнопках.`,
+    `🌑 Архив за ${period} поднял. Бери обычный или расширенный — цена древности тройная, на кнопках.`,
     oldMonthTierKeyboard(target, offers, sbpAllowed),
   );
 }

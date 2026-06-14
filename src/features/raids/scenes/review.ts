@@ -122,7 +122,7 @@ reviewScene.action('raid:confirm', async (ctx) => {
     await ctx.answerCbQuery?.();
     await editOrReply(
       ctx,
-      `⚔️ Рейд #${result.raidId} выкинут на доску в логове — теперь гоблины видят его и могут вписаться.`,
+      `⚔️ Рейд #${result.raidId} размещен на доске в логове — теперь гоблины видят его и могут вписаться.`,
       Markup.inlineKeyboard([
         [Markup.button.callback('🛡 Мои рейды', router.encode(raidsCallback, { a: 'raidMine' }))],
         [homeButton()],

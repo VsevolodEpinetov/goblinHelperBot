@@ -66,8 +66,8 @@ export async function renderMyRaids(ctx: Context, page: number): Promise<void> {
   const pageRows = mine.slice(page * RAID_PAGE_SIZE, (page + 1) * RAID_PAGE_SIZE);
   const header =
     mine.length === 0
-      ? '🌑 Своих рейдов у тебя пока нет, свой.'
-      : '🛡 Твои рейды — что затеял или к чему примкнул:';
+      ? '🌑 Своих рейдов у тебя пока нет, гоблин.'
+      : '🛡 Твои рейды — что затеял или к каким присоединился:';
   await editOrReply(ctx, header, myRaidsKeyboard(pageRows, page, hasNext));
 }
 
@@ -103,7 +103,7 @@ export async function renderOpenRaids(ctx: Context, page: number): Promise<void>
   const pageRows = rows.slice(0, RAID_PAGE_SIZE);
   const header =
     pageRows.length === 0
-      ? '🌑 Открытых рейдов сейчас нет — никто в поход не скликает. Загляни позже.'
+      ? '🌑 Открытых рейдов сейчас нет — никто в поход не собирает. Загляни позже.'
       : '⚔️ Открытые рейды — тыкни любой, покажу, что к чему.';
   await editOrReply(ctx, header, raidListKeyboard(pageRows, page, hasNext));
 }

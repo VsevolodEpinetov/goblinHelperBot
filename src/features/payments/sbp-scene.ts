@@ -135,7 +135,7 @@ async function submitProof(
     else await bot.telegram.sendPhoto(draft.adminChatId, file.fileId, extra);
     await ctx.scene.leave();
     await ctx.reply(
-      '🪙 Уволок твой скрин наверх, совету. Зачтут перевод — ключ от архива придёт сам. Жди, не дёргай.',
+      '🪙 Унес твой скрин наверх, совету. Зачтут перевод — ключ от архива придёт сам. Жди, не дёргай.',
       homeKb,
     );
   } catch (err) {

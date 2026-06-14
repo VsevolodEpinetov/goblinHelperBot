@@ -14,7 +14,7 @@ import { pollsCallback } from './schemas';
 
 export function registerAdminRoutes(bot: Telegraf): void {
   bot.command('polls', requireRoles(...POLLS_ROLES), async (ctx) => {
-    await ctx.reply('⚖️ Опросы. Чего велишь, старейшина?', adminMenu());
+    await ctx.reply('⚖️ Опросы. Чего прикажешь, старейшина?', adminMenu());
   });
 
   router.on(pollsCallback, async (ctx, payload) => {
@@ -27,7 +27,7 @@ export function registerAdminRoutes(bot: Telegraf): void {
     try {
       switch (payload.a) {
         case 'polMenu': {
-          await answerThenEdit(ctx, '⚖️ Опросы. Чего велишь, старейшина?', adminMenu());
+          await answerThenEdit(ctx, '⚖️ Опросы. Чего прикажешь, старейшина?', adminMenu());
           break;
         }
         case 'polCoreList': {

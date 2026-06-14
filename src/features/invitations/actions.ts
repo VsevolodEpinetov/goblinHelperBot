@@ -62,7 +62,7 @@ export function registerInvitationActions(): void {
         allAccess || !!(await db('user_groups').where('user_id', ctx.from.id).first());
       if (!hasAnyPaid) {
         await ctx.answerCbQuery?.(
-          '🌑 В главный зал пускают тех, за кем числится хоть один архив. Возьми — и ключ сам принесу.',
+          '🌑 В главный зал пускают тех, за кем числится хоть один архив. Возьми — и ключ сам тебе принесу.',
           { show_alert: true },
         );
         return;
@@ -81,7 +81,7 @@ export function registerInvitationActions(): void {
         await ctx.answerCbQuery?.();
         await editOrReply(
           ctx,
-          '🏰 Держи ключ от главного зала логова. Пустит только тебя — не раздавай.',
+          '🏰 Держи ключ от главного зала нашего логова. Войти сможешь только ты, но все равно другим не давай. ',
           Markup.inlineKeyboard([
             [Markup.button.url('🏰 Войти в логово', main.link)],
             [

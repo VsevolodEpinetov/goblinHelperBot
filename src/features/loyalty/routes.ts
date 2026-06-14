@@ -18,7 +18,7 @@ export async function renderProfile(ctx: Context): Promise<void> {
   if (!profile) {
     await editOrReply(
       ctx,
-      'У тебя пока нет опыта. Шевелись в группах — накопится.',
+      'У тебя пока нет опыта. Шурши в группах и он сам накопится.',
       profileKeyboard(),
     );
     return;

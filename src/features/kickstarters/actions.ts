@@ -45,7 +45,7 @@ export async function renderKsCatalog(ctx: Context): Promise<void> {
   const header =
     rows.length === 0
       ? '🌑 Полки пусты — ни одного кикстартера. Загляни позже.'
-      : '🎯 Кикстартеры на полке — тыкни любой, гляну на него поближе.';
+      : '🎯 Кикстартеры на полке — тыкни любой, покажу его поближе.';
   await answerThenEdit(ctx, header, catalogKeyboard(rows, ownedIds));
 }
 
@@ -55,8 +55,8 @@ export async function renderMyKickstarters(ctx: Context): Promise<void> {
   const rows = await listUserKickstarters(db, ctx.from.id);
   const header =
     rows.length === 0
-      ? '🌑 Кикстартеров ты пока не брал — свитки твои целы.'
-      : '🎯 Твоя добыча с кикстартеров — что уже взял:';
+      ? '🌑 Кикстартеры ты пока не брал — свитки твои целы.'
+      : '🎯 Твоя добыча по кикстартерам — что уже взял:';
   await answerThenEdit(ctx, header, myKickstartersKeyboard(rows));
 }
 
@@ -84,7 +84,7 @@ export function registerKickstarterActions(): void {
         if (!(await ensureApprovedMember(ctx as unknown as Context))) break;
         const ks = await getKickstarterById(db, payload.id);
         if (!ks) {
-          await ctx.answerCbQuery?.('Не найден');
+          await ctx.answerCbQuery?.('Ничего не нашлось');
           return;
         }
         const owned = await hasUserPurchased(db, ctx.from.id, payload.id);
@@ -98,7 +98,7 @@ export function registerKickstarterActions(): void {
         if (!(await ensureApprovedMember(ctx as unknown as Context))) break;
         const ks = await getKickstarterById(db, payload.id);
         if (!ks) {
-          await ctx.answerCbQuery?.('Не найден');
+          await ctx.answerCbQuery?.('Ничего не нашлось');
           return;
         }
         const balance = await getScrollBalance(db, ctx.from.id, DEFAULT_SCROLL_ID);
@@ -110,7 +110,7 @@ export function registerKickstarterActions(): void {
         }
         await answerThenEdit(
           ctx as unknown as Context,
-          `${formatKickstarterCard(ks)}\n\n🎟 Отдашь 1 свиток за этот кикстартер? В запасе у тебя: ${balance}. Назад свиток не вернуть.`,
+          `${formatKickstarterCard(ks)}\\n\\n🎟 Отдашь 1 свиток за этот кикстартер? В сумке у тебя: ${balance}. Назад свиток не отдам.`,
           { parse_mode: 'HTML', ...scrollConfirmKeyboard(ks) },
         );
         break;
@@ -156,7 +156,7 @@ export function registerKickstarterActions(): void {
       }
       case 'ksAdminMenu': {
         if (!isAdmin) {
-          await ctx.answerCbQuery?.('Нет прав');
+          await ctx.answerCbQuery?.('Не дозволено');
           return;
         }
         const ks = await getKickstarterById(db, payload.id);
@@ -173,7 +173,7 @@ export function registerKickstarterActions(): void {
       }
       case 'ksEdit': {
         if (!isAdmin) {
-          await ctx.answerCbQuery?.('Нет прав');
+          await ctx.answerCbQuery?.('Не дозволено');
           return;
         }
         const sceneId = EDIT_SCENE_ID[payload.f];

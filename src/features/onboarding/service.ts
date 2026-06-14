@@ -138,7 +138,7 @@ async function notifyApproval(userId: number): Promise<void> {
 async function notifyRejection(userId: number): Promise<void> {
   await bot.telegram.sendMessage(
     userId,
-    '💀 Совет вынес вердикт: не в этот раз. Имя твоё не высекли на камне. Так решили старейшины.',
+    '💀 Совет вынес вердикт: не в этот раз. Но имя твоё не высекли на камне, можно попробовать в следующий раз. Так решили старейшины.',
   );
 }
 

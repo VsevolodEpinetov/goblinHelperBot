@@ -172,7 +172,7 @@ export function registerPaymentAdminActions(bot: Telegraf): void {
         try {
           await ctx.telegram.sendMessage(
             result.userId,
-            `🪙 Совет глянул твой скрин за ${result.period} — а этот архив у тебя уже есть, звёздами взят. Второй раз в книгу не пишу. Насчёт перевода совет сам с тобой свяжется — жди.`,
+            `🪙 Совет глянул твой скрин за ${result.period} — а этот архив у тебя уже есть, звёздами взят. Второй раз в книгу не запишу. Насчёт перевода совет сам с тобой свяжется — жди.`,
             Markup.inlineKeyboard([[homeButton()]]),
           );
         } catch (dmErr) {
@@ -251,7 +251,7 @@ export function registerPaymentAdminActions(bot: Telegraf): void {
       const rows = await listPendingSbp(db, SBP_QUEUE_LIMIT);
       await ctx.answerCbQuery();
       if (rows.length === 0) {
-        await ctx.reply('🧾 Очередь СБП пуста — ни одной заявки на разборе.', backToHubKeyboard());
+        await ctx.reply('🧾 Очередь СБП пуста — ни одной заявки на разбор.', backToHubKeyboard());
         return;
       }
       await ctx.reply(

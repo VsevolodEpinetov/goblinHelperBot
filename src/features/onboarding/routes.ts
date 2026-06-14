@@ -53,7 +53,7 @@ async function renderStartByStatus(ctx: Context, roles: readonly string[]): Prom
     case 'super':
       await editOrReply(
         ctx,
-        '⚖️ Совет на пороге. Чего велишь, старейшина? Логово твоё — кнопки ниже, админка там же.',
+        '⚖️ Совет на пороге. Чего прикажешь, старейшина? Логово твоё — кнопки ниже, админка там же.',
         adminStartKeyboard(),
       );
       return;

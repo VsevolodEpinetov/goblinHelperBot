@@ -23,7 +23,7 @@ async function promptBindArchive(ctx: Context, rawText: string): Promise<void> {
   const chat = ctx.chat;
   if (!chat || chat.type === 'private') {
     await ctx.reply(
-      '🌑 Не тут. Команду эту ори внутри самого архива — в той группе или канале, что метим. Со мной с глазу на глаз чат не привяжешь.',
+      '🌑 Не тут. Команду эту впиши внутри самого архива — в той группе или канале, что отмечаем. Со мной с глазу на глаз чат не привяжешь.',
     );
     return;
   }
@@ -39,7 +39,7 @@ async function promptBindArchive(ctx: Context, rawText: string): Promise<void> {
   const period = normalizePeriodInput(parts[0]!);
   if (!period) {
     await ctx.reply(
-      `🕯 «<code>${escapeHtml(parts[0]!)}</code>» — не похоже на цикл луны. Жду вида <code>2026_05</code>: год, чёрточка, месяц.`,
+      `🕯 «<code>${escapeHtml(parts[0]!)}</code>» — не похоже на цикл луны. Жду в таком виде <code>2026_05</code>: год, чёрточка, месяц.`,
       { parse_mode: 'HTML' },
     );
     return;
@@ -54,7 +54,7 @@ async function promptBindArchive(ctx: Context, rawText: string): Promise<void> {
     return;
   }
   await ctx.reply(
-    `⚖️ Этот чат — <b>${title}</b> — метим как архив за <b>${period}</b>. Какой закром, велишь? Жми ниже.`,
+    `⚖️ Этот чат — <b>${title}</b> — отметим как архив за <b>${period}</b>. В какой закром тащить велишь? Жми ниже.`,
     { parse_mode: 'HTML', ...bindChatKeyboard(period) },
   );
 }
@@ -75,7 +75,7 @@ export function registerAdminCommands(bot: Telegraf): void {
       const q = parseUserQuery(argv);
       const rows = await searchUsers(db, q, 20);
       if (rows.length === 0) {
-        await ctx.reply('Не найдено.');
+        await ctx.reply('Не найдено');
         return;
       }
       await ctx.reply(`Найдено: ${rows.length}`, userListKeyboard(rows));

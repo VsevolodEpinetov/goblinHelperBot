@@ -6,7 +6,7 @@ import { gateKeyboard } from './nav';
 import { logger } from './observability';
 
 const MEMBER_DENY =
-  '🌑 Стоять, чужак. Это добро для своих. Кнопки ниже — глянь, что тут за место, или сразу ступай на обряд допуска.';
+  '🌑 Стоять, чужак. Это добро для своих. Кнопки ниже — можно посмотреть, что тут за место, или сразу ступай на обряд допуска.';
 
 /**
  * Authorize a member-only callback. Returns true for an approved member;

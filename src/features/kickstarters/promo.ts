@@ -24,7 +24,7 @@ export async function postKickstarterPromo(kickstarterId: number): Promise<void>
   try {
     await bot.telegram.sendMessage(
       fc.adminNotificationsChat,
-      `⚠️ Кикстартер #${kickstarterId} создан, но в логово не выложился. Закинь карточку в топик руками.`,
+      `⚠️ Кикстартер #${kickstarterId} создан, но в логово не выслан. Закинь карточку в топик руками.`,
     );
   } catch (err) {
     logger.error({ err, kickstarterId }, 'postKickstarterPromo: admin alert failed');
