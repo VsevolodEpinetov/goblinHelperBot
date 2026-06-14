@@ -209,36 +209,46 @@ export function backToUserMonthsKeyboard(
   ]);
 }
 
-export function monthsKeyboard(months: readonly MonthSummary[]): {
+/** Months come in pairs (regular + plus per period), so a page of 8 entries
+ * shows four months at a time and keeps the keyboard well under Telegram's limit. */
+const MONTHS_PAGE_SIZE = 8;
+
+export function monthsKeyboard(
+  months: readonly MonthSummary[],
+  page = 0,
+): {
   text: string;
   keyboard: ReturnType<typeof Markup.inlineKeyboard>;
 } {
+  const addRow = [
+    Markup.button.callback('➕ Добавить месяц', router.encode(adminCallback, { a: 'adAddMonth' })),
+  ];
+  const backRow = [
+    Markup.button.callback(
+      '« В зал совета',
+      router.encode(onboardingAdminCallback, { a: 'onAdminHub' }),
+    ),
+  ];
   if (months.length === 0) {
     return {
       text: '📆 Месяцев нет',
-      keyboard: Markup.inlineKeyboard([
-        [
-          Markup.button.callback(
-            '➕ Добавить месяц',
-            router.encode(adminCallback, { a: 'adAddMonth' }),
-          ),
-        ],
-      ]),
+      keyboard: Markup.inlineKeyboard([addRow, backRow]),
     };
   }
-  const lines = months.map(
+
+  const maxPage = Math.max(0, Math.ceil(months.length / MONTHS_PAGE_SIZE) - 1);
+  const current = Math.min(Math.max(page, 0), maxPage);
+  const start = current * MONTHS_PAGE_SIZE;
+  const pageMonths = months.slice(start, start + MONTHS_PAGE_SIZE);
+
+  const header = maxPage > 0 ? `📆 Месяцы (стр. ${current + 1}/${maxPage + 1}):` : '📆 Месяцы:';
+  const lines = pageMonths.map(
     (m) =>
       `${m.period}/${m.type}: chat=${m.chatId ?? '—'} joined=${m.counterJoined} paid=${m.counterPaid}`,
   );
-  const buttons: ReturnType<typeof Markup.button.callback>[][] = [
-    [
-      Markup.button.callback(
-        '➕ Добавить месяц',
-        router.encode(adminCallback, { a: 'adAddMonth' }),
-      ),
-    ],
-  ];
-  for (const m of months) {
+
+  const buttons: ReturnType<typeof Markup.button.callback>[][] = [addRow];
+  for (const m of pageMonths) {
     buttons.push([
       Markup.button.callback(
         m.chatId
@@ -252,5 +262,20 @@ export function monthsKeyboard(months: readonly MonthSummary[]): {
       ),
     ]);
   }
-  return { text: lines.join('\n'), keyboard: Markup.inlineKeyboard(buttons) };
+
+  const nav: ReturnType<typeof Markup.button.callback>[] = [];
+  if (current > 0) {
+    nav.push(
+      Markup.button.callback('«', router.encode(adminCallback, { a: 'adMonths', page: current - 1 })),
+    );
+  }
+  if (start + MONTHS_PAGE_SIZE < months.length) {
+    nav.push(
+      Markup.button.callback('»', router.encode(adminCallback, { a: 'adMonths', page: current + 1 })),
+    );
+  }
+  if (nav.length > 0) buttons.push(nav);
+  buttons.push(backRow);
+
+  return { text: [header, ...lines].join('\n'), keyboard: Markup.inlineKeyboard(buttons) };
 }

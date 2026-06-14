@@ -183,7 +183,7 @@ function memberHubRows(): ReturnType<typeof Markup.button.callback>[][] {
     ],
     [
       Markup.button.callback(
-        '🚪 Ключ от ворот',
+        '🚪 Войти в архивы',
         router.encode(invitationsCallback, { a: 'inviteMenu' }),
       ),
       Markup.button.callback('🎁 Гостинец', router.encode(promoCallback, { a: 'promoGet' })),

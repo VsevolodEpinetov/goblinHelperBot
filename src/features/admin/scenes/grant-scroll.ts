@@ -1,6 +1,7 @@
 import { Markup, Scenes } from 'telegraf';
 
 import { logger } from '../../../core/observability';
+import { escapeHtml } from '../../../shared/format';
 import { homeRow } from '../../onboarding/menus';
 import { KNOWN_SCROLL_IDS } from '../../scrolls/service';
 import { backToUserKeyboard } from '../menus';
@@ -19,9 +20,13 @@ grantScrollScene.enter(async (ctx) => {
     await ctx.scene.leave();
     return;
   }
+  // HTML, not Markdown: an underscore in any scroll id would open an italic
+  // entity legacy Markdown never closes and Telegram would reject the send.
   await ctx.reply(
-    `📜 Какой свиток и сколько? Формат: \`<scrollId> <amount>\`, например \`kickstarter 1\`. В ходу: ${KNOWN_SCROLL_IDS.join(', ')}. Отмена — /cancel.`,
-    { parse_mode: 'Markdown' },
+    `📜 Какой свиток и сколько? Формат: <code>&lt;scrollId&gt; &lt;amount&gt;</code>, например <code>kickstarter 1</code>. В ходу: ${escapeHtml(
+      KNOWN_SCROLL_IDS.join(', '),
+    )}. Отмена — /cancel.`,
+    { parse_mode: 'HTML' },
   );
 });
 

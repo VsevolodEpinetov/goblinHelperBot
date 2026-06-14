@@ -86,7 +86,7 @@ export function registerInvitationActions(): void {
             [Markup.button.url('🏰 Войти в логово', main.link)],
             [
               Markup.button.callback(
-                '🚪 Ключи от архивов',
+                '🚪 Войти в архивы',
                 router.encode(invitationsCallback, { a: 'inviteMenu' }),
               ),
             ],

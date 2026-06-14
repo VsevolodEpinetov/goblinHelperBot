@@ -182,7 +182,7 @@ export function registerAdminActions(): void {
           break;
         case 'adMonths': {
           const months = await listMonths(db);
-          const { text, keyboard } = monthsKeyboard(months);
+          const { text, keyboard } = monthsKeyboard(months, payload.page ?? 0);
           await ctx.editMessageText(text, { ...keyboard });
           await ctx.answerCbQuery?.();
           break;

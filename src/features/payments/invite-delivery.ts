@@ -44,7 +44,7 @@ export async function deliverAccessKeys(opts: {
         const who = escapeHtml(u?.username ? `@${u.username}` : `id:${userId}`);
         await telegram.sendMessage(
           adminChat,
-          `⚠️ <b>Архив без двери</b>\\nГоблин ${who} оплатил ${period}/${type}, но чат месяца не привязан — ключ выдать некуда. Привяжи группу через /admin → Months.`,
+          `⚠️ <b>Архив без двери</b>\nГоблин ${who} оплатил ${period}/${type}, но чат месяца не привязан — ключ выдать некуда. Привяжи группу через /admin → Months.`,
           { parse_mode: 'HTML' },
         );
       }
@@ -56,7 +56,7 @@ export async function deliverAccessKeys(opts: {
       if (main.status === 'created') {
         await telegram.sendMessage(
           userId,
-          `🔥 Ну всё, ты теперь свой. Логово тебя приняло.\\nВнизу два ключа — каждый пускает только тебя и только один раз.\\nПервый — в главный зал, где собираются все. Второй — в месячный архив за ${period}, что ты взял.`,
+          `🔥 Ну всё, ты теперь свой. Логово тебя приняло.\nВнизу два ключа — каждый пускает только тебя и только один раз.\nПервый — в главный зал, где собираются все. Второй — в месячный архив за ${period}, что ты взял.`,
           Markup.inlineKeyboard([
             [Markup.button.url('🏰 Войти в логово', main.link)],
             [Markup.button.url('🔑 Открыть архив ключом', result.link)],
@@ -103,7 +103,7 @@ export async function deliverAccessKeys(opts: {
         const reason = escapeHtml(err instanceof Error ? err.message : String(err));
         await telegram.sendMessage(
           adminChat,
-          `⚠️ <b>Ключ не доставлен</b>\\nГоблин ${who} оплатил ${period}/${type}, доступ записан, но выдать ключ не вышло: ${reason}`,
+          `⚠️ <b>Ключ не доставлен</b>\nГоблин ${who} оплатил ${period}/${type}, доступ записан, но выдать ключ не вышло: ${reason}`,
           { parse_mode: 'HTML' },
         );
       } catch (alertErr) {

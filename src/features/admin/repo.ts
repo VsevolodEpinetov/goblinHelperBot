@@ -55,7 +55,7 @@ export interface MonthSummary {
   counterPaid: number;
 }
 
-export async function listMonths(conn: DbConn, limit = 30): Promise<MonthSummary[]> {
+export async function listMonths(conn: DbConn, limit = 500): Promise<MonthSummary[]> {
   const rows = await conn('months').orderBy('period', 'desc').limit(limit);
   return rows.map((r: Record<string, unknown>) => ({
     id: Number(r.id),

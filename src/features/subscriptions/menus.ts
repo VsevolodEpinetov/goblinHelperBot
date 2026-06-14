@@ -67,6 +67,8 @@ export function buyKeyboard(
     ]);
   }
   rows.push(oldArchivesRow());
+  // The «enter» half: a paid member coming to the store needs the join link here too.
+  rows.push(archiveKeysRow());
   rows.push(homeRow());
   return Markup.inlineKeyboard(rows);
 }
@@ -81,12 +83,12 @@ function oldArchivesRow(): ReturnType<typeof Markup.button.callback>[] {
   ];
 }
 
-/** «🚪 Ключи от архивов» row — the «enter» half of the buy/enter pair, shown on
- * screens where the member already owns something and the next job is getting in. */
+/** «🚪 Войти в архивы» row — the «enter» half of the buy/enter pair: it opens the
+ * screen that mints a personal join link into each group the member has paid for. */
 function archiveKeysRow(): ReturnType<typeof Markup.button.callback>[] {
   return [
     Markup.button.callback(
-      '🚪 Ключи от архивов',
+      '🚪 Войти в архивы',
       router.encode(invitationsCallback, { a: 'inviteMenu' }),
     ),
   ];

@@ -129,15 +129,15 @@ export async function getUserBasic(
   };
 }
 
-/** The user's 1-based leaderboard position, or null when they have no XP row.
+/** The user's 1-based leaderboard position. A user with no XP row counts as 0 XP,
+ * tied at the very bottom — so there is always a place to show them.
  * Ties share a rank (everyone with strictly more XP counts ahead). */
 export async function getUserRank(
   conn: DbConn,
   userId: number,
-): Promise<{ rank: number; totalXp: number } | null> {
+): Promise<{ rank: number; totalXp: number }> {
   const me = await conn('user_levels').where('user_id', userId).first('total_xp');
-  if (!me) return null;
-  const totalXp = me.total_xp as number;
+  const totalXp = (me?.total_xp as number | undefined) ?? 0;
   const [ahead] = await conn('user_levels').where('total_xp', '>', totalXp).count('* as count');
   return { rank: Number((ahead as { count: string | number }).count) + 1, totalXp };
 }

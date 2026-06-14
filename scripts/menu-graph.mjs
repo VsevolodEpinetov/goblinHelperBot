@@ -282,14 +282,14 @@ const SCREENS = [
   ], texts: ['⚔️ Рейд #<N> выкинут на доску в логове — теперь гоблины видят его и могут вписаться.'] },
 
   // invitations
-  { id: 'inviteMenu', label: '🚪 Ключ от ворот', kind: 'inv', builders: ['joinLinkKeyboard'] },
+  { id: 'inviteMenu', label: '🚪 Войти в архивы', kind: 'inv', builders: ['joinLinkKeyboard'] },
   { id: 'inviteGet', label: '🔑 Ссылка на архив', kind: 'inv', inline: [
     { label: '🚪 Другой месяц', target: 'inviteMenu' },
     { label: '« В логово', target: 'onHome' },
   ], texts: ['Готово, держи ссылку: <ссылка>', 'Твоя ссылка: <ссылка>  (если уже была выдана)'] },
   { id: 'inviteMain', label: '🏰 Ключ от главного зала', kind: 'inv', inline: [
     { label: '🏰 Войти в логово', target: 'EXTERNAL(url)' },
-    { label: '🚪 Ключи от архивов', target: 'inviteMenu' },
+    { label: '🚪 Войти в архивы', target: 'inviteMenu' },
     { label: '« В логово', target: 'onHome' },
   ], texts: ['🏰 Держи ключ от главного зала логова. Пустит только тебя — не раздавай.'] },
 

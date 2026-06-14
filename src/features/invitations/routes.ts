@@ -28,7 +28,7 @@ export async function accessiblePeriods(
 
 /**
  * Show the member their accessible periods as buttons; tapping one mints/returns
- * its invite link. Shared by the /joinlink command and the 🚪 Ключ от ворот hub
+ * its invite link. Shared by the /joinlink command and the 🚪 Войти в архивы hub
  * button so members never need to type the command.
  */
 export async function renderJoinLink(ctx: Context): Promise<void> {

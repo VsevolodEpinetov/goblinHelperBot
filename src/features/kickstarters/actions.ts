@@ -110,7 +110,7 @@ export function registerKickstarterActions(): void {
         }
         await answerThenEdit(
           ctx as unknown as Context,
-          `${formatKickstarterCard(ks)}\\n\\n🎟 Отдашь 1 свиток за этот кикстартер? В сумке у тебя: ${balance}. Назад свиток не отдам.`,
+          `${formatKickstarterCard(ks)}\n\n🎟 Отдашь 1 свиток за этот кикстартер? В сумке у тебя: ${balance}. Назад свиток не отдам.`,
           { parse_mode: 'HTML', ...scrollConfirmKeyboard(ks) },
         );
         break;

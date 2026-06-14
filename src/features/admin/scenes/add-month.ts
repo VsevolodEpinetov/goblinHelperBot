@@ -10,8 +10,10 @@ export const ADD_MONTH_SCENE_ID = 'admin:add-month';
 export const addMonthScene = new Scenes.BaseScene<Scenes.SceneContext>(ADD_MONTH_SCENE_ID);
 
 addMonthScene.enter(async (ctx) => {
-  await ctx.reply('Введи период (YYYY_MM), напр. `2026_06`. Или /cancel.', {
-    parse_mode: 'Markdown',
+  // HTML, not Markdown: the underscore in YYYY_MM opens an italic entity in
+  // legacy Markdown that never closes, and Telegram rejects the whole send.
+  await ctx.reply('Введи период (YYYY_MM), напр. <code>2026_06</code>. Или /cancel.', {
+    parse_mode: 'HTML',
   });
 });
 

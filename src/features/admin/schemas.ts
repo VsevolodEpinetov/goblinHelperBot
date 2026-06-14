@@ -28,7 +28,7 @@ export const adminCallback = z.discriminatedUnion('a', [
     tier: z.enum(['regular', 'plus']),
   }),
   z.object({ a: z.literal('bindCancel') }),
-  z.object({ a: z.literal('adMonths') }),
+  z.object({ a: z.literal('adMonths'), page: z.number().int().min(0).optional() }),
   z.object({ a: z.literal('adAddMonth') }),
   z.object({ a: z.literal('adFind') }),
   z.object({ a: z.literal('adKsAdd') }),

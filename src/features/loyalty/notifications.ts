@@ -80,7 +80,7 @@ export async function sendLevelUpNotification(userId: number, event: LevelUpEven
     const emoji = tier?.emoji ?? '';
     const display = tier?.displayName ?? event.toTier;
     await announceToRpgTopic(
-      `${emoji} Бей в барабаны! ${user} вознёсся в ${escapeHtml(display)} — уровень ${event.toLevel}!\\nТакое высекают на камне. Старейшины запомнят твои достижения.`,
+      `${emoji} Бей в барабаны! ${user} вознёсся в ${escapeHtml(display)} — уровень ${event.toLevel}!\nТакое высекают на камне. Старейшины запомнят твои достижения.`,
     );
     try {
       await bot.telegram.sendMessage(

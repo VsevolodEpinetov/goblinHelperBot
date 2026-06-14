@@ -3,6 +3,7 @@ import { Markup } from 'telegraf';
 import { router } from '../../core/router';
 import { escapeHtml, formatUserDisplay } from '../../shared/format';
 import { tierByName } from '../../shared/loyalty-config';
+import { invitationsCallback } from '../invitations/schemas';
 import { homeButton } from '../onboarding/menus';
 
 import type { LeaderboardEntry } from './repo';
@@ -11,6 +12,12 @@ import { loyaltyCallback } from './schemas';
 /** Profile card nav: jump to the leaderboard or back to the hub. */
 export function profileKeyboard(): ReturnType<typeof Markup.inlineKeyboard> {
   return Markup.inlineKeyboard([
+    [
+      Markup.button.callback(
+        '🚪 Войти в архивы',
+        router.encode(invitationsCallback, { a: 'inviteMenu' }),
+      ),
+    ],
     [
       Markup.button.callback(
         '🏆 Лучшие в логове',
@@ -54,7 +61,7 @@ export function profileText(profile: {
       ? `📜 Свитки: ${profile.scrollCount} — трать на кикстартеры.`
       : '📜 Свитков нет — заслужи.',
     profile.archiveCount > 0
-      ? `🗝 Твоя добыча: архивов — ${profile.archiveCount}. Ключи от них живут за кнопкой «🚪 Ключ от ворот».`
+      ? `🗝 Твоя добыча: архивов — ${profile.archiveCount}. Ссылки в них живут за кнопкой «🚪 Войти в архивы».`
       : '🕸 Архивов за тобой пока нет — сундук пуст. Плати звёзды в казну, будет и добыча.',
   );
   return lines.join('\n');
@@ -81,12 +88,12 @@ export function leaderboardText(
     return `${i + 1}. ${emoji} ${name} — ${r.totalXp} опыта${you}`;
   });
   // The viewer's own standing, so the screen is never just other people's glory.
-  if (viewerId !== undefined && !rows.some((r) => r.userId === viewerId)) {
+  if (viewerId !== undefined && viewerRank && !rows.some((r) => r.userId === viewerId)) {
     lines.push(
       '',
-      viewerRank
-        ? `👁‍🗨 Твоё место в стае — ${viewerRank.rank}-е, опыта набрал ${viewerRank.totalXp}. До верхушки ещё карабкаться и карабкаться .`
-        : '🕯 А тебя в этом списке нет — следов не оставил. Подай голос в чатах логова: опыт капает за каждое слово.',
+      viewerRank.totalXp > 0
+        ? `👁‍🗨 Твоё место в стае — ${viewerRank.rank}-е, опыта набрал ${viewerRank.totalXp}. До верхушки ещё карабкаться и карабкаться.`
+        : `🌑 Ты в самом хвосте, ${viewerRank.rank}-е место, опыта пока 0 — следов ещё не оставил. Подай голос в чатах логова: опыт капает за каждое слово.`,
     );
   }
   return lines.join('\n');
