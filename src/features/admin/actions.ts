@@ -12,11 +12,12 @@ import { isStaff } from '../../shared/user-status';
 import { KS_ADD_CHAIN } from '../kickstarters/scenes/add-chain';
 import { homeRow } from '../onboarding/menus';
 
-import { backToHubKeyboard, monthsKeyboard, userCard } from './menus';
+import { backToHubKeyboard, monthsKeyboard, userCard, userMonthsScreen } from './menus';
 import { listMonths } from './repo';
 import { ADD_MONTH_SCENE_ID } from './scenes/add-month';
 import { CHANGE_BALANCE_SCENE_ID } from './scenes/change-balance';
 import { FIND_USER_SCENE_ID } from './scenes/find-user';
+import { GRANT_MONTH_SCENE_ID } from './scenes/grant-month';
 import { GRANT_ROLE_SCENE_ID } from './scenes/grant-role';
 import { GRANT_SCROLL_SCENE_ID } from './scenes/grant-scroll';
 import { SET_MONTH_CHAT_SCENE_ID } from './scenes/set-month-chat';
@@ -25,8 +26,10 @@ import {
   adminGrantAchievement,
   adminGrantRole,
   adminRemoveRole,
+  adminRevokeMonth,
   bindArchiveChat,
   getUserOverview,
+  listUserMonths,
   tierWord,
 } from './service';
 
@@ -90,6 +93,35 @@ export function registerAdminActions(): void {
               logger.warn({ dmErr, userId: payload.id }, 'adGrantAch: member DM failed');
             }
           }
+          break;
+        }
+        case 'adUMon': {
+          const months = await listUserMonths(payload.id);
+          const { text, keyboard } = userMonthsScreen(payload.id, months);
+          await ctx.editMessageText(text, { parse_mode: 'HTML', ...keyboard });
+          await ctx.answerCbQuery?.();
+          break;
+        }
+        case 'adGMon': {
+          await ctx.answerCbQuery?.();
+          const tiers: ('regular' | 'plus')[] =
+            payload.t === 'both' ? ['regular', 'plus'] : [payload.t];
+          await (ctx as unknown as Scenes.SceneContext).scene.enter(GRANT_MONTH_SCENE_ID, {
+            userId: payload.id,
+            tiers,
+          });
+          break;
+        }
+        case 'adRMon': {
+          const removed = await adminRevokeMonth(payload.id, payload.period, payload.tier);
+          await ctx.answerCbQuery?.(
+            removed
+              ? '⚔️ Месяц отнят. Гоблин его больше не нащупает.'
+              : '🌑 Нечего отнимать — такого месяца у гоблина и не водилось.',
+          );
+          const months = await listUserMonths(payload.id);
+          const { text, keyboard } = userMonthsScreen(payload.id, months);
+          await ctx.editMessageText(text, { parse_mode: 'HTML', ...keyboard });
           break;
         }
         case 'adFriend': {

@@ -26,6 +26,9 @@ const PRIORITY: ReadonlyArray<{ role: string; display: StatusDisplay }> = [
   { role: 'alumni', display: { code: 'alumni', emoji: '🎓', text: 'Выпускник' } },
   { role: 'friend', display: { code: 'friend', emoji: '🤝', text: 'Друг логова' } },
   { role: 'preapproved', display: { code: 'preapproved', emoji: '✅', text: 'Одобрен' } },
+  // `goblin` — the legacy base "approved member" role (old JS bot). Treated
+  // exactly like `preapproved`: full member, routed to the member hub.
+  { role: 'goblin', display: { code: 'preapproved', emoji: '✅', text: 'Одобрен' } },
   { role: 'pending', display: { code: 'pending', emoji: '⏳', text: 'Заявка на рассмотрении' } },
   { role: 'rejected', display: { code: 'rejected', emoji: '🙅', text: 'Отклонён' } },
 ];
@@ -42,6 +45,7 @@ export function isMember(roles: readonly string[]): boolean {
   const set = new Set(roles);
   return (
     set.has('preapproved') ||
+    set.has('goblin') ||
     set.has('friend') ||
     set.has('admin') ||
     set.has('adminPlus') ||
@@ -74,6 +78,7 @@ export function hasAllArchiveAccess(roles: readonly string[]): boolean {
 
 const APPROVED_ROLES = new Set([
   'preapproved',
+  'goblin', // legacy base member role — see PRIORITY note above.
   'alumni',
   'friend',
   'regular',

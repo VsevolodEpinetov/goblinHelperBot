@@ -12,6 +12,15 @@ export const adminCallback = z.discriminatedUnion('a', [
   }),
   z.object({ a: z.literal('adChangeBalance'), id: z.number().int() }),
   z.object({ a: z.literal('adFriend'), id: z.number().int(), on: z.boolean() }),
+  // Per-user month (archive access) management on the user card.
+  z.object({ a: z.literal('adUMon'), id: z.number().int() }),
+  z.object({ a: z.literal('adGMon'), id: z.number().int(), t: z.enum(['regular', 'plus', 'both']) }),
+  z.object({
+    a: z.literal('adRMon'),
+    id: z.number().int(),
+    period: z.string(),
+    tier: z.enum(['regular', 'plus']),
+  }),
   // In-chat archive binding (/this_is): tapped inside the target group/channel.
   z.object({
     a: z.literal('bindHere'),

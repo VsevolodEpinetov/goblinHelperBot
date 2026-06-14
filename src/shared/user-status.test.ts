@@ -102,6 +102,29 @@ describe('shared.user-status.isApprovedMember', () => {
   });
 });
 
+describe('shared.user-status legacy "goblin" role', () => {
+  it('is a full approved member, displayed like preapproved', () => {
+    expect(isApprovedMember(['goblin'])).toBe(true);
+    expect(isMember(['goblin'])).toBe(true);
+    expect(getStatusDisplay(['goblin']).code).toBe('preapproved');
+  });
+
+  it('outranks pending/rejected so a legacy member is never gated', () => {
+    expect(getStatusDisplay(['rejected', 'goblin']).code).toBe('preapproved');
+    expect(getStatusDisplay(['pending', 'goblin']).code).toBe('preapproved');
+  });
+
+  it('still loses to banned and staff', () => {
+    expect(getStatusDisplay(['banned', 'goblin']).code).toBe('banned');
+    expect(getStatusDisplay(['admin', 'goblin']).code).toBe('admin');
+  });
+
+  it('is not staff and has no comped all-archive access', () => {
+    expect(isStaff(['goblin'])).toBe(false);
+    expect(hasAllArchiveAccess(['goblin'])).toBe(false);
+  });
+});
+
 describe('shared.user-status.isStaff', () => {
   it('true for admin/adminPlus/super', () => {
     expect(isStaff(['admin'])).toBe(true);

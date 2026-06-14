@@ -140,9 +140,73 @@ export function userCard(
         router.encode(adminCallback, { a: 'adFriend', id: overview.id, on: !isFriendNow }),
       ),
     ],
-    [Markup.button.callback('💳 Платежи', `pay:hist:${overview.id}`)],
+    [
+      Markup.button.callback(
+        '📆 Месяцы',
+        router.encode(adminCallback, { a: 'adUMon', id: overview.id }),
+      ),
+      Markup.button.callback('💳 Платежи', `pay:hist:${overview.id}`),
+    ],
   ]);
   return { text, keyboard };
+}
+
+/** Per-user months screen: what archives they hold, plus grant/revoke controls. */
+export function userMonthsScreen(
+  userId: number,
+  months: readonly { period: string; tier: 'regular' | 'plus' }[],
+): { text: string; keyboard: ReturnType<typeof Markup.inlineKeyboard> } {
+  const text =
+    months.length === 0
+      ? '🌑 Пусто. Ни одного месяца за гоблином не записано.'
+      : [
+          '📜 Месяцы, что числятся за этим гоблином:',
+          '',
+          ...months.map((m) => `• <b>${m.period}</b> — ${tierWord(m.tier)}`),
+        ].join('\n');
+
+  const rows: ReturnType<typeof Markup.button.callback>[][] = [
+    [
+      Markup.button.callback(
+        '➕ 🪙 Обычный',
+        router.encode(adminCallback, { a: 'adGMon', id: userId, t: 'regular' }),
+      ),
+      Markup.button.callback(
+        '➕ 💎 Расш.',
+        router.encode(adminCallback, { a: 'adGMon', id: userId, t: 'plus' }),
+      ),
+      Markup.button.callback(
+        '➕ Оба',
+        router.encode(adminCallback, { a: 'adGMon', id: userId, t: 'both' }),
+      ),
+    ],
+  ];
+  for (const m of months) {
+    rows.push([
+      Markup.button.callback(
+        `➖ ${m.period} / ${tierWord(m.tier)}`,
+        router.encode(adminCallback, { a: 'adRMon', id: userId, period: m.period, tier: m.tier }),
+      ),
+    ]);
+  }
+  rows.push([
+    Markup.button.callback('« К гоблину', router.encode(adminCallback, { a: 'adUser', id: userId })),
+  ]);
+  return { text, keyboard: Markup.inlineKeyboard(rows) };
+}
+
+/** Scene-exit nav: back to the user's months screen. */
+export function backToUserMonthsKeyboard(
+  userId: number,
+): ReturnType<typeof Markup.inlineKeyboard> {
+  return Markup.inlineKeyboard([
+    [
+      Markup.button.callback(
+        '« К месяцам гоблина',
+        router.encode(adminCallback, { a: 'adUMon', id: userId }),
+      ),
+    ],
+  ]);
 }
 
 export function monthsKeyboard(months: readonly MonthSummary[]): {

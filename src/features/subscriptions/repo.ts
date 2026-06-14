@@ -36,6 +36,36 @@ export async function listUserSubscriptions(
   }));
 }
 
+/**
+ * Grant a single (period, tier) membership. Idempotent via
+ * UNIQUE(user_id, period, type) — mirrors the insert in payments/service.ts.
+ * Returns true when a new row was created, false when it already existed.
+ */
+export async function grantMonth(
+  conn: DbConn,
+  userId: number,
+  period: string,
+  tier: SubscriptionTier,
+): Promise<boolean> {
+  const rows = await conn('user_groups')
+    .insert({ user_id: userId, period, type: tier })
+    .onConflict(['user_id', 'period', 'type'])
+    .ignore()
+    .returning('user_id');
+  return rows.length > 0;
+}
+
+/** Revoke a single (period, tier) membership. Returns true when a row was removed. */
+export async function revokeMonth(
+  conn: DbConn,
+  userId: number,
+  period: string,
+  tier: SubscriptionTier,
+): Promise<boolean> {
+  const n = await conn('user_groups').where({ user_id: userId, period, type: tier }).delete();
+  return n > 0;
+}
+
 export async function getMonthChatId(
   conn: DbConn,
   period: string,

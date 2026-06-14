@@ -6,6 +6,12 @@ import { parsePeriod } from '../../shared/period';
 import { grantAchievement, userHasAchievement } from '../achievements';
 import { giveScroll } from '../scrolls';
 import { isKnownScrollId, KNOWN_SCROLL_IDS } from '../scrolls/service';
+import {
+  grantMonth,
+  listUserSubscriptions,
+  revokeMonth,
+  type SubscriptionTier,
+} from '../subscriptions/repo';
 
 import { setUserBalance } from './repo';
 
@@ -13,6 +19,7 @@ const KNOWN_ROLES = [
   'newbie',
   'pending',
   'preapproved',
+  'goblin', // legacy base member role (old JS bot); equivalent to preapproved.
   'rejected',
   'regular',
   'plus',
@@ -216,4 +223,29 @@ export async function adminGrantAchievement(
 
 export async function adminSetBalance(userId: number, balance: number): Promise<void> {
   await setUserBalance(db, userId, balance);
+}
+
+/** The (period, tier) memberships a user currently holds, newest period first. */
+export async function listUserMonths(
+  userId: number,
+): Promise<Array<{ period: string; tier: SubscriptionTier }>> {
+  return listUserSubscriptions(db, userId);
+}
+
+/** Manually grant a month (archive access). True when newly granted. */
+export async function adminGrantMonth(
+  userId: number,
+  period: string,
+  tier: SubscriptionTier,
+): Promise<boolean> {
+  return grantMonth(db, userId, period, tier);
+}
+
+/** Manually revoke a month (archive access). True when a row was removed. */
+export async function adminRevokeMonth(
+  userId: number,
+  period: string,
+  tier: SubscriptionTier,
+): Promise<boolean> {
+  return revokeMonth(db, userId, period, tier);
 }
