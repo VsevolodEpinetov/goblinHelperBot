@@ -1,8 +1,3 @@
-import 'dotenv/config';
-
-import knexLib from 'knex';
-import type { Knex } from 'knex';
-
 /*
  * Backfill: every buyer of the EXTENDED (plus) archive should also hold the
  * BASIC (regular) archive for the same month — the plus price covers both
@@ -14,27 +9,20 @@ import type { Knex } from 'knex';
  * Periods are `YYYY_MM` strings (zero-padded month). Idempotent: re-running adds
  * nothing once every plus buyer has their regular row.
  *
+ * Connects via the app's own db client (src/db/client.ts), so it uses the exact
+ * same credentials/env fallbacks (DB_* then PG*) the bot and migrations use.
+ *
  * Usage:
  *   tsx scripts/backfill-regular-groups.ts            # DRY RUN — report only
  *   tsx scripts/backfill-regular-groups.ts --apply    # actually insert rows
  */
 
+import { db } from '../src/db/client';
+
 const START_PERIOD = '2026_01';
 const END_PERIOD = '2026_06';
 
 const APPLY = process.argv.includes('--apply');
-
-const db: Knex = knexLib({
-  client: 'pg',
-  connection: {
-    host: process.env.DB_HOST ?? 'localhost',
-    port: process.env.DB_PORT ? Number(process.env.DB_PORT) : 5432,
-    database: process.env.DB_NAME ?? 'goblin_bot',
-    user: process.env.DB_USER ?? 'goblin',
-    password: process.env.DB_PASSWORD ?? '',
-  },
-  pool: { min: 0, max: 5 },
-});
 
 /** Inclusive list of `YYYY_MM` periods between two `YYYY_MM` bounds. */
 function periodsInRange(start: string, end: string): string[] {
