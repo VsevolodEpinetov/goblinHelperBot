@@ -12,7 +12,7 @@ import { subscriptionsCallback } from '../subscriptions/schemas';
 
 import { deliverAccessKeys } from './invite-delivery';
 import { listForUser, listPendingSbp } from './repo';
-import { xpForSubscriptionPayment } from './service';
+import { entitledTiers, xpForSubscriptionPayment } from './service';
 
 const SBP_QUEUE_LIMIT = 10;
 
@@ -115,12 +115,13 @@ export function registerPaymentAdminActions(bot: Telegraf): void {
           };
         }
 
+        // A plus transfer also grants the regular group — the plus price is the
+        // price for both. Mirrors the Stars path in payments/service.ts.
+        const grantTiers = entitledTiers(row.subscription_type);
         await trx('user_groups')
-          .insert({
-            user_id: row.user_id,
-            period: row.period,
-            type: row.subscription_type,
-          })
+          .insert(
+            grantTiers.map((type) => ({ user_id: row.user_id, period: row.period, type })),
+          )
           .onConflict(['user_id', 'period', 'type'])
           .ignore();
         await trx('months')
@@ -149,13 +150,14 @@ export function registerPaymentAdminActions(bot: Telegraf): void {
         dispatchNotifications(result.userId, result.xp, 'payment_sub_sbp');
         await ctx.answerCbQuery('Подтверждено');
         await ctx.editMessageCaption(verdictCaption(ctx, paymentId, '✅ перевод зачтён'), queueKb);
-        // Hand the buyer their archive key (+ main-group key on first payment),
-        // the same delivery the Stars path does.
+        // Hand the buyer their archive key(s) (+ main-group key on first
+        // payment), the same delivery the Stars path does. A plus transfer
+        // yields both the regular and plus keys.
         await deliverAccessKeys({
           telegram: ctx.telegram,
           userId: result.userId,
           period: result.period,
-          type: result.type,
+          types: entitledTiers(result.type),
         });
       } else if (result.reason === 'already_owned') {
         await ctx.answerCbQuery('За этот архив уже плачено звёздами — перевод верни руками', {

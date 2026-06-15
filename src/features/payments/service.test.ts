@@ -10,6 +10,7 @@ import {
   decodePayload,
   computeOldMonthMultiplier,
   accessGroupForPayload,
+  entitledTiers,
   processSubscriptionPayment,
   processUpgradePayment,
   processKickstarterPayment,
@@ -124,23 +125,33 @@ describe('payments.service.encodePayload / decodePayload', () => {
   });
 });
 
-describe('payments.service.accessGroupForPayload', () => {
-  it('maps a subscription to its period + tier', () => {
-    expect(
-      accessGroupForPayload({ t: 'sub', userId: 1, period: '2026_05', tier: 'regular' }),
-    ).toEqual({ period: '2026_05', type: 'regular' });
+describe('payments.service.entitledTiers', () => {
+  it('grants only regular for a regular purchase', () => {
+    expect(entitledTiers('regular')).toEqual(['regular']);
   });
 
-  it('maps an old-month purchase to its period + tier', () => {
+  it('bundles regular into a plus purchase (plus price covers both groups)', () => {
+    expect(entitledTiers('plus')).toEqual(['regular', 'plus']);
+  });
+});
+
+describe('payments.service.accessGroupForPayload', () => {
+  it('maps a regular subscription to the regular group only', () => {
+    expect(
+      accessGroupForPayload({ t: 'sub', userId: 1, period: '2026_05', tier: 'regular' }),
+    ).toEqual({ period: '2026_05', types: ['regular'] });
+  });
+
+  it('maps a plus old-month purchase to both the regular and plus groups', () => {
     expect(accessGroupForPayload({ t: 'old', userId: 1, period: '2025_09', tier: 'plus' })).toEqual(
-      { period: '2025_09', type: 'plus' },
+      { period: '2025_09', types: ['regular', 'plus'] },
     );
   });
 
-  it('maps an upgrade to the plus group for that period', () => {
+  it('maps an upgrade to the plus group only (regular was already handed over)', () => {
     expect(accessGroupForPayload({ t: 'upgrade', userId: 1, period: '2026_05' })).toEqual({
       period: '2026_05',
-      type: 'plus',
+      types: ['plus'],
     });
   });
 
@@ -174,7 +185,7 @@ describe('payments.service.processSubscriptionPayment', () => {
 
     const [groups] = h.queriesFor('user_groups');
     expect(groups!.steps).toEqual([
-      { method: 'insert', args: [{ user_id: 10, period: '2026_06', type: 'regular' }] },
+      { method: 'insert', args: [[{ user_id: 10, period: '2026_06', type: 'regular' }]] },
       { method: 'onConflict', args: [['user_id', 'period', 'type']] },
       { method: 'ignore', args: [] },
     ]);
@@ -266,6 +277,28 @@ describe('payments.service.processSubscriptionPayment', () => {
       expect.anything(),
       expect.objectContaining({ amount: 1600 }),
     );
+  });
+
+  it('grants BOTH the regular and plus groups on a plus purchase', async () => {
+    const res = await processSubscriptionPayment(
+      { ...subPayload, tier: 'plus' },
+      'stars',
+      900,
+      'XTR',
+      'charge-plus',
+    );
+    expect(res.status).toBe('processed');
+
+    const [groups] = h.queriesFor('user_groups');
+    expect(groups!.steps[0]).toEqual({
+      method: 'insert',
+      args: [
+        [
+          { user_id: 10, period: '2026_06', type: 'regular' },
+          { user_id: 10, period: '2026_06', type: 'plus' },
+        ],
+      ],
+    });
   });
 
   it('grants the flat old-archive XP for old-month purchases', async () => {

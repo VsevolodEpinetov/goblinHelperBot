@@ -162,11 +162,12 @@ async function handleSuccessfulPayment(
       if (payload && group) {
         // deliverAccessKeys DMs the key(s) AND confirms the payment, with a home
         // button — so no separate (affordance-less) confirmation message here.
+        // A plus buy delivers both the regular and plus archive keys.
         await deliverAccessKeys({
           telegram: ctx.telegram,
           userId: payload.userId,
           period: group.period,
-          type: group.type,
+          types: group.types,
         });
       } else {
         await sendUserConfirmation(ctx, '🪙 Звёзды легли в казну, гоблин. Платёж принят.');

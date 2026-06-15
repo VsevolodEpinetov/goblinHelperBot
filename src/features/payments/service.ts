@@ -22,19 +22,30 @@ export function computeOldMonthMultiplier(): number {
 }
 
 /**
- * The month group a user should receive a one-time invite link to after a
+ * The archive tiers a purchase of `tier` entitles the buyer to. Buying `plus`
+ * (the extended group) bundles in `regular`: the plus price is the price for
+ * BOTH groups, so a plus buyer joins the regular group as well. Order is the
+ * delivery order — regular first, then plus.
+ */
+export function entitledTiers(tier: 'regular' | 'plus'): Array<'regular' | 'plus'> {
+  return tier === 'plus' ? ['regular', 'plus'] : ['regular'];
+}
+
+/**
+ * The month groups a user should receive one-time invite links to after a
  * processed payment, or null when the payment grants no group access (e.g. a
- * kickstarter purchase).
+ * kickstarter purchase). A plus buy yields both regular + plus; an upgrade
+ * yields only plus (the regular group was already handed over when bought).
  */
 export function accessGroupForPayload(
   payload: PaymentPayloadT,
-): { period: string; type: 'regular' | 'plus' } | null {
+): { period: string; types: Array<'regular' | 'plus'> } | null {
   switch (payload.t) {
     case 'sub':
     case 'old':
-      return { period: payload.period, type: payload.tier };
+      return { period: payload.period, types: entitledTiers(payload.tier) };
     case 'upgrade':
-      return { period: payload.period, type: 'plus' };
+      return { period: payload.period, types: ['plus'] };
     case 'ks':
       return null;
   }
@@ -144,10 +155,12 @@ export async function processSubscriptionPayment(
       source,
     });
 
-    // Grant access — idempotent at the schema level via UNIQUE(user_id, period, type) if you have it,
-    // otherwise via onConflict ignore.
+    // Grant access — a plus buy also grants regular (the plus price covers both
+    // groups). Idempotent at the schema level via UNIQUE(user_id, period, type)
+    // if you have it, otherwise via onConflict ignore.
+    const tiers = entitledTiers(payload.tier);
     await trx('user_groups')
-      .insert({ user_id: payload.userId, period: payload.period, type: payload.tier })
+      .insert(tiers.map((type) => ({ user_id: payload.userId, period: payload.period, type })))
       .onConflict(['user_id', 'period', 'type'])
       .ignore();
 

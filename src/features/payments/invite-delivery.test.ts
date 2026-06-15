@@ -73,7 +73,7 @@ describe('payments.invite-delivery.deliverAccessKeys', () => {
       telegram: telegram as never,
       userId: 7,
       period: '2026_06',
-      type: 'regular',
+      types: ['regular'],
     });
 
     expect(createMain).toHaveBeenCalledWith(7);
@@ -93,7 +93,7 @@ describe('payments.invite-delivery.deliverAccessKeys', () => {
       telegram: telegram as never,
       userId: 7,
       period: '2026_06',
-      type: 'regular',
+      types: ['regular'],
     });
 
     expect(createMain).not.toHaveBeenCalled();
@@ -113,11 +113,81 @@ describe('payments.invite-delivery.deliverAccessKeys', () => {
       telegram: telegram as never,
       userId: 7,
       period: '2026_06',
-      type: 'plus',
+      types: ['plus'],
     });
 
     expect(createMain).toHaveBeenCalledWith(7);
     expect(urls(telegram.sendMessage.mock.calls[0]![2])).toContain('https://t.me/+main');
+  });
+
+  it('hands over BOTH archive keys (regular + plus) in one DM on a plus buy', async () => {
+    getOrCreate
+      .mockResolvedValueOnce({ status: 'created', link: 'https://t.me/+reg', rowId: 1 })
+      .mockResolvedValueOnce({ status: 'created', link: 'https://t.me/+plus', rowId: 2 });
+    const telegram = makeTelegram();
+    await deliverAccessKeys({
+      telegram: telegram as never,
+      userId: 7,
+      period: '2026_06',
+      types: ['regular', 'plus'],
+    });
+
+    expect(getOrCreate).toHaveBeenCalledTimes(2);
+    expect(telegram.sendMessage).toHaveBeenCalledTimes(1);
+    // First paid period → main key first, then both archive keys.
+    expect(urls(telegram.sendMessage.mock.calls[0]![2])).toEqual([
+      'https://t.me/+main',
+      'https://t.me/+reg',
+      'https://t.me/+plus',
+    ]);
+  });
+
+  it('on a later period delivers both archive keys and no main key', async () => {
+    listSubs.mockResolvedValue([
+      { period: '2026_05', tier: 'regular' },
+      { period: '2026_06', tier: 'plus' },
+    ]);
+    getOrCreate
+      .mockResolvedValueOnce({ status: 'created', link: 'https://t.me/+reg', rowId: 1 })
+      .mockResolvedValueOnce({ status: 'created', link: 'https://t.me/+plus', rowId: 2 });
+    const telegram = makeTelegram();
+    await deliverAccessKeys({
+      telegram: telegram as never,
+      userId: 7,
+      period: '2026_06',
+      types: ['regular', 'plus'],
+    });
+
+    expect(createMain).not.toHaveBeenCalled();
+    expect(urls(telegram.sendMessage.mock.calls[0]![2])).toEqual([
+      'https://t.me/+reg',
+      'https://t.me/+plus',
+    ]);
+  });
+
+  it('delivers the bound key and alerts admins when the other tier has no chat', async () => {
+    // Later period (no main key), regular archive chat not bound yet, plus bound.
+    listSubs.mockResolvedValue([
+      { period: '2026_05', tier: 'regular' },
+      { period: '2026_06', tier: 'plus' },
+    ]);
+    getOrCreate
+      .mockResolvedValueOnce({ status: 'no_chat' })
+      .mockResolvedValueOnce({ status: 'created', link: 'https://t.me/+plus', rowId: 2 });
+    const telegram = makeTelegram();
+    await deliverAccessKeys({
+      telegram: telegram as never,
+      userId: 7,
+      period: '2026_06',
+      types: ['regular', 'plus'],
+    });
+
+    // One DM to the buyer with the plus key, one admin alert for the missing regular chat.
+    expect(telegram.sendMessage).toHaveBeenCalledTimes(2);
+    expect(urls(telegram.sendMessage.mock.calls[0]![2])).toEqual(['https://t.me/+plus']);
+    const [adminTo, adminText] = telegram.sendMessage.mock.calls[1]!;
+    expect(adminTo).toBe('-100777');
+    expect(adminText).toContain('regular');
   });
 
   it('falls back to the archive-only message when MAIN_GROUP_ID is unset', async () => {
@@ -127,7 +197,7 @@ describe('payments.invite-delivery.deliverAccessKeys', () => {
       telegram: telegram as never,
       userId: 7,
       period: '2026_06',
-      type: 'regular',
+      types: ['regular'],
     });
 
     expect(telegram.sendMessage).toHaveBeenCalledTimes(1);
@@ -141,7 +211,7 @@ describe('payments.invite-delivery.deliverAccessKeys', () => {
       telegram: telegram as never,
       userId: 7,
       period: '2026_06',
-      type: 'regular',
+      types: ['regular'],
     });
 
     expect(createMain).not.toHaveBeenCalled();
@@ -166,7 +236,7 @@ describe('payments.invite-delivery.deliverAccessKeys', () => {
         telegram: telegram as never,
         userId: 7,
         period: '2026_06',
-        type: 'regular',
+        types: ['regular'],
       }),
     ).resolves.toBeUndefined();
 
@@ -192,7 +262,7 @@ describe('payments.invite-delivery.deliverAccessKeys', () => {
         telegram: telegram as never,
         userId: 7,
         period: '2026_06',
-        type: 'regular',
+        types: ['regular'],
       }),
     ).resolves.toBeUndefined();
 

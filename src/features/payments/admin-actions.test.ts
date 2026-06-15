@@ -135,7 +135,7 @@ describe('payments.admin-actions sbp:confirm', () => {
     expect(inserts).toHaveLength(1);
     expect(inserts[0]!.steps[0]).toEqual({
       method: 'insert',
-      args: [{ user_id: 7, period: '2026_06', type: 'regular' }],
+      args: [[{ user_id: 7, period: '2026_06', type: 'regular' }]],
     });
 
     const [months] = h.queriesFor('months');
@@ -150,7 +150,7 @@ describe('payments.admin-actions sbp:confirm', () => {
     );
     expect(dispatchNotifications).toHaveBeenCalledWith(7, xpResult, 'payment_sub_sbp');
     expect(deliverAccessKeys).toHaveBeenCalledWith(
-      expect.objectContaining({ userId: 7, period: '2026_06', type: 'regular' }),
+      expect.objectContaining({ userId: 7, period: '2026_06', types: ['regular'] }),
     );
     expect(ctx.answerCbQuery).toHaveBeenCalledTimes(1);
     expect(ctx.editMessageCaption).toHaveBeenCalledTimes(1);
@@ -221,11 +221,12 @@ describe('payments.admin-actions sbp:confirm', () => {
     );
   });
 
-  it('still grants a plus SBP payment when only regular is owned', async () => {
+  it('grants BOTH groups and delivers both keys on a plus SBP payment', async () => {
     h.state.resolve = (q) => {
       if (q.table === 'payment_tracking' && h.has(q, 'returning'))
         return [{ ...claimedRow, subscription_type: 'plus' }];
-      if (q.table === 'user_groups' && h.has(q, 'select')) return [{ type: 'regular' }];
+      // No prior groups owned — a fresh plus transfer.
+      if (q.table === 'user_groups' && h.has(q, 'select')) return [];
       return undefined;
     };
     await confirm(makeCtx('sbp:confirm:5') as never);
@@ -233,7 +234,21 @@ describe('payments.admin-actions sbp:confirm', () => {
       expect.anything(),
       expect.objectContaining({ amount: 1600 }),
     );
-    expect(deliverAccessKeys).toHaveBeenCalledWith(expect.objectContaining({ type: 'plus' }));
+
+    const inserts = h.queriesFor('user_groups').filter((q) => h.has(q, 'insert'));
+    expect(inserts[0]!.steps[0]).toEqual({
+      method: 'insert',
+      args: [
+        [
+          { user_id: 7, period: '2026_06', type: 'regular' },
+          { user_id: 7, period: '2026_06', type: 'plus' },
+        ],
+      ],
+    });
+
+    expect(deliverAccessKeys).toHaveBeenCalledWith(
+      expect.objectContaining({ types: ['regular', 'plus'] }),
+    );
   });
 });
 
