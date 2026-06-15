@@ -21,6 +21,7 @@
     "db:status": "tsx node_modules/knex/bin/cli.js --knexfile knexfile.ts migrate:status",
     "db:list": "tsx node_modules/knex/bin/cli.js --knexfile knexfile.ts migrate:list",
     "audit": "tsx scripts/pre-migration-audit.ts",
+    "backfill:regular-groups": "tsx scripts/backfill-regular-groups.ts",
     "edit-texts": "node scripts/edit-texts-server.mjs"
   },
   "dependencies": {
