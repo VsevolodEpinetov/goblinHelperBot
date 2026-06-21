@@ -5,7 +5,6 @@ import { router } from '../../../../core/router';
 import { registerCancel } from '../../../../core/scenes';
 import { db } from '../../../../db/client';
 import { escapeHtml } from '../../../../shared/format';
-import { adminCallback } from '../../../admin/schemas';
 import { postKickstarterPromo } from '../../promo';
 import { createKickstarter } from '../../repo';
 import { ksCallback } from '../../schemas';
@@ -80,12 +79,7 @@ reviewScene.action('ks:add:confirm', async (ctx) => {
     await ctx.editMessageText(
       'Не удалось создать. Попробуй ещё раз.',
       Markup.inlineKeyboard([
-        [
-          Markup.button.callback(
-            '🔁 Попробовать снова',
-            router.encode(adminCallback, { a: 'adKsAdd' }),
-          ),
-        ],
+        [Markup.button.callback('🔁 Попробовать снова', router.encode(ksCallback, { a: 'ksAdd' }))],
       ]),
     );
   } finally {

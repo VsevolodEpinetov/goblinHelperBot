@@ -78,6 +78,7 @@ export async function runConfigHealthChecks(
         await probeTopic(telegram, 'kickstarters topic', fc.mainGroupId, fc.kickstartersTopicId),
       );
       checks.push(await probeTopic(telegram, 'RPG topic', fc.mainGroupId, fc.rpgTopicId));
+      checks.push(await probeTopic(telegram, 'polls topic', fc.mainGroupId, fc.pollsTopicId));
     } catch (err) {
       checks.push({
         name: 'main group',

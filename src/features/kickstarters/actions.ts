@@ -2,11 +2,12 @@ import type { Context, Scenes } from 'telegraf';
 
 import { answerThenEdit, editOrReply } from '../../core/nav';
 import { logger } from '../../core/observability';
-import { ensureApprovedMember, hasAdminRank } from '../../core/permissions';
+import { ensureApprovedMember } from '../../core/permissions';
 import { router } from '../../core/router';
 import { db } from '../../db/client';
 import { getScrollBalance } from '../scrolls';
 
+import { isKsManager } from './constants';
 import { formatKickstarterCard } from './format';
 import {
   adminEditKeyboard,
@@ -22,6 +23,7 @@ import {
   listKickstarters,
   listUserKickstarters,
 } from './repo';
+import { KS_ADD_CHAIN } from './scenes/add-chain';
 import { ksCallback } from './schemas';
 import { purchaseWithScroll } from './service';
 
@@ -67,9 +69,20 @@ export function registerKickstarterActions(): void {
       return;
     }
     const roles = ctx.state.roles ?? [];
-    const isAdmin = hasAdminRank(roles);
+    const canManage = isKsManager(roles);
 
     switch (payload.a) {
+      case 'ksAdd': {
+        // Delegate/admin entry into the create wizard from the member hub —
+        // the admin-hub button (adKsAdd) is staff-only, so a delegate needs this.
+        if (!canManage) {
+          await ctx.answerCbQuery?.('Не дозволено');
+          return;
+        }
+        await ctx.answerCbQuery?.();
+        await (ctx as unknown as Scenes.SceneContext).scene.enter(KS_ADD_CHAIN.steps[0]!, {});
+        break;
+      }
       case 'ksList': {
         if (!(await ensureApprovedMember(ctx as unknown as Context))) break;
         await renderKsCatalog(ctx as unknown as Context);
@@ -90,7 +103,7 @@ export function registerKickstarterActions(): void {
         const owned = await hasUserPurchased(db, ctx.from.id, payload.id);
         await answerThenEdit(ctx as unknown as Context, formatKickstarterCard(ks), {
           parse_mode: 'HTML',
-          ...userViewKeyboard(ks, owned, isAdmin),
+          ...userViewKeyboard(ks, owned, canManage),
         });
         break;
       }
@@ -146,7 +159,7 @@ export function registerKickstarterActions(): void {
           try {
             await ctx.editMessageText(formatKickstarterCard(result.kickstarter), {
               parse_mode: 'HTML',
-              ...userViewKeyboard(result.kickstarter, true, isAdmin),
+              ...userViewKeyboard(result.kickstarter, true, canManage),
             });
           } catch (err) {
             logger.debug({ err }, 'ksBuyScroll: card refresh failed');
@@ -155,7 +168,7 @@ export function registerKickstarterActions(): void {
         break;
       }
       case 'ksAdminMenu': {
-        if (!isAdmin) {
+        if (!canManage) {
           await ctx.answerCbQuery?.('Не дозволено');
           return;
         }
@@ -172,7 +185,7 @@ export function registerKickstarterActions(): void {
         break;
       }
       case 'ksEdit': {
-        if (!isAdmin) {
+        if (!canManage) {
           await ctx.answerCbQuery?.('Не дозволено');
           return;
         }

@@ -29,6 +29,7 @@ const KNOWN_ROLES = [
   'super',
   'polls',
   'adminPolls',
+  'adminKs',
   'alumni',
   'selfBanned',
   'banned',

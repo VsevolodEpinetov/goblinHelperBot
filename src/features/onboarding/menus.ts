@@ -2,6 +2,7 @@ import { Markup } from 'telegraf';
 
 import { router } from '../../core/router';
 import { invitationsCallback } from '../invitations/schemas';
+import { isKsDelegate } from '../kickstarters/constants';
 import { ksCallback } from '../kickstarters/schemas';
 import { loyaltyCallback } from '../loyalty/schemas';
 import { isPollsDelegate } from '../polls/constants';
@@ -198,6 +199,13 @@ function memberHubRows(
   if (isPollsDelegate(roles)) {
     rows.push([
       Markup.button.callback('📊 Опросы', router.encode(pollsCallback, { a: 'polMenu' })),
+    ]);
+  }
+  // A kickstarter delegate (adminKs, not full admin) creates/edits from here —
+  // the admin-hub «🚀 Новый кикстартер» button is staff-only.
+  if (isKsDelegate(roles)) {
+    rows.push([
+      Markup.button.callback('🚀 Новый кикстартер', router.encode(ksCallback, { a: 'ksAdd' })),
     ]);
   }
   return rows;

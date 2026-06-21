@@ -12,6 +12,7 @@ export const ksCallback = z.discriminatedUnion('a', [
     f: z.enum(['name', 'creator', 'cost', 'pledge_name', 'pledge_cost', 'link']),
   }),
   z.object({ a: z.literal('ksAdminMenu'), id: z.number().int() }),
+  z.object({ a: z.literal('ksAdd') }),
 ]);
 
 export type KsCallback = z.infer<typeof ksCallback>;
