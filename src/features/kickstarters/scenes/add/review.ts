@@ -20,7 +20,6 @@ reviewScene.enter(async (ctx) => {
     `<b>${escapeHtml(draft.name ?? '')}</b>\n` +
       `Автор: ${escapeHtml(draft.creator ?? '—')}\n` +
       `Цена: ${draft.cost ?? 0} ⭐\n` +
-      `Pledge: ${escapeHtml(draft.pledgeName ?? '—')} (${draft.pledgeCost ?? '—'} ⭐)\n` +
       `Фото: ${draft.photoFileIds?.length ?? 0}, файлов: ${draft.fileFileIds?.length ?? 0}`,
     {
       parse_mode: 'HTML',

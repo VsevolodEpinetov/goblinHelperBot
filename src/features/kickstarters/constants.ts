@@ -21,3 +21,15 @@ export function isKsDelegate(roles: readonly string[]): boolean {
 export function isKsManager(roles: readonly string[]): boolean {
   return roles.some((r) => (KS_MANAGER_ROLES as readonly string[]).includes(r));
 }
+
+/**
+ * Rough rubles→Stars rate for the price-entry hint ONLY (≈77⭐ per 100₽). Never
+ * used in an actual charge — just guidance shown when an admin types a star
+ * price. Tweak the number here if Telegram's rate drifts.
+ */
+export const STARS_PER_100_RUB = 77;
+
+/** A one-line «100 ₽ ≈ N ⭐» orientation hint for star-price prompts. */
+export function starsPriceHint(): string {
+  return `💡 Ориентир: 100 ₽ ≈ ${STARS_PER_100_RUB} ⭐`;
+}

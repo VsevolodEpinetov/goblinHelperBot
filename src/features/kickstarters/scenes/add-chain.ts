@@ -5,8 +5,6 @@ export const KS_ADD_CHAIN = defineChain([
   'ks:add:creator',
   'ks:add:link',
   'ks:add:cost',
-  'ks:add:pledge-name',
-  'ks:add:pledge-cost',
   'ks:add:photos',
   'ks:add:files',
   'ks:add:review',

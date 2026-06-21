@@ -4,13 +4,15 @@ import { registerCancel } from '../../../../core/scenes';
 import { validateName } from '../../service';
 import { KS_ADD_CHAIN, type KsAddDraft } from '../add-chain';
 
+import { cancelKb, KS_ADD_CANCEL } from './_nav';
+
 export const nameScene = new Scenes.BaseScene<Scenes.SceneContext>('ks:add:name');
 
 nameScene.enter(async (ctx) => {
-  await ctx.reply('Имя нового кикстартера? Или /cancel.');
+  await ctx.reply('Имя нового кикстартера?', cancelKb());
 });
 
-registerCancel(nameScene, { text: 'Отменено.' });
+registerCancel(nameScene, { text: 'Отменено.', action: KS_ADD_CANCEL });
 
 nameScene.on('text', async (ctx) => {
   try {

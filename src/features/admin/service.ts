@@ -135,11 +135,12 @@ export function highestRank(roles: readonly string[]): number {
 
 /**
  * Roles an admin assigns by hand from the user card, in display order. Excludes
- * lifecycle/auto states (newbie/pending/goblin/regular/plus/…) that flows set
+ * lifecycle/auto states (newbie/pending/regular/plus/…) that flows set
  * themselves. The picker filters this by the actor's rank, so e.g. a plain
  * admin never sees admin/adminPlus (assertCanModerateRole would reject those).
  */
 export const GRANTABLE_ROLES: ReadonlyArray<{ role: KnownRole; label: string }> = [
+  { role: 'goblin', label: '🪙 goblin' },
   { role: 'preapproved', label: '✅ preapproved' },
   { role: 'friend', label: '🤝 friend' },
   { role: 'polls', label: '📊 polls' },

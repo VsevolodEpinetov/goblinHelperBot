@@ -1,3 +1,4 @@
+import { starsPriceHint } from '../constants';
 import { validateCost, validateLink, validateName } from '../service';
 
 import { makeEditFieldScene } from './edit-field';
@@ -19,7 +20,7 @@ export const editCreatorScene = makeEditFieldScene({
 export const editCostScene = makeEditFieldScene({
   id: 'ks:edit:cost',
   field: 'cost',
-  prompt: 'Новая цена (в звёздах)? Или /cancel.',
+  prompt: `Новая цена (в звёздах)? Или /cancel.\n\n${starsPriceHint()}`,
   validate: validateCost,
 });
 
@@ -43,7 +44,7 @@ export const editPledgeNameScene = makeEditFieldScene({
 export const editPledgeCostScene = makeEditFieldScene({
   id: 'ks:edit:pledge_cost',
   field: 'pledge_cost',
-  prompt: 'Цена пледжа? "пропустить" для пустого. Или /cancel.',
+  prompt: `Цена пледжа? "пропустить" для пустого. Или /cancel.\n\n${starsPriceHint()}`,
   validate: (s) => {
     const t = s.trim();
     if (/^пропустить$/i.test(t)) return null;
