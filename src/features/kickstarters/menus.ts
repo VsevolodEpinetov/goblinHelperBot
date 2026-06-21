@@ -11,39 +11,92 @@ import { ksCallback } from './schemas';
 /** Pick a scroll the user wants to spend; assume one default scroll id "kickstarter" for v2. */
 const DEFAULT_SCROLL_ID = 'kickstarter';
 
+export const KS_PAGE_SIZE = 8;
+
 type KsListItem = Pick<KickstarterRow, 'id' | 'name' | 'cost'>;
 
-/** Catalogue list: one tappable button per kickstarter (✅-marked when already
- * owned), plus my-list + home nav. */
+/** Prev/Next nav row for a paginated kickstarter list (carries the catalogue's
+ * unowned-only filter so paging keeps it). */
+function ksPaginationRow(
+  action: 'ksList' | 'ksMine',
+  page: number,
+  hasNext: boolean,
+  unowned = false,
+): ReturnType<typeof Markup.button.callback>[] {
+  const link = (p: number): string =>
+    action === 'ksList'
+      ? router.encode(ksCallback, { a: 'ksList', p, ...(unowned ? { u: true } : {}) })
+      : router.encode(ksCallback, { a: 'ksMine', p });
+  const buttons: ReturnType<typeof Markup.button.callback>[] = [];
+  if (page > 0) buttons.push(Markup.button.callback('«', link(page - 1)));
+  if (hasNext) buttons.push(Markup.button.callback('Ещё »', link(page + 1)));
+  return buttons;
+}
+
+/** One tappable button per kickstarter (✅-marked when already owned). `page`
+ * rides into the card so its «back» returns to the same catalogue page. */
+function ksItemRows(
+  rows: readonly KsListItem[],
+  ownedIds: ReadonlySet<number>,
+  page = 0,
+): ReturnType<typeof Markup.button.callback>[][] {
+  return rows.map((ks) => [
+    Markup.button.callback(
+      `${ownedIds.has(ks.id) ? '✅ ' : ''}${formatKickstarterShort(ks)}`,
+      router.encode(ksCallback, { a: 'ksView', id: ks.id, ...(page > 0 ? { p: page } : {}) }),
+    ),
+  ]);
+}
+
+/** Catalogue: a page of kickstarters + prev/next, search, my-list, home. */
 export function catalogKeyboard(
   rows: readonly KsListItem[],
   ownedIds: ReadonlySet<number> = new Set(),
+  page = 0,
+  hasNext = false,
+  unownedOnly = false,
 ): ReturnType<typeof Markup.inlineKeyboard> {
-  const itemRows = rows.map((ks) => [
-    Markup.button.callback(
-      `${ownedIds.has(ks.id) ? '✅ ' : ''}${formatKickstarterShort(ks)}`,
-      router.encode(ksCallback, { a: 'ksView', id: ks.id }),
-    ),
-  ]);
+  const pagination = ksPaginationRow('ksList', page, hasNext, unownedOnly);
+  const filterButton = unownedOnly
+    ? Markup.button.callback('👁 Показать все', router.encode(ksCallback, { a: 'ksList', p: 0 }))
+    : Markup.button.callback(
+        '🙈 Скрыть купленные',
+        router.encode(ksCallback, { a: 'ksList', p: 0, u: true }),
+      );
   return Markup.inlineKeyboard([
-    ...itemRows,
-    [Markup.button.callback('🎯 Мои кикстартеры', router.encode(ksCallback, { a: 'ksMine' }))],
+    ...ksItemRows(rows, ownedIds, page),
+    ...(pagination.length > 0 ? [pagination] : []),
+    [
+      Markup.button.callback('🔍 Поиск', router.encode(ksCallback, { a: 'ksSearch' })),
+      Markup.button.callback('🎯 Мои кикстартеры', router.encode(ksCallback, { a: 'ksMine' })),
+    ],
+    [filterButton],
     [homeButton()],
   ]);
 }
 
-/** "My kickstarters" list: tappable owned items, plus back-to-catalogue + home. */
+/** "My kickstarters": a page of owned items + prev/next, back-to-catalogue, home. */
 export function myKickstartersKeyboard(
   rows: readonly KsListItem[],
+  page = 0,
+  hasNext = false,
 ): ReturnType<typeof Markup.inlineKeyboard> {
-  const itemRows = rows.map((ks) => [
-    Markup.button.callback(
-      formatKickstarterShort(ks),
-      router.encode(ksCallback, { a: 'ksView', id: ks.id }),
-    ),
-  ]);
+  const pagination = ksPaginationRow('ksMine', page, hasNext);
   return Markup.inlineKeyboard([
-    ...itemRows,
+    ...ksItemRows(rows, new Set()),
+    ...(pagination.length > 0 ? [pagination] : []),
+    [Markup.button.callback('« К каталогу', router.encode(ksCallback, { a: 'ksList' }))],
+    [homeButton()],
+  ]);
+}
+
+/** Search results: matched kickstarters + back-to-catalogue, home. */
+export function ksSearchResultsKeyboard(
+  rows: readonly KsListItem[],
+  ownedIds: ReadonlySet<number> = new Set(),
+): ReturnType<typeof Markup.inlineKeyboard> {
+  return Markup.inlineKeyboard([
+    ...ksItemRows(rows, ownedIds),
     [Markup.button.callback('« К каталогу', router.encode(ksCallback, { a: 'ksList' }))],
     [homeButton()],
   ]);
@@ -53,6 +106,7 @@ export function userViewKeyboard(
   ks: Pick<KickstarterRow, 'id'>,
   alreadyOwned: boolean,
   staff = false,
+  backPage = 0,
 ): ReturnType<typeof Markup.inlineKeyboard> {
   const adminRows = staff
     ? [
@@ -65,11 +119,23 @@ export function userViewKeyboard(
       ]
     : [];
   const backRow = [
-    Markup.button.callback('« К каталогу', router.encode(ksCallback, { a: 'ksList' })),
+    Markup.button.callback(
+      '« К каталогу',
+      router.encode(ksCallback, { a: 'ksList', ...(backPage > 0 ? { p: backPage } : {}) }),
+    ),
     homeButton(),
   ];
   if (alreadyOwned) {
-    return Markup.inlineKeyboard([...adminRows, backRow]);
+    return Markup.inlineKeyboard([
+      [
+        Markup.button.callback(
+          '📥 Скачать снова',
+          router.encode(ksCallback, { a: 'ksRedownload', id: ks.id }),
+        ),
+      ],
+      ...adminRows,
+      backRow,
+    ]);
   }
   return Markup.inlineKeyboard([
     [

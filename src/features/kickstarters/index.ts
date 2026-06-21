@@ -11,6 +11,7 @@ import { nameScene } from './scenes/add/name';
 import { photosScene } from './scenes/add/photos';
 import { reviewScene } from './scenes/add/review';
 import { ALL_EDIT_SCENES } from './scenes/edit-scenes';
+import { ksSearchScene } from './scenes/search';
 
 export function getKickstarterScenes(): Scenes.BaseScene<Scenes.SceneContext>[] {
   return [
@@ -22,6 +23,7 @@ export function getKickstarterScenes(): Scenes.BaseScene<Scenes.SceneContext>[] 
     photosScene,
     filesScene,
     reviewScene,
+    ksSearchScene,
   ];
 }
 

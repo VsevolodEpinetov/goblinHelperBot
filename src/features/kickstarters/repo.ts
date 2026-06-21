@@ -31,8 +31,29 @@ function rowToKickstarter(row: Record<string, unknown> | undefined): Kickstarter
   };
 }
 
-export async function listKickstarters(conn: DbConn): Promise<KickstarterRow[]> {
-  const rows = await conn('kickstarters').orderBy('created_at', 'desc');
+export async function listKickstarters(
+  conn: DbConn,
+  opts: { limit?: number; offset?: number; excludeIds?: readonly number[] } = {},
+): Promise<KickstarterRow[]> {
+  const q = conn('kickstarters').orderBy('created_at', 'desc');
+  if (opts.excludeIds && opts.excludeIds.length > 0) q.whereNotIn('id', [...opts.excludeIds]);
+  if (opts.limit !== undefined) q.limit(opts.limit);
+  if (opts.offset !== undefined) q.offset(opts.offset);
+  const rows = await q;
+  return rows.map(rowToKickstarter) as KickstarterRow[];
+}
+
+/** Case-insensitive name search (LIKE wildcards in the query are escaped). */
+export async function searchKickstarters(
+  conn: DbConn,
+  query: string,
+  limit = 20,
+): Promise<KickstarterRow[]> {
+  const safe = query.replace(/[\\%_]/g, (c) => `\\${c}`);
+  const rows = await conn('kickstarters')
+    .where('name', 'ilike', `%${safe}%`)
+    .orderBy('created_at', 'desc')
+    .limit(limit);
   return rows.map(rowToKickstarter) as KickstarterRow[];
 }
 
