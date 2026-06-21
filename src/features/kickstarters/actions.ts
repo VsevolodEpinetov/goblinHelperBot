@@ -1,6 +1,6 @@
 import type { Context, Scenes } from 'telegraf';
 
-import { answerThenEdit, editOrReply } from '../../core/nav';
+import { answerThenEdit, editOrReply, homeKeyboard } from '../../core/nav';
 import { logger } from '../../core/observability';
 import { ensureApprovedMember } from '../../core/permissions';
 import { router } from '../../core/router';
@@ -60,6 +60,26 @@ export async function renderMyKickstarters(ctx: Context): Promise<void> {
       ? '🌑 Кикстартеры ты пока не брал — свитки твои целы.'
       : '🎯 Твоя добыча по кикстартерам — что уже взял:';
   await answerThenEdit(ctx, header, myKickstartersKeyboard(rows));
+}
+
+/**
+ * One kickstarter's full card as a FRESH message (not an edit). Shared by the
+ * `ks_<id>` deep link tapped from the group promo's «Провести ритуал» button —
+ * it lands the member on the buy screen in DM.
+ */
+export async function renderKickstarterCard(ctx: Context, kickstarterId: number): Promise<void> {
+  if (!ctx.from) return;
+  const ks = await getKickstarterById(db, kickstarterId);
+  if (!ks) {
+    await ctx.reply('🌑 Этого кикстартера уже нет — добычу свернули.', homeKeyboard());
+    return;
+  }
+  const owned = await hasUserPurchased(db, ctx.from.id, kickstarterId);
+  const canManage = isKsManager(ctx.state.roles ?? []);
+  await ctx.reply(formatKickstarterCard(ks), {
+    parse_mode: 'HTML',
+    ...userViewKeyboard(ks, owned, canManage),
+  });
 }
 
 export function registerKickstarterActions(): void {

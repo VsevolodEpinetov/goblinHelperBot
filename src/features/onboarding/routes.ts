@@ -7,6 +7,7 @@ import { db } from '../../db/client';
 import { getRolesForUser } from '../../db/repos/user-roles';
 import { currentPeriod, formatPeriod } from '../../shared/period';
 import { getStatusDisplay, isApprovedMember } from '../../shared/user-status';
+import { renderKickstarterCard } from '../kickstarters/actions';
 import { renderRaidCard } from '../raids/actions';
 
 import {
@@ -102,6 +103,11 @@ async function handleStartPayload(
   const raidMatch = /^raid_(\d+)$/.exec(payload);
   if (raidMatch) {
     await renderRaidCard(ctx, Number(raidMatch[1]));
+    return true;
+  }
+  const ksMatch = /^ks_(\d+)$/.exec(payload);
+  if (ksMatch) {
+    await renderKickstarterCard(ctx, Number(ksMatch[1]));
     return true;
   }
   return false;

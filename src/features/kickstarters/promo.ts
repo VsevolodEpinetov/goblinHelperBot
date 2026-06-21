@@ -4,6 +4,7 @@ import { logger } from '../../core/observability';
 import { db } from '../../db/client';
 
 import { formatKickstarterCard } from './format';
+import { kickstarterPromoKeyboard } from './menus';
 import { getKickstarterById, getKickstarterPhotos } from './repo';
 
 /**
@@ -45,28 +46,22 @@ export async function sendKickstarterPromo(
   const photos = await getKickstarterPhotos(db, kickstarterId);
   try {
     const text = formatKickstarterCard(ks);
+    const kb = kickstarterPromoKeyboard(kickstarterId, bot.botInfo?.username);
     const baseOpts: { parse_mode: 'HTML'; message_thread_id?: number } = { parse_mode: 'HTML' };
     if (topicId !== undefined) baseOpts.message_thread_id = topicId;
 
+    // A kickstarter carries at most one photo, so the «Провести ритуал» deep
+    // link can ride on the card (a media group can't hold inline buttons).
     if (photos.length === 0) {
-      const msg = await bot.telegram.sendMessage(groupChatId, text, baseOpts);
+      const msg = await bot.telegram.sendMessage(groupChatId, text, { ...baseOpts, ...kb });
       return msg.message_id;
     }
-    if (photos.length === 1) {
-      const msg = await bot.telegram.sendPhoto(groupChatId, photos[0]!.fileId, {
-        caption: text,
-        ...baseOpts,
-      });
-      return msg.message_id;
-    }
-    // 2+ photos: send a media group; first item carries the caption.
-    const media = photos.map((p, i) => ({
-      type: 'photo' as const,
-      media: p.fileId,
-      ...(i === 0 ? { caption: text, parse_mode: 'HTML' as const } : {}),
-    }));
-    const msgs = await bot.telegram.sendMediaGroup(groupChatId, media, baseOpts);
-    return msgs[0]?.message_id;
+    const msg = await bot.telegram.sendPhoto(groupChatId, photos[0]!.fileId, {
+      caption: text,
+      ...baseOpts,
+      ...kb,
+    });
+    return msg.message_id;
   } catch (err) {
     logger.error({ err, kickstarterId, groupChatId }, 'sendKickstarterPromo: send failed');
     return undefined;

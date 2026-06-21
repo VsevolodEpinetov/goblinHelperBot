@@ -142,4 +142,25 @@ export function adminEditKeyboard(
   ]);
 }
 
+/**
+ * The group-promo button: a deep link that opens the bot in DM on this
+ * kickstarter's card («Провести ритуал» = buy it), since purchase (scrolls /
+ * stars + file delivery) only works in private chat. No button without a known
+ * bot username (e.g. before launch).
+ */
+export function kickstarterPromoKeyboard(
+  kickstarterId: number,
+  botUsername?: string,
+): ReturnType<typeof Markup.inlineKeyboard> {
+  if (!botUsername) return Markup.inlineKeyboard([]);
+  return Markup.inlineKeyboard([
+    [
+      Markup.button.url(
+        '🔮 Провести ритуал',
+        `https://t.me/${botUsername}?start=ks_${kickstarterId}`,
+      ),
+    ],
+  ]);
+}
+
 export { DEFAULT_SCROLL_ID };
