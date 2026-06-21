@@ -4,6 +4,8 @@ import { router } from '../../core/router';
 import { invitationsCallback } from '../invitations/schemas';
 import { ksCallback } from '../kickstarters/schemas';
 import { loyaltyCallback } from '../loyalty/schemas';
+import { isPollsDelegate } from '../polls/constants';
+import { pollsCallback } from '../polls/schemas';
 import { promoCallback } from '../promo/schemas';
 import { raidsCallback } from '../raids/schemas';
 import { subscriptionsCallback } from '../subscriptions/schemas';
@@ -162,8 +164,10 @@ export function verdictKeyboard(appId: number): ReturnType<typeof Markup.inlineK
   ]);
 }
 
-function memberHubRows(): ReturnType<typeof Markup.button.callback>[][] {
-  return [
+function memberHubRows(
+  roles: readonly string[] = [],
+): ReturnType<typeof Markup.button.callback>[][] {
+  const rows: ReturnType<typeof Markup.button.callback>[][] = [
     [
       Markup.button.callback(
         '🪙 Месячный архив',
@@ -189,12 +193,22 @@ function memberHubRows(): ReturnType<typeof Markup.button.callback>[][] {
       Markup.button.callback('🎁 Гостинец', router.encode(promoCallback, { a: 'promoGet' })),
     ],
   ];
+  // A poll-delegate goblin (polls/adminPolls, not full admin) reaches the polls
+  // menu only here — they never see the «Админка» hub where its button lives.
+  if (isPollsDelegate(roles)) {
+    rows.push([
+      Markup.button.callback('📊 Опросы', router.encode(pollsCallback, { a: 'polMenu' })),
+    ]);
+  }
+  return rows;
 }
 
 /** The approved-member home hub shown on /start. Each button opens a feature
  * screen via that feature's callback (which self-authorizes the caller). */
-export function memberHubKeyboard(): ReturnType<typeof Markup.inlineKeyboard> {
-  return Markup.inlineKeyboard(memberHubRows());
+export function memberHubKeyboard(
+  roles: readonly string[] = [],
+): ReturnType<typeof Markup.inlineKeyboard> {
+  return Markup.inlineKeyboard(memberHubRows(roles));
 }
 
 /** Admin /start: the member hub plus a row into the /admin hub. */

@@ -77,7 +77,7 @@ sbpScene.action('sbp:cancel', async (ctx) => {
   await editOrReply(
     ctx,
     '🌑 Бросил оплату — заявку совету не понёс. Если рубли уже перевёл, вернись и донеси скрин.',
-    memberHubKeyboard(),
+    memberHubKeyboard(ctx.state.roles ?? []),
   );
 });
 

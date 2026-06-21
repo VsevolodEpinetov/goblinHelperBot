@@ -1,6 +1,42 @@
 import { describe, expect, it } from 'vitest';
 
-import { parseStudioName, summarizePoll } from './service';
+import { buildPollChunks, EMPTY_OPTION, parseStudioName, summarizePoll } from './service';
+
+const names = (n: number): string[] => Array.from({ length: n }, (_, i) => `Studio ${i + 1}`);
+
+describe('polls.service.buildPollChunks', () => {
+  it('returns no chunks for an empty ballot', () => {
+    expect(buildPollChunks([])).toEqual([]);
+  });
+
+  it('puts a small ballot in one chunk capped with the empty option', () => {
+    const chunks = buildPollChunks(names(5));
+    expect(chunks).toHaveLength(1);
+    expect(chunks[0]).toHaveLength(6);
+    expect(chunks[0]?.at(-1)).toBe(EMPTY_OPTION);
+  });
+
+  it('fits exactly 9 studios into a single 10-option poll with no trailing blank', () => {
+    const chunks = buildPollChunks(names(9));
+    expect(chunks).toHaveLength(1);
+    expect(chunks[0]).toHaveLength(10);
+    expect(chunks[0]?.at(-1)).toBe(EMPTY_OPTION);
+  });
+
+  it('splits 10 studios into two polls (9+empty, 1+empty)', () => {
+    const chunks = buildPollChunks(names(10));
+    expect(chunks).toHaveLength(2);
+    expect(chunks[0]).toHaveLength(10);
+    expect(chunks[1]).toEqual(['Studio 10', EMPTY_OPTION]);
+  });
+
+  it('produces no trailing empty poll for an exact multiple of 9', () => {
+    const chunks = buildPollChunks(names(18));
+    expect(chunks).toHaveLength(2);
+    expect(chunks.every((c) => c.length === 10)).toBe(true);
+    expect(chunks.every((c) => c.at(-1) === EMPTY_OPTION)).toBe(true);
+  });
+});
 
 describe('polls.service.parseStudioName', () => {
   it('returns the trimmed first non-link non-price line', () => {

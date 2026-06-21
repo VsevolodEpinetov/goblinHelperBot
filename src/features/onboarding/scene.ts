@@ -90,7 +90,7 @@ onboardingScene.action('onboarding:submit', async (ctx) => {
     case 'already_approved':
       await ctx.editMessageText(
         '🪙 Да ты ж свой уже, совет тебя впустил. Бери архив кнопкой ниже.',
-        { ...memberHubKeyboard() },
+        { ...memberHubKeyboard(ctx.state.roles ?? []) },
       );
       break;
   }

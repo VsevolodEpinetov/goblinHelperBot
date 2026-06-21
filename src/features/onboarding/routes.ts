@@ -45,7 +45,7 @@ async function renderStartByStatus(ctx: Context, roles: readonly string[]): Prom
         paid
           ? '🔥 С возвращением, гоблин! Месячный архив за этот цикл луны уже твой — всё открыто. Выбирай кнопкой ниже: архив, профиль, кикстартеры или рейды.'
           : '🪙 Ты свой гоблин и в логово пущен. Только свежий месячный архив ещё не доступен — казна логова пополнения от тебя не видела. Жми кнопку ниже, бери архив. Профиль, кикстартеры и рейды — там же.',
-        memberHubKeyboard(),
+        memberHubKeyboard(roles),
       );
       return;
     }
@@ -61,7 +61,7 @@ async function renderStartByStatus(ctx: Context, roles: readonly string[]): Prom
       await editOrReply(
         ctx,
         '🤝 А, это ты — гость самого Главгоблина. Платить тебе не велено: все архивы и главный зал открыты задаром. Бери, что нужно, не стесняйся.',
-        memberHubKeyboard(),
+        memberHubKeyboard(roles),
       );
       return;
     case 'pending':
@@ -128,7 +128,11 @@ export function registerOnboardingCommands(bot: Telegraf): void {
         // ensureApprovedMember answers the callback with a denial when it fails,
         // so just bail without answering again.
         if (!(await ensureApprovedMember(ctx))) break;
-        await editOrReply(ctx, '🔥 С возвращением, гоблин. ', memberHubKeyboard());
+        await editOrReply(
+          ctx,
+          '🔥 С возвращением, гоблин. ',
+          memberHubKeyboard(ctx.state.roles ?? []),
+        );
         await ctx.answerCbQuery?.();
         break;
       case 'onStatus': {

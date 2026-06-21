@@ -46,6 +46,15 @@ export async function listDynamicStudios(conn: DbConn): Promise<StudioRow[]> {
   return conn('polls_studios').orderBy('added_at', 'asc').select('id', 'name');
 }
 
+/** All studio names (core + dynamic) sorted alphabetically — the ballot for a
+ * poll launch. Mirrors the legacy `getAllStudios`; duplicates are not merged. */
+export async function getAllStudios(conn: DbConn): Promise<string[]> {
+  const [core, dynamic] = await Promise.all([listCoreStudios(conn), listDynamicStudios(conn)]);
+  return [...core, ...dynamic]
+    .map((s) => s.name)
+    .sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()));
+}
+
 export async function resetCoreStudios(conn: DbConn): Promise<number> {
   return conn('polls_core_studios').delete();
 }

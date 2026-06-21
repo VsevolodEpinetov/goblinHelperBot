@@ -118,6 +118,7 @@ const FeatureConfigSchema = z.object({
   RAIDS_TOPIC_ID: topicId,
   KICKSTARTERS_TOPIC_ID: topicId,
   RPG_TOPIC_ID: topicId,
+  POLLS_TOPIC_ID: topicId,
   REGULAR_PRICE: z.preprocess(emptyToUndef, z.coerce.number().int().positive().default(350)),
   PLUS_PRICE: z.preprocess(emptyToUndef, z.coerce.number().int().positive().default(1000)),
   SBP_PRICE_REGULAR_RUB: lenientPositiveInt,
@@ -135,6 +136,8 @@ export interface FeatureConfig {
   kickstartersTopicId: number | undefined;
   /** The public RPG topic where XP gains and level-ups are announced. */
   rpgTopicId: number | undefined;
+  /** The topic where studio voting polls are posted on launch. */
+  pollsTopicId: number | undefined;
   regularPrice: number;
   plusPrice: number;
   sbpPriceRegularRub: number | undefined;
@@ -153,6 +156,7 @@ export function featureConfig(
     raidsTopicId: p.RAIDS_TOPIC_ID,
     kickstartersTopicId: p.KICKSTARTERS_TOPIC_ID,
     rpgTopicId: p.RPG_TOPIC_ID,
+    pollsTopicId: p.POLLS_TOPIC_ID,
     regularPrice: p.REGULAR_PRICE,
     plusPrice: p.PLUS_PRICE,
     sbpPriceRegularRub: p.SBP_PRICE_REGULAR_RUB,
@@ -191,6 +195,9 @@ export function featureReport(fc: FeatureConfig): string[] {
     group
       ? `kickstarter promos: ON (group ${group}, ${topic(fc.kickstartersTopicId)})`
       : 'kickstarter promos: OFF — MAIN_GROUP_ID not set',
+    group
+      ? `studio polls: ON (group ${group}, ${topic(fc.pollsTopicId)})`
+      : 'studio polls: OFF — MAIN_GROUP_ID not set',
     group && fc.rpgTopicId
       ? `RPG announcements: ON (group ${group}, topic ${fc.rpgTopicId})`
       : `RPG announcements: OFF — ${group ? 'RPG_TOPIC_ID' : 'MAIN_GROUP_ID'} not set (XP notices fall back to DM)`,

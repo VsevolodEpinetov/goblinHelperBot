@@ -23,6 +23,25 @@ export function adminMenu(): ReturnType<typeof Markup.inlineKeyboard> {
         router.encode(pollsCallback, { a: 'polDynReset' }),
       ),
     ],
+    [
+      Markup.button.callback(
+        '🚀 Запустить голосование',
+        router.encode(pollsCallback, { a: 'polLaunch' }),
+      ),
+    ],
+  ]);
+}
+
+/** Two-step confirm before posting polls to the main group. */
+export function pollsLaunchConfirm(): ReturnType<typeof Markup.inlineKeyboard> {
+  return Markup.inlineKeyboard([
+    [
+      Markup.button.callback(
+        '✅ Да, запустить',
+        router.encode(pollsCallback, { a: 'polLaunchYes' }),
+      ),
+    ],
+    [Markup.button.callback('« Отмена', router.encode(pollsCallback, { a: 'polMenu' }))],
   ]);
 }
 
