@@ -4,6 +4,8 @@ export const adminCallback = z.discriminatedUnion('a', [
   z.object({ a: z.literal('adUser'), id: z.number().int() }),
   z.object({ a: z.literal('adGrantRole'), id: z.number().int() }),
   z.object({ a: z.literal('adRemoveRole'), id: z.number().int() }),
+  z.object({ a: z.literal('adRolePick'), id: z.number().int(), role: z.string() }),
+  z.object({ a: z.literal('adRoleDrop'), id: z.number().int(), role: z.string() }),
   z.object({ a: z.literal('adGrantScroll'), id: z.number().int() }),
   z.object({
     a: z.literal('adGrantAch'),
@@ -14,7 +16,11 @@ export const adminCallback = z.discriminatedUnion('a', [
   z.object({ a: z.literal('adFriend'), id: z.number().int(), on: z.boolean() }),
   // Per-user month (archive access) management on the user card.
   z.object({ a: z.literal('adUMon'), id: z.number().int() }),
-  z.object({ a: z.literal('adGMon'), id: z.number().int(), t: z.enum(['regular', 'plus', 'both']) }),
+  z.object({
+    a: z.literal('adGMon'),
+    id: z.number().int(),
+    t: z.enum(['regular', 'plus', 'both']),
+  }),
   z.object({
     a: z.literal('adRMon'),
     id: z.number().int(),

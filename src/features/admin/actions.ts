@@ -12,13 +12,19 @@ import { isStaff } from '../../shared/user-status';
 import { KS_ADD_CHAIN } from '../kickstarters/scenes/add-chain';
 import { homeRow } from '../onboarding/menus';
 
-import { backToHubKeyboard, monthsKeyboard, userCard, userMonthsScreen } from './menus';
+import {
+  backToHubKeyboard,
+  monthsKeyboard,
+  roleDropKeyboard,
+  rolePickKeyboard,
+  userCard,
+  userMonthsScreen,
+} from './menus';
 import { listMonths } from './repo';
 import { ADD_MONTH_SCENE_ID } from './scenes/add-month';
 import { CHANGE_BALANCE_SCENE_ID } from './scenes/change-balance';
 import { FIND_USER_SCENE_ID } from './scenes/find-user';
 import { GRANT_MONTH_SCENE_ID } from './scenes/grant-month';
-import { GRANT_ROLE_SCENE_ID } from './scenes/grant-role';
 import { GRANT_SCROLL_SCENE_ID } from './scenes/grant-scroll';
 import { SET_MONTH_CHAT_SCENE_ID } from './scenes/set-month-chat';
 import { adminCallback } from './schemas';
@@ -29,7 +35,12 @@ import {
   adminRevokeMonth,
   bindArchiveChat,
   getUserOverview,
+  GRANTABLE_ROLES,
+  highestRank,
+  isKnownRole,
   listUserMonths,
+  roleLabel,
+  roleRank,
   tierWord,
 } from './service';
 
@@ -50,20 +61,72 @@ export function registerAdminActions(): void {
           await ctx.answerCbQuery?.();
           break;
         }
-        case 'adGrantRole':
+        case 'adGrantRole': {
+          const overview = await getUserOverview(payload.id);
+          const actorRank = highestRank(roles);
+          const entries = GRANTABLE_ROLES.filter(
+            (e) => roleRank(e.role) < actorRank && !overview.roles.includes(e.role),
+          );
           await ctx.answerCbQuery?.();
-          await (ctx as unknown as Scenes.SceneContext).scene.enter(GRANT_ROLE_SCENE_ID, {
-            userId: payload.id,
-            mode: 'add',
-          });
+          await ctx.editMessageText(
+            entries.length === 0
+              ? '🎫 Нечего выдать — все доступные тебе роли у гоблина уже есть.'
+              : `🎫 Кому выдать роль? Сейчас у гоблина: ${overview.roles.join(', ') || '—'}`,
+            { ...rolePickKeyboard(payload.id, entries) },
+          );
           break;
-        case 'adRemoveRole':
+        }
+        case 'adRemoveRole': {
+          const overview = await getUserOverview(payload.id);
+          const actorRank = highestRank(roles);
+          const entries = overview.roles
+            .filter((r) => isKnownRole(r) && roleRank(r) < actorRank)
+            .map((r) => ({ role: r, label: roleLabel(r) }));
           await ctx.answerCbQuery?.();
-          await (ctx as unknown as Scenes.SceneContext).scene.enter(GRANT_ROLE_SCENE_ID, {
-            userId: payload.id,
-            mode: 'remove',
-          });
+          await ctx.editMessageText(
+            entries.length === 0
+              ? '🎫 Снять нечего — у гоблина нет ролей, которые тебе позволено трогать.'
+              : '🎫 Какую роль снять?',
+            { ...roleDropKeyboard(payload.id, entries) },
+          );
           break;
+        }
+        case 'adRolePick': {
+          if (!ctx.from) {
+            await ctx.answerCbQuery?.();
+            break;
+          }
+          const actor = { id: ctx.from.id, roles };
+          try {
+            const applied = await adminGrantRole(actor, payload.id, payload.role);
+            await ctx.answerCbQuery?.(applied ? '✅ Выдано' : 'Уже была');
+          } catch (e) {
+            await ctx.answerCbQuery?.((e as Error).message, { show_alert: true });
+            break;
+          }
+          const overview = await getUserOverview(payload.id);
+          const { text, keyboard } = userCard(overview, `id:${payload.id}`);
+          await ctx.editMessageText(text, { parse_mode: 'HTML', ...keyboard });
+          break;
+        }
+        case 'adRoleDrop': {
+          if (!ctx.from) {
+            await ctx.answerCbQuery?.();
+            break;
+          }
+          const actor = { id: ctx.from.id, roles };
+          try {
+            const applied = await adminRemoveRole(actor, payload.id, payload.role);
+            await ctx.answerCbQuery?.(applied ? '🗑 Снято' : 'Не было');
+          } catch (e) {
+            await ctx.answerCbQuery?.((e as Error).message, { show_alert: true });
+            break;
+          }
+          const overview = await getUserOverview(payload.id);
+          const { text, keyboard } = userCard(overview, `id:${payload.id}`);
+          await ctx.editMessageText(text, { parse_mode: 'HTML', ...keyboard });
+          break;
+        }
         case 'adGrantScroll':
           await ctx.answerCbQuery?.();
           await (ctx as unknown as Scenes.SceneContext).scene.enter(GRANT_SCROLL_SCENE_ID, {
@@ -138,15 +201,16 @@ export function registerAdminActions(): void {
             await ctx.answerCbQuery?.((e as Error).message, { show_alert: true });
             break;
           }
-          await ctx.answerCbQuery?.(payload.on ? '🤝 Теперь гоблин — друг логова' : '📉 Дружба кончилась');
+          await ctx.answerCbQuery?.(
+            payload.on ? '🤝 Теперь гоблин — друг логова' : '📉 Дружба кончилась',
+          );
           // Welcome the new friend by DM (grant only) — they should know access opened.
           if (payload.on) {
             try {
-              await ctx.telegram.sendMessage(
-                payload.id,
-                'Уже было!',
-                { parse_mode: 'HTML', ...Markup.inlineKeyboard([homeRow()]) },
-              );
+              await ctx.telegram.sendMessage(payload.id, 'Уже было!', {
+                parse_mode: 'HTML',
+                ...Markup.inlineKeyboard([homeRow()]),
+              });
             } catch (dmErr) {
               logger.warn({ dmErr, userId: payload.id }, 'adFriend: welcome DM failed');
             }

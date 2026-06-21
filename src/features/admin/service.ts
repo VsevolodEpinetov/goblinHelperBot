@@ -133,6 +133,33 @@ export function highestRank(roles: readonly string[]): number {
   return roles.reduce((max, r) => Math.max(max, roleRank(r)), 0);
 }
 
+/**
+ * Roles an admin assigns by hand from the user card, in display order. Excludes
+ * lifecycle/auto states (newbie/pending/goblin/regular/plus/…) that flows set
+ * themselves. The picker filters this by the actor's rank, so e.g. a plain
+ * admin never sees admin/adminPlus (assertCanModerateRole would reject those).
+ */
+export const GRANTABLE_ROLES: ReadonlyArray<{ role: KnownRole; label: string }> = [
+  { role: 'preapproved', label: '✅ preapproved' },
+  { role: 'friend', label: '🤝 friend' },
+  { role: 'polls', label: '📊 polls' },
+  { role: 'adminPolls', label: '📊 adminPolls' },
+  { role: 'adminKs', label: '🚀 adminKs' },
+  { role: 'alumni', label: '🎓 alumni' },
+  { role: 'admin', label: '🛠 admin' },
+  { role: 'adminPlus', label: '🛠 adminPlus' },
+  { role: 'banned', label: '🚫 banned' },
+];
+
+const ROLE_LABEL: Readonly<Record<string, string>> = Object.fromEntries(
+  GRANTABLE_ROLES.map((e) => [e.role, e.label]),
+);
+
+/** A button label for a role: the catalog label, or the raw name as fallback. */
+export function roleLabel(role: string): string {
+  return ROLE_LABEL[role] ?? role;
+}
+
 export interface RoleParty {
   id: number;
   roles: readonly string[];

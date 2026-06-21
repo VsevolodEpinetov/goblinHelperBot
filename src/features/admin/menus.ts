@@ -151,6 +151,54 @@ export function userCard(
   return { text, keyboard };
 }
 
+/** Pick a role to GRANT — one button per grantable role, two per row, + back. */
+export function rolePickKeyboard(
+  userId: number,
+  entries: ReadonlyArray<{ role: string; label: string }>,
+): ReturnType<typeof Markup.inlineKeyboard> {
+  const rows: ReturnType<typeof Markup.button.callback>[][] = [];
+  for (let i = 0; i < entries.length; i += 2) {
+    rows.push(
+      entries
+        .slice(i, i + 2)
+        .map((e) =>
+          Markup.button.callback(
+            e.label,
+            router.encode(adminCallback, { a: 'adRolePick', id: userId, role: e.role }),
+          ),
+        ),
+    );
+  }
+  rows.push([
+    Markup.button.callback('« Назад', router.encode(adminCallback, { a: 'adUser', id: userId })),
+  ]);
+  return Markup.inlineKeyboard(rows);
+}
+
+/** Pick a role to REMOVE — one button per current (removable) role, + back. */
+export function roleDropKeyboard(
+  userId: number,
+  entries: ReadonlyArray<{ role: string; label: string }>,
+): ReturnType<typeof Markup.inlineKeyboard> {
+  const rows: ReturnType<typeof Markup.button.callback>[][] = [];
+  for (let i = 0; i < entries.length; i += 2) {
+    rows.push(
+      entries
+        .slice(i, i + 2)
+        .map((e) =>
+          Markup.button.callback(
+            e.label,
+            router.encode(adminCallback, { a: 'adRoleDrop', id: userId, role: e.role }),
+          ),
+        ),
+    );
+  }
+  rows.push([
+    Markup.button.callback('« Назад', router.encode(adminCallback, { a: 'adUser', id: userId })),
+  ]);
+  return Markup.inlineKeyboard(rows);
+}
+
 /** Per-user months screen: what archives they hold, plus grant/revoke controls. */
 export function userMonthsScreen(
   userId: number,
@@ -190,15 +238,16 @@ export function userMonthsScreen(
     ]);
   }
   rows.push([
-    Markup.button.callback('« К гоблину', router.encode(adminCallback, { a: 'adUser', id: userId })),
+    Markup.button.callback(
+      '« К гоблину',
+      router.encode(adminCallback, { a: 'adUser', id: userId }),
+    ),
   ]);
   return { text, keyboard: Markup.inlineKeyboard(rows) };
 }
 
 /** Scene-exit nav: back to the user's months screen. */
-export function backToUserMonthsKeyboard(
-  userId: number,
-): ReturnType<typeof Markup.inlineKeyboard> {
+export function backToUserMonthsKeyboard(userId: number): ReturnType<typeof Markup.inlineKeyboard> {
   return Markup.inlineKeyboard([
     [
       Markup.button.callback(
@@ -266,12 +315,18 @@ export function monthsKeyboard(
   const nav: ReturnType<typeof Markup.button.callback>[] = [];
   if (current > 0) {
     nav.push(
-      Markup.button.callback('«', router.encode(adminCallback, { a: 'adMonths', page: current - 1 })),
+      Markup.button.callback(
+        '«',
+        router.encode(adminCallback, { a: 'adMonths', page: current - 1 }),
+      ),
     );
   }
   if (start + MONTHS_PAGE_SIZE < months.length) {
     nav.push(
-      Markup.button.callback('»', router.encode(adminCallback, { a: 'adMonths', page: current + 1 })),
+      Markup.button.callback(
+        '»',
+        router.encode(adminCallback, { a: 'adMonths', page: current + 1 }),
+      ),
     );
   }
   if (nav.length > 0) buttons.push(nav);
